@@ -1,0 +1,1 @@
+lrw-r--r-- 1 root root 21 2008-12-31 18:00 /sdcard -> /storage/self/primary

@@ -1,0 +1,3 @@
+List of devices attached
+A1B2C3D4E5F6           device usb:2-4 product:NX809J-UN model:NX809J device:NX809J transport_id:1
+

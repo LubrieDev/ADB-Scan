@@ -1,0 +1,219 @@
+USB MANAGER STATE (dumpsys usb):
+{
+  device_manager={
+    handler={
+      current_functions_applied=true
+      screen_locked=false
+      connected=true
+      configured=true
+      host_connected=false
+      source_power=false
+      sink_power=true
+      usb_charging=false
+      hide_usb_notification=false
+      audio_accessory_connected=false
+      kernel_state=CONFIGURED
+    }
+    USB Event Log=UsbDeviceManager activity
+    USB Event=[
+      11-13 10:53:26:565 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 11:56:11:240 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=13501, ACTION=change, USB_STATE=ONLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 11:56:11:565 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=13503, ACTION=change, USB_STATE=CONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 11:56:11:568 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 11:56:11:570 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=13504, ACTION=change, USB_STATE=CONFIGURED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 11:56:11:572 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 12:09:09:870 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=13592, ACTION=change, USB_STATE=OFFLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 12:09:09:872 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=13596, ACTION=change, USB_STATE=DISCONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 12:09:10:875 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 14:07:44:962 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=15225, ACTION=change, USB_STATE=ONLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 14:07:45:229 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=15232, ACTION=change, USB_STATE=CONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 14:07:45:232 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 14:07:45:235 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=15233, ACTION=change, USB_STATE=CONFIGURED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 14:07:45:235 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 14:41:55:396 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=15366, ACTION=change, USB_STATE=DISCONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 14:41:55:409 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=15367, ACTION=change, USB_STATE=OFFLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 14:41:56:398 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 15:23:25:706 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=15990, ACTION=change, USB_STATE=ONLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 15:23:28:570 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=15993, ACTION=change, USB_STATE=CONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 15:23:28:574 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=15994, ACTION=change, USB_STATE=CONFIGURED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 15:23:28:574 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 15:23:28:576 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 15:23:37:769 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=15995, ACTION=change, USB_STATE=DISCONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 15:23:38:150 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=16002, ACTION=change, USB_STATE=CONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 15:23:38:152 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=16003, ACTION=change, USB_STATE=CONFIGURED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 15:23:38:152 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 15:23:38:155 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 15:41:38:101 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=16161, ACTION=change, USB_STATE=DISCONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 15:41:38:101 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=16159, ACTION=change, USB_STATE=OFFLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 15:41:41:116 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 18:29:08:806 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=16976, ACTION=change, USB_STATE=ONLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 18:29:09:127 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=16984, ACTION=change, USB_STATE=CONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 18:29:09:129 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 18:29:09:130 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=16985, ACTION=change, USB_STATE=CONFIGURED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 18:29:09:135 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 19:00:45:240 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=17069, ACTION=change, USB_STATE=OFFLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 19:00:45:242 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=17070, ACTION=change, USB_STATE=DISCONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 19:00:48:245 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 19:55:43:091 USB UEVENT: {SUBSYSTEM=charger, SEQNUM=17239, ACTION=change, USB_STATE=ONLINE, DEVPATH=/devices/virtual/charger/test}
+      11-13 19:55:46:053 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=17248, ACTION=change, USB_STATE=CONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 19:55:46:058 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 19:55:46:058 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=17249, ACTION=change, USB_STATE=CONFIGURED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 19:55:46:064 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 19:55:53:603 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=17251, ACTION=change, USB_STATE=DISCONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 19:55:54:227 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=17259, ACTION=change, USB_STATE=CONNECTED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 19:55:54:230 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+      11-13 19:55:54:233 USB UEVENT: {SUBSYSTEM=android_usb, SEQNUM=17260, ACTION=change, USB_STATE=CONFIGURED, DEVPATH=/devices/virtual/android_usb/android0}
+      11-13 19:55:54:236 USB intent: Intent { act=android.hardware.usb.action.USB_STATE flg=0x31000000 xflg=0x4 (has extras) }
+    ]
+  }
+  host_manager={
+    num_connects=0
+  }
+  port_manager={
+    is_simulation_active=false
+    usb_ports={
+      port={
+        id=port0
+        supported_modes=dual, audio_acc
+        supports_compliance_warnings=false
+      }
+      status={
+        connected=true
+        current_mode=ufp
+        power_role=sink
+        data_role=device
+        role_combinations=[
+          {
+            power_role=source
+            data_role=host
+          }
+          {
+            power_role=sink
+            data_role=device
+          }
+        ]
+        contaminant_presence_status=not detected
+        usb_data_status=enabled
+        is_power_transfer_limited=false
+        usb_power_brick_status=unknown
+        compliance_warning_status=[]
+      }
+      can_change_mode=true
+      can_change_power_role=false
+      can_change_data_role=false
+      connected_at_millis=32557904
+      last_connect_duration_millis=0
+    }
+    usb_hal_version=20
+  }
+  alsa_manager={
+    cards_parser=-1
+  }
+  settings_manager={
+    user_settings={
+      user_id=0
+      device_attached_activities=[
+        {
+          activity={
+            package_name=com.android.mtp
+            class_name=com.android.mtp.ReceiverActivity
+          }
+          filters=[
+            {
+              vendor_id=-1
+              product_id=-1
+              class=255
+              subclass=255
+              protocol=0
+              manufacturer_name=null
+              product_name=null
+              serial_number=null
+            }
+            {
+              vendor_id=-1
+              product_id=-1
+              class=6
+              subclass=1
+              protocol=1
+              manufacturer_name=null
+              product_name=null
+              serial_number=null
+            }
+          ]
+        }
+        {
+          activity={
+            package_name=com.google.android.apps.photos
+            class_name=com.google.android.libraries.social.ingest.IngestActivity
+          }
+          filters={
+            vendor_id=-1
+            product_id=-1
+            class=6
+            subclass=1
+            protocol=1
+            manufacturer_name=null
+            product_name=null
+            serial_number=null
+          }
+        }
+      ]
+      accessory_attached_activities=[
+        {
+          activity={
+            package_name=com.google.android.gms
+            class_name=com.google.android.gms.backup.component.D2dSourceActivity
+          }
+          filters={
+            manufacturer=Google, Inc.
+            model=DeviceMigration
+            version=39842
+          }
+        }
+        {
+          activity={
+            package_name=com.google.android.projection.gearhead
+            class_name=com.google.android.apps.auto.carservice.gmscorecompat.FirstActivityImpl
+          }
+          filters=[
+            {
+              manufacturer=Android
+              model=Android Open Automotive Protocol
+              version=null
+            }
+            {
+              manufacturer=Android
+              model=Android Auto
+              version=null
+            }
+            {
+              manufacturer=Android
+              model=Android
+              version=null
+            }
+          ]
+        }
+        {
+          activity={
+            package_name=com.ejemplo.app07
+            class_name=com.bytedance.android.livesdk.comp.impl.gameanchor.mirror.activity.UsbSourceProxyActivity
+          }
+          filters={
+            manufacturer=Android
+            model=Accessory Display
+            version=null
+          }
+        }
+      ]
+    }
+    profile_group_settings={
+      parent_user_id=0
+      USB Event Log=UsbProfileGroupSettingsManager activity
+    }
+  }
+  permissions_manager={
+    user_permissions={
+      user_id=0
+    }
+  }
+}

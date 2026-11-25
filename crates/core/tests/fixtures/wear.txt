@@ -1,0 +1,6 @@
+batt_cycle_count=53
+batt_charge_full=7360000
+batt_charge_full_design=7500000
+kind=UFS
+life= 
+eol=

@@ -1,0 +1,94 @@
+    Estimated power use (mAh):
+      Capacity: 7500, Computed drain: 23.1, actual drain: 23.1
+    Global
+      screen: 1925 apps: 1925
+      cpu: 1811 apps: 1808 duration: 1d 5h 58m 26s 782ms 
+      camera: 124 apps: 124 duration: 14m 54s 696ms 
+      flashlight: 35.7 apps: 35.7 duration: 3m 41s 742ms 
+      mobile_radio: 408 apps: 0.812
+      sensors: 10.3 apps: 10.3
+      wifi: 195 apps: 191
+      wakelock: 0.279 apps: 0.279 duration: 2h 47m 33s 514ms 
+      gpu: 96.9 apps: 0
+      nsp: 1.42 apps: 0
+      debug-0: 163 apps: 0
+      debug-2: 618 apps: 0
+      debug-4: 140 apps: 0
+      (on battery, screen on)
+        screen: 1914 apps: 1914
+        cpu: 406 apps: 406 duration: 7h 23m 35s 785ms 
+        camera: 18.1 apps: 18.1 duration: 2m 10s 583ms 
+        flashlight: 17.6 apps: 17.6 duration: 1m 48s 947ms 
+        mobile_radio: 64.3 apps: 0.126
+        sensors: 0.0744 apps: 0.0743
+        wifi: 89.3 apps: 87.5
+        wakelock: 0.0145 apps: 0.0144 duration: 8m 43s 864ms 
+        gpu: 59.2 apps: 0
+        nsp: 0.102 apps: 0
+        debug-0: 44.2 apps: 0
+        debug-2: 179 apps: 0
+        debug-4: 75.9 apps: 0
+      (on battery, screen off/doze)
+        cpu: 104 apps: 103 duration: 3h 40m 29s 244ms 
+        camera: 10.4 apps: 10.4 duration: 1m 14s 546ms 
+        flashlight: 9.52 apps: 9.52 duration: 59s 84ms 
+        mobile_radio: 184 apps: 0.381
+        sensors: 0.591 apps: 0.591
+        wifi: 75.8 apps: 75.3
+        wakelock: 0.261 apps: 0.261 duration: 2h 36m 56s 373ms 
+        gpu: 4.33 apps: 0
+        nsp: 0.0919 apps: 0
+        debug-0: 10.4 apps: 0
+        debug-2: 46.7 apps: 0
+        debug-4: 9.70 apps: 0
+      (not on battery, screen on)
+        screen: 11.0 apps: 11.0
+        cpu: 453 apps: 453 duration: 5h 54m 44s 741ms 
+        camera: 27.6 apps: 27.6 duration: 3m 18s 877ms 
+        flashlight: 5.72 apps: 5.72 duration: 35s 509ms 
+        mobile_radio: 48.4 apps: 0.109
+        sensors: 2.34 apps: 2.34
+        wifi: 13.7 apps: 13.0
+        wakelock: 0.000979 apps: 0.000972 duration: 35s 339ms 
+        gpu: 22.8 apps: 0
+        nsp: 0.425 apps: 0
+        debug-0: 42.0 apps: 0
+        debug-2: 147 apps: 0
+        debug-4: 41.9 apps: 0
+      (not on battery, screen off/doze)
+        cpu: 848 apps: 846 duration: 12h 59m 37s 12ms 
+        camera: 68.2 apps: 68.2 duration: 8m 10s 690ms 
+        flashlight: 2.93 apps: 2.93 duration: 18s 202ms 
+        mobile_radio: 111 apps: 0.196
+        sensors: 7.26 apps: 7.26
+        wifi: 16.5 apps: 15.6
+        wakelock: 0.00216 apps: 0.00215 duration: 1m 17s 938ms 
+        gpu: 10.5 apps: 0
+        nsp: 0.805 apps: 0
+        debug-0: 65.9 apps: 0
+        debug-2: 244 apps: 0
+        debug-4: 12.2 apps: 0
+    UID u0a441: 1035 fg: 102 (30m 32s 802ms) bg: 15.0 (15m 11s 593ms) cached: 7.49 (3h 40m 12s 114ms)
+      screen=910 cpu=58.3 cpu:fg=49.5 cpu:bg=5.43 cpu:cached=3.33 audio=0 (5h 47m 7s 442ms) audio:fg=0 (5h 23m 33s 875ms) audio:bg=0 (8m 53s 273ms) audio:cached=0 (14m 40s 294ms) video=0 (5h 53m 2s 684ms) video:fg=0 (5h 21m 35s 95ms) video:bg=0 (10m 53s 501ms) video:cached=0 (20m 34s 88ms) sensors=0.105 sensors:fg=0.00964 sensors:bg=0.0255 sensors:cached=0.0695 wifi=66.6 wifi:fg=52.9 wifi:bg=9.58 wifi:cached=4.09 wakelock=0 (1ms) wakelock:bg=0 (1ms)
+      (on battery, screen on) screen=905 cpu=33.3 cpu:fg=32.6 cpu:bg=0.112 cpu:cached=0.604 audio=0 (2h 58m 41s 160ms) audio:fg=0 (2h 57m 44s 498ms) audio:bg=0 (11s 34ms) audio:cached=0 (45s 628ms) video=0 (3h 0m 45s 25ms) video:fg=0 (2h 54m 53s 832ms) video:bg=0 (38s 725ms) video:cached=0 (5m 12s 468ms) sensors=0.000757 sensors:bg=0.0000430 sensors:cached=0.000714 wifi=46.3 wifi:fg=45.4 wifi:bg=0.318 wifi:cached=0.555
+      (on battery, screen off/doze) cpu=0.856 cpu:bg=0.681 cpu:cached=0.175 audio=0 (13m 55s 410ms) audio:bg=0 (4m 39s 950ms) audio:cached=0 (9m 15s 460ms) video=0 (14m 8s 104ms) video:bg=0 (4m 45s 244ms) video:cached=0 (9m 22s 860ms) sensors=0.00603 sensors:cached=0.00603 wifi=3.79 wifi:bg=2.35 wifi:cached=1.45 wakelock=0 (1ms) wakelock:bg=0 (1ms)
+      (not on battery, screen on) screen=5.08 cpu=18.1 cpu:fg=16.9 cpu:bg=0.689 cpu:cached=0.468 audio=0 (2h 28m 12s 837ms) audio:fg=0 (2h 25m 49s 377ms) audio:bg=0 (1m 14s 934ms) audio:cached=0 (1m 8s 526ms) video=0 (2h 29m 43s 997ms) video:fg=0 (2h 26m 41s 257ms) video:bg=0 (1m 48s 229ms) video:cached=0 (1m 14s 511ms) sensors=0.0238 sensors:fg=0.00964 sensors:bg=0.00554 sensors:cached=0.00866 wifi=9.57 wifi:fg=7.48 wifi:bg=1.52 wifi:cached=0.567
+      (not on battery, screen off/doze) cpu=6.03 cpu:bg=3.95 cpu:cached=2.08 audio=0 (6m 18s 35ms) audio:bg=0 (2m 47s 355ms) audio:cached=0 (3m 30s 680ms) video=0 (8m 25s 558ms) video:fg=0 (6ms) video:bg=0 (3m 41s 303ms) video:cached=0 (4m 44s 249ms) sensors=0.0740 sensors:bg=0.0199 sensors:cached=0.0541 wifi=6.92 wifi:bg=5.39 wifi:cached=1.53
+    UID 2000: 817 bg: 717 cached: 101
+      cpu=709 cpu:bg=647 cpu:cached=62.3 camera=108 (12m 58s 224ms) camera:bg=69.9 (8m 23s 510ms) camera:cached=38.2 (4m 34s 714ms) audio=0 (1h 3m 30s 171ms) audio:bg=0 (39m 31s 813ms) audio:cached=0 (23m 58s 358ms) video=0 (45m 8s 144ms) video:bg=0 (34m 31s 777ms) video:cached=0 (10m 36s 367ms) wifi=0.00130 wifi:bg=0.00130
+      (on battery, screen on) cpu=20.4 cpu:bg=20.2 cpu:cached=0.156 camera=9.42 (1m 8s 614ms) camera:bg=8.82 (1m 4s 208ms) camera:cached=0.605 (4s 406ms) audio=0 (1m 19s 871ms) audio:bg=0 (31s 591ms) audio:cached=0 (48s 280ms) video=0 (52s 562ms) video:bg=0 (32s 938ms) video:cached=0 (19s 624ms)
+      (on battery, screen off/doze) cpu=1.52 cpu:bg=1.47 cpu:cached=0.0530 camera=5.60 (39s 489ms) camera:bg=1.21 (8s 518ms) camera:cached=4.39 (30s 971ms) audio=0 (2m 51s 987ms) audio:bg=0 (27s 811ms) audio:cached=0 (2m 24s 176ms) video=0 (33s 704ms) video:bg=0 (10s 976ms) video:cached=0 (22s 728ms) wifi=0.000130 wifi:bg=0.000130
+      (not on battery, screen on) cpu=191 cpu:bg=167 cpu:cached=23.5 camera=26.7 (3m 12s 375ms) camera:bg=14.2 (1m 42s 174ms) camera:cached=12.5 (1m 30s 201ms) audio=0 (19m 13s 503ms) audio:bg=0 (13m 24s 934ms) audio:cached=0 (5m 48s 569ms) video=0 (28m 46s 753ms) video:bg=0 (22m 23s 956ms) video:cached=0 (6m 22s 797ms) wifi=0.000123 wifi:bg=0.000123
+      (not on battery, screen off/doze) cpu=497 cpu:bg=458 cpu:cached=38.6 camera=66.4 (7m 57s 746ms) camera:bg=45.6 (5m 28s 610ms) camera:cached=20.7 (2m 29s 136ms) audio=0 (40m 4s 810ms) audio:bg=0 (25m 7s 477ms) audio:cached=0 (14m 57s 333ms) video=0 (14m 55s 125ms) video:bg=0 (11m 23s 907ms) video:cached=0 (3m 31s 218ms) wifi=0.00104 wifi:bg=0.00104
+    UID 1000: 245 bg: 245
+      cpu=244 cpu:bg=244 audio=0 (1m 49s 303ms) audio:bg=0 (1m 49s 303ms) video=0 (6s 526ms) video:bg=0 (6s 526ms) sensors=0.355 sensors:bg=0.355 wifi=0.161 wifi:bg=0.161 wakelock=0.0119 (10m 14s 857ms) wakelock:bg=0.0119 (10m 14s 857ms)
+      (on battery, screen on) cpu=75.6 cpu:bg=75.6 audio=0 (44s 260ms) audio:bg=0 (44s 260ms) video=0 (6s 526ms) video:bg=0 (6s 526ms) sensors=0.00258 sensors:bg=0.00258 wifi=0.110 wifi:bg=0.110 wakelock=0.000918 (3m 4s 336ms) wakelock:bg=0.000918 (3m 4s 336ms)
+      (on battery, screen off/doze) cpu=20.5 cpu:bg=20.5 audio=0 (1m 4s 552ms) audio:bg=0 (1m 4s 552ms) sensors=0.0205 sensors:bg=0.0205 wifi=0.0132 wifi:bg=0.0132 wakelock=0.0107 (7m 1s 775ms) wakelock:bg=0.0107 (7m 1s 775ms)
+      (not on battery, screen on) cpu=62.2 cpu:bg=62.2 audio=0 (264ms) audio:bg=0 (264ms) sensors=0.0810 sensors:bg=0.0810 wifi=0.0188 wifi:bg=0.0188 wakelock=0.000142 (4s 881ms) wakelock:bg=0.000142 (4s 881ms)
+      (not on battery, screen off/doze) cpu=85.9 cpu:bg=85.9 audio=0 (227ms) audio:bg=0 (227ms) sensors=0.251 sensors:bg=0.251 wifi=0.0192 wifi:bg=0.0192 wakelock=0.000112 (3s 865ms) wakelock:bg=0.000112 (3s 865ms)
+    UID u0a543: 131 fg: 6.42 (15m 15s 534ms) bg: 20.5 (1h 35m 18s 551ms) fgs: 38.8 (2h 41m 5s 155ms) cached: 2.51 (50m 15s 889ms)
+      screen=63.0 cpu=20.1 cpu:fg=3.84 cpu:bg=9.55 cpu:fgs=4.79 cpu:cached=1.92 camera=0.429 (3s 76ms) camera:fg=0.0713 (518ms) camera:bg=0.218 (1s 568ms) camera:fgs=0.0909 (643ms) camera:cached=0.0483 (347ms) audio=0 (11m 14s 880ms) audio:fg=0 (6m 26s 665ms) audio:bg=0 (54s 515ms) audio:fgs=0 (3m 51s 111ms) audio:cached=0 (2s 589ms) video=0 (4m 48s 111ms) video:fg=0 (4m 26s 637ms) video:bg=0 (15s 730ms) video:fgs=0 (5s 721ms) video:cached=0 (23ms) sensors=0.0000120 sensors:bg=0.00000400 sensors:fgs=0.00000600 sensors:cached=0.00000200 wifi=47.5 wifi:fg=2.50 wifi:bg=10.6 wifi:fgs=33.9 wifi:cached=0.540 wakelock=0.105 (1h 3m 4s 299ms) wakelock:fg=0.00245 (1m 28s 962ms) wakelock:bg=0.0850 (50m 56s 707ms) wakelock:fgs=0.0155 (9m 10s 814ms) wakelock:cached=0.00240 (1m 27s 816ms)
+      (on battery, screen on) screen=62.6 cpu=5.11 cpu:fg=1.39 cpu:bg=3.15 cpu:fgs=0.402 cpu:cached=0.167 camera=0.131 (957ms) camera:fg=0.0646 (470ms) camera:bg=0.0555 (404ms) camera:fgs=0.000686 (5ms) camera:cached=0.0107 (78ms) audio=0 (9s 442ms) audio:fg=0 (7s 811ms) audio:bg=0 (4ms) audio:fgs=0 (1s 625ms) audio:cached=0 (2ms) video=0 (12s 797ms) video:fg=0 (9s 933ms) video:bg=0 (2s 622ms) video:fgs=0 (242ms) wifi=1.38 wifi:fg=0.339 wifi:bg=0.848 wifi:fgs=0.137 wifi:cached=0.0584 wakelock=0.00519 (3m 5s 690ms) wakelock:fg=0.000646 (22s 934ms) wakelock:bg=0.00358 (2m 8s 842ms) wakelock:fgs=0.000442 (15s 833ms) wakelock:cached=0.000522 (18s 81ms)
+      (on battery, screen off/doze) cpu=2.00 cpu:fg=0.168 cpu:bg=0.922 cpu:fgs=0.785 cpu:cached=0.126 camera=0.143 (1s 9ms) camera:fg=0.00652 (46ms) camera:bg=0.0445 (314ms) camera:fgs=0.0811 (572ms) camera:cached=0.0109 (77ms) audio=0 (1m 11s 385ms) audio:fg=0 (34ms) audio:bg=0 (822ms) audio:fgs=0 (1m 10s 478ms) audio:cached=0 (51ms) video=0 (1s 840ms) video:fg=0 (65ms) video:bg=0 (1s 536ms) video:fgs=0 (231ms) video:cached=0 (8ms) wifi=43.2 wifi:fg=1.95 wifi:bg=8.06 wifi:fgs=33.1 wifi:cached=0.0711 wakelock=0.0990 (59m 16s 656ms) wakelock:fg=0.00177 (1m 4s 879ms) wakelock:bg=0.0804 (48m 10s 698ms) wakelock:fgs=0.0150 (8m 51s 346ms) wakelock:cached=0.00188 (1m 9s 733ms)
+      (not on battery, screen on) screen=0.406 cpu=4.48 cpu:fg=2.26 cpu:bg=0.969 cpu:fgs=1.17 cpu:cached=0.0736 camera=0.0206 (148ms) camera:fg=0.000277 (2ms) camera:bg=0.0201 (145ms) camera:fgs=0.000138 (1ms) audio=0 (8m 46s 92ms) audio:fg=0 (6m 18s 820ms) audio:bg=0 (703ms) audio:fgs=0 (2m 26s 29ms) audio:cached=0 (540ms) video=0 (4m 17s 787ms) video:fg=0 (4m 16s 639ms) video:bg=0 (968ms) video:fgs=0 (179ms) video:cached=0 (1ms) sensors=0.00000200 sensors:fgs=0.00000200 wifi=0.871 wifi:fg=0.204 wifi:bg=0.378 wifi:fgs=0.243 wifi:cached=0.0466 wakelock=0.000371 (12s 818ms) wakelock:fg=0.0000330 (1s 149ms) wakelock:bg=0.000321 (11s 57ms) wakelock:fgs=0.0000170 (612ms)
+      (not on battery, screen off/doze) cpu=8.52 cpu:fg=0.0201 cpu:bg=4.51 cpu:fgs=2.43 cpu:cached=1.55 camera=0.134 (962ms) camera:bg=0.0979 (705ms) camera:fgs=0.00903 (65ms) camera:cached=0.0267 (192ms) audio=0 (1m 7s 961ms) audio:bg=0 (52s 986ms) audio:fgs=0 (12s 979ms) audio:cached=0 (1s 996ms) video=0 (15s 687ms) video:bg=0 (10s 604ms) video:fgs=0 (5s 69ms) video:cached=0 (14ms) sensors=0.00001000 sensors:bg=0.00000400 sensors:fgs=0.00000400 sensors:cached=0.00000200 wifi=2.04 wifi:fg=0.00501 wifi:bg=1.32 wifi:fgs=0.357 wifi:cached=0.364 wakelock=0.000821 (29s 135ms) wakelock:bg=0.000733 (26s 110ms) wakelock:fgs=0.0000880 (3s 23ms) wakelock:cached=0 (2ms)

@@ -1,0 +1,544 @@
+@@@DUMP@@@
+Domain verification status:
+  com.google.android.youtube:
+    ID: 352a21e6-9782-4b1b-8ffb-a4e3f0e2d692
+    Signatures: [5A:AD:2B:EE:6D:B9:5D:17:E0:5A:08:D7:D1:E6:4C:10:A1:51:18:79:15:44:83:91:6B:6A:E6:C7:FD:9C:B0:C6]
+    Domain verification state:
+      youtu.be: system_configured
+      m.youtube.com: system_configured
+      youtube.com: system_configured
+      www.youtube.com: system_configured
+      myaccount.google.com: system_configured
+      studio.youtube.com: system_configured
+      oauth-redirect.googleusercontent.com: system_configured
+    User all:
+      Verification link handling allowed: true
+      Selection state:
+        Disabled:
+          youtu.be
+          m.youtube.com
+          youtube.com
+          www.youtube.com
+          myaccount.google.com
+          studio.youtube.com
+          oauth-redirect.googleusercontent.com
+
+Key Set Manager:
+  [com.google.android.youtube]
+      Signing KeySets: 56
+
+Packages:
+  Package [com.google.android.youtube] (3d08e18):
+    appId=10441
+    pkg=Package{9a80071 com.google.android.youtube}
+    codePath=/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==
+    resourcePath=/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==
+    legacyNativeLibraryDir=/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/lib
+    extractNativeLibs=false
+    primaryCpuAbi=arm64-v8a
+    secondaryCpuAbi=null
+    cpuAbiOverride=null
+    versionCode=1561314006 minSdk=32 targetSdk=37
+    minExtensionVersions=[]
+    versionName=21.46.522
+    hiddenApiEnforcementPolicy=2
+    usesNonSdkApi=false
+    splits=[base, config.arm64_v8a, config.en, config.es, config.xxhdpi]
+    apkSigningVersion=3
+    flags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA UPDATED_SYSTEM_APP ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION LARGE_HEAP ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE HAS_DOMAIN_URLS PARTIALLY_DIRECT_BOOT_AWARE PRODUCT PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    forceQueryable=false
+    pageSizeCompat=0
+    queriesPackages=[com.google.android.apps.youtube.music, com.google.android.apps.youtube.gaming, com.google.android.apps.youtube.kids, com.google.android.apps.youtube.unplugged, com.google.android.apps.youtube.creator, com.google.android.apps.youtube.mango, com.google.android.apps.youtube.producer, com.google.android.youtube.sandbox, com.android.vending, com.google.android.apps.maps, com.google.android.apps.chrome]
+    queriesIntents=[Intent { act=android.intent.action.TTS_SERVICE }, Intent { act=com.android.vending.billing.InAppBillingService.BIND }, Intent { act=com.google.android.apps.play.billingtestcompanion.BillingOverrideService.BIND }, Intent { act=android.media.action.IMAGE_CAPTURE }, Intent { act=android.intent.action.PICK dat=content://*/... typ=image/* }, Intent { act=android.intent.action.GET_CONTENT dat=content://*/... typ=image/* }, Intent { act=android.intent.action.VIEW }, Intent { act=android.support.customtabs.action.CustomTabsService }, Intent { act=android.speech.RecognitionService }, Intent { act=android.intent.action.SEND dat=content://*/... typ=text/plain }, Intent { act=com.google.android.apps.tsa.action.GET_TIMESTAMP }, Intent { act=androidx.window.extensions.layout.EngagementModeService }, Intent { act=androidx.xr.projected.ACTION_ENGAGEMENT_BIND }, Intent { act=androidx.xr.projected.ACTION_BIND }, Intent { act=android.intent.action.VIEW cat=[android.intent.category.BROWSABLE] dat=https://www.example.com/... }, Intent { act=com.android.setupwizard.action.PARTNER_CUSTOMIZATION }, Intent { act=com.google.android.setupcompat.restore.restoreprogress.RESTORE_PROGRESS_SERVICE_ACTION }]
+    scannedAsStoppedSystemApp=false
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    usesOptionalLibraries:
+      org.apache.http.legacy
+      android.ext.adservices
+      androidx.window.extensions
+      androidx.window.sidecar
+    usesLibraryFiles:
+      /system/framework/org.apache.http.legacy.jar
+      /system_ext/framework/androidx.window.extensions.jar
+      /system_ext/framework/androidx.window.sidecar.jar
+    timeStamp=2026-11-19 02:14:17
+    lastUpdateTime=2026-11-19 02:14:30
+    installerPackageName=com.android.vending
+    installerPackageUid=10404
+    initiatingPackageName=com.android.vending
+    originatingPackageName=null
+    packageSource=0
+    appMetadataFilePath=/data/app-metadata/com.google.android.youtube/app.metadata
+    appMetadataSource=2
+    signatures=PackageSignatures{510ce56 version:3, signatures:[fa41615], past signatures:[7d3bce25 flags: 17, fa41615 flags: 17]}
+    installPermissionsFixed=false
+    pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA UPDATED_SYSTEM_APP ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION LARGE_HEAP ]
+    privatePkgFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE HAS_DOMAIN_URLS PARTIALLY_DIRECT_BOOT_AWARE PRODUCT PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    apexModuleName=null
+    declared permissions:
+      com.google.android.youtube.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: prot=signature
+      com.google.android.youtube.permission.C2D_MESSAGE: prot=signature
+    requested permissions:
+      android.permission.FOREGROUND_SERVICE_CAMERA
+      com.sonyericsson.home.permission.BROADCAST_BADGE
+      android.permission.POST_NOTIFICATIONS
+      com.google.android.c2dm.permission.RECEIVE
+      android.permission.ACCESS_FINE_LOCATION
+      android.permission.MODIFY_AUDIO_SETTINGS
+      com.google.android.providers.gsf.permission.READ_GSERVICES
+      com.google.android.youtube.permission.C2D_MESSAGE
+      android.permission.ACCESS_LOCAL_NETWORK
+      android.permission.SYSTEM_ALERT_WINDOW
+      android.permission.DETECT_SCREEN_CAPTURE
+      android.permission.NFC
+      com.sec.android.provider.badge.permission.READ
+      android.permission.FOREGROUND_SERVICE
+      android.permission.READ_MEDIA_VISUAL_USER_SELECTED
+      android.permission.RECEIVE_BOOT_COMPLETED
+      android.permission.HIGH_SAMPLING_RATE_SENSORS
+      android.permission.ACCESS_ADSERVICES_AD_ID
+      com.google.android.gms.permission.AD_ID_NOTIFICATION
+      android.permission.INTERNET
+      com.android.vending.BILLING
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.GET_PACKAGE_SIZE
+      android.permission.ACCESS_COARSE_LOCATION
+      android.permission.READ_PHONE_STATE
+      android.permission.READ_MEDIA_IMAGES
+      android.permission.FOREGROUND_SERVICE_DATA_SYNC
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.RUN_USER_INITIATED_JOBS
+      android.permission.CAMERA
+      com.sonymobile.home.permission.PROVIDER_INSERT_BADGE
+      com.google.android.youtube.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+      android.permission.ACCESS_ADSERVICES_ATTRIBUTION
+      android.permission.READ_MEDIA_VIDEO
+      android.permission.USE_FINGERPRINT
+      com.sec.android.provider.badge.permission.WRITE
+      android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION
+      android.permission.FOREGROUND_SERVICE_MICROPHONE
+      android.permission.MANAGE_DOCUMENTS
+      android.permission.GET_ACCOUNTS
+      android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK
+      android.permission.WRITE_EXTERNAL_STORAGE
+      android.permission.VIBRATE
+      android.permission.ACCESS_WIFI_STATE
+      android.permission.USE_BIOMETRIC
+      com.htc.launcher.permission.UPDATE_SHORTCUT
+      android.permission.RECORD_AUDIO
+      com.google.android.gms.permission.AD_ID
+      com.htc.launcher.permission.READ_SETTINGS
+      android.permission.WAKE_LOCK
+      android.permission.READ_CONTACTS
+    install permissions:
+      android.permission.FOREGROUND_SERVICE_CAMERA: granted=true
+      com.google.android.c2dm.permission.RECEIVE: granted=true
+      android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+      com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+      com.google.android.youtube.permission.C2D_MESSAGE: granted=true
+      android.permission.DETECT_SCREEN_CAPTURE: granted=true
+      android.permission.NFC: granted=true
+      android.permission.FOREGROUND_SERVICE: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.HIGH_SAMPLING_RATE_SENSORS: granted=true
+      android.permission.ACCESS_ADSERVICES_AD_ID: granted=true
+      com.google.android.gms.permission.AD_ID_NOTIFICATION: granted=true
+      android.permission.INTERNET: granted=true
+      com.android.vending.BILLING: granted=true
+      android.permission.GET_PACKAGE_SIZE: granted=true
+      android.permission.FOREGROUND_SERVICE_DATA_SYNC: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.RUN_USER_INITIATED_JOBS: granted=true
+      com.google.android.youtube.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: granted=true
+      android.permission.ACCESS_ADSERVICES_ATTRIBUTION: granted=true
+      android.permission.USE_FINGERPRINT: granted=true
+      android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION: granted=true
+      android.permission.FOREGROUND_SERVICE_MICROPHONE: granted=true
+      android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK: granted=true
+      android.permission.VIBRATE: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.USE_BIOMETRIC: granted=true
+      com.google.android.gms.permission.AD_ID: granted=true
+      android.permission.WAKE_LOCK: granted=true
+    User 0: ceDataInode=8024 deDataInode=3012 installed=true hidden=false suspended=false distractionFlags=0 stopped=false notLaunched=false enabled=1 instant=false virtual=false quarantined=false
+      installReason=0
+      dataDir=/data/user/0/com.google.android.youtube
+      firstInstallTime=1970-01-02 09:54:56
+      uninstallReason=0
+      overlay paths:
+        /product/overlay/NavigationBarMode3Button/NavigationBarMode3ButtonOverlay.apk
+        /data/resource-cache/com.android.systemui-neutral-CJ47.frro
+        /data/resource-cache/com.android.systemui-accent-NMZ8.frro
+        /data/resource-cache/com.android.systemui-dynamic-RWOe.frro
+      legacy overlay paths:
+        /product/overlay/NavigationBarMode3Button/NavigationBarMode3ButtonOverlay.apk
+      lastDisabledCaller: com.google.android.partnersetup
+      gids=[3003]
+      runtime permissions:
+        android.permission.POST_NOTIFICATIONS: granted=false, flags=[ USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_FINE_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_VISUAL_USER_SELECTED: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_EXTERNAL_STORAGE: granted=false, flags=[ REVOKE_WHEN_REQUESTED|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED|RESTRICTION_INSTALLER_EXEMPT|RESTRICTION_UPGRADE_EXEMPT]
+        android.permission.ACCESS_COARSE_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_PHONE_STATE: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_IMAGES: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.CAMERA: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_VIDEO: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.GET_ACCOUNTS: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.WRITE_EXTERNAL_STORAGE: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED|RESTRICTION_INSTALLER_EXEMPT|RESTRICTION_UPGRADE_EXEMPT]
+        android.permission.RECORD_AUDIO: granted=false, flags=[ USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_CONTACTS: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+      disabledComponents:
+        androidx.mediarouter.media.MediaTransferReceiver
+        com.google.android.libraries.youtube.mdx.mediaroute.providerservice.MdxMediaRouteProviderService
+      enabledComponents:
+        com.google.android.youtube.ManageNetworkUsageActivity
+        android.support.v7.app.AppLocalesMetadataHolderService
+        androidx.work.impl.background.systemalarm.RescheduleReceiver
+        androidx.work.impl.background.systemjob.SystemJobService
+
+Hidden system packages:
+  Package [com.google.android.youtube] (38a3ed7):
+    appId=10441
+    pkg=Package{24c73c4 com.google.android.youtube}
+    codePath=/product/app/YouTube
+    resourcePath=/product/app/YouTube
+    legacyNativeLibraryDir=/product/app/YouTube/lib
+    extractNativeLibs=false
+    primaryCpuAbi=arm64-v8a
+    secondaryCpuAbi=null
+    cpuAbiOverride=null
+    versionCode=1561190189 minSdk=29 targetSdk=37
+    minExtensionVersions=[]
+    versionName=21.31.525
+    hiddenApiEnforcementPolicy=2
+    usesNonSdkApi=false
+    splits=[base]
+    apkSigningVersion=0
+    flags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION LARGE_HEAP ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE HAS_DOMAIN_URLS PARTIALLY_DIRECT_BOOT_AWARE PRODUCT PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    forceQueryable=false
+    pageSizeCompat=0
+    queriesPackages=[com.google.android.apps.youtube.music, com.google.android.apps.youtube.gaming, com.google.android.apps.youtube.kids, com.google.android.apps.youtube.unplugged, com.google.android.apps.youtube.creator, com.google.android.apps.youtube.mango, com.google.android.apps.youtube.producer, com.android.vending, com.google.android.apps.maps, com.google.android.apps.meetings, com.google.android.gm, com.google.android.apps.tachyon, com.google.android.apps.chrome]
+    queriesIntents=[Intent { act=android.intent.action.TTS_SERVICE }, Intent { act=com.android.vending.billing.InAppBillingService.BIND }, Intent { act=com.google.android.apps.play.billingtestcompanion.BillingOverrideService.BIND }, Intent { act=android.media.action.IMAGE_CAPTURE }, Intent { act=android.intent.action.PICK dat=content://*/... typ=image/* }, Intent { act=android.intent.action.GET_CONTENT dat=content://*/... typ=image/* }, Intent { act=android.intent.action.VIEW }, Intent { act=android.support.customtabs.action.CustomTabsService }, Intent { act=android.speech.RecognitionService }, Intent { act=android.intent.action.SEND dat=content://*/... typ=text/plain }, Intent { act=com.google.android.apps.tsa.action.GET_TIMESTAMP }, Intent { act=androidx.window.extensions.layout.EngagementModeService }, Intent { act=androidx.xr.projected.ACTION_ENGAGEMENT_BIND }, Intent { act=androidx.xr.projected.ACTION_BIND }, Intent { act=android.intent.action.VIEW cat=[android.intent.category.BROWSABLE] dat=https://www.example.com/... }, Intent { act=com.android.setupwizard.action.PARTNER_CUSTOMIZATION }, Intent { act=com.google.android.setupcompat.restore.restoreprogress.RESTORE_PROGRESS_SERVICE_ACTION }]
+    scannedAsStoppedSystemApp=false
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    usesOptionalLibraries:
+      org.apache.http.legacy
+      android.ext.adservices
+      androidx.window.extensions
+      androidx.window.sidecar
+    usesOptionalNativeLibraries:
+      libopenxr.google.so
+    timeStamp=2008-12-31 18:00:00
+    lastUpdateTime=1969-12-31 17:59:59
+    installerPackageName=null
+    installerPackageUid=-1
+    initiatingPackageName=null
+    originatingPackageName=null
+    packageSource=0
+    appMetadataFilePath=null
+    appMetadataSource=0
+    signatures=PackageSignatures{36b32ad version:0, signatures:[], past signatures:[]}
+    installPermissionsFixed=false
+    pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION LARGE_HEAP ]
+    privatePkgFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE HAS_DOMAIN_URLS PARTIALLY_DIRECT_BOOT_AWARE PRODUCT PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    apexModuleName=null
+    declared permissions:
+      com.google.android.youtube.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: prot=signature
+      com.google.android.youtube.permission.C2D_MESSAGE: prot=signature
+    requested permissions:
+      android.permission.FOREGROUND_SERVICE_CAMERA
+      com.sonyericsson.home.permission.BROADCAST_BADGE
+      android.permission.POST_NOTIFICATIONS
+      com.google.android.c2dm.permission.RECEIVE
+      android.permission.ACCESS_FINE_LOCATION
+      android.permission.MODIFY_AUDIO_SETTINGS
+      com.google.android.providers.gsf.permission.READ_GSERVICES
+      com.google.android.youtube.permission.C2D_MESSAGE
+      android.permission.ACCESS_LOCAL_NETWORK
+      android.permission.SYSTEM_ALERT_WINDOW
+      android.permission.DETECT_SCREEN_CAPTURE
+      android.permission.NFC
+      com.sec.android.provider.badge.permission.READ
+      android.permission.FOREGROUND_SERVICE
+      android.permission.READ_MEDIA_VISUAL_USER_SELECTED
+      android.permission.RECEIVE_BOOT_COMPLETED
+      android.permission.HIGH_SAMPLING_RATE_SENSORS
+      android.permission.ACCESS_ADSERVICES_AD_ID
+      com.google.android.gms.permission.AD_ID_NOTIFICATION
+      android.permission.INTERNET
+      com.android.vending.BILLING
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.GET_PACKAGE_SIZE
+      android.permission.ACCESS_COARSE_LOCATION
+      android.permission.READ_PHONE_STATE
+      android.permission.READ_MEDIA_IMAGES
+      android.permission.FOREGROUND_SERVICE_DATA_SYNC
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.RUN_USER_INITIATED_JOBS
+      android.permission.CAMERA
+      com.sonymobile.home.permission.PROVIDER_INSERT_BADGE
+      com.google.android.youtube.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+      android.permission.ACCESS_ADSERVICES_ATTRIBUTION
+      android.permission.READ_MEDIA_VIDEO
+      android.permission.USE_FINGERPRINT
+      com.sec.android.provider.badge.permission.WRITE
+      android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION
+      android.permission.FOREGROUND_SERVICE_MICROPHONE
+      android.permission.MANAGE_DOCUMENTS
+      android.permission.GET_ACCOUNTS
+      android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK
+      android.permission.WRITE_EXTERNAL_STORAGE
+      android.permission.VIBRATE
+      android.permission.ACCESS_WIFI_STATE
+      android.permission.USE_BIOMETRIC
+      com.htc.launcher.permission.UPDATE_SHORTCUT
+      android.permission.RECORD_AUDIO
+      com.google.android.gms.permission.AD_ID
+      com.htc.launcher.permission.READ_SETTINGS
+      android.permission.WAKE_LOCK
+      android.permission.READ_CONTACTS
+    install permissions:
+      android.permission.FOREGROUND_SERVICE_CAMERA: granted=true
+      com.google.android.c2dm.permission.RECEIVE: granted=true
+      android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+      com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+      com.google.android.youtube.permission.C2D_MESSAGE: granted=true
+      android.permission.DETECT_SCREEN_CAPTURE: granted=true
+      android.permission.NFC: granted=true
+      android.permission.FOREGROUND_SERVICE: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.HIGH_SAMPLING_RATE_SENSORS: granted=true
+      android.permission.ACCESS_ADSERVICES_AD_ID: granted=true
+      com.google.android.gms.permission.AD_ID_NOTIFICATION: granted=true
+      android.permission.INTERNET: granted=true
+      com.android.vending.BILLING: granted=true
+      android.permission.GET_PACKAGE_SIZE: granted=true
+      android.permission.FOREGROUND_SERVICE_DATA_SYNC: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.RUN_USER_INITIATED_JOBS: granted=true
+      com.google.android.youtube.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: granted=true
+      android.permission.ACCESS_ADSERVICES_ATTRIBUTION: granted=true
+      android.permission.USE_FINGERPRINT: granted=true
+      android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION: granted=true
+      android.permission.FOREGROUND_SERVICE_MICROPHONE: granted=true
+      android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK: granted=true
+      android.permission.VIBRATE: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.USE_BIOMETRIC: granted=true
+      com.google.android.gms.permission.AD_ID: granted=true
+      android.permission.WAKE_LOCK: granted=true
+    User 0: ceDataInode=0 deDataInode=0 installed=true hidden=false suspended=false distractionFlags=0 stopped=false notLaunched=false enabled=0 instant=false virtual=false quarantined=false
+      installReason=0
+      dataDir=/data/user/0/com.google.android.youtube
+      firstInstallTime=1969-12-31 17:59:59
+      uninstallReason=0
+      gids=[3003]
+      runtime permissions:
+        android.permission.POST_NOTIFICATIONS: granted=false, flags=[ USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_FINE_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_VISUAL_USER_SELECTED: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_EXTERNAL_STORAGE: granted=false, flags=[ REVOKE_WHEN_REQUESTED|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED|RESTRICTION_INSTALLER_EXEMPT|RESTRICTION_UPGRADE_EXEMPT]
+        android.permission.ACCESS_COARSE_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_PHONE_STATE: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_IMAGES: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.CAMERA: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_VIDEO: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.GET_ACCOUNTS: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.WRITE_EXTERNAL_STORAGE: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED|RESTRICTION_INSTALLER_EXEMPT|RESTRICTION_UPGRADE_EXEMPT]
+        android.permission.RECORD_AUDIO: granted=false, flags=[ USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_CONTACTS: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+
+Dexopt state:
+  [com.google.android.youtube]
+    path: /data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/base.apk
+      arm64: [status=speed-profile] [reason=bg-dexopt] [primary-abi]
+        [location is /data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/oat/arm64/base.odex]
+        [image location is /data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/oat/arm64/base.art (required)]
+    known secondary dex files:
+      /data/user/0/com.google.android.youtube/app_dg_cache/7D6463D53E3778A9B00390A0917E95EF2C6D66E6/the.apk
+        arm64: [status=verify] [reason=vdex] [primary-abi]
+          [location is /data/user/0/com.google.android.youtube/app_dg_cache/7D6463D53E3778A9B00390A0917E95EF2C6D66E6/oat/arm64/the.vdex]
+        class loader context: =UnsupportedClassLoaderContext=
+      /data/user/0/com.google.android.youtube/app_dg_cache/8348DD80A734238B4413C219FE27351BE6B49361/the.apk
+        arm64: [status=verify] [reason=vdex] [primary-abi]
+          [location is /data/user/0/com.google.android.youtube/app_dg_cache/8348DD80A734238B4413C219FE27351BE6B49361/oat/arm64/the.vdex]
+        class loader context: =UnsupportedClassLoaderContext=
+      /data/user/0/com.google.android.youtube/app_dg_cache/AAEF584C0030E52846AF790022AA2BF836A591DF/the.apk
+        arm64: [status=verify] [reason=vdex] [primary-abi]
+          [location is /data/user/0/com.google.android.youtube/app_dg_cache/AAEF584C0030E52846AF790022AA2BF836A591DF/oat/arm64/the.vdex]
+        class loader context: =UnsupportedClassLoaderContext=
+      /data/user/0/com.google.android.youtube/app_pccache2/5/22794CBC092B28F200C193832CA41FB745F9BAD7/pcam.jar
+        arm64: [status=verify] [reason=vdex] [primary-abi]
+          [location is /data/user/0/com.google.android.youtube/app_pccache2/5/22794CBC092B28F200C193832CA41FB745F9BAD7/oat/arm64/pcam.vdex]
+        class loader context: =UnsupportedClassLoaderContext=
+      /data/user/0/com.google.android.youtube/app_pccache2/5/83E44793DC5851A1BDB45C55DBD786E1F4047B3B/pcam.jar
+        arm64: [status=speed-profile] [reason=bg-dexopt] [primary-abi]
+          [location is /data/user/0/com.google.android.youtube/app_pccache2/5/83E44793DC5851A1BDB45C55DBD786E1F4047B3B/oat/arm64/pcam.odex]
+          [image location is /data/user/0/com.google.android.youtube/app_pccache2/5/83E44793DC5851A1BDB45C55DBD786E1F4047B3B/oat/arm64/pcam.art (required)]
+        class loader context: PCL[];PCL[/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/base.apk]{PCL[/system/framework/org.apache.http.legacy.jar]#PCL[/system_ext/framework/androidx.window.extensions.jar]#PCL[/system_ext/framework/androidx.window.sidecar.jar]}
+
+Compiler stats:
+  [com.google.android.youtube]
+    (No recorded stats)
+@@@PATH@@@
+package:/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/base.apk
+package:/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/split_config.arm64_v8a.apk
+package:/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/split_config.en.apk
+package:/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/split_config.es.apk
+package:/data/app/~~c2z6rx6mD86h5x2XKwzVQg==/com.google.android.youtube-NL0D3wGRGIwJ2HDr-9aadA==/split_config.xxhdpi.apk
+@@@LINKS@@@
+  com.google.android.youtube:
+    ID: 352a21e6-9782-4b1b-8ffb-a4e3f0e2d692
+    Signatures: [5A:AD:2B:EE:6D:B9:5D:17:E0:5A:08:D7:D1:E6:4C:10:A1:51:18:79:15:44:83:91:6B:6A:E6:C7:FD:9C:B0:C6]
+    Domain verification state:
+      youtu.be: system_configured
+      m.youtube.com: system_configured
+      youtube.com: system_configured
+      www.youtube.com: system_configured
+      myaccount.google.com: system_configured
+      studio.youtube.com: system_configured
+      oauth-redirect.googleusercontent.com: system_configured
+@@@BUCKET@@@
+20
+@@@APPOPS@@@
+Uid mode: COARSE_LOCATION: ignore
+FINE_LOCATION: ignore
+READ_CONTACTS: ignore
+WRITE_CONTACTS: ignore
+READ_CALL_LOG: ignore
+WRITE_CALL_LOG: ignore
+READ_CALENDAR: ignore
+WRITE_CALENDAR: ignore
+POST_NOTIFICATION: ignore
+CALL_PHONE: ignore
+READ_SMS: ignore
+RECEIVE_SMS: ignore
+RECEIVE_MMS: ignore
+RECEIVE_WAP_PUSH: ignore
+SEND_SMS: ignore
+CAMERA: ignore
+RECORD_AUDIO: ignore
+READ_PHONE_STATE: ignore
+ADD_VOICEMAIL: ignore
+USE_SIP: ignore
+PROCESS_OUTGOING_CALLS: ignore
+BODY_SENSORS: ignore
+READ_CELL_BROADCASTS: ignore
+READ_EXTERNAL_STORAGE: ignore
+WRITE_EXTERNAL_STORAGE: ignore
+GET_ACCOUNTS: ignore
+READ_PHONE_NUMBERS: ignore
+ANSWER_PHONE_CALLS: ignore
+ACCEPT_HANDOVER: ignore
+BLUETOOTH_SCAN: ignore
+ACTIVITY_RECOGNITION: ignore
+READ_MEDIA_AUDIO: ignore
+READ_MEDIA_VIDEO: ignore
+READ_MEDIA_IMAGES: ignore
+LEGACY_STORAGE: ignore
+ACCESS_MEDIA_LOCATION: ignore
+BLUETOOTH_CONNECT: ignore
+UWB_RANGING: ignore
+BLUETOOTH_ADVERTISE: ignore
+NEARBY_WIFI_DEVICES: ignore
+READ_MEDIA_VISUAL_USER_SELECTED: ignore
+READ_HEART_RATE: ignore
+READ_SKIN_TEMPERATURE: ignore
+RANGING: ignore
+READ_OXYGEN_SATURATION: ignore
+ZTE_CONFERENCE_CALL: ignore
+ZTE_CALL_FORWARD: ignore
+ZTE_WRITE_MSG: ignore
+ZTE_MMS_SEND: ignore
+SYSTEM_ALERT_WINDOW: default; rejectTime=+32m2s671ms ago
+WRITE_CLIPBOARD: allow; time=+2d6h21m44s467ms ago
+TAKE_AUDIO_FOCUS: foreground; time=+31m2s493ms ago
+WAKE_LOCK: allow; time=+4h14m32s992ms ago; duration=+12ms
+GET_USAGE_STATS: default; rejectTime=+121d12h10m5s872ms ago
+START_FOREGROUND: allow; time=+38d9h1m29s134ms ago; duration=+10s176ms
+CONTROL_AUDIO: foreground; time=+21m34s631ms ago; duration=+47s479ms
+CONTROL_AUDIO_PARTIAL: foreground; time=+21m34s632ms ago; duration=+47s480ms
+@@@IDLE@@@
+system-excidle,com.android.providers.calendar,10282
+system-excidle,com.android.providers.downloads,10285
+system-excidle,com.android.providers.contacts,10278
+@@@EXIT@@@
+ACTIVITY MANAGER PROCESS EXIT INFO (dumpsys activity exit-info)
+Last Timestamp of Persistence Into Persistent Storage: 2026-11-23 00:11:42.814
+  package: com.google.android.youtube
+    Historical Process Exit for uid=10441
+        ApplicationExitInfo #0:
+          timestamp=2026-11-22 19:53:11.362 pid=27602 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=544MB description=remove task state=empty trace=null
+        ApplicationExitInfo #1:
+          timestamp=2026-11-22 19:23:13.582 pid=19760 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=511MB description=remove task state=empty trace=null
+        ApplicationExitInfo #2:
+          timestamp=2026-11-22 18:43:31.796 pid=27597 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=345MB description=null state=empty trace=null
+        ApplicationExitInfo #3:
+          timestamp=2026-11-22 18:40:15.299 pid=24166 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=533MB description=remove task state=empty trace=null
+        ApplicationExitInfo #4:
+          timestamp=2026-11-22 18:12:59.143 pid=27528 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=346MB description=null state=empty trace=null
+        ApplicationExitInfo #5:
+          timestamp=2026-11-22 18:04:34.672 pid=32243 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=711MB description=remove task state=empty trace=null
+        ApplicationExitInfo #6:
+          timestamp=2026-11-22 15:52:02.250 pid=433 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=623MB description=remove task state=empty trace=null
+        ApplicationExitInfo #7:
+          timestamp=2026-11-22 15:00:35.677 pid=19208 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=556MB description=remove task state=empty trace=null
+        ApplicationExitInfo #8:
+          timestamp=2026-11-22 13:49:00.966 pid=10147 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=604MB description=remove task state=empty trace=null
+        ApplicationExitInfo #9:
+          timestamp=2026-11-22 12:23:31.454 pid=14113 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=500MB description=remove task state=empty trace=null
+        ApplicationExitInfo #10:
+          timestamp=2026-11-22 11:54:12.730 pid=7400 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=230 pss=0.00 rss=492MB description=remove task state=empty trace=null
+        ApplicationExitInfo #11:
+          timestamp=2026-11-22 03:54:44.313 pid=24474 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=557MB description=remove task state=empty trace=null
+        ApplicationExitInfo #12:
+          timestamp=2026-11-22 03:43:10.984 pid=28685 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=681MB description=remove task state=empty trace=null
+        ApplicationExitInfo #13:
+          timestamp=2026-11-22 03:13:11.828 pid=32483 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=10 (USER REQUESTED) subreason=22 (REMOVE TASK) status=0
+          importance=400 pss=0.00 rss=622MB description=remove task state=empty trace=null
+        ApplicationExitInfo #14:
+          timestamp=2026-11-22 01:55:25.954 pid=10288 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #15:
+          timestamp=2026-11-22 01:15:18.217 pid=8358 realUid=10441 packageUid=10441 definingUid=10441 user=0
+          process=com.google.android.youtube reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=211MB description=null state=empty trace=null
+@@@LRU@@@
+ACTIVITY MANAGER LRU PROCESSES (dumpsys activity lru)
+  Activities:
+  #134: fg     TPSL -------T 1886:com.google.android.youtube/u0a441 act:activities|recents
+  Other:
+  #14: pers   PER  LCMNFUAT 4254:com.android.phone/1001
+  # 1: pers   PER  LCMNFUAT 3965:com.android.systemui/u0a468
+@@@END@@@

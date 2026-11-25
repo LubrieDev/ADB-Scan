@@ -1,0 +1,81 @@
+# Publishes a release when a version tag is pushed (see RELEASING.md):
+# checks that the tag matches Cargo.toml, builds the .deb with cargo-deb and
+# attaches it to a new GitHub Release.
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+# Nothing by default; the job below asks only for what it needs.
+permissions: {}
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deb:
+    name: Build the .deb and publish the release
+    # Ubuntu 24.04 and not 22.04: the app is built against GTK 4.14,
+    # libadwaita 1.5 and VTE 0.76, and 22.04 only has GTK 4.6,
+    # libadwaita 1.1 and VTE 0.68. The .deb installs on Ubuntu 24.04+ and
+    # Linux Mint 22+.
+    runs-on: ubuntu-24.04
+    permissions:
+      # Create the release and upload the .deb.
+      contents: write
+    steps:
+      - name: Check out the tagged commit
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Install Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Check that the tag matches the version in Cargo.toml
+        shell: bash
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(cargo metadata --no-deps --format-version 1 --locked \
+            | jq -r '.packages[] | select(.name == "adb-scan") | .version')"
+          if [ -z "$version" ]; then
+            echo "::error title=No version::Could not read the version of the adb-scan package from Cargo.toml."
+            exit 1
+          fi
+          if [ "$tag" != "$version" ]; then
+            echo "::error title=Tag and version do not match::The tag is ${GITHUB_REF_NAME} but Cargo.toml says ${version}. Set version = \"${tag}\" in [workspace.package] of Cargo.toml, commit it, and tag that commit, or tag v${version} instead."
+            exit 1
+          fi
+          echo "Tag ${GITHUB_REF_NAME} matches Cargo.toml (${version})."
+
+      - name: Install the build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pkg-config dpkg-dev \
+            libgtk-4-dev libadwaita-1-dev libvte-2.91-gtk4-dev
+
+      - name: Cache the Rust build
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install cargo-deb
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deb
+
+      - name: Build the .deb
+        run: cargo deb -p adb-scan --locked
+
+      - name: Create the release and attach the .deb
+        uses: softprops/action-gh-release@v3
+        with:
+          name: ADB Scan ${{ github.ref_name }}
+          files: target/debian/*.deb
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          # v1.2.0-beta.1 and the like are published as pre-releases, which
+          # the app's update check does not offer.
+          prerelease: ${{ contains(github.ref_name, '-') }}

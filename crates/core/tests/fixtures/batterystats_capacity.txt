@@ -1,0 +1,4 @@
+  Estimated battery capacity: 7500 mAh
+  Last learned battery capacity: 7360 mAh
+  Min learned battery capacity: 7360 mAh
+  Max learned battery capacity: 7360 mAh

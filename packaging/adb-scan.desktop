@@ -1,0 +1,28 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=ADB Scan
+GenericName=Android tools
+GenericName[es]=Herramientas para Android
+Comment=Monitor, diagnose and manage Android devices over ADB and fastboot
+Comment[es]=Supervisa, diagnostica y gestiona dispositivos Android por ADB y fastboot
+Exec=adb-scan
+Icon=adb-scan
+Terminal=false
+Categories=Utility;System;HardwareSettings;Development;
+Keywords=adb;android;usb;fastboot;scrcpy;debugging;diagnostics;logcat;battery;apk;flash;
+Keywords[es]=adb;android;usb;fastboot;scrcpy;depuración;diagnóstico;logcat;batería;apk;flashear;
+StartupNotify=true
+StartupWMClass=com.adbscan.AdbScan
+DBusActivatable=false
+Actions=Panel;Settings;
+
+[Desktop Action Panel]
+Name=Open the quick panel
+Name[es]=Abrir panel rápido
+Exec=adb-scan --panel
+
+[Desktop Action Settings]
+Name=Preferences
+Name[es]=Ajustes
+Exec=adb-scan --settings

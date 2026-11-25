@@ -1,0 +1,52 @@
+@@@SDK@@@
+36
+@@@GLOBAL@@@
+airplane_mode_on=0
+  "id": "01"
+bluetooth_on=0
+low_power=0
+mobile_data1=0
+mobile_data=1
+multi_sim_data_call=1
+wifi_on=1
+zen_mode=1
+@@@SYSTEM@@@
+accelerometer_rotation=1
+screen_brightness=26
+screen_brightness_mode=0
+screen_off_timeout=600000
+@@@SECURE@@@
+location_mode=0
+@@@WIFI@@@
+Wifi is enabled
+@@@AIRPLANE@@@
+disabled
+@@@LOCATION@@@
+false
+@@@NIGHT@@@
+Night mode: yes
+@@@DATASAVER@@@
+Restrict background status: disabled
+@@@MEDIAVOL@@@
+[V] will control stream=3 (STREAM_MUSIC)
+[V] will get volume
+[V] Connecting to AudioService
+[V] volume is 40 in range [0..150]
+@@@RINGVOL@@@
+[V] will control stream=2 (STREAM_RING)
+[V] will get volume
+[V] Connecting to AudioService
+[V] volume is 15 in range [0..15]
+@@@NFC@@@
+mState=off
+@@@TETHER@@@
+  Tether state:
+    Upstream wanted: false
+    Current upstream interface(s): null
+  Hardware offload:
+@@@BATTERY@@@
+  AC powered: true
+  USB powered: false
+  Wireless powered: false
+  Dock powered: false
+@@@END@@@

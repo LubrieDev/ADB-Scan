@@ -1,0 +1,197 @@
+RequestedLayerState{NavigationBar0#95 parentId=90}
+RequestedLayerState{f9d69e7 StatusBar#94 parentId=1919}
+RequestedLayerState{WindowedMagnification:0:31#3 parentId=47}
+RequestedLayerState{HideDisplayCutout:0:14#4 parentId=3}
+RequestedLayerState{OneHanded:0:14#5 parentId=4}
+RequestedLayerState{AppZoomOut:0:0#6 parentId=5}
+RequestedLayerState{Leaf:0:0#7 parentId=6}
+RequestedLayerState{Leaf:1:1#8 parentId=5 z=1}
+RequestedLayerState{AppZoomOut:2:14#9 parentId=5 z=2}
+RequestedLayerState{DefaultTaskDisplayArea#10 parentId=9}
+RequestedLayerState{Leaf:3:12#11 parentId=9 z=1}
+RequestedLayerState{ImePlaceholder:13:14#12 parentId=9 z=2}
+RequestedLayerState{ImeContainer#13 parentId=1905 relativeParentId=1916 z=1}
+RequestedLayerState{OneHanded:15:15#14 parentId=3 z=1}
+RequestedLayerState{Leaf:15:15#15 parentId=14}
+RequestedLayerState{HideDisplayCutout:16:16#16 parentId=3 z=2}
+RequestedLayerState{OneHanded:16:16#17 parentId=16}
+RequestedLayerState{AppZoomOut:16:16#18 parentId=17}
+RequestedLayerState{Leaf:16:16#19 parentId=18}
+RequestedLayerState{OneHanded:17:17#20 parentId=3 z=3}
+RequestedLayerState{Leaf:17:17#21 parentId=20}
+RequestedLayerState{HideDisplayCutout:18:23#22 parentId=3 z=4}
+RequestedLayerState{OneHanded:18:23#23 parentId=22}
+RequestedLayerState{AppZoomOut:18:18#24 parentId=23}
+RequestedLayerState{Leaf:18:18#25 parentId=24}
+RequestedLayerState{Leaf:19:19#26 parentId=23 z=1}
+RequestedLayerState{AppZoomOut:20:21#27 parentId=23 z=2}
+RequestedLayerState{Leaf:20:21#28 parentId=27}
+RequestedLayerState{Leaf:22:22#29 parentId=23 z=3}
+RequestedLayerState{AppZoomOut:23:23#30 parentId=23 z=4}
+RequestedLayerState{Leaf:23:23#31 parentId=30}
+RequestedLayerState{Leaf:24:25#32 parentId=3 z=5}
+RequestedLayerState{HideDisplayCutout:26:31#33 parentId=3 z=6}
+RequestedLayerState{OneHanded:26:31#34 parentId=33}
+RequestedLayerState{AppZoomOut:26:31#35 parentId=34}
+RequestedLayerState{Leaf:26:31#36 parentId=35}
+RequestedLayerState{HideDisplayCutout:32:35#37 parentId=47 z=1}
+RequestedLayerState{OneHanded:32:32#38 parentId=37}
+RequestedLayerState{AppZoomOut:32:32#39 parentId=38}
+RequestedLayerState{Leaf:32:32#40 parentId=39}
+RequestedLayerState{AppZoomOut:33:33#41 parentId=37 z=1}
+RequestedLayerState{Leaf:33:33#42 parentId=41}
+RequestedLayerState{OneHanded:34:35#43 parentId=37 z=2}
+RequestedLayerState{AppZoomOut:34:35#44 parentId=43}
+RequestedLayerState{Leaf:34:35#45 parentId=44}
+RequestedLayerState{Leaf:36:36#46 parentId=47 z=2}
+RequestedLayerState{Display 0 name="Pantalla integrada"#47}
+RequestedLayerState{Display Overlays#48 parentId=47 z=2147483647}
+RequestedLayerState{Input Overlays#49 parentId=47 z=2147483646}
+RequestedLayerState{Accessibility Overlays#50 parentId=47 z=2147483645}
+RequestedLayerState{Task=1#51 parentId=10}
+RequestedLayerState{Task=2#52 parentId=51}
+RequestedLayerState{ActivityRecord{115387660 u0 com.zte.mifavor.launcher/com.android.launcher3.uioverrides.QuickstepLauncher t2}#53 parentId=52}
+RequestedLayerState{WindowToken{60c7d10 type=2009 android.os.BinderProxy@6c2add3}#54 parentId=26}
+RequestedLayerState{8e0e3c5 com.fingerprint.sensorservice#55 parentId=54}
+RequestedLayerState{WindowToken{980c972 type=2009 android.os.BinderProxy@494c67d}#56 z=1073741826}
+RequestedLayerState{b9c14ca SingleMode_Fingerprint_AnimalView#57 parentId=56}
+RequestedLayerState{WindowToken{a145594 type=2009 android.os.BinderProxy@10045e7}#58 parentId=26 z=1}
+RequestedLayerState{1563832 SingleMode_Fingerprint_SensorView#59 parentId=58}
+RequestedLayerState{a6b32d1 ActivityRecordInputSink com.zte.mifavor.launcher/com.android.launcher3.uioverrides.QuickstepLauncher#60 parentId=53 z=-2147483648}
+RequestedLayerState{WindowToken{21dbb5 type=2009 android.os.BinderProxy@a212e9f}#61 z=1073741826}
+RequestedLayerState{61ecc6d SingleMode_Fingerprint_SensorHightView#62 parentId=61}
+RequestedLayerState{home_task_overlay_container#63 parentId=51 z=2147483647}
+RequestedLayerState{54b66a4 com.zte.mifavor.launcher/com.android.launcher3.uioverrides.QuickstepLauncher#64 parentId=53}
+RequestedLayerState{ScreenDecorHwcOverlay#87 parentId=86}
+RequestedLayerState{Task=3#66 parentId=10 z=1}
+RequestedLayerState{Task=4#67 parentId=66}
+RequestedLayerState{Task=5#68 parentId=66 z=1}
+RequestedLayerState{WindowToken{eb22e39 type=2038 android.os.BinderProxy@d4d936}#69 parentId=11 z=1}
+RequestedLayerState{fba1b3d ShellDropTarget#70 parentId=69}
+RequestedLayerState{Dim layer#71 parentId=67 z=2147483647}
+RequestedLayerState{Dim layer#72 parentId=68 z=2147483647}
+RequestedLayerState{WallpaperWindowToken{708bd63 showWhenLocked=false}#73 parentId=8 z=1}
+RequestedLayerState{WallpaperWindowToken{40c28dc showWhenLocked=false}#74 parentId=8}
+RequestedLayerState{a668de8 com.android.systemui.wallpapers.ImageWallpaper#75 parentId=73}
+RequestedLayerState{com.android.systemui.wallpapers.ImageWallpaper#76 parentId=75}
+RequestedLayerState{Wallpaper BBQ wrapper#77 parentId=76}
+RequestedLayerState{fa9f8f4 com.android.systemui.wallpapers.ImageWallpaper#78 parentId=74}
+RequestedLayerState{com.android.systemui.wallpapers.ImageWallpaper#79 parentId=78}
+RequestedLayerState{Wallpaper BBQ wrapper#80 parentId=79}
+RequestedLayerState{WindowToken{542f4db type=2024 android.os.BinderProxy@2ea49ea}#81 z=1073741826}
+RequestedLayerState{7f2b78 ScreenDecorOverlay#82 parentId=81}
+RequestedLayerState{WindowToken{542a423 type=2024 android.os.BinderProxy@3b98952}#83 z=1073741826}
+RequestedLayerState{174bd20 ScreenDecorOverlayBottom#84 parentId=83}
+RequestedLayerState{WindowToken{dac69c2 type=2024 android.os.BinderProxy@fc4760d}#85 z=1073741826}
+RequestedLayerState{8ae53d3 ScreenDecorHwcOverlay#86 parentId=85}
+RequestedLayerState{WindowToken{3bde6fd type=2019 android.os.BinderProxy@bb6b366}#89 parentId=32}
+RequestedLayerState{8ea9ff2 NavigationBar0#90 parentId=1918}
+RequestedLayerState{WindowToken{479a185 type=2040 android.os.BinderProxy@269ebef}#91 parentId=21}
+RequestedLayerState{8de7bda NotificationShade#92 parentId=91}
+RequestedLayerState{WindowToken{fb87ba6 type=2000 android.os.BinderProxy@19206e8}#93 parentId=15}
+RequestedLayerState{Input Consumer recents_animation_input_consumer#208 z=2}
+RequestedLayerState{WindowToken{c5c9e3f type=2011 android.os.Binder@fccea5e}#420 parentId=13}
+RequestedLayerState{ActivityRecord{79839136 u0 com.ejemplo.app09/.GameActivity t10}#514}
+RequestedLayerState{StatusBar#99 parentId=94}
+RequestedLayerState{eab8a1 ActivityRecordInputSink com.ejemplo.app22/.MainActivity#276 parentId=259 !handle z=-2147483648}
+RequestedLayerState{2696fbf ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#486 parentId=480 !handle z=-2147483648}
+RequestedLayerState{1341142 ActivityRecordInputSink com.android.systemui/.usb.UsbDebuggingActivity#1287 parentId=1261 !handle z=-2147483648}
+RequestedLayerState{3e1e633 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1492 parentId=1486 !handle z=-2147483648}
+RequestedLayerState{[Gesture Monitor] ThreePointersShotPolicy#1883 parentId=49 z=1}
+RequestedLayerState{ActivityRecord{140449445 u0 com.ejemplo.app46/.MainActivity t12}#1053}
+RequestedLayerState{afc5817 ActivityRecordInputSink com.ejemplo.app09/rockstarmobile.ui.FlutterScreenHost#591 parentId=581 !handle z=-2147483648}
+RequestedLayerState{bed5d55 FloatAssist#965 parentId=964}
+RequestedLayerState{ActivityRecord{183946330 u0 com.android.systemui/.usb.UsbDebuggingActivity t7}#166}
+RequestedLayerState{d875585 GoogleDiscoverWindow#212 parentId=53 z=1}
+RequestedLayerState{ActivityRecord{190705895 u0 com.ejemplo.app26/com.ejemplo.app39.chatinfo.ContactInfoActivity t14}#1661 z=2}
+RequestedLayerState{84afcc8 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.home.ui.HomeActivity#1484 parentId=1477 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{77658475 u0 com.ejemplo.app26/com.ejemplo.app39.home.ui.HomeActivity t14}#1477}
+RequestedLayerState{4f49e8b ActivityRecordInputSink com.android.systemui/.usb.UsbDebuggingActivity#195 parentId=166 !handle z=-2147483648}
+RequestedLayerState{259bdb3 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.home.ui.HomeActivity#991 parentId=982 !handle z=-2147483648}
+RequestedLayerState{3d8a1d8 control_center#956 parentId=955}
+RequestedLayerState{8960340 ActivityRecordInputSink com.google.android.youtube/com.google.android.apps.youtube.app.watchwhile.MainActivity#1915 parentId=1905 z=-2147483648}
+RequestedLayerState{ActivityRecord{25330838 u0 com.ejemplo.app09/rockstarmobile.ui.FlutterScreenHost t10}#581 z=1}
+RequestedLayerState{add07a6 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1531 parentId=1525 !handle z=-2147483648}
+RequestedLayerState{26a1466 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1035 parentId=1029 !handle z=-2147483648}
+RequestedLayerState{d523350 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1544 parentId=1538 !handle z=-2147483648}
+RequestedLayerState{9d69586 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#410 parentId=404 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{182929672 u0 com.ejemplo.app22/.MainActivity t8}#259}
+RequestedLayerState{WindowToken{4cfd4a7 type=2017 android.os.BinderProxy@95ad966}#955 parentId=25}
+RequestedLayerState{8497e03 ActivityRecordInputSink com.ejemplo.app09/.DownloaderActivity#513 parentId=499 !handle z=-2147483648}
+RequestedLayerState{ed54429 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.home.ui.HomeActivity#396 parentId=387 !handle z=-2147483648}
+RequestedLayerState{79758ae ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Main#1817 parentId=1807 !handle z=-2147483648}
+RequestedLayerState{289e26 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Main#980 parentId=972 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{190697250 u0 com.ejemplo.app26/com.ejemplo.app39.home.ui.HomeActivity t11}#982}
+RequestedLayerState{d23c208 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1005 parentId=999 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{180196775 u0 com.ejemplo.app26/com.ejemplo.app39.Main t9}#377}
+RequestedLayerState{ActivityRecord{198061488 u0 com.ejemplo.app26/com.ejemplo.app39.home.ui.HomeActivity t9}#387}
+RequestedLayerState{479743e ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Main#385 parentId=377 !handle z=-2147483648}
+RequestedLayerState{bd80759 ActivityRecordInputSink com.ejemplo.app09/.GameActivity#519 parentId=514 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{188261985 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t9}#404 z=1}
+RequestedLayerState{3e85a0 InputMethod#421 parentId=1926}
+RequestedLayerState{ActivityRecord{184336412 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t11}#999 z=1}
+RequestedLayerState{Background for aee807d SurfaceView[com.google.android.youtube/com.google.android.youtube.app.honeycomb.Shell$HomeActivity]#1923 parentId=1921 relativeParentId=1917 z=-2147483648}
+RequestedLayerState{ActivityRecord{109841293 u0 com.android.systemui/.usb.UsbDebuggingActivity t13}#1261}
+RequestedLayerState{ActivityRecord{38674098 u0 com.ejemplo.app09/.DownloaderActivity t10}#499}
+RequestedLayerState{9bca2d9 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1838 parentId=1832 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{46224577 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t11}#1029 z=1}
+RequestedLayerState{ActivityRecord{61128265 u0 com.ejemplo.app26/com.ejemplo.app39.Main t11}#972}
+RequestedLayerState{270ae71 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Main#1471 parentId=1461 !handle z=-2147483648}
+RequestedLayerState{WindowToken{e37800c type=2002 android.os.BinderProxy@b942f3f}#964 parentId=11}
+RequestedLayerState{ActivityRecord{212603358 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t9}#480}
+RequestedLayerState{1f57249 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1518 parentId=1512 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{178443564 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t14}#1694 z=1}
+RequestedLayerState{2011a7a ActivityRecordInputSink com.ejemplo.app46/.MainActivity#1063 parentId=1053 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{84177119 u0 com.ejemplo.app26/com.ejemplo.app39.Main t14}#1461}
+RequestedLayerState{Surface(name=WallpaperWindowToken{708bd63 showWhenLocked=false})/@0x5d145a8_transition-leash#1800 z=-2}
+RequestedLayerState{Surface(name=Task=15)/@0x7aadaf0_transition-leash#1864 z=8}
+RequestedLayerState{Surface(name=Task=1)/@0xb006c9a_transition-leash#1799 z=3}
+RequestedLayerState{Surface(name=WallpaperWindowToken{40c28dc showWhenLocked=false})/@0x9dca5f2_transition-leash#1894 z=-7}
+RequestedLayerState{Surface(name=Task=1)/@0xab2dea2_transition-leash#1863 z=6}
+RequestedLayerState{c560963 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.home.ui.HomeActivity#1830 parentId=1823 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{130238882 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t14}#1486 z=1}
+RequestedLayerState{ActivityRecord{259407437 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t14}#1512 z=1}
+RequestedLayerState{b86899c ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.chatinfo.ContactInfoActivity#1552 parentId=1546 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{111611137 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t14}#1525 z=1}
+RequestedLayerState{ActivityRecord{202088532 u0 com.ejemplo.app26/com.ejemplo.app39.conversation.conversationslist.ArchivedConversationsActivity t15}#1845 z=1}
+RequestedLayerState{ActivityRecord{131093779 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t14}#1538 z=1}
+RequestedLayerState{Surface(name=WallpaperWindowToken{40c28dc showWhenLocked=false})/@0x9d91fa7_transition-leash#1914 z=-7}
+RequestedLayerState{e5511b8 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1583 parentId=1577 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{138227234 u0 com.ejemplo.app26/com.ejemplo.app39.chatinfo.ContactInfoActivity t14}#1546 z=2}
+RequestedLayerState{ActivityRecord{56120709 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t14}#1747 z=1}
+RequestedLayerState{505bf5 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1700 parentId=1694 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{155421723 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t14}#1577 z=1}
+RequestedLayerState{3a66a57 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.chatinfo.ContactInfoActivity#1654 parentId=1648 !handle z=-2147483648}
+RequestedLayerState{891fda ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1753 parentId=1747 !handle z=-2147483648}
+RequestedLayerState{Surface(name=WallpaperWindowToken{708bd63 showWhenLocked=false})/@0xc8442ee_transition-leash#1865 z=-2}
+RequestedLayerState{ActivityRecord{171055392 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t15}#1832 z=1}
+RequestedLayerState{ActivityRecord{194803670 u0 com.ejemplo.app26/com.ejemplo.app39.chatinfo.ContactInfoActivity t14}#1648 z=2}
+RequestedLayerState{c50bfd ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.conversation.conversationslist.ArchivedConversationsActivity#1851 parentId=1845 !handle z=-2147483648}
+RequestedLayerState{GestureStubLeft#1901 parentId=1896}
+RequestedLayerState{Surface(name=Task=14)/@0x7eefd67_transition-leash#1766 z=8}
+RequestedLayerState{c30d542 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.Conversation#1646 parentId=1640 !handle z=-2147483648}
+RequestedLayerState{ActivityRecord{127024018 u0 com.ejemplo.app26/com.ejemplo.app39.home.ui.HomeActivity t15}#1823}
+RequestedLayerState{ActivityRecord{7420717 u0 com.ejemplo.app26/com.ejemplo.app39.Main t15}#1807}
+RequestedLayerState{ActivityRecord{137453453 u0 com.ejemplo.app26/com.ejemplo.app39.Conversation t14}#1640 z=1}
+RequestedLayerState{Task=15#1806 z=2}
+RequestedLayerState{102494 ActivityRecordInputSink com.ejemplo.app26/com.ejemplo.app39.chatinfo.ContactInfoActivity#1669 parentId=1661 !handle z=-2147483648}
+RequestedLayerState{e2cb0c1 GestureStubRight#1898 parentId=1897}
+RequestedLayerState{WindowToken{3d38da8 type=2027 android.os.BinderProxy@5fc1cb}#1897 parentId=36 z=1}
+RequestedLayerState{8c05989 GestureStubLeft#1896 parentId=1895}
+RequestedLayerState{WindowToken{dfd3f42 type=2027 android.os.BinderProxy@d25318d}#1895 parentId=36}
+RequestedLayerState{Surface(name=WallpaperWindowToken{708bd63 showWhenLocked=false})/@0x4bc44fd_transition-leash#1893 z=-2}
+RequestedLayerState{Surface(name=8ea9ff2 NavigationBar0)/@0xc7ea77 - animation-leash of insets_animation#1918 parentId=89}
+RequestedLayerState{com.google.android.youtube/com.google.android.youtube.app.honeycomb.Shell$HomeActivity#1917 parentId=1916}
+RequestedLayerState{GestureStubRight#1902 parentId=1898}
+RequestedLayerState{Surface(name=Task=1)/@0xaab54a7_transition-leash#1892 z=4}
+RequestedLayerState{Task=16#1904 parentId=10 z=2}
+RequestedLayerState{ActivityRecord{232959683 u0 com.google.android.youtube/.app.honeycomb.Shell$HomeActivity t16}#1905 parentId=1904}
+RequestedLayerState{Bounds for - com.google.android.youtube/com.google.android.youtube.app.honeycomb.Shell$HomeActivity#1920 parentId=1917}
+RequestedLayerState{aee807d SurfaceView[com.google.android.youtube/com.google.android.youtube.app.honeycomb.Shell$HomeActivity]#1921 parentId=1920 relativeParentId=1917 z=-2}
+RequestedLayerState{Surface(name=f9d69e7 StatusBar)/@0xd9946e4 - animation-leash of insets_animation#1919 parentId=93}
+RequestedLayerState{aee807d SurfaceView[com.google.android.youtube/com.google.android.youtube.app.honeycomb.Shell$HomeActivity](BLAST)#1922 parentId=1921}
+RequestedLayerState{Surface(name=3e85a0 InputMethod)/@0x923251e - animation-leash of insets_animation#1926 parentId=420}
+RequestedLayerState{Surface(name=Task=16)/@0x18df545_transition-leash#1911 z=8}
+RequestedLayerState{Surface(name=Task=1)/@0xc4b31cb_transition-leash#1912 z=3}
+RequestedLayerState{Surface(name=WallpaperWindowToken{708bd63 showWhenLocked=false})/@0x31da0c1_transition-leash#1913 z=-6}
+RequestedLayerState{bd8c979 com.google.android.youtube/com.google.android.youtube.app.honeycomb.Shell$HomeActivity#1916 parentId=1905}

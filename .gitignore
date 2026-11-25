@@ -1,0 +1,6 @@
+/target
+/dist
+*.swp
+# Local editor settings
+/.vscode/
+/.idea/

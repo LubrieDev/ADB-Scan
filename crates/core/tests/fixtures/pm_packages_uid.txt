@@ -1,0 +1,4 @@
+package:com.example.video uid:10441
+package:com.example.chat uid:10543
+package:com.example.chat.helper uid:10543
+package:com.android.shell uid:2000

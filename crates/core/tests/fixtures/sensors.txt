@@ -1,0 +1,903 @@
+Captured at: 20:10:16.107
+Sensor Device:
+Total 44 h/w sensors, 44 running 0 disabled clients:
+0x0000000b) active-count = 1; sampling_period(ms) = {66.7}, selected = 66.67 ms; batching_period(ms) = {100.0}, selected = 100.00 ms
+0x000004b1) active-count = 1; sampling_period(ms) = {200.0}, selected = 200.00 ms; batching_period(ms) = {0.0}, selected = 0.00 ms
+0x000004c7) active-count = 1; sampling_period(ms) = {200.0}, selected = 200.00 ms; batching_period(ms) = {0.0}, selected = 0.00 ms
+0x00002eec) active-count = 1; sampling_period(ms) = {200.0}, selected = 200.00 ms; batching_period(ms) = {0.0}, selected = 0.00 ms
+Sensor List:
+0x0000000b) lsm6dsv Accelerometer Non-wakeup | STMicro         | ver: 25856 | type: android.sensor.accelerometer(1) | perm: n/a | flags: 0x00000980
+	continuous | minRate=1.00Hz | maxRate=479.85Hz | FIFO (max,reserved) = (10000, 3000) events | non-wakeUp | 
+	highest rate level = 3, support shared mem: gralloc, 
+0x00000015) ak0991x Magnetometer Non-wakeup | akm             | ver: 146994 | type: android.sensor.magnetic_field(2) | perm: n/a | flags: 0x00000880
+	continuous | minRate=1.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 600) events | non-wakeUp | 
+	highest rate level = 1, support shared mem: gralloc, 
+0x0000001f) AKL SEE for rotv  Non-wakeup | akm             | ver: 1291 | type: android.sensor.orientation(3) | perm: n/a | flags: 0x00000000
+	continuous | minRate=100.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x00000020) AKL SEE for rotv  Wakeup  | akm             | ver: 1291 | type: android.sensor.orientation(3) | perm: n/a | flags: 0x00000001
+	continuous | minRate=100.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00000029) lsm6dsv Gyroscope Non-wakeup | STMicro         | ver: 25856 | type: android.sensor.gyroscope(4) | perm: n/a | flags: 0x000009c0
+	continuous | minRate=1.00Hz | maxRate=479.85Hz | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | has-additional-info, 
+	highest rate level = 3, support shared mem: gralloc, 
+0x00000033) stk_stk3a7x Ambient Light Sensor Non-wakeup | sensortek       | ver: 132611 | type: android.sensor.light(5) | perm: n/a | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x00000052) stk_stk3a7x Proximity Sensor Wakeup | sensortek       | ver: 132611 | type: android.sensor.proximity(8) | perm: n/a | flags: 0x00000003
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | wakeUp | 
+0x0000005b) gravity  Non-wakeup       | QTI             | ver: 1 | type: android.sensor.gravity(9) | perm: n/a | flags: 0x00000000
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | 
+0x0000005c) gravity  Wakeup           | QTI             | ver: 1 | type: android.sensor.gravity(9) | perm: n/a | flags: 0x00000001
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | wakeUp | 
+0x00000065) linear_acceleration       | QTI             | ver: 1 | type: android.sensor.linear_acceleration(10) | perm: n/a | flags: 0x00000000
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | 
+0x00000066) linear_acceleration_wakeup | QTI             | ver: 1 | type: android.sensor.linear_acceleration(10) | perm: n/a | flags: 0x00000001
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | wakeUp | 
+0x0000006f) AKL SEE for rotv  Non-wakeup | akm             | ver: 1291 | type: android.sensor.rotation_vector(11) | perm: n/a | flags: 0x00000000
+	continuous | minRate=100.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x00000070) AKL SEE for rotv  Wakeup  | akm             | ver: 1291 | type: android.sensor.rotation_vector(11) | perm: n/a | flags: 0x00000001
+	continuous | minRate=100.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x0000008d) ak0991x Magnetometer-Uncalibrated Non-wakeup | akm             | ver: 146994 | type: android.sensor.magnetic_field_uncalibrated(14) | perm: n/a | flags: 0x00000880
+	continuous | minRate=1.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 600) events | non-wakeUp | 
+	highest rate level = 1, support shared mem: gralloc, 
+0x00000097) Game Rotation Vector  Non-wakeup | QTI             | ver: 1 | type: android.sensor.game_rotation_vector(15) | perm: n/a | flags: 0x00000000
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | 
+0x00000098) Game Rotation Vector  Wakeup | QTI             | ver: 1 | type: android.sensor.game_rotation_vector(15) | perm: n/a | flags: 0x00000001
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | wakeUp | 
+0x000000a1) lsm6dsv Gyroscope-Uncalibrated Non-wakeup | STMicro         | ver: 25856 | type: android.sensor.gyroscope_uncalibrated(16) | perm: n/a | flags: 0x000009c0
+	continuous | minRate=1.00Hz | maxRate=479.85Hz | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | has-additional-info, 
+	highest rate level = 3, support shared mem: gralloc, 
+0x000000ac) sns_smd  Wakeup           | QTI             | ver: 1 | type: android.sensor.significant_motion(17) | perm: n/a | flags: 0x00000005
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | wakeUp | 
+0x000000b5) step_detect  Non-wakeup   | QTI             | ver: 1 | type: android.sensor.step_detector(18) | perm: android.permission.ACTIVITY_RECOGNITION | flags: 0x00000006
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | 
+0x000000b6) step_detect  Wakeup       | QTI             | ver: 1 | type: android.sensor.step_detector(18) | perm: android.permission.ACTIVITY_RECOGNITION | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | wakeUp | 
+0x000000bf) pedometer  Non-wakeup     | QTI             | ver: 1 | type: android.sensor.step_counter(19) | perm: android.permission.ACTIVITY_RECOGNITION | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | 
+0x000000c0) pedometer  Wakeup         | QTI             | ver: 1 | type: android.sensor.step_counter(19) | perm: android.permission.ACTIVITY_RECOGNITION | flags: 0x00000003
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | wakeUp | 
+0x000000c9) sns_geomag_rv  Non-wakeup | QTI             | ver: 1 | type: android.sensor.geomagnetic_rotation_vector(20) | perm: n/a | flags: 0x00000000
+	continuous | minRate=5.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x000000ca) sns_geomag_rv  Wakeup     | QTI             | ver: 1 | type: android.sensor.geomagnetic_rotation_vector(20) | perm: n/a | flags: 0x00000001
+	continuous | minRate=5.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x000000de) ccd_tilt  Wakeup          | QTI             | ver: 256 | type: android.sensor.tilt_detector(22) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00000123) stationary_detect         | QTI             | ver: 1 | type: android.sensor.stationary_detect(29) | perm: n/a | flags: 0x00000004
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | non-wakeUp | 
+0x00000124) stationary_detect_wakeup  | QTI             | ver: 1 | type: android.sensor.stationary_detect(29) | perm: n/a | flags: 0x00000005
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | wakeUp | 
+0x0000012d) motion_detect             | QTI             | ver: 1 | type: android.sensor.motion_detect(30) | perm: n/a | flags: 0x00000004
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | non-wakeUp | 
+0x0000012e) motion_detect_wakeup      | QTI             | ver: 1 | type: android.sensor.motion_detect(30) | perm: n/a | flags: 0x00000005
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | wakeUp | 
+0x0000015f) lsm6dsv Accelerometer-Uncalibrated Non-wakeup | STMicro         | ver: 25856 | type: android.sensor.accelerometer_uncalibrated(35) | perm: n/a | flags: 0x00000980
+	continuous | minRate=1.00Hz | maxRate=479.85Hz | FIFO (max,reserved) = (10000, 3000) events | non-wakeUp | 
+	highest rate level = 3, support shared mem: gralloc, 
+0x000004b1) stk5x15x SAR Sensor Non-wakeup | sensortek       | ver: 135168 | type:      zte.sar0.sensor(33171020) | perm: n/a | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | 
+0x000004c7) stk50153 SAR Sensor Non-wakeup | sensortek       | ver: 135168 | type:      zte.sar1.sensor(33171022) | perm: n/a | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | 
+0x00002b04) Zte Motion  Wakeup        | zte             | ver: 1 | type: zte.sensor.ztemotion(33172001) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00002b2c) Zte Motion_ps  Wakeup     | zte             | ver: 1 | type: zte.sensor.zte_motion_ps(33172005) | perm: n/a | flags: 0x00000003
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00002d83) Zte Elevator_new  Non-wakeup | zte             | ver: 1 | type: zte.sensor.elevator_detect(33172065) | perm: n/a | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x00002d8d) activity_recognition  Non-wakeup | QTI             | ver: 131088 | type:        zte.sensor.ar(33172066) | perm: n/a | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x00002e06) Zte Accel_ps  Wakeup      | zte             | ver: 1 | type: zte.sensor.zte_accel_ps(33172078) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00002ed7) Zte Move  Non-wakeup      | zte             | ver: 1 | type:  zte.sensor.zte_move(33172099) | perm: n/a | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x00002eec) Zte Fall Detection  Wakeup | zte             | ver: 1 | type: zte.sensor.zte_fall_detection(33172101) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00018a8a) Zte Pickup  Wakeup        | zte             | ver: 1 | type: zte.sensor.zte_pickup(33181000) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00018af8) Zte Ps_Stream  Wakeup     | zte             | ver: 1 | type: zte.sensor.zte_ps_stream(33181011) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00018b51) Zte Linear_acc  Non-wakeup | zte             | ver: 1 | type: zte.sensor.zte_linear_acc(33181020) | perm: n/a | flags: 0x00000006
+	special-trigger | minRate=5.00Hz | maxRate=100.00Hz | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x00018c7e) ZTE MOTION_DETECT  Wakeup | zte             | ver: 1 | type: zte.sensor.zte_motion_detect(33181050) | perm: n/a | flags: 0x00000003
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x00018ceb) Zte Als_monitor  Non-wakeup | zte             | ver: 1 | type: zte.sensor.zte_als_monitor(33181061) | perm: n/a | flags: 0x00000006
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x5f636779) Corrected Gyroscope Sensor | AOSP            | ver: 1 | type: android.sensor.gyroscope(4) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=479.85Hz | no batching | non-wakeUp | 
+0x5f676172) Game Rotation Vector Sensor | AOSP            | ver: 3 | type: android.sensor.game_rotation_vector(15) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=479.85Hz | no batching | non-wakeUp | 
+0x5f676273) Gyroscope Bias (debug)    | AOSP            | ver: 1 | type: android.sensor.accelerometer(1) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=479.85Hz | no batching | non-wakeUp | 
+0x5f67656f) GeoMag Rotation Vector Sensor | AOSP            | ver: 3 | type: android.sensor.geomagnetic_rotation_vector(20) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=479.85Hz | no batching | non-wakeUp | 
+0x5f677276) Gravity Sensor            | AOSP            | ver: 3 | type: android.sensor.gravity(9) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=479.85Hz | no batching | non-wakeUp | 
+0x5f6c696e) Linear Acceleration Sensor | AOSP            | ver: 3 | type: android.sensor.linear_acceleration(10) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=479.85Hz | no batching | non-wakeUp | 
+0x5f726f76) Rotation Vector Sensor    | AOSP            | ver: 3 | type: android.sensor.rotation_vector(11) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=479.85Hz | no batching | non-wakeUp | 
+0x5f797072) Orientation Sensor        | AOSP            | ver: 1 | type: android.sensor.orientation(3) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=479.85Hz | no batching | non-wakeUp | 
+Fusion States:
+9-axis fusion disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+game fusion(no mag) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+geomag fusion (no gyro) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+Recent Sensor events:
+ZTE MOTION_DETECT  Wakeup: last 9 events
+	 1 (ts=3788.400119052, wall=11:56:13.102) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 2 (ts=3790.394938791, wall=11:56:15.096) 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 3 (ts=4567.485307502, wall=12:09:12.188) 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 4 (ts=11682.512443777, wall=14:07:47.215) 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 5 (ts=13679.884967233, wall=14:41:04.588) 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 6 (ts=13733.001598952, wall=14:41:57.705) 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 7 (ts=13735.014300254, wall=14:41:59.717) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 8 (ts=20185.627438060, wall=16:29:30.330) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 9 (ts=20195.600474623, wall=16:29:40.304) 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+Zte Fall Detection  Wakeup: last 3 events
+	 1 (ts=2403.214201124, wall=11:33:07.916) 0.57, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 2 (ts=2540.824558200, wall=11:35:25.644) 0.46, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 3 (ts=6611.563287840, wall=12:43:16.358) 0.57, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+ak0991x Magnetometer Non-wakeup: last 10 events
+	 1 (ts=26816.812135491, wall=18:20:01.518) 28.18, -3.47, -30.62, 
+	 2 (ts=26816.832135491, wall=18:20:01.537) 29.55, -2.91, -28.16, 
+	 3 (ts=26816.852135491, wall=18:20:01.557) 29.14, -3.08, -28.50, 
+	 4 (ts=26816.872135491, wall=18:20:01.578) 29.31, -3.23, -28.43, 
+	 5 (ts=26816.892135491, wall=18:20:01.597) 28.95, -2.79, -28.58, 
+	 6 (ts=26816.912135491, wall=18:20:01.618) 29.08, -3.04, -28.59, 
+	 7 (ts=26816.932135491, wall=18:20:01.637) 28.93, -2.68, -28.54, 
+	 8 (ts=26816.952135491, wall=18:20:01.657) 28.99, -2.91, -28.65, 
+	 9 (ts=26816.972135491, wall=18:20:01.678) 28.97, -2.72, -28.50, 
+	10 (ts=26816.992135491, wall=18:20:01.698) 28.74, -3.15, -29.06, 
+lsm6dsv Accelerometer Non-wakeup: last 50 events
+	 1 (ts=33428.030868264, wall=20:10:12.805) 0.07, -0.02, -9.83, 
+	 2 (ts=33428.099074826, wall=20:10:12.906) 0.07, -0.02, -9.83, 
+	 3 (ts=33428.167281337, wall=20:10:12.906) 0.07, -0.02, -9.83, 
+	 4 (ts=33428.235487899, wall=20:10:13.006) 0.07, -0.02, -9.83, 
+	 5 (ts=33428.303694410, wall=20:10:13.106) 0.07, -0.02, -9.83, 
+	 6 (ts=33428.371900972, wall=20:10:13.106) 0.07, -0.02, -9.83, 
+	 7 (ts=33428.440107482, wall=20:10:13.206) 0.06, -0.02, -9.83, 
+	 8 (ts=33428.508314045, wall=20:10:13.303) 0.07, -0.02, -9.83, 
+	 9 (ts=33428.576520607, wall=20:10:13.303) 0.07, -0.02, -9.83, 
+	10 (ts=33428.644727170, wall=20:10:13.406) 0.07, -0.02, -9.83, 
+	11 (ts=33428.712933680, wall=20:10:13.506) 0.07, -0.02, -9.83, 
+	12 (ts=33428.781140243, wall=20:10:13.606) 0.07, -0.02, -9.83, 
+	13 (ts=33428.849346805, wall=20:10:13.606) 0.07, -0.02, -9.83, 
+	14 (ts=33428.917553316, wall=20:10:13.707) 0.07, -0.02, -9.83, 
+	15 (ts=33428.985759826, wall=20:10:13.803) 0.07, -0.02, -9.83, 
+	16 (ts=33429.053966389, wall=20:10:13.803) 0.07, -0.02, -9.83, 
+	17 (ts=33429.122172951, wall=20:10:13.904) 0.07, -0.02, -9.83, 
+	18 (ts=33429.190379462, wall=20:10:14.006) 0.07, -0.02, -9.83, 
+	19 (ts=33429.258586024, wall=20:10:14.006) 0.07, -0.02, -9.83, 
+	20 (ts=33429.326792587, wall=20:10:14.106) 0.07, -0.02, -9.83, 
+	21 (ts=33429.394999097, wall=20:10:14.206) 0.07, -0.02, -9.83, 
+	22 (ts=33429.463205660, wall=20:10:14.206) 0.07, -0.02, -9.83, 
+	23 (ts=33429.531412170, wall=20:10:14.306) 0.07, -0.02, -9.83, 
+	24 (ts=33429.599618732, wall=20:10:14.406) 0.07, -0.02, -9.83, 
+	25 (ts=33429.667825295, wall=20:10:14.406) 0.07, -0.02, -9.83, 
+	26 (ts=33429.736031805, wall=20:10:14.506) 0.07, -0.02, -9.83, 
+	27 (ts=33429.804238368, wall=20:10:14.603) 0.07, -0.02, -9.83, 
+	28 (ts=33429.872444930, wall=20:10:14.603) 0.07, -0.02, -9.83, 
+	29 (ts=33429.940651441, wall=20:10:14.706) 0.07, -0.02, -9.83, 
+	30 (ts=33430.008857951, wall=20:10:14.805) 0.07, -0.02, -9.83, 
+	31 (ts=33430.077064514, wall=20:10:14.904) 0.07, -0.02, -9.83, 
+	32 (ts=33430.145271024, wall=20:10:14.904) 0.07, -0.02, -9.83, 
+	33 (ts=33430.213477587, wall=20:10:15.003) 0.07, -0.02, -9.83, 
+	34 (ts=33430.281684097, wall=20:10:15.103) 0.07, -0.02, -9.83, 
+	35 (ts=33430.349890660, wall=20:10:15.103) 0.07, -0.01, -9.83, 
+	36 (ts=33430.418097222, wall=20:10:15.203) 0.06, -0.02, -9.82, 
+	37 (ts=33430.486303732, wall=20:10:15.306) 0.07, -0.02, -9.83, 
+	38 (ts=33430.554510243, wall=20:10:15.306) 0.07, -0.02, -9.83, 
+	39 (ts=33430.622716805, wall=20:10:15.406) 0.06, -0.02, -9.83, 
+	40 (ts=33430.690923316, wall=20:10:15.506) 0.07, -0.02, -9.83, 
+	41 (ts=33430.759129878, wall=20:10:15.506) 0.07, -0.02, -9.83, 
+	42 (ts=33430.827336441, wall=20:10:15.604) 0.07, -0.02, -9.82, 
+	43 (ts=33430.895542951, wall=20:10:15.703) 0.07, -0.02, -9.83, 
+	44 (ts=33430.963749514, wall=20:10:15.703) 0.07, -0.02, -9.83, 
+	45 (ts=33431.031956024, wall=20:10:15.803) 0.07, -0.02, -9.83, 
+	46 (ts=33431.100162587, wall=20:10:15.903) 0.07, -0.02, -9.83, 
+	47 (ts=33431.168369097, wall=20:10:15.903) 0.07, -0.02, -9.83, 
+	48 (ts=33431.236575607, wall=20:10:16.003) 0.07, -0.02, -9.83, 
+	49 (ts=33431.304782170, wall=20:10:16.103) 0.07, -0.02, -9.83, 
+	50 (ts=33431.372988732, wall=20:10:16.103) 0.07, -0.02, -9.83, 
+stk50153 SAR Sensor Non-wakeup: last 10 events
+	 1 (ts=25532.697972118, wall=17:58:37.404) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 2 (ts=26732.830769732, wall=18:18:37.541) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 3 (ts=27364.160551332, wall=18:29:08.868) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 4 (ts=29233.892181482, wall=19:00:18.599) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 5 (ts=31109.733021918, wall=19:31:34.437) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 6 (ts=31857.215455111, wall=19:44:01.922) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 7 (ts=31923.937162740, wall=19:45:08.642) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 8 (ts=32546.977924235, wall=19:55:31.684) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 9 (ts=33292.253190132, wall=20:07:56.965) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	10 (ts=33364.036352192, wall=20:09:08.741) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+stk5x15x SAR Sensor Non-wakeup: last 10 events
+	 1 (ts=33338.928423726, wall=20:08:43.633) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 2 (ts=33339.128302424, wall=20:08:43.834) 10.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 3 (ts=33339.428118934, wall=20:08:44.136) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 4 (ts=33339.827740705, wall=20:08:44.533) 10.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 5 (ts=33340.227240132, wall=20:08:44.933) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 6 (ts=33362.805050369, wall=20:09:07.513) 10.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 7 (ts=33364.080247296, wall=20:09:08.785) 10.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 8 (ts=33365.388509900, wall=20:09:10.093) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 9 (ts=33369.284374327, wall=20:09:13.992) 10.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	10 (ts=33371.381543546, wall=20:09:16.090) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+stk_stk3a7x Ambient Light Sensor Non-wakeup: last 50 events
+	 1 (ts=32543.651757673, wall=19:55:28.383) 1.01, 0.00, 0.00, 
+	 2 (ts=32543.761640954, wall=19:55:28.551) 1.01, 0.00, 0.00, 
+	 3 (ts=32543.871704235, wall=19:55:28.664) 1.01, 0.00, 0.00, 
+	 4 (ts=32543.981585589, wall=19:55:28.754) 1.01, 0.00, 0.00, 
+	 5 (ts=32544.091725381, wall=19:55:28.884) 1.01, 0.00, 0.00, 
+	 6 (ts=32544.201591475, wall=19:55:28.975) 1.01, 0.00, 0.00, 
+	 7 (ts=32544.311603402, wall=19:55:29.104) 1.01, 0.00, 0.00, 
+	 8 (ts=32544.421718871, wall=19:55:29.194) 1.01, 0.00, 0.00, 
+	 9 (ts=32547.079025068, wall=19:55:31.782) 1.01, 0.00, 0.00, 
+	10 (ts=32547.189023975, wall=19:55:31.891) 1.01, 0.00, 0.00, 
+	11 (ts=32547.299156266, wall=19:55:32.001) 1.08, 0.00, 0.00, 
+	12 (ts=32547.409022777, wall=19:55:32.111) 1.22, 0.00, 0.00, 
+	13 (ts=32547.519183506, wall=19:55:32.221) 1.28, 0.00, 0.00, 
+	14 (ts=32547.747145277, wall=19:55:32.494) 1.01, 0.00, 0.00, 
+	15 (ts=32933.563941887, wall=20:01:58.360) 1.01, 0.00, 0.00, 
+	16 (ts=32933.674081627, wall=20:01:58.467) 1.01, 0.00, 0.00, 
+	17 (ts=32933.783943294, wall=20:01:58.536) 1.01, 0.00, 0.00, 
+	18 (ts=32933.894071367, wall=20:01:58.686) 1.01, 0.00, 0.00, 
+	19 (ts=32934.003939908, wall=20:01:58.776) 1.01, 0.00, 0.00, 
+	20 (ts=32934.114067460, wall=20:01:58.906) 1.01, 0.00, 0.00, 
+	21 (ts=32934.223938815, wall=20:01:58.996) 1.01, 0.00, 0.00, 
+	22 (ts=32934.334059960, wall=20:01:59.126) 1.01, 0.00, 0.00, 
+	23 (ts=32938.555152200, wall=20:02:03.342) 1.01, 0.00, 0.00, 
+	24 (ts=32938.665311210, wall=20:02:03.459) 1.01, 0.00, 0.00, 
+	25 (ts=32938.775157148, wall=20:02:03.553) 1.01, 0.00, 0.00, 
+	26 (ts=32938.885205950, wall=20:02:03.678) 1.01, 0.00, 0.00, 
+	27 (ts=32938.995300065, wall=20:02:03.767) 1.01, 0.00, 0.00, 
+	28 (ts=32939.105203606, wall=20:02:03.899) 1.01, 0.00, 0.00, 
+	29 (ts=32939.215308190, wall=20:02:03.991) 1.01, 0.00, 0.00, 
+	30 (ts=32939.325202096, wall=20:02:04.119) 1.01, 0.00, 0.00, 
+	31 (ts=33290.682129820, wall=20:07:55.486) 1.01, 0.00, 0.00, 
+	32 (ts=33290.792062215, wall=20:07:55.586) 1.01, 0.00, 0.00, 
+	33 (ts=33290.902155549, wall=20:07:55.676) 1.01, 0.00, 0.00, 
+	34 (ts=33291.012152476, wall=20:07:55.805) 1.01, 0.00, 0.00, 
+	35 (ts=33291.122150393, wall=20:07:55.895) 1.01, 0.00, 0.00, 
+	36 (ts=33291.232006747, wall=20:07:56.025) 1.01, 0.00, 0.00, 
+	37 (ts=33291.342139299, wall=20:07:56.115) 1.01, 0.00, 0.00, 
+	38 (ts=33291.452137476, wall=20:07:56.245) 1.01, 0.00, 0.00, 
+	39 (ts=33292.360256018, wall=20:07:57.062) 1.01, 0.00, 0.00, 
+	40 (ts=33363.710480265, wall=20:09:08.508) 1.01, 0.00, 0.00, 
+	41 (ts=33363.820601254, wall=20:09:08.600) 1.01, 0.00, 0.00, 
+	42 (ts=33363.930477973, wall=20:09:08.681) 1.01, 0.00, 0.00, 
+	43 (ts=33364.040480682, wall=20:09:08.742) 1.01, 0.00, 0.00, 
+	44 (ts=33364.150480629, wall=20:09:08.852) 1.01, 0.00, 0.00, 
+	45 (ts=33364.260622504, wall=20:09:08.962) 1.01, 0.00, 0.00, 
+	46 (ts=33364.370476671, wall=20:09:09.072) 1.01, 0.00, 0.00, 
+	47 (ts=33364.480473859, wall=20:09:09.182) 1.01, 0.00, 0.00, 
+	48 (ts=33364.590478338, wall=20:09:09.292) 1.08, 0.00, 0.00, 
+	49 (ts=33364.700609379, wall=20:09:09.402) 1.08, 0.00, 0.00, 
+	50 (ts=33364.948490994, wall=20:09:09.700) 1.01, 0.00, 0.00, 
+Zte Motion  Wakeup: last 10 events
+	 1 (ts=32500.707009443, wall=19:54:45.414) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 2 (ts=32505.753809443, wall=19:54:50.460) 2.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 3 (ts=32509.538990329, wall=19:54:54.245) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 4 (ts=32514.551638610, wall=19:54:59.257) 2.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 5 (ts=32517.364893141, wall=19:55:02.068) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 6 (ts=32522.377605225, wall=19:55:07.081) 2.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 7 (ts=32531.686906996, wall=19:55:16.393) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 8 (ts=32536.699744860, wall=19:55:21.406) 2.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	 9 (ts=32543.502560589, wall=19:55:28.208) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+	10 (ts=33290.514544976, wall=20:07:55.219) 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+AKL SEE for rotv  Non-wakeup: last 10 events
+	 1 (ts=30004.001348238, wall=19:13:08.703) 0.50, -0.50, -0.50, 0.50, -1.00, 
+	 2 (ts=30160.602428169, wall=19:15:45.304) 0.50, -0.50, -0.50, 0.50, -1.00, 
+	 3 (ts=30440.943224409, wall=19:20:25.644) 0.47, -0.47, -0.47, 0.59, -1.00, 
+	 4 (ts=30587.559404155, wall=19:22:52.261) 0.19, 0.25, 0.49, 0.81, -1.00, 
+	 5 (ts=30641.339228663, wall=19:23:46.041) 0.22, 0.14, 0.38, 0.89, -1.00, 
+	 6 (ts=30695.366542650, wall=19:24:40.068) 0.50, -0.50, -0.50, 0.50, -1.00, 
+	 7 (ts=31167.524043456, wall=19:32:32.226) 0.50, -0.50, -0.50, 0.50, -1.00, 
+	 8 (ts=31235.347650985, wall=19:33:40.049) 0.44, 0.16, 0.41, 0.78, -1.00, 
+	 9 (ts=31512.043909072, wall=19:38:16.745) 0.50, -0.50, -0.50, 0.50, -1.00, 
+	10 (ts=31512.052441311, wall=19:38:16.754) 0.69, -0.19, 0.64, 0.29, -1.00, 
+Zte Accel_ps  Wakeup: last 1 events
+	 1 (ts=20183.495639623, wall=16:29:28.204) 2.00, -7.99, -4.28, 0.09, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
+gravity  Non-wakeup: last 10 events
+	 1 (ts=4570.097418491, wall=12:09:14.839) -1.81, 2.35, 9.35, 
+	 2 (ts=4570.165623752, wall=12:09:14.906) -1.89, 2.47, 9.30, 
+	 3 (ts=4570.233829169, wall=12:09:14.973) -1.88, 2.58, 9.27, 
+	 4 (ts=4570.302034377, wall=12:09:15.040) -1.54, 2.84, 9.26, 
+	 5 (ts=4570.370240002, wall=12:09:15.108) -1.19, 3.07, 9.24, 
+	 6 (ts=4570.438445262, wall=12:09:15.175) -1.12, 3.11, 9.23, 
+	 7 (ts=4570.506650991, wall=12:09:15.251) -1.07, 2.94, 9.29, 
+	 8 (ts=4570.574856721, wall=12:09:15.318) -0.45, 2.60, 9.45, 
+	 9 (ts=4570.643062294, wall=12:09:15.385) -0.13, 2.32, 9.53, 
+	10 (ts=4570.711268179, wall=12:09:15.453) -0.19, 2.27, 9.54, 
+linear_acceleration: last 10 events
+	 1 (ts=21667.387751432, wall=16:54:12.117) -0.12, -0.02, 0.08, 
+	 2 (ts=21667.455953515, wall=16:54:12.185) -0.02, 0.07, -0.05, 
+	 3 (ts=21667.524155651, wall=16:54:12.254) -0.21, -0.00, -0.51, 
+	 4 (ts=21667.592357838, wall=16:54:12.322) -0.24, -0.05, -0.01, 
+	 5 (ts=21667.660560026, wall=16:54:12.390) 0.34, 0.06, 0.71, 
+	 6 (ts=21667.728762265, wall=16:54:12.458) -0.12, -0.10, 0.16, 
+	 7 (ts=21667.796964505, wall=16:54:12.526) -0.25, 0.07, -0.47, 
+	 8 (ts=29024.897361353, wall=18:56:49.620) 0.00, 0.00, 0.00, 
+	 9 (ts=29024.917361353, wall=18:56:49.648) 0.00, 0.00, 0.01, 
+	10 (ts=31078.982360483, wall=19:31:03.703) 0.00, 0.00, 0.00, 
+stk_stk3a7x Proximity Sensor Wakeup: last 30 events
+	 1 (ts=21420.027513841, wall=16:50:04.731) 5.00, 0.00, 0.00, 
+	 2 (ts=21420.475546133, wall=16:50:05.182) 0.00, 0.00, 0.00, 
+	 3 (ts=21595.552404736, wall=16:53:00.255) 5.00, 0.00, 0.00, 
+	 4 (ts=21808.874966699, wall=16:56:33.578) 5.00, 0.00, 0.00, 
+	 5 (ts=21810.164616595, wall=16:56:34.871) 0.00, 0.00, 0.00, 
+	 6 (ts=22849.959503942, wall=17:13:54.662) 5.00, 0.00, 0.00, 
+	 7 (ts=23579.620006270, wall=17:26:04.323) 5.00, 0.00, 0.00, 
+	 8 (ts=23580.598380749, wall=17:26:05.305) 0.00, 0.00, 0.00, 
+	 9 (ts=23580.806867052, wall=17:26:05.516) 5.00, 0.00, 0.00, 
+	10 (ts=25532.652016910, wall=17:58:37.355) 5.00, 0.00, 0.00, 
+	11 (ts=26419.055053309, wall=18:13:23.758) 5.00, 0.00, 0.00, 
+	12 (ts=26731.277897753, wall=18:18:36.055) 5.00, 0.00, 0.00, 
+	13 (ts=27156.057706865, wall=18:25:40.761) 5.00, 0.00, 0.00, 
+	14 (ts=27157.023428583, wall=18:25:41.729) 0.00, 0.00, 0.00, 
+	15 (ts=27363.339192946, wall=18:29:08.129) 5.00, 0.00, 0.00, 
+	16 (ts=27471.152600399, wall=18:30:55.855) 5.00, 0.00, 0.00, 
+	17 (ts=29233.850180075, wall=19:00:18.553) 5.00, 0.00, 0.00, 
+	18 (ts=31107.423402960, wall=19:31:32.126) 5.00, 0.00, 0.00, 
+	19 (ts=31554.295430663, wall=19:38:58.998) 5.00, 0.00, 0.00, 
+	20 (ts=31857.169408340, wall=19:44:01.872) 5.00, 0.00, 0.00, 
+	21 (ts=31880.509244382, wall=19:44:25.212) 5.00, 0.00, 0.00, 
+	22 (ts=31923.679037375, wall=19:45:08.453) 5.00, 0.00, 0.00, 
+	23 (ts=32137.767349339, wall=19:48:42.470) 5.00, 0.00, 0.00, 
+	24 (ts=32500.895597621, wall=19:54:45.686) 5.00, 0.00, 0.00, 
+	25 (ts=32517.539785589, wall=19:55:02.315) 5.00, 0.00, 0.00, 
+	26 (ts=32531.865456787, wall=19:55:16.644) 5.00, 0.00, 0.00, 
+	27 (ts=32543.671161162, wall=19:55:28.464) 5.00, 0.00, 0.00, 
+	28 (ts=32933.598096106, wall=20:01:58.301) 5.00, 0.00, 0.00, 
+	29 (ts=33290.701794924, wall=20:07:55.486) 5.00, 0.00, 0.00, 
+	30 (ts=33364.121849015, wall=20:09:08.824) 5.00, 0.00, 0.00, 
+lsm6dsv Gyroscope Non-wakeup: last 10 events
+	 1 (ts=26816.847335543, wall=18:20:01.559) 0.01, 0.00, -0.01, 
+	 2 (ts=26816.864386481, wall=18:20:01.576) 0.00, 0.01, -0.01, 
+	 3 (ts=26816.881437418, wall=18:20:01.594) -0.00, 0.00, -0.00, 
+	 4 (ts=26816.898488356, wall=18:20:01.611) -0.00, -0.00, 0.00, 
+	 5 (ts=26816.915539293, wall=18:20:01.628) 0.00, 0.01, 0.01, 
+	 6 (ts=26816.932590231, wall=18:20:01.645) 0.01, 0.01, 0.01, 
+	 7 (ts=26816.949641168, wall=18:20:01.662) 0.02, 0.00, 0.01, 
+	 8 (ts=26816.966692054, wall=18:20:01.678) 0.02, -0.02, 0.01, 
+	 9 (ts=26816.983742991, wall=18:20:01.696) 0.00, -0.03, 0.01, 
+	10 (ts=26817.000793929, wall=18:20:01.714) -0.02, -0.01, 0.01, 
+sns_smd  Wakeup: last 8 events
+	 1 (ts=2536.708047679, wall=11:35:21.451) 1.00, 
+	 2 (ts=13821.355102904, wall=14:43:26.191) 1.00, 
+	 3 (ts=17687.404180330, wall=15:47:52.148) 1.00, 
+	 4 (ts=18352.902180650, wall=15:58:57.647) 1.00, 
+	 5 (ts=20161.758842227, wall=16:29:06.590) 1.00, 
+	 6 (ts=21202.377286044, wall=16:46:27.228) 1.00, 
+	 7 (ts=21262.598568311, wall=16:47:27.347) 1.00, 
+	 8 (ts=21363.604596966, wall=16:49:08.353) 1.00, 
+Active sensors:
+lsm6dsv Accelerometer Non-wakeup (handle=0x0000000b, connections=1)
+stk5x15x SAR Sensor Non-wakeup (handle=0x000004b1, connections=1)
+stk50153 SAR Sensor Non-wakeup (handle=0x000004c7, connections=1)
+Zte Fall Detection  Wakeup (handle=0x00002eec, connections=1)
+Socket Buffer size = 984 events
+WakeLock Status: not held 
+Mode : NORMAL
+Sensor Privacy: disabled
+4 open event connections
+Connection Number: 0 
+	Operating Mode: NORMAL
+	 com.android.server.drop.DropStatusDetector$1 | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0 | has sensor access: true
+	 Zte Fall Detection  Wakeup 0x00002eec | first flush pending: false | pending flush events 0 
+Connection Number: 1 
+	Operating Mode: NORMAL
+	 com.android.server.wm.WindowOrientationListener$AccelSensorJudge | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0 | has sensor access: true
+	 lsm6dsv Accelerometer Non-wakeup 0x0000000b | first flush pending: false | pending flush events 0 
+Connection Number: 2 
+	Operating Mode: NORMAL
+	 com.android.sar.SarSensorBase | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0 | has sensor access: true
+	 stk5x15x SAR Sensor Non-wakeup 0x000004b1 | first flush pending: false | pending flush events 0 
+Connection Number: 3 
+	Operating Mode: NORMAL
+	 com.android.sar.SarSensorBase | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0 | has sensor access: true
+	 stk50153 SAR Sensor Non-wakeup 0x000004c7 | first flush pending: false | pending flush events 0 
+0 open direct connections
+ZteSensorManager:
+LightTempValue = -1 
+Control UID:
+
+Control Handle:
+0x00000015,0x0000001f,0x00000020,0x00000029,0x00000033,0x0000005b,0x0000005c,0x00000065,0x00000066,0x0000006f,0x00000070,0x0000008d,0x00000097,0x00000098,0x000000a1,0x000000c9,0x000000ca,0x0000015f,
+Previous Registrations:
+20:09:09 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+20:09:09 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+20:09:09 - 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+20:09:09 - 0x00000052 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+20:09:09 - 0x00000033 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+20:09:09 - 0x0000000b pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+20:09:09 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+20:09:09 - 0x00000033 pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+20:09:08 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+20:09:08 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+20:09:08 - 0x00002b04 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+20:09:08 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+20:09:08 + 0x00000033 pid=    0 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+20:09:08 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+20:09:08 + 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+20:09:08 + 0x00000052 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+20:09:08 + 0x00000033 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+20:09:08 + 0x0000000b pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+20:09:08 + 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+20:09:08 + 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+20:09:08 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+20:09:08 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+20:09:08 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+20:09:08 - 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+20:09:08 - 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+20:09:08 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+20:09:08 + 0x00002b04 pid= 4228 uid=10468 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+20:09:08 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+20:09:07 - 0x00000033 pid=    0 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+20:09:07 + 0x00000033 pid= 3329 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+20:07:57 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+20:07:57 - 0x00000033 pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+20:07:57 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+20:07:57 - 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+20:07:57 - 0x00000052 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+20:07:57 - 0x00000033 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+20:07:57 - 0x0000000b pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+20:07:57 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+20:07:57 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+20:07:57 - 0x00002b04 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+20:07:56 + 0x00000033 pid= 3329 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+20:07:56 + 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+20:07:56 + 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+20:07:56 + 0x00000052 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+20:07:56 + 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+20:07:56 + 0x00000033 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+20:07:56 + 0x0000000b pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+20:07:56 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+20:07:56 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+20:07:55 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+20:07:55 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+20:07:55 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+20:04:32 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+20:04:32 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+20:04:32 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+20:04:32 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+20:02:09 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+20:02:09 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+20:02:04 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+20:02:03 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+20:01:59 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+20:01:58 - 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+20:01:58 - 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+20:01:58 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+20:01:58 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+20:01:58 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+20:01:58 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+20:01:58 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+20:01:58 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+20:01:58 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+20:01:58 + 0x00002b04 pid= 4228 uid=10468 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+20:01:58 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+20:01:57 - 0x00000033 pid=    0 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+20:01:57 + 0x00000033 pid= 3329 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:58:20 - 0x0000000b pid= 4581 uid=10463 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:58:20 + 0x0000000b pid= 4581 uid=10463 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:55:32 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:55:32 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:55:32 - 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+19:55:32 - 0x00000052 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+19:55:32 - 0x00000033 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+19:55:32 - 0x0000000b pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+19:55:32 - 0x000000ac pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (sns_smd  Wakeup            , com.android.server.DeviceIdleController$MotionListener)
+19:55:32 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:55:32 - 0x00000033 pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:55:31 + 0x00000033 pid=    0 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:55:31 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:55:31 - 0x00002b04 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+19:55:31 + 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:55:31 + 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+19:55:31 + 0x00000052 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+19:55:31 + 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:55:31 + 0x00000033 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+19:55:31 + 0x0000000b pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+19:55:31 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:55:29 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:55:28 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:55:28 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:55:28 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:55:27 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:55:27 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:55:17 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:55:16 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:55:16 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:55:16 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:55:13 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:55:13 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:55:03 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:55:02 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:55:02 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:55:02 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:54:56 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:54:56 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:54:55 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:54:54 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:54:46 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:54:45 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:54:45 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:54:45 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:51:24 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.AnyMotionDetector$1)
+19:51:22 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   40000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.AnyMotionDetector$1)
+19:51:17 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.AnyMotionDetector$1)
+19:51:15 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   40000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.AnyMotionDetector$1)
+19:49:59 + 0x000000ac pid= 3329 uid= 1000 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (sns_smd  Wakeup            , com.android.server.DeviceIdleController$MotionListener)
+19:48:54 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:48:54 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:48:43 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:48:42 - 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:48:42 - 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:48:42 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:48:42 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:48:42 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:48:42 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:48:42 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:48:42 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:48:42 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:48:42 + 0x00002b04 pid= 4228 uid=10468 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+19:48:42 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:48:41 - 0x00000033 pid=    0 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:48:41 + 0x00000033 pid= 3329 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:48:40 - 0x0000000b pid= 4581 uid=10463 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:48:39 + 0x0000000b pid= 4581 uid=10463 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:48:38 - 0x0000000b pid=20816 uid=10526 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, hbz0)
+19:45:12 + 0x0000000b pid=20816 uid=10526 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, hbz0)
+19:45:09 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:45:09 - 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+19:45:09 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:45:09 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:45:09 - 0x00000052 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+19:45:09 - 0x00000033 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+19:45:09 - 0x0000000b pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+19:45:09 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:45:09 - 0x00000033 pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:45:08 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:45:08 + 0x00000033 pid=    0 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:45:08 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:45:08 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:45:08 - 0x00002b04 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+19:45:08 + 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+19:45:08 + 0x00000052 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+19:45:08 + 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:45:08 + 0x00000033 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+19:45:08 + 0x0000000b pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+19:45:08 + 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:45:08 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:45:08 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:45:08 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:45:08 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:44:36 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:44:36 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:44:26 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:44:25 - 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:44:25 - 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:44:25 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:44:25 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:44:25 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:44:25 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:44:25 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:44:25 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:44:25 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:44:25 + 0x00002b04 pid= 4228 uid=10468 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+19:44:24 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:44:24 - 0x00000033 pid=    0 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:44:24 + 0x00000033 pid= 3329 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:44:06 - 0x0000000b pid= 4581 uid=10463 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:44:05 + 0x0000000b pid= 4581 uid=10463 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:44:02 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:44:02 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:44:02 - 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+19:44:02 - 0x00000052 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+19:44:02 - 0x00000033 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+19:44:02 - 0x0000000b pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+19:44:02 - 0x000000ac pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (sns_smd  Wakeup            , com.android.server.DeviceIdleController$MotionListener)
+19:44:02 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:44:02 - 0x00000033 pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:44:02 - 0x00002b04 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+19:44:01 + 0x00000033 pid=    0 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:44:01 + 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:44:01 + 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+19:44:01 + 0x00000052 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+19:44:01 + 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:44:01 + 0x00000033 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+19:44:01 + 0x0000000b pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+19:44:01 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:44:01 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:41:39 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.AnyMotionDetector$1)
+19:41:37 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   40000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.AnyMotionDetector$1)
+19:41:32 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.AnyMotionDetector$1)
+19:41:30 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   40000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.AnyMotionDetector$1)
+19:40:14 + 0x000000ac pid= 3329 uid= 1000 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (sns_smd  Wakeup            , com.android.server.DeviceIdleController$MotionListener)
+19:39:10 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:39:10 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:39:04 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:39:03 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:38:59 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:38:58 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:38:58 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:38:58 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:38:58 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:38:58 - 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:38:58 - 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:38:58 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:38:58 + 0x00002b04 pid= 4228 uid=10468 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+19:38:58 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:38:58 - 0x00000033 pid=    0 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:38:58 + 0x00000033 pid= 3329 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:38:16 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:38:16 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:38:16 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:38:16 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:34:43 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:34:43 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:34:43 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:34:43 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:34:43 - 0x0000000b pid=17174 uid=10441 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:33:40 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:33:40 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:33:40 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:33:39 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:33:31 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:33:31 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:33:31 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:33:31 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:33:27 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:33:27 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:33:27 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:33:27 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:32:38 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:32:38 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:32:38 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:32:38 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:32:33 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:32:33 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:32:33 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:32:33 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:32:32 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:32:32 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:32:32 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:32:32 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:42 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:42 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:42 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:42 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:38 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:38 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:38 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:38 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:37 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:37 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:37 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:37 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:35 - 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+19:31:35 - 0x00000052 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+19:31:35 - 0x00000033 pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+19:31:35 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:31:35 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:31:35 - 0x0000000b pid= 6689 uid=10287 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+19:31:35 - 0x0000000b pid= 4621 uid=10349 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:31:35 + 0x0000000b pid=17174 uid=10441 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:31:35 - 0x00000033 pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:31:34 + 0x00000033 pid=    0 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:31:34 - 0x00000052 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:31:34 - 0x00002b04 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+19:31:34 + 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:31:34 + 0x00018c7e pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (ZTE MOTION_DETECT  Wakeup  , com.zte.scenedetector.PocketScene)
+19:31:34 + 0x00000052 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.zte.scenedetector.PocketScene)
+19:31:34 + 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:31:34 + 0x00000033 pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.scenedetector.PocketScene)
+19:31:34 + 0x0000000b pid= 6689 uid=10287 samplingPeriod=   50000us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.zte.scenedetector.PocketScene)
+19:31:34 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:31:32 - 0x00000033 pid= 4228 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:31:32 - 0x00000033 pid= 6867 uid=10283 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:31:32 + 0x00000033 pid= 6867 uid=10283 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.zte.aiengine.aiproduct.LightSensorManager)
+19:31:32 - 0x000004c7 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk50153 SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:31:32 - 0x000004b1 pid= 6889 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk5x15x SAR Sensor Non-wakeup, com.android.sar.SarSensorBase)
+19:31:32 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:31:32 + 0x0000000b pid= 4621 uid=10349 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, cn.nubia.screensaver.sensor.GSSensorController)
+19:31:32 + 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   66667us batchingPeriod=  100000us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:31:31 + 0x00000052 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl)
+19:31:31 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:31 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:31 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:31 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:31 - 0x0000000b pid=17174 uid=10441 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, android.view.OrientationEventListener)
+19:31:31 + 0x00000033 pid= 4228 uid=10468 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.systemui.doze.DozeScreenBrightness)
+19:31:31 + 0x00002b04 pid= 4228 uid=10468 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (Zte Motion  Wakeup         , com.zte.adapt.mifavor.keyguard.DozeSensorsAdapt)
+19:31:31 - 0x0000000b pid= 3329 uid= 1000 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (lsm6dsv Accelerometer Non-wakeup, com.android.server.wm.WindowOrientationListener$AccelSensorJudge)
+19:31:31 - 0x00000033 pid=    0 uid=10468 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:31:31 + 0x00000033 pid= 3329 uid= 1000 samplingPeriod=  200000us batchingPeriod=       0us result=OK (sensor, package): (stk_stk3a7x Ambient Light Sensor Non-wakeup, com.android.server.biometrics.log.ALSProbe$1)
+19:31:28 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:28 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:28 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:28 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:03 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:31:03 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:03 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:31:03 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:30:59 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:30:59 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:30:59 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:30:59 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:30:59 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:30:59 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:30:59 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:30:59 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:28:57 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:28:57 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:28:57 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:28:57 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:26:18 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:26:18 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:26:18 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:26:18 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:24:40 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:24:40 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:24:40 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:24:40 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:24:21 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:24:21 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:24:21 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:24:21 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:24:07 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:24:07 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:24:07 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:24:07 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:23:46 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:23:46 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:23:45 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:23:45 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:22:52 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:22:52 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:22:52 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:22:52 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:21:03 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:21:03 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:21:03 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:21:03 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:45 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:45 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:45 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:45 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:40 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:40 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:40 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:40 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:36 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:36 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:36 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:36 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:35 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:35 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:35 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:35 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:32 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:32 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:32 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:32 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:27 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:27 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:27 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:27 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:26 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:26 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:26 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:26 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:25 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:25 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:25 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:25 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:25 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:25 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:25 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:25 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:25 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:25 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:25 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:25 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:24 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:24 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:24 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:24 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:23 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:23 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:23 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:23 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:22 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:22 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:21 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:21 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:17 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:17 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:17 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:17 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:17 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:17 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:17 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:17 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:06 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:06 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:06 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:06 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:02 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:20:02 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:02 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:20:02 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:19:47 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:19:47 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:19:47 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:19:47 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:19:20 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:19:20 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:19:19 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:19:19 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:18:14 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:18:14 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:18:14 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:18:14 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:16:22 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:16:22 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:16:22 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:16:22 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:15:45 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:15:45 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:15:45 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:15:45 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:13:50 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:13:50 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:13:50 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:13:50 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:13:43 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:13:43 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:13:43 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:13:43 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:13:08 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:13:08 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:13:08 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:13:08 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:12:22 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:12:22 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:12:21 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:12:21 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:12:06 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:12:06 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:12:06 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:12:06 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:11:25 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:11:25 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:11:25 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:11:25 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:11:21 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:11:21 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:11:21 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:11:21 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:08:12 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:08:12 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:08:12 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:08:12 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:06:19 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:06:19 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:06:19 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:06:19 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:06:08 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:06:08 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:06:08 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:06:08 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:05:43 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:05:43 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:05:43 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:05:43 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:05:38 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:05:38 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:05:38 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:05:38 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:05:34 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:05:34 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:05:34 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:05:34 + 0x00000065 pid= 8342 uid=10405 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:03:20 - 0x00000065 pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (linear_acceleration        , com.google.ccc.abuse.droidguard.events.b)
+19:03:20 - 0x0000006f pid= 8342 uid=10405 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)
+19:03:20 + 0x0000006f pid= 8342 uid=10405 samplingPeriod=   10000us batchingPeriod=       0us result=OK (sensor, package): (AKL SEE for rotv  Non-wakeup, com.google.ccc.abuse.droidguard.events.b)

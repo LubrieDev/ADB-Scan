@@ -1,0 +1,351 @@
+@@@SELINUX@@@
+Enforcing
+@@@KERNEL@@@
+Linux version 6.12.38-android16-5-g665eafb62659-ab14778838-4k (kleaf@build-host) (Android (14043575, +pgo, +bolt, +lto, +mlgo, based on r536225) clang version 19.0.1 (https://android.googlesource.com/toolchain/llvm-project b3a530ec6537146650e42be89f1089e9a3588460), LLD 19.0.1) #1 SMP PREEMPT Mon Jan 26 01:33:06 UTC 2026
+
+@@@PAGESIZE@@@
+4096
+@@@GLES@@@
+GLES: Qualcomm, Adreno (TM) 840, OpenGL ES 3.2 V@0842.44 (GIT@718a07726a, Ic95db9d944, 1780021672) (Date:05/29/26)
+@@@VULKAN@@@
+{
+ "_comment": "vkjson is deprecated, and will be replaced in a future release",
+ "apiVersion": 4210688.0,
+ "deviceGroups": [
+  {
+   "devices": [
+    0.0
+   ],
+   "subsetAllocation": 0.0
+  }
+ ],
+ "devices": [
+  {
+   "VK_KHR_driver_properties": {
+    "driverPropertiesKHR": {
+     "conformanceVersion": {
+      "major": 1.0,
+      "minor": 4.0,
+      "patch": 0.0,
+      "subminor": 1.0
+     },
+     "driverID": 8.0,
+     "driverInfo": "Driver Build: 718a07726a, Ic95db9d944, 1780021672\nDate: 05/29/26\nCompiler Version: E031.50.19.29\nDriver Branch: \n",
+     "driverName": "Qualcomm Technologies Inc. Adreno Vulkan Driver"
+    }
+   },
+   "properties": {
+    "apiVersion": 4210983.0,
+    "deviceID": 1141180977.0,
+    "deviceName": "Adreno (TM) 840",
+    "deviceType": 1.0,
+    "driverVersion": 2150932524.0,
+    "limits": {
+     "bufferImageGranularity": "0x0000000000000001",
+     "discreteQueuePriorities": 4.0,
+     "framebufferColorSampleCounts": 7.0,
+     "framebufferDepthSampleCounts": 7.0,
+     "framebufferNoAttachmentsSampleCounts": 7.0,
+     "framebufferStencilSampleCounts": 7.0,
+     "lineWidthGranularity": 0.5,
+     "lineWidthRange": [
+      1.0,
+      127.5
+     ],
+     "maxBoundDescriptorSets": 7.0,
+     "maxClipDistances": 8.0,
+     "maxColorAttachments": 8.0,
+     "maxCombinedClipAndCullDistances": 8.0,
+     "maxComputeSharedMemorySize": 32768.0,
+     "maxComputeWorkGroupCount": [
+      65535.0,
+      65535.0,
+      65535.0
+     ],
+     "maxComputeWorkGroupInvocations": 1024.0,
+     "maxComputeWorkGroupSize": [
+      1024.0,
+      1024.0,
+      1024.0
+     ],
+     "maxCullDistances": 8.0,
+     "maxDescriptorSetInputAttachments": 8.0,
+     "maxDescriptorSetSampledImages": 16777216.0,
+     "maxDescriptorSetSamplers": 16777216.0,
+     "maxDescriptorSetStorageBuffers": 16777216.0,
+     "maxDescriptorSetStorageBuffersDynamic": 16.0,
+     "maxDescriptorSetStorageImages": 16777216.0,
+     "maxDescriptorSetUniformBuffers": 16777216.0,
+     "maxDescriptorSetUniformBuffersDynamic": 32.0,
+     "maxDrawIndexedIndexValue": 4294967295.0,
+     "maxDrawIndirectCount": 4294967295.0,
+     "maxFragmentCombinedOutputResources": 33554440.0,
+     "maxFragmentDualSrcAttachments": 1.0,
+     "maxFragmentInputComponents": 112.0,
+     "maxFragmentOutputAttachments": 8.0,
+     "maxFramebufferHeight": 16384.0,
+     "maxFramebufferLayers": 2048.0,
+     "maxFramebufferWidth": 16384.0,
+     "maxGeometryInputComponents": 128.0,
+     "maxGeometryOutputComponents": 128.0,
+     "maxGeometryOutputVertices": 1024.0,
+     "maxGeometryShaderInvocations": 32.0,
+     "maxGeometryTotalOutputComponents": 131072.0,
+     "maxImageArrayLayers": 2048.0,
+     "maxImageDimension1D": 16384.0,
+     "maxImageDimension2D": 16384.0,
+     "maxImageDimension3D": 2048.0,
+     "maxImageDimensionCube": 16384.0,
+     "maxInterpolationOffset": 0.4375,
+     "maxMemoryAllocationCount": 4294967295.0,
+     "maxPerStageDescriptorInputAttachments": 8.0,
+     "maxPerStageDescriptorSampledImages": 16777216.0,
+     "maxPerStageDescriptorSamplers": 16777216.0,
+     "maxPerStageDescriptorStorageBuffers": 16777216.0,
+     "maxPerStageDescriptorStorageImages": 16777216.0,
+     "maxPerStageDescriptorUniformBuffers": 16777216.0,
+     "maxPerStageResources": 50331648.0,
+     "maxPushConstantsSize": 256.0,
+     "maxSampleMaskWords": 1.0,
+     "maxSamplerAllocationCount": 65536.0,
+     "maxSamplerAnisotropy": 16.0,
+     "maxSamplerLodBias": 15.99609375,
+     "maxStorageBufferRange": 2147483647.0,
+     "maxTessellationControlPerPatchOutputComponents": 120.0,
+     "maxTessellationControlPerVertexInputComponents": 128.0,
+     "maxTessellationControlPerVertexOutputComponents": 128.0,
+     "maxTessellationControlTotalOutputComponents": 4096.0,
+     "maxTessellationEvaluationInputComponents": 128.0,
+     "maxTessellationEvaluationOutputComponents": 128.0,
+     "maxTessellationGenerationLevel": 64.0,
+     "maxTessellationPatchSize": 32.0,
+     "maxTexelBufferElements": 134217728.0,
+     "maxTexelGatherOffset": 31.0,
+     "maxTexelOffset": 15.0,
+     "maxUniformBufferRange": 65536.0,
+     "maxVertexInputAttributeOffset": 4096.0,
+     "maxVertexInputAttributes": 32.0,
+     "maxVertexInputBindingStride": 2048.0,
+     "maxVertexInputBindings": 32.0,
+     "maxVertexOutputComponents": 128.0,
+     "maxViewportDimensions": [
+      16384.0,
+      16384.0
+     ],
+     "maxViewports": 16.0,
+     "minInterpolationOffset": -0.5,
+     "minMemoryMapAlignment": "0x0000000000000040",
+     "minStorageBufferOffsetAlignment": "0x0000000000000040",
+     "minTexelBufferOffsetAlignment": "0x0000000000000040",
+     "minTexelGatherOffset": -32.0,
+     "minTexelOffset": -16.0,
+     "minUniformBufferOffsetAlignment": "0x0000000000000100",
+     "mipmapPrecisionBits": 8.0,
+     "nonCoherentAtomSize": "0x0000000000000001",
+     "optimalBufferCopyOffsetAlignment": "0x0000000000000040",
+     "optimalBufferCopyRowPitchAlignment": "0x0000000000000040",
+     "pointSizeGranularity": 0.0625,
+     "pointSizeRange": [
+      1.0,
+      4095.0
+     ],
+     "sampledImageColorSampleCounts": 7.0,
+     "sampledImageDepthSampleCounts": 7.0,
+     "sampledImageIntegerSampleCounts": 7.0,
+     "sampledImageStencilSampleCounts": 7.0,
+     "sparseAddressSpaceSize": "0x00000000ffffffff",
+     "standardSampleLocations": 1.0,
+     "storageImageSampleCounts": 1.0,
+     "strictLines": 1.0,
+     "subPixelInterpolationOffsetBits": 4.0,
+     "subPixelPrecisionBits": 8.0,
+     "subTexelPrecisionBits": 8.0,
+     "timestampComputeAndGraphics": 1.0,
+     "timestampPeriod": 52.08333206176758,
+     "viewportBoundsRange": [
+      -32768.0,
+      32767.0
+     ],
+     "viewportSubPixelBits": 8.0
+    },
+    "pipelineCacheUUID": [
+     119.0,
+     160.0,
+     24.0,
+     7.0,
+     67.0,
+     81.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     49.0,
+     10.0,
+     5.0,
+     68.0,
+     0.0,
+     0.0
+    ],
+    "sparseProperties": {
+     "residencyAlignedMipSize": 0.0,
+     "residencyNonResidentStrict": 1.0,
+     "residencyStandard2DBlockShape": 1.0,
+     "residencyStandard2DMultisampleBlockShape": 1.0,
+     "residencyStandard3DBlockShape": 0.0
+    },
+    "vendorID": 20803.0
+   }
+  }
+ ]
+}
+@@@GPUMODEL@@@
+Adreno840v2
+@@@CPUFREQ@@@
+policy0|0 1 2 3 4 5|walt|384000|3628800|384000 537600 691200 787200 883200 998400 1113600 1228800 1324800 1440000 1555200 1670400 1785600 1900800 1996800 2112000 2227200 2361600 2496000 2611200 2745600 2899200 3033600 3187200 3302400 3398400 3513600 3628800 
+policy6|6 7|walt|768000|4742400|768000 883200 1017600 1132800 1267200 1382400 1497600 1632000 1747200 1862400 1977600 2112000 2227200 2438400 2668800 2880000 3129600 3398400 3648000 3763200 3859200 3974400 4070400 4185600 4262400 4339200 4396800 
+@@@THERMAL@@@
+****** Dump of HardwarePropertiesManagerService ******
+CPU temperatures: [27.9, 27.9, 27.9, 27.5, 27.5, 28.7, 27.9, 27.9]
+CPU throttling temperatures: [105.0, 105.0, 105.0, 105.0, 105.0, 105.0, 105.0, 105.0]
+CPU shutdown temperatures: [125.0, 125.0, 125.0, 125.0, 125.0, 125.0, 125.0, 125.0]
+CPU vr throttling temperatures: [-3.4028235E38]
+GPU temperatures: [27.1, 27.1, 27.5, 27.5, 27.5, 27.1, 27.1, 27.5, 27.9, 27.1, 27.5]
+GPU throttling temperatures: [105.0, 105.0, 105.0, 105.0, 105.0, 105.0, 105.0, 105.0, 105.0, 105.0, 105.0]
+GPU shutdown temperatures: [125.0, 125.0, 125.0, 125.0, 125.0, 125.0, 125.0, 125.0, 125.0, 125.0, 125.0]
+GPU vr throttling temperatures: [-3.4028235E38]
+Battery temperatures: [27.0]
+Battery throttling temperatures: [80.0]
+Battery shutdown temperatures: [90.0]
+Battery vr throttling temperatures: [-3.4028235E38]
+Skin temperatures: [26.75844]
+Skin throttling temperatures: [50.0]
+Skin shutdown temperatures: [90.0]
+Skin vr throttling temperatures: [-3.4028235E38]
+Fan speed: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+****** End of HardwarePropertiesManagerService dump ******
+@@@FEATURES@@@
+feature:reqGlEsVersion=0x30002
+feature:android.hardware.audio.low_latency
+feature:android.hardware.audio.output
+feature:android.hardware.bluetooth
+feature:android.hardware.bluetooth_le
+feature:android.hardware.bluetooth_le.channel_sounding
+feature:android.hardware.camera
+feature:android.hardware.camera.any
+feature:android.hardware.camera.autofocus
+feature:android.hardware.camera.capability.manual_post_processing
+feature:android.hardware.camera.capability.manual_sensor
+feature:android.hardware.camera.capability.raw
+feature:android.hardware.camera.concurrent
+feature:android.hardware.camera.flash
+feature:android.hardware.camera.front
+feature:android.hardware.camera.level.full
+feature:android.hardware.consumerir
+feature:android.hardware.faketouch
+feature:android.hardware.fingerprint
+feature:android.hardware.hardware_keystore=400
+feature:android.hardware.keystore.app_attest_key
+feature:android.hardware.location
+feature:android.hardware.location.gps
+feature:android.hardware.location.network
+feature:android.hardware.microphone
+feature:android.hardware.nfc
+feature:android.hardware.nfc.any
+feature:android.hardware.nfc.ese
+feature:android.hardware.nfc.hce
+feature:android.hardware.nfc.hcef
+feature:android.hardware.nfc.uicc
+feature:android.hardware.opengles.aep
+feature:android.hardware.ram.normal
+feature:android.hardware.screen.landscape
+feature:android.hardware.screen.portrait
+feature:android.hardware.se.omapi.ese
+feature:android.hardware.se.omapi.uicc
+feature:android.hardware.security.model.compatible
+feature:android.hardware.sensor.accelerometer
+feature:android.hardware.sensor.compass
+feature:android.hardware.sensor.gyroscope
+feature:android.hardware.sensor.light
+feature:android.hardware.sensor.proximity
+feature:android.hardware.sensor.stepcounter
+feature:android.hardware.sensor.stepdetector
+feature:android.hardware.telephony
+feature:android.hardware.telephony.calling
+feature:android.hardware.telephony.data
+feature:android.hardware.telephony.gsm
+feature:android.hardware.telephony.ims
+feature:android.hardware.telephony.mbms
+feature:android.hardware.telephony.messaging
+feature:android.hardware.telephony.radio.access
+feature:android.hardware.telephony.subscription
+feature:android.hardware.touchscreen
+feature:android.hardware.touchscreen.multitouch
+feature:android.hardware.touchscreen.multitouch.distinct
+feature:android.hardware.touchscreen.multitouch.jazzhand
+feature:android.hardware.usb.accessory
+feature:android.hardware.usb.host
+feature:android.hardware.vulkan.compute
+feature:android.hardware.vulkan.level=1
+feature:android.hardware.vulkan.version=4210688
+feature:android.hardware.wifi
+feature:android.hardware.wifi.direct
+feature:android.hardware.wifi.passpoint
+feature:android.software.activities_on_secondary_displays
+feature:android.software.app_enumeration
+feature:android.software.app_widgets
+feature:android.software.autofill
+feature:android.software.backup
+feature:android.software.cant_save_state
+feature:android.software.companion_device_setup
+feature:android.software.controls
+feature:android.software.credentials
+feature:android.software.cts
+feature:android.software.device_admin
+feature:android.software.device_id_attestation
+feature:android.software.device_lock
+feature:android.software.erofs
+feature:android.software.file_based_encryption
+feature:android.software.home_screen
+feature:android.software.incremental_delivery=2
+feature:android.software.input_methods
+feature:android.software.ipsec_tunnel_migration
+feature:android.software.ipsec_tunnels
+feature:android.software.live_wallpaper
+feature:android.software.managed_users
+feature:android.software.midi
+feature:android.software.opengles.deqp.level=132711169
+feature:android.software.picture_in_picture
+feature:android.software.print
+feature:android.software.secure_lock_screen
+feature:android.software.securely_removes_users
+feature:android.software.sip
+feature:android.software.sip.voip
+feature:android.software.telecom
+feature:android.software.verified_boot
+feature:android.software.virtualization_framework
+feature:android.software.voice_recognizers
+feature:android.software.vulkan.deqp.level=132711169
+feature:android.software.webview
+feature:android.software.window_magnification
+feature:com.android.se
+feature:com.google.android.apps.dialer.SUPPORTED
+feature:com.google.android.contacts.feature.CONTACTS_PROVIDER_WRITES_TO_SIM_CARD
+feature:com.google.android.contacts.feature.SIM_WRITE
+feature:com.google.android.feature.ASI
+feature:com.google.android.feature.CONTEXTUAL_SEARCH
+feature:com.google.android.feature.D2D_CABLE_MIGRATION_FEATURE
+feature:com.google.android.feature.GEMINI_EXPERIENCE
+feature:com.google.android.feature.JP_CHOICE_SCREEN
+feature:com.google.android.feature.PERSONAL_SAFETY
+feature:com.google.android.feature.TURBO_PRELOAD
+feature:com.google.android.feature.WELLBEING
+feature:com.google.android.mainline.patchlevel.2
+feature:com.google.lens.feature.CAMERA_INTEGRATION
+feature:com.nxp.mifare
+feature:com.qualcomm.qti.feature.DCF_OFFLOAD
+feature:com.quicinc.voice.assist
+feature:com.quicinc.voice.assist.uvr
+@@@MAINLINE@@@
+    versionName=2026-10-01S+
+@@@END@@@

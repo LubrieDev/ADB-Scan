@@ -1,0 +1,933 @@
+  PID USER          PPID     VSZ    RSS STAT  NAME                        ARGS                       
+    1 root             0 10983264  9284 S     init                        init second_stage
+    2 root             0       0      0 S     [kthreadd]                  [kthreadd]
+    3 root             2       0      0 S     [pool_workqueue_release]    [pool_workqueue_release]
+    4 root             2       0      0 I<    [kworker/R-kvfree_rcu_reclaim] [kworker/R-kvfree_rcu_reclaim]
+    5 root             2       0      0 I<    [kworker/R-rcu_gp]          [kworker/R-rcu_gp]
+    6 root             2       0      0 I<    [kworker/R-sync_wq]         [kworker/R-sync_wq]
+    7 root             2       0      0 I<    [kworker/R-slub_flushwq]    [kworker/R-slub_flushwq]
+    8 root             2       0      0 I<    [kworker/R-netns]           [kworker/R-netns]
+   14 root             2       0      0 I<    [kworker/R-mm_percpu_wq]    [kworker/R-mm_percpu_wq]
+   15 root             2       0      0 I     [rcu_tasks_kthread]         [rcu_tasks_kthread]
+   16 root             2       0      0 I     [rcu_tasks_trace_kthread]   [rcu_tasks_trace_kthread]
+   17 root             2       0      0 S     [ksoftirqd/0]               [ksoftirqd/0]
+   18 root             2       0      0 I     [rcu_preempt]               [rcu_preempt]
+   19 root             2       0      0 S     [rcuog/0]                   [rcuog/0]
+   20 root             2       0      0 S     [rcuop/0]                   [rcuop/0]
+   21 root             2       0      0 S     [rcub/0]                    [rcub/0]
+   22 root             2       0      0 S     [rcu_exp_par_gp_kthread_worker/0] [rcu_exp_par_gp_kthread_worker/0]
+   23 root             2       0      0 S     [rcu_exp_gp_kthread_worker] [rcu_exp_gp_kthread_worker]
+   24 root             2       0      0 S     [migration/0]               [migration/0]
+   25 root             2       0      0 S     [idle_inject/0]             [idle_inject/0]
+   26 root             2       0      0 S     [cpuhp/0]                   [cpuhp/0]
+   27 root             2       0      0 S     [cpuhp/1]                   [cpuhp/1]
+   28 root             2       0      0 S     [idle_inject/1]             [idle_inject/1]
+   29 root             2       0      0 S     [migration/1]               [migration/1]
+   30 root             2       0      0 S     [ksoftirqd/1]               [ksoftirqd/1]
+   33 root             2       0      0 S     [rcuop/1]                   [rcuop/1]
+   34 root             2       0      0 S     [cpuhp/2]                   [cpuhp/2]
+   35 root             2       0      0 S     [idle_inject/2]             [idle_inject/2]
+   36 root             2       0      0 S     [migration/2]               [migration/2]
+   37 root             2       0      0 S     [ksoftirqd/2]               [ksoftirqd/2]
+   40 root             2       0      0 S     [rcuop/2]                   [rcuop/2]
+   41 root             2       0      0 S     [cpuhp/3]                   [cpuhp/3]
+   42 root             2       0      0 S     [idle_inject/3]             [idle_inject/3]
+   43 root             2       0      0 S     [migration/3]               [migration/3]
+   44 root             2       0      0 S     [ksoftirqd/3]               [ksoftirqd/3]
+   47 root             2       0      0 S     [rcuop/3]                   [rcuop/3]
+   48 root             2       0      0 S     [cpuhp/4]                   [cpuhp/4]
+   49 root             2       0      0 S     [idle_inject/4]             [idle_inject/4]
+   50 root             2       0      0 S     [migration/4]               [migration/4]
+   51 root             2       0      0 S     [ksoftirqd/4]               [ksoftirqd/4]
+   54 root             2       0      0 S     [rcuog/4]                   [rcuog/4]
+   55 root             2       0      0 S     [rcuop/4]                   [rcuop/4]
+   56 root             2       0      0 S     [cpuhp/5]                   [cpuhp/5]
+   57 root             2       0      0 S     [idle_inject/5]             [idle_inject/5]
+   58 root             2       0      0 S     [migration/5]               [migration/5]
+   59 root             2       0      0 S     [ksoftirqd/5]               [ksoftirqd/5]
+   62 root             2       0      0 S     [rcuop/5]                   [rcuop/5]
+   63 root             2       0      0 S     [cpuhp/6]                   [cpuhp/6]
+   64 root             2       0      0 S     [idle_inject/6]             [idle_inject/6]
+   65 root             2       0      0 S     [migration/6]               [migration/6]
+   66 root             2       0      0 S     [ksoftirqd/6]               [ksoftirqd/6]
+   69 root             2       0      0 S     [rcuop/6]                   [rcuop/6]
+   70 root             2       0      0 S     [cpuhp/7]                   [cpuhp/7]
+   71 root             2       0      0 S     [idle_inject/7]             [idle_inject/7]
+   72 root             2       0      0 S     [migration/7]               [migration/7]
+   73 root             2       0      0 S     [ksoftirqd/7]               [ksoftirqd/7]
+   76 root             2       0      0 S     [rcuop/7]                   [rcuop/7]
+   77 root             2       0      0 I<    [kworker/R-inet_frag_wq]    [kworker/R-inet_frag_wq]
+   78 root             2       0      0 S     [kauditd]                   [kauditd]
+   79 root             2       0      0 S     [khungtaskd]                [khungtaskd]
+   80 root             2       0      0 S     [oom_reaper]                [oom_reaper]
+   81 root             2       0      0 I<    [kworker/R-writeback]       [kworker/R-writeback]
+   82 root             2       0      0 S     [kcompactd0]                [kcompactd0]
+   83 root             2       0      0 SN    [khugepaged]                [khugepaged]
+   84 root             2       0      0 I<    [kworker/R-kblockd]         [kworker/R-kblockd]
+   85 root             2       0      0 I<    [kworker/R-edac-poller]     [kworker/R-edac-poller]
+   86 root             2       0      0 I<    [kworker/R-devfreq_wq]      [kworker/R-devfreq_wq]
+   87 root             2       0      0 S     [watchdogd]                 [watchdogd]
+   93 root             2       0      0 S     [kswapd0]                   [kswapd0]
+   98 root             2       0      0 I<    [kworker/R-nvme-wq]         [kworker/R-nvme-wq]
+   99 root             2       0      0 I<    [kworker/R-nvme-reset-wq]   [kworker/R-nvme-reset-wq]
+  100 root             2       0      0 I<    [kworker/R-nvme-delete-wq]  [kworker/R-nvme-delete-wq]
+  101 root             2       0      0 I<    [kworker/R-vfio-irqfd-cleanup] [kworker/R-vfio-irqfd-cleanup]
+  102 root             2       0      0 I<    [kworker/R-uas]             [kworker/R-uas]
+  103 root             2       0      0 I<    [kworker/R-dm_bufio_cache]  [kworker/R-dm_bufio_cache]
+  104 root             2       0      0 S     [hwrng]                     [hwrng]
+  105 root             2       0      0 S     [irq/15-gunyah_rm_tx]       [irq/15-gunyah_rm_tx]
+  106 root             2       0      0 S     [irq/16-gunyah_rm_rx]       [irq/16-gunyah_rm_rx]
+  108 root             2       0      0 I<    [kworker/R-mld]             [kworker/R-mld]
+  109 root             2       0      0 I<    [kworker/R-ipv6_addrconf]   [kworker/R-ipv6_addrconf]
+  110 root             2       0      0 I<    [kworker/R-kstrp]           [kworker/R-kstrp]
+  121 root             2       0      0 SN    [dmabuf-deferred-free-worker] [dmabuf-deferred-free-worker]
+  150 root             2       0      0 S     [halt_drain_rqs]            [halt_drain_rqs]
+  152 root             2       0      0 S     [kthread_nbia_walt]         [kthread_nbia_walt]
+  153 root             2       0      0 D     [adci_thread]               [adci_thread]
+  154 root             2       0      0 S     [core_ctl]                  [core_ctl]
+  156 root             2       0      0 SN    [qcom,system-pool-refill-thread] [qcom,system-pool-refill-thread]
+  167 root             2       0      0 S     [qrtr_ns]                   [qrtr_ns]
+  170 root             2       0      0 S     [irq/30-c229000.tsens0]     [irq/30-c229000.tsens0]
+  171 root             2       0      0 S     [irq/31-c229000.tsens0]     [irq/31-c229000.tsens0]
+  172 root             2       0      0 S     [irq/32-c22a000.tsens1]     [irq/32-c22a000.tsens1]
+  173 root             2       0      0 S     [irq/33-c22a000.tsens1]     [irq/33-c22a000.tsens1]
+  174 root             2       0      0 S     [irq/34-c22b000.tsens2]     [irq/34-c22b000.tsens2]
+  175 root             2       0      0 S     [irq/35-c22b000.tsens2]     [irq/35-c22b000.tsens2]
+  176 root             2       0      0 S     [irq/36-c22c000.tsens3]     [irq/36-c22c000.tsens3]
+  177 root             2       0      0 S     [irq/37-c22c000.tsens3]     [irq/37-c22c000.tsens3]
+  178 root             2       0      0 S     [irq/38-c22d000.tsens4]     [irq/38-c22d000.tsens4]
+  179 root             2       0      0 S     [irq/39-c22d000.tsens4]     [irq/39-c22d000.tsens4]
+  180 root             2       0      0 S     [irq/40-c22e000.tsens5]     [irq/40-c22e000.tsens5]
+  181 root             2       0      0 S     [irq/41-c22e000.tsens5]     [irq/41-c22e000.tsens5]
+  182 root             2       0      0 S     [irq/42-c22f000.tsens6]     [irq/42-c22f000.tsens6]
+  183 root             2       0      0 S     [irq/43-c22f000.tsens6]     [irq/43-c22f000.tsens6]
+  192 root             2       0      0 S     [msm-watchdog]              [msm-watchdog]
+  193 root             2       0      0 S     [mem_buf_trusted_vm_rcvr]   [mem_buf_trusted_vm_rcvr]
+  194 root             2       0      0 S     [mem_buf_oem_vm_rcvr]       [mem_buf_oem_vm_rcvr]
+  195 root             2       0      0 S     [irq/45-qcom,qmp-tme]       [irq/45-qcom,qmp-tme]
+  226 root             2       0      0 S     [irq/82-arm-smmu-context-fault] [irq/82-arm-smmu-context-fault]
+  227 root             2       0      0 S     [scsi_eh_0]                 [scsi_eh_0]
+  228 root             2       0      0 I<    [kworker/R-scsi_tmf_0]      [kworker/R-scsi_tmf_0]
+  229 root             2       0      0 I<    [kworker/R-qc_ufs_qos_swq]  [kworker/R-qc_ufs_qos_swq]
+  230 root             2       0      0 I<    [kworker/R-ufs_eh_wq_0]     [kworker/R-ufs_eh_wq_0]
+  231 root             2       0      0 I<    [kworker/R-ufs_clkscaling_0] [kworker/R-ufs_clkscaling_0]
+  232 root             2       0      0 S     [irq/83-arm-smmu-context-fault] [irq/83-arm-smmu-context-fault]
+  233 root             2       0      0 S     [irq/85-arm-smmu-context-fault] [irq/85-arm-smmu-context-fault]
+  234 root             2       0      0 S     [irq/86-arm-smmu-context-fault] [irq/86-arm-smmu-context-fault]
+  235 root             2       0      0 S     [irq/197-8804000.sdhci]     [irq/197-8804000.sdhci]
+  236 root             2       0      0 I<    [kworker/R-sdhci_msm_generic_swq] [kworker/R-sdhci_msm_generic_swq]
+  237 root             2       0      0 I<    [kworker/R-sdhci]           [kworker/R-sdhci]
+  238 root             2       0      0 S     [irq/195-mmc1]              [irq/195-mmc1]
+  239 root             2       0      0 S     [irq/87-arm-smmu-context-fault] [irq/87-arm-smmu-context-fault]
+  240 root             2       0      0 S     [irq/88-arm-smmu-context-fault] [irq/88-arm-smmu-context-fault]
+  241 root             2       0      0 S     [irq/89-arm-smmu-context-fault] [irq/89-arm-smmu-context-fault]
+  242 root             2       0      0 S     [irq/90-arm-smmu-context-fault] [irq/90-arm-smmu-context-fault]
+  243 root             2       0      0 S     [irq/91-arm-smmu-context-fault] [irq/91-arm-smmu-context-fault]
+  244 root             2       0      0 S     [irq/92-arm-smmu-context-fault] [irq/92-arm-smmu-context-fault]
+  245 root             2       0      0 S     [irq/223-8804000.sdhci cd]  [irq/223-8804000.sdhci cd]
+  250 root             2       0      0 S     [f2fs_ckpt-8:10]            [f2fs_ckpt-8:10]
+  251 root             2       0      0 S     [f2fs_flush-8:10]           [f2fs_flush-8:10]
+  252 root             2       0      0 S     [f2fs_discard-8:10]         [f2fs_discard-8:10]
+  253 root             2       0      0 S     [f2fs_gc-8:10]              [f2fs_gc-8:10]
+  254 root             2       0      0 I<    [kworker/R-kdmflush/254:0]  [kworker/R-kdmflush/254:0]
+  255 root             2       0      0 I<    [kworker/R-kdmflush/254:1]  [kworker/R-kdmflush/254:1]
+  256 root             2       0      0 I<    [kworker/R-kdmflush/254:2]  [kworker/R-kdmflush/254:2]
+  257 root             2       0      0 I<    [kworker/R-kdmflush/254:3]  [kworker/R-kdmflush/254:3]
+  258 root             2       0      0 I<    [kworker/R-kdmflush/254:4]  [kworker/R-kdmflush/254:4]
+  259 root             2       0      0 I<    [kworker/R-kdmflush/254:5]  [kworker/R-kdmflush/254:5]
+  260 root             2       0      0 I<    [kworker/R-kdmflush/254:6]  [kworker/R-kdmflush/254:6]
+  261 root             2       0      0 I<    [kworker/R-kdmflush/254:7]  [kworker/R-kdmflush/254:7]
+  262 root             2       0      0 I<    [kworker/R-kdmflush/254:8]  [kworker/R-kdmflush/254:8]
+  263 root             2       0      0 I<    [kworker/R-kdmflush/254:9]  [kworker/R-kdmflush/254:9]
+  264 root             2       0      0 I<    [kworker/R-kdmflush/254:10] [kworker/R-kdmflush/254:10]
+  265 root             2       0      0 I<    [kworker/R-kdmflush/254:11] [kworker/R-kdmflush/254:11]
+  266 root             2       0      0 I<    [kworker/R-kdmflush/254:12] [kworker/R-kdmflush/254:12]
+  267 root             2       0      0 I<    [kworker/R-kdmflush/254:13] [kworker/R-kdmflush/254:13]
+  268 root             2       0      0 I<    [kworker/R-kdmflush/254:14] [kworker/R-kdmflush/254:14]
+  269 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+  270 root             2       0      0 S     [erofs_worker/0]            [erofs_worker/0]
+  271 root             2       0      0 S     [erofs_worker/1]            [erofs_worker/1]
+  272 root             2       0      0 S     [erofs_worker/2]            [erofs_worker/2]
+  273 root             2       0      0 S     [erofs_worker/3]            [erofs_worker/3]
+  274 root             2       0      0 S     [erofs_worker/4]            [erofs_worker/4]
+  275 root             2       0      0 S     [erofs_worker/5]            [erofs_worker/5]
+  276 root             2       0      0 S     [erofs_worker/6]            [erofs_worker/6]
+  277 root             2       0      0 S     [erofs_worker/7]            [erofs_worker/7]
+  278 root             2       0      0 I<    [kworker/R-kdmflush/254:15] [kworker/R-kdmflush/254:15]
+  279 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+  280 root             2       0      0 I<    [kworker/R-kdmflush/254:16] [kworker/R-kdmflush/254:16]
+  281 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+  282 root             2       0      0 I<    [kworker/R-kdmflush/254:17] [kworker/R-kdmflush/254:17]
+  283 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+  284 root             2       0      0 I<    [kworker/R-kdmflush/254:18] [kworker/R-kdmflush/254:18]
+  285 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+  286 root             2       0      0 I<    [kworker/R-kdmflush/254:19] [kworker/R-kdmflush/254:19]
+  287 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+  288 root             2       0      0 I<    [kworker/R-kdmflush/254:20] [kworker/R-kdmflush/254:20]
+  289 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+  293 root             1 10836000  6000 S     init                        init subcontext u:r:vendor_init:s0 18
+  294 root             1 10883976  6996 S     ueventd                     ueventd
+  306 root             2       0      0 I<    [kworker/2:1H-kverityd]     [kworker/2:1H-kverityd]
+  347 root             2       0      0 I<    [kworker/R-kdmflush/254:21] [kworker/R-kdmflush/254:21]
+  348 root             2       0      0 I<    [kworker/R-kdmflush/254:22] [kworker/R-kdmflush/254:22]
+  349 root             2       0      0 I<    [kworker/R-kdmflush/254:23] [kworker/R-kdmflush/254:23]
+  350 root             2       0      0 I<    [kworker/R-kdmflush/254:24] [kworker/R-kdmflush/254:24]
+  351 root             2       0      0 I<    [kworker/R-kdmflush/254:25] [kworker/R-kdmflush/254:25]
+  352 root             2       0      0 I<    [kworker/R-kdmflush/254:26] [kworker/R-kdmflush/254:26]
+  353 root             2       0      0 I<    [kworker/R-kdmflush/254:27] [kworker/R-kdmflush/254:27]
+  354 root             2       0      0 I<    [kworker/R-kdmflush/254:28] [kworker/R-kdmflush/254:28]
+  356 root             2       0      0 I<    [kworker/R-kdmflush/254:30] [kworker/R-kdmflush/254:30]
+  357 root             2       0      0 I<    [kworker/R-kdmflush/254:31] [kworker/R-kdmflush/254:31]
+  358 root             2       0      0 I<    [kworker/R-kdmflush/254:32] [kworker/R-kdmflush/254:32]
+  360 root             2       0      0 I<    [kworker/R-kdmflush/254:34] [kworker/R-kdmflush/254:34]
+  361 root             2       0      0 I<    [kworker/R-kdmflush/254:35] [kworker/R-kdmflush/254:35]
+  362 root             2       0      0 I<    [kworker/R-kdmflush/254:36] [kworker/R-kdmflush/254:36]
+  364 root             2       0      0 I<    [kworker/R-kdmflush/254:38] [kworker/R-kdmflush/254:38]
+  365 root             2       0      0 I<    [kworker/R-kdmflush/254:39] [kworker/R-kdmflush/254:39]
+  366 root             2       0      0 I<    [kworker/R-kdmflush/254:40] [kworker/R-kdmflush/254:40]
+  368 root             2       0      0 I<    [kworker/R-kdmflush/254:42] [kworker/R-kdmflush/254:42]
+  369 root             2       0      0 I<    [kworker/R-kdmflush/254:43] [kworker/R-kdmflush/254:43]
+  370 root             2       0      0 I<    [kworker/R-kdmflush/254:44] [kworker/R-kdmflush/254:44]
+  371 root             2       0      0 I<    [kworker/R-kdmflush/254:45] [kworker/R-kdmflush/254:45]
+  372 root             2       0      0 I<    [kworker/R-kdmflush/254:46] [kworker/R-kdmflush/254:46]
+  373 root             2       0      0 I<    [kworker/R-kdmflush/254:47] [kworker/R-kdmflush/254:47]
+  374 root             2       0      0 I<    [kworker/R-kdmflush/254:48] [kworker/R-kdmflush/254:48]
+  375 root             2       0      0 I<    [kworker/R-kdmflush/254:49] [kworker/R-kdmflush/254:49]
+  376 root             2       0      0 I<    [kworker/R-kdmflush/254:50] [kworker/R-kdmflush/254:50]
+  378 root             2       0      0 I<    [kworker/R-kdmflush/254:52] [kworker/R-kdmflush/254:52]
+  380 root             2       0      0 I<    [kworker/R-kdmflush/254:54] [kworker/R-kdmflush/254:54]
+  381 root             2       0      0 I<    [kworker/R-kdmflush/254:55] [kworker/R-kdmflush/254:55]
+  389 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+  390 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+  391 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+  392 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+  502 root             2       0      0 S<    [krfcommd]                  [krfcommd]
+  504 root             2       0      0 I<    [kworker/R-tls-strp]        [kworker/R-tls-strp]
+  509 prng_seeder      1 10985608  5060 S     prng_seeder                 prng_seeder
+  537 media            1 10852948  6172 S     audioadsprpcd               audioadsprpcd audiopd adsp
+  541 root             2       0      0 S     [irq/93-arm-smmu-context-fault] [irq/93-arm-smmu-context-fault]
+  542 root             2       0      0 D<    [zram_comp]                 [zram_comp]
+  648 root             2       0      0 I<    [kworker/R-cpucp_wq]        [kworker/R-cpucp_wq]
+  649 root             2       0      0 S     [irq/234-regulator-ocp]     [irq/234-regulator-ocp]
+  650 root             2       0      0 S     [irq/235-regulator-alarm]   [irq/235-regulator-alarm]
+  752 root             2       0      0 I<    [kworker/R-send_unfreeze_event] [kworker/R-send_unfreeze_event]
+  753 root             2       0      0 S     [irq/237-wcd-usbss-sdam]    [irq/237-wcd-usbss-sdam]
+  785 root             2       0      0 S     [khvcd]                     [khvcd]
+  811 root             2       0      0 S     [msm_perf:events_notify]    [msm_perf:events_notify]
+  814 root             2       0      0 S     [spi4]                      [spi4]
+  815 root             2       0      0 I<    [kworker/R-memlat_wq]       [kworker/R-memlat_wq]
+  816 root             2       0      0 S     [Surge kthread]             [Surge kthread]
+  821 root             2       0      0 S     [irq/240-pmic_pwrkey]       [irq/240-pmic_pwrkey]
+  822 root             2       0      0 S     [irq/241-pmic_resin]        [irq/241-pmic_resin]
+  828 root             2       0      0 I<    [kworker/R-bwmon_wq]        [kworker/R-bwmon_wq]
+  829 root             2       0      0 S     [irq/243-310b3400.qcom,bwmon-llcc-gold] [irq/243-310b3400.qcom,bwmon-llcc-gold]
+  830 root             2       0      0 S     [cdsprm-wq]                 [cdsprm-wq]
+  832 root             2       0      0 I<    [kworker/R-cdsprm-wq-delay] [kworker/R-cdsprm-wq-delay]
+  875 root             2       0      0 I<    [kworker/0:3H-kverityd]     [kworker/0:3H-kverityd]
+  881 root             2       0      0 I<    [kworker/2:2H-kblockd]      [kworker/2:2H-kblockd]
+  882 root             2       0      0 S     [irq/94-arm-smmu-context-fault] [irq/94-arm-smmu-context-fault]
+  884 root             2       0      0 I<    [kworker/R-mpcie_wq]        [kworker/R-mpcie_wq]
+  885 root             2       0      0 S     [irq/95-arm-smmu-context-fault] [irq/95-arm-smmu-context-fault]
+  886 root             2       0      0 S     [irq/243-310b7400.qcom,bwmon-llcc-prime] [irq/243-310b7400.qcom,bwmon-llcc-prime]
+  892 root             2       0      0 S     [irq/244-bcl-lvl0]          [irq/244-bcl-lvl0]
+  893 root             2       0      0 S     [irq/246-31091000.qcom,bwmon-ddr] [irq/246-31091000.qcom,bwmon-ddr]
+  894 root             2       0      0 D     [hfi_core_dbg_client_listener] [hfi_core_dbg_client_listener]
+  904 root             2       0      0 S     [irq/249-qpt_data_irq]      [irq/249-qpt_data_irq]
+  905 root             2       0      0 S     [irq/250-qpt_overflow_irq]  [irq/250-qpt_overflow_irq]
+  906 root             2       0      0 S     [irq/96-arm-smmu-context-fault] [irq/96-arm-smmu-context-fault]
+  918 root             2       0      0 S     [spi15]                     [spi15]
+  919 root             2       0      0 I<    [kworker/R-pmic_glink_rx]   [kworker/R-pmic_glink_rx]
+  922 root             2       0      0 I<    [kworker/R-cfg80211]        [kworker/R-cfg80211]
+  923 root             2       0      0 I<    [kworker/R-pmic_glink_rx]   [kworker/R-pmic_glink_rx]
+  948 root             2       0      0 S     [irq/258-pwr_event_irq]     [irq/258-pwr_event_irq]
+  950 root             2       0      0 S     [irq/259-smp2p_2]           [irq/259-smp2p_2]
+  951 root             2       0      0 S     [irq/253-aw9620x_irq]       [irq/253-aw9620x_irq]
+  952 root             2       0      0 S     [irq/261-dp_hs_phy_irq]     [irq/261-dp_hs_phy_irq]
+  953 root             2       0      0 S     [irq/264-dm_hs_phy_irq]     [irq/264-dm_hs_phy_irq]
+  954 root             2       0      0 S     [irq/266-generic-irq]       [irq/266-generic-irq]
+  955 root             2       0      0 D     [msm_hw_fence_soccp_listener] [msm_hw_fence_soccp_listener]
+  959 root             2       0      0 S     [irq/262-smp2p_5]           [irq/262-smp2p_5]
+  961 root             2       0      0 S     [irq/269-ss_phy_irq]        [irq/269-ss_phy_irq]
+  962 root             2       0      0 S     [irq/270-aw_haptic]         [irq/270-aw_haptic]
+  967 root             2       0      0 S     [irq/279-smp2p_1]           [irq/279-smp2p_1]
+  968 root             2       0      0 S     [irq/260-awp1921]           [irq/260-awp1921]
+  970 root             2       0      0 S     [irq/267-int_global_int]    [irq/267-int_global_int]
+  975 root             2       0      0 S     [irq/281-smp2p_19]          [irq/281-smp2p_19]
+  983 root             2       0      0 S     [spi19]                     [spi19]
+  988 root             2       0      0 S     [irq/282-smp2p_22]          [irq/282-smp2p_22]
+  997 root             2       0      0 I<    [kworker/R-aw_haptic_vibrator_work_queue] [kworker/R-aw_haptic_vibrator_work_queue]
+  999 logd             1 10919528  5504 SN    logd                        logd
+ 1000 lmkd             1 10936956  9604 SL    lmkd                        lmkd
+ 1001 system           1 10834764  5444 S     servicemanager              servicemanager
+ 1007 system           1 10990960  4404 S     vndservicemanager           vndservicemanager /dev/vndbinder
+ 1013 system           1 10972044  5824 S     android.hardware.security.onekeymint-service-qti android.hardware.security.onekeymint-service-qti
+ 1016 system           1 11670164  6356 S     qseecomd                    qseecomd
+ 1017 root             1 10774140  3556 S     battery_record_daemon       battery_record_daemon normal
+ 1018 root             1 11023688  6704 S     vold                        vold --blkid_context=u:r:blkid:s0 --blkid_untrusted_context=u:r:blkid_untrusted:s0 --fsck_context=u:r:fsck:s0 --fsck_untrusted_context=u:r:fsck_untrusted:s0
+ 1019 root             2       0      0 S     [irq/239-pmh0104-temp-alarm] [irq/239-pmh0104-temp-alarm]
+ 1027 root             2       0      0 S     [irq/327-aw9620x_irq]       [irq/327-aw9620x_irq]
+ 1029 root             2       0      0 S     [irq/329-bcl-lvl1]          [irq/329-bcl-lvl1]
+ 1030 root             2       0      0 S     [irq/97-arm-smmu-context-fault] [irq/97-arm-smmu-context-fault]
+ 1031 root             2       0      0 S     [irq/332-q6v5 wdog]         [irq/332-q6v5 wdog]
+ 1032 root             2       0      0 S     [jbd2/sda2-8]               [jbd2/sda2-8]
+ 1033 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1034 root             2       0      0 S     [psimon]                    [psimon]
+ 1035 root             2       0      0 S     [irq/98-arm-smmu-context-fault] [irq/98-arm-smmu-context-fault]
+ 1037 root             2       0      0 I<    [kworker/R-policy_probe_wq] [kworker/R-policy_probe_wq]
+ 1041 root             2       0      0 I<    [kworker/R-qcrypto_seq_response_wq] [kworker/R-qcrypto_seq_response_wq]
+ 1042 root             2       0      0 S     [jbd2/sde9-8]               [jbd2/sde9-8]
+ 1043 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1049 root             2       0      0 I<    [kworker/R-kdmflush/254:59] [kworker/R-kdmflush/254:59]
+ 1052 root             2       0      0 I<    [kworker/R-k_ipa_usb]       [kworker/R-k_ipa_usb]
+ 1055 root             2       0      0 S     [irq/338-msm_cvp]           [irq/338-msm_cvp]
+ 1056 root             2       0      0 I<    [kworker/R-msm_cvp_workerq_iris] [kworker/R-msm_cvp_workerq_iris]
+ 1057 root             2       0      0 I<    [kworker/R-pm_workerq_iris] [kworker/R-pm_workerq_iris]
+ 1058 root             2       0      0 S     [irq/99-arm-smmu-context-fault] [irq/99-arm-smmu-context-fault]
+ 1059 root             2       0      0 I<    [kworker/R-pm_workq]        [kworker/R-pm_workq]
+ 1060 root             2       0      0 I<    [kworker/R-batch_workq]     [kworker/R-batch_workq]
+ 1061 root             2       0      0 S     [irq/342-msm-vidc]          [irq/342-msm-vidc]
+ 1062 root             2       0      0 S     [irq/100-arm-smmu-context-fault] [irq/100-arm-smmu-context-fault]
+ 1063 root             2       0      0 I<    [kworker/R-byte-cntr]       [kworker/R-byte-cntr]
+ 1064 root             2       0      0 S     [irq/101-arm-smmu-context-fault] [irq/101-arm-smmu-context-fault]
+ 1065 root             2       0      0 I<    [kworker/R-kgsl-workqueue]  [kworker/R-kgsl-workqueue]
+ 1067 root             2       0      0 S     [irq/102-arm-smmu-context-fault] [irq/102-arm-smmu-context-fault]
+ 1069 root             2       0      0 I<    [kworker/R-kgsl-lockless-work] [kworker/R-kgsl-lockless-work]
+ 1074 root             2       0      0 I<    [kworker/R-ipa_power_mgmt]  [kworker/R-ipa_power_mgmt]
+ 1075 root             2       0      0 I<    [kworker/R-transport_power_mgmt] [kworker/R-transport_power_mgmt]
+ 1076 root             2       0      0 I<    [kworker/R-page_recycle_stats_collection] [kworker/R-page_recycle_stats_collection]
+ 1077 root             2       0      0 I<    [kworker/R-ipa_pm_activate] [kworker/R-ipa_pm_activate]
+ 1078 root             2       0      0 I<    [kworker/R-ipa_usb_wq]      [kworker/R-ipa_usb_wq]
+ 1083 root             2       0      0 S     [irq/103-arm-smmu-context-fault] [irq/103-arm-smmu-context-fault]
+ 1084 root             2       0      0 I<    [kworker/R-rmnet_ctlwq]     [kworker/R-rmnet_ctlwq]
+ 1085 root             2       0      0 I<    [kworker/R-rmnet_llwq]      [kworker/R-rmnet_llwq]
+ 1086 root             2       0      0 S     [irq/104-arm-smmu-context-fault] [irq/104-arm-smmu-context-fault]
+ 1091 root             2       0      0 S     [irq/105-arm-smmu-context-fault] [irq/105-arm-smmu-context-fault]
+ 1097 root             2       0      0 S     [irq/84-arm-smmu-context-fault] [irq/84-arm-smmu-context-fault]
+ 1098 root             2       0      0 S     [irq/106-arm-smmu-context-fault] [irq/106-arm-smmu-context-fault]
+ 1103 root             2       0      0 S     [irq/107-arm-smmu-context-fault] [irq/107-arm-smmu-context-fault]
+ 1108 root             2       0      0 S     [irq/108-arm-smmu-context-fault] [irq/108-arm-smmu-context-fault]
+ 1113 root             2       0      0 S     [irq/109-arm-smmu-context-fault] [irq/109-arm-smmu-context-fault]
+ 1122 root             2       0      0 S     [irq/110-arm-smmu-context-fault] [irq/110-arm-smmu-context-fault]
+ 1123 root             2       0      0 S     [cvp-dsp-thread]            [cvp-dsp-thread]
+ 1124 root             2       0      0 S     [irq/111-arm-smmu-context-fault] [irq/111-arm-smmu-context-fault]
+ 1125 root             2       0      0 S     [irq/112-arm-smmu-context-fault] [irq/112-arm-smmu-context-fault]
+ 1126 root             2       0      0 S     [irq/113-arm-smmu-context-fault] [irq/113-arm-smmu-context-fault]
+ 1127 root             2       0      0 S     [irq/114-arm-smmu-context-fault] [irq/114-arm-smmu-context-fault]
+ 1129 root             2       0      0 S     [irq/115-arm-smmu-context-fault] [irq/115-arm-smmu-context-fault]
+ 1130 root             2       0      0 S     [irq/347-bhi]               [irq/347-bhi]
+ 1135 system           1 10935380  5664 S     android.system.suspend-service android.system.suspend-service
+ 1136 keystore         1 11254056 14524 SL    keystore2                   keystore2 /data/misc/keystore
+ 1137 root             1 10812676  5180 S     android.hardware.boot-service.qti android.hardware.boot-service.qti
+ 1138 system           1 10883548  4984 S     android.hardware.gatekeeper-rust-service-qti android.hardware.gatekeeper-rust-service-qti
+ 1149 root             2       0      0 S     [irq/379-aw22xxx]           [irq/379-aw22xxx]
+ 1163 root             2       0      0 S     [glink_soccp]               [glink_soccp]
+ 1164 root             2       0      0 S     [irq/381-q6v5 wdog]         [irq/381-q6v5 wdog]
+ 1165 root             2       0      0 S     [glink-glink_ssr]           [glink-glink_ssr]
+ 1166 root             2       0      0 S     [irq/387-q6v5 wdog]         [irq/387-q6v5 wdog]
+ 1167 root             2       0      0 S     [glink-PMIC_RTR_SOCCP_APPS] [glink-PMIC_RTR_SOCCP_APPS]
+ 1168 root             2       0      0 S     [irq/393-q6v5 wdog]         [irq/393-q6v5 wdog]
+ 1169 root             2       0      0 S     [glink-PMIC_LOGS_SOCCP_APPS] [glink-PMIC_LOGS_SOCCP_APPS]
+ 1170 root             2       0      0 S     [qrtr_rx]                   [qrtr_rx]
+ 1171 root             2       0      0 S     [glink-IPCRTR]              [glink-IPCRTR]
+ 1172 root             2       0      0 S     [irq/328-pmr735d-temp-alarm] [irq/328-pmr735d-temp-alarm]
+ 1173 root             2       0      0 S     [irq/399-pm8010m-temp-alarm] [irq/399-pm8010m-temp-alarm]
+ 1174 root             2       0      0 S     [irq/400-bcl-lvl2]          [irq/400-bcl-lvl2]
+ 1178 root             2       0      0 S     [irq/401-bcl-lvl0]          [irq/401-bcl-lvl0]
+ 1179 root             2       0      0 S     [irq/402-bcl-lvl1]          [irq/402-bcl-lvl1]
+ 1180 root             2       0      0 S     [irq/403-bcl-lvl2]          [irq/403-bcl-lvl2]
+ 1181 root             2       0      0 S     [irq/404-pmh0101-temp-alarm] [irq/404-pmh0101-temp-alarm]
+ 1182 root             2       0      0 S     [irq/405-pmh0110-d-temp-alarm] [irq/405-pmh0110-d-temp-alarm]
+ 1183 root             2       0      0 S     [irq/406-pmh0110-f-temp-alarm] [irq/406-pmh0110-f-temp-alarm]
+ 1184 root             2       0      0 S     [irq/407-pmh0110-g-temp-alarm] [irq/407-pmh0110-g-temp-alarm]
+ 1185 root             2       0      0 S     [irq/408-pmh0110-i-temp-alarm] [irq/408-pmh0110-i-temp-alarm]
+ 1186 root             2       0      0 S     [irq/409-pmih010x-temp-alarm] [irq/409-pmih010x-temp-alarm]
+ 1187 root             2       0      0 S     [irq/410-pmih010x-temp-alarm-lite] [irq/410-pmih010x-temp-alarm-lite]
+ 1192 root             2       0      0 S     [irq/116-arm-smmu-context-fault] [irq/116-arm-smmu-context-fault]
+ 1193 root             2       0      0 S     [irq/117-arm-smmu-context-fault] [irq/117-arm-smmu-context-fault]
+ 1194 root             2       0      0 S     [irq/118-arm-smmu-context-fault] [irq/118-arm-smmu-context-fault]
+ 1195 root             2       0      0 S     [adspsleepmon-worker]       [adspsleepmon-worker]
+ 1196 root             2       0      0 S     [irq/119-arm-smmu-context-fault] [irq/119-arm-smmu-context-fault]
+ 1197 root             2       0      0 I<    [kworker/R-screen_state_wq] [kworker/R-screen_state_wq]
+ 1198 root             2       0      0 S     [irq/56-arm-smmu-context-fault] [irq/56-arm-smmu-context-fault]
+ 1199 root             2       0      0 S     [irq/57-arm-smmu-context-fault] [irq/57-arm-smmu-context-fault]
+ 1201 root             2       0      0 S     [irq/58-arm-smmu-context-fault] [irq/58-arm-smmu-context-fault]
+ 1203 root             2       0      0 S     [irq/59-arm-smmu-context-fault] [irq/59-arm-smmu-context-fault]
+ 1204 root             2       0      0 S     [kgsl_cooling_worker]       [kgsl_cooling_worker]
+ 1206 root             2       0      0 I<    [kworker/R-dsi_post_cmd_tx_workq] [kworker/R-dsi_post_cmd_tx_workq]
+ 1207 root             2       0      0 I<    [kworker/R-panel_dim_workq] [kworker/R-panel_dim_workq]
+ 1208 root             2       0      0 I<    [kworker/R-panel_rebl_workq] [kworker/R-panel_rebl_workq]
+ 1209 root             2       0      0 I<    [kworker/R-panel_aodbl_workq] [kworker/R-panel_aodbl_workq]
+ 1211 root             2       0      0 S     [kgsl-events]               [kgsl-events]
+ 1212 root             2       0      0 S     [kgsl_hwsched]              [kgsl_hwsched]
+ 1214 root             2       0      0 I<    [kworker/R-dsi_post_cmd_tx_workq] [kworker/R-dsi_post_cmd_tx_workq]
+ 1215 root             2       0      0 I<    [kworker/R-ipa_interrupt_wq] [kworker/R-ipa_interrupt_wq]
+ 1216 root             2       0      0 I<    [kworker/R-ipawq36]         [kworker/R-ipawq36]
+ 1217 root             2       0      0 I<    [kworker/R-iparepwq36]      [kworker/R-iparepwq36]
+ 1218 root             2       0      0 I<    [kworker/R-ipawq33]         [kworker/R-ipawq33]
+ 1219 root             2       0      0 I<    [kworker/R-iparepwq33]      [kworker/R-iparepwq33]
+ 1220 root             2       0      0 I<    [kworker/R-ipafreepagewq33] [kworker/R-ipafreepagewq33]
+ 1221 root             2       0      0 I<    [kworker/R-ipawq32]         [kworker/R-ipawq32]
+ 1222 root             2       0      0 I<    [kworker/R-iparepwq32]      [kworker/R-iparepwq32]
+ 1223 root             2       0      0 I<    [kworker/R-drm_dp]          [kworker/R-drm_dp]
+ 1224 root             2       0      0 I<    [kworker/R-ipa_uc_holb_wq]  [kworker/R-ipa_uc_holb_wq]
+ 1225 root             2       0      0 I<    [kworker/R-cds_recovery_workqueue] [kworker/R-cds_recovery_workqueue]
+ 1226 root             2       0      0 S     [wlan_logging_thread]       [wlan_logging_thread]
+ 1227 root             2       0      0 I<    [kworker/R-clnt_req]        [kworker/R-clnt_req]
+ 1228 root             2       0      0 I<    [kworker/R-soc:pmic-glink:ucsi-glink-con1] [kworker/R-soc:pmic-glink:ucsi-glink-con1]
+ 1231 root             2       0      0 S     [irq/120-arm-smmu-context-fault] [irq/120-arm-smmu-context-fault]
+ 1233 root             2       0      0 I<    [kworker/R-sdm_dp_audio_notify] [kworker/R-sdm_dp_audio_notify]
+ 1234 root             2       0      0 I<    [kworker/R-hdcp_1x_1]       [kworker/R-hdcp_1x_1]
+ 1235 root             2       0      0 I     [hdcp_2x]                   [hdcp_2x]
+ 1236 root             2       0      0 I     [dp_hdcp2p2]                [dp_hdcp2p2]
+ 1239 root             2       0      0 S     [crtc_commit:206]           [crtc_commit:206]
+ 1240 root             2       0      0 S     [crtc_event:206]            [crtc_event:206]
+ 1241 root             2       0      0 S     [crtc_commit:285]           [crtc_commit:285]
+ 1242 root             2       0      0 S     [crtc_event:285]            [crtc_event:285]
+ 1243 root             2       0      0 S     [crtc_commit:298]           [crtc_commit:298]
+ 1244 root             2       0      0 S     [crtc_event:298]            [crtc_event:298]
+ 1247 root             2       0      0 S     [crtc_commit:311]           [crtc_commit:311]
+ 1248 root             2       0      0 S     [crtc_event:311]            [crtc_event:311]
+ 1249 root             2       0      0 S     [crtc_commit:324]           [crtc_commit:324]
+ 1250 root             2       0      0 S     [crtc_event:324]            [crtc_event:324]
+ 1251 root             2       0      0 S     [crtc_commit:337]           [crtc_commit:337]
+ 1252 root             2       0      0 S     [crtc_event:337]            [crtc_event:337]
+ 1253 root             2       0      0 S     [crtc_commit:350]           [crtc_commit:350]
+ 1254 root             2       0      0 S     [crtc_event:350]            [crtc_event:350]
+ 1256 root             2       0      0 S     [crtc_commit:363]           [crtc_commit:363]
+ 1257 root             2       0      0 S     [crtc_event:363]            [crtc_event:363]
+ 1259 root             2       0      0 S     [pp_event]                  [pp_event]
+ 1260 root             2       0      0 S     [card0-crtc0]               [card0-crtc0]
+ 1261 root             2       0      0 S     [card0-crtc1]               [card0-crtc1]
+ 1262 root             2       0      0 S     [card0-crtc2]               [card0-crtc2]
+ 1263 root             2       0      0 S     [card0-crtc3]               [card0-crtc3]
+ 1264 root             2       0      0 S     [card0-crtc4]               [card0-crtc4]
+ 1265 root             2       0      0 S     [card0-crtc5]               [card0-crtc5]
+ 1266 root             2       0      0 S     [card0-crtc6]               [card0-crtc6]
+ 1267 root             2       0      0 S     [card0-crtc7]               [card0-crtc7]
+ 1269 root             2       0      0 I<    [kworker/R-single_tap_cancel] [kworker/R-single_tap_cancel]
+ 1270 root             2       0      0 I<    [kworker/R-tpd_wq]          [kworker/R-tpd_wq]
+ 1271 root             2       0      0 I<    [kworker/R-tpd_report_wq]   [kworker/R-tpd_report_wq]
+ 1275 root             2       0      0 I<    [kworker/R-cam-cpas]        [kworker/R-cam-cpas]
+ 1318 root             2       0      0 I<    [kworker/R-qcom,cam_virtual_cdm] [kworker/R-qcom,cam_virtual_cdm]
+ 1319 root             2       0      0 I<    [kworker/R-rt-cdm0_0]       [kworker/R-rt-cdm0_0]
+ 1320 root             2       0      0 I<    [kworker/R-rt-cdm0_1]       [kworker/R-rt-cdm0_1]
+ 1321 root             2       0      0 I<    [kworker/R-rt-cdm0_2]       [kworker/R-rt-cdm0_2]
+ 1322 root             2       0      0 I<    [kworker/R-rt-cdm0_3]       [kworker/R-rt-cdm0_3]
+ 1323 root             2       0      0 I<    [kworker/R-rt-cdm1_0]       [kworker/R-rt-cdm1_0]
+ 1324 root             2       0      0 I<    [kworker/R-rt-cdm1_1]       [kworker/R-rt-cdm1_1]
+ 1325 root             2       0      0 I<    [kworker/R-rt-cdm1_2]       [kworker/R-rt-cdm1_2]
+ 1326 root             2       0      0 I<    [kworker/R-rt-cdm1_3]       [kworker/R-rt-cdm1_3]
+ 1327 root             2       0      0 I<    [kworker/R-rt-cdm2_0]       [kworker/R-rt-cdm2_0]
+ 1328 root             2       0      0 I<    [kworker/R-rt-cdm2_1]       [kworker/R-rt-cdm2_1]
+ 1329 root             2       0      0 I<    [kworker/R-rt-cdm2_2]       [kworker/R-rt-cdm2_2]
+ 1330 root             2       0      0 I<    [kworker/R-rt-cdm2_3]       [kworker/R-rt-cdm2_3]
+ 1331 root             2       0      0 I<    [kworker/R-rt-cdm3_0]       [kworker/R-rt-cdm3_0]
+ 1332 root             2       0      0 I<    [kworker/R-rt-cdm3_1]       [kworker/R-rt-cdm3_1]
+ 1333 root             2       0      0 I<    [kworker/R-rt-cdm3_2]       [kworker/R-rt-cdm3_2]
+ 1334 root             2       0      0 I<    [kworker/R-rt-cdm3_3]       [kworker/R-rt-cdm3_3]
+ 1335 root             2       0      0 I<    [kworker/R-rt-cdm4_0]       [kworker/R-rt-cdm4_0]
+ 1336 root             2       0      0 I<    [kworker/R-rt-cdm4_1]       [kworker/R-rt-cdm4_1]
+ 1337 root             2       0      0 I<    [kworker/R-rt-cdm4_2]       [kworker/R-rt-cdm4_2]
+ 1338 root             2       0      0 I<    [kworker/R-rt-cdm4_3]       [kworker/R-rt-cdm4_3]
+ 1339 root             2       0      0 S     [glink_cdsp]                [glink_cdsp]
+ 1340 root             2       0      0 S     [qrtr_rx]                   [qrtr_rx]
+ 1341 root             2       0      0 S     [glink-IPCRTR]              [glink-IPCRTR]
+ 1342 root             2       0      0 S     [glink-mpam-glink-apps-dsp] [glink-mpam-glink-apps-dsp]
+ 1343 root             2       0      0 S     [irq/121-arm-smmu-context-fault] [irq/121-arm-smmu-context-fault]
+ 1344 root             2       0      0 S     [irq/122-arm-smmu-context-fault] [irq/122-arm-smmu-context-fault]
+ 1345 root             2       0      0 S     [irq/123-arm-smmu-context-fault] [irq/123-arm-smmu-context-fault]
+ 1346 root             2       0      0 S     [irq/124-arm-smmu-context-fault] [irq/124-arm-smmu-context-fault]
+ 1347 root             2       0      0 S     [irq/125-arm-smmu-context-fault] [irq/125-arm-smmu-context-fault]
+ 1348 root             2       0      0 S     [irq/126-arm-smmu-context-fault] [irq/126-arm-smmu-context-fault]
+ 1349 root             2       0      0 S     [irq/127-arm-smmu-context-fault] [irq/127-arm-smmu-context-fault]
+ 1350 root             2       0      0 S     [irq/128-arm-smmu-context-fault] [irq/128-arm-smmu-context-fault]
+ 1351 root             2       0      0 S     [irq/129-arm-smmu-context-fault] [irq/129-arm-smmu-context-fault]
+ 1352 root             2       0      0 S     [irq/130-arm-smmu-context-fault] [irq/130-arm-smmu-context-fault]
+ 1353 root             2       0      0 S     [irq/131-arm-smmu-context-fault] [irq/131-arm-smmu-context-fault]
+ 1354 root             2       0      0 S     [glink-fastrpcglink-apps-dsp] [glink-fastrpcglink-apps-dsp]
+ 1355 root             2       0      0 S     [glink-cdsprmglink-apps-dsp] [glink-cdsprmglink-apps-dsp]
+ 1356 root             2       0      0 S     [glink-cvp-glink-apps-dsp]  [glink-cvp-glink-apps-dsp]
+ 1357 root             2       0      0 S     [irq/436-CCI0]              [irq/436-CCI0]
+ 1358 root             2       0      0 I<    [kworker/R-cam_cci_wq]      [kworker/R-cam_cci_wq]
+ 1359 root             2       0      0 I<    [kworker/R-cam_cci_wq]      [kworker/R-cam_cci_wq]
+ 1360 root             2       0      0 S     [irq/437-CCI1]              [irq/437-CCI1]
+ 1361 root             2       0      0 I<    [kworker/R-cam_cci_wq]      [kworker/R-cam_cci_wq]
+ 1362 root             2       0      0 I<    [kworker/R-cam_cci_wq]      [kworker/R-cam_cci_wq]
+ 1363 root             2       0      0 S     [irq/438-CCI2]              [irq/438-CCI2]
+ 1364 root             2       0      0 I<    [kworker/R-cam_cci_wq]      [kworker/R-cam_cci_wq]
+ 1365 root             2       0      0 I<    [kworker/R-cam_cci_wq]      [kworker/R-cam_cci_wq]
+ 1368 root             2       0      0 S     [glink_adsp]                [glink_adsp]
+ 1369 root             2       0      0 S     [glink-glink_ssr]           [glink-glink_ssr]
+ 1370 root             2       0      0 S     [glink-mhi_sat]             [glink-mhi_sat]
+ 1371 root             2       0      0 S     [qrtr_rx]                   [qrtr_rx]
+ 1372 root             2       0      0 S     [glink-IPCRTR]              [glink-IPCRTR]
+ 1373 root             2       0      0 S     [irq/132-arm-smmu-context-fault] [irq/132-arm-smmu-context-fault]
+ 1374 root             2       0      0 S     [irq/133-arm-smmu-context-fault] [irq/133-arm-smmu-context-fault]
+ 1375 root             2       0      0 S     [irq/134-arm-smmu-context-fault] [irq/134-arm-smmu-context-fault]
+ 1376 root             2       0      0 S     [irq/135-arm-smmu-context-fault] [irq/135-arm-smmu-context-fault]
+ 1377 root             2       0      0 S     [irq/136-arm-smmu-context-fault] [irq/136-arm-smmu-context-fault]
+ 1378 root             2       0      0 S     [irq/137-arm-smmu-context-fault] [irq/137-arm-smmu-context-fault]
+ 1379 root             2       0      0 I<    [kworker/R-pdr_notifier_wq] [kworker/R-pdr_notifier_wq]
+ 1380 root             2       0      0 I<    [kworker/R-pdr_notifier_wq] [kworker/R-pdr_notifier_wq]
+ 1381 root             2       0      0 I<    [kworker/R-pdr_notifier_wq] [kworker/R-pdr_notifier_wq]
+ 1382 root             2       0      0 S     [glink-fastrpcglink-apps-dsp] [glink-fastrpcglink-apps-dsp]
+ 1383 root             2       0      0 I<    [kworker/R-pdr_notifier_wq] [kworker/R-pdr_notifier_wq]
+ 1384 root             2       0      0 S     [glink-adsp_apps]           [glink-adsp_apps]
+ 1385 root             2       0      0 S     [glink-sleepmonglink-apps-adsp] [glink-sleepmonglink-apps-adsp]
+ 1386 root             2       0      0 S     [glink-bt_cp_ctrl]          [glink-bt_cp_ctrl]
+ 1396 root             2       0      0 S     [irq/452-synaptics_tcm]     [irq/452-synaptics_tcm]
+ 1397 root             2       0      0 I<    [kworker/R-syna_reflash]    [kworker/R-syna_reflash]
+ 1398 root             2       0      0 I<    [kworker/R-synaptics_tcm_helper] [kworker/R-synaptics_tcm_helper]
+ 1407 root             2       0      0 I<    [kworker/R-syna_charger_detect] [kworker/R-syna_charger_detect]
+ 1527 root             2       0      0 I<    [kworker/R-charger-policy-service] [kworker/R-charger-policy-service]
+ 1601 root             2       0      0 S     [f2fs_flush-254:59]         [f2fs_flush-254:59]
+ 1602 root             2       0      0 S     [f2fs_discard-254:59]       [f2fs_discard-254:59]
+ 1603 root             2       0      0 S     [f2fs_gc-254:59]            [f2fs_gc-254:59]
+ 1605 system           1 10918440  4356 S     tpperceiver                 tpperceiver
+ 1608 root             2       0      0 I<    [kworker/R-perfmgr_wq]      [kworker/R-perfmgr_wq]
+ 1632 tombstoned       1 10781168  2816 S     tombstoned                  tombstoned
+ 1681 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1682 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1683 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1684 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1685 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1686 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1687 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1688 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1689 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1691 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1692 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1693 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1694 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1695 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1696 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1697 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1698 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1699 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1700 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1701 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1702 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1703 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1704 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1705 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1706 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1707 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1708 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1709 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1710 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1711 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1712 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1713 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1714 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1715 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1716 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1717 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1718 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1719 root             2       0      0 I<    [kworker/R-kverityd]        [kworker/R-kverityd]
+ 1720 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1721 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1722 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1723 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1724 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1726 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1738 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1739 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1740 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1741 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1742 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1743 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1744 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1745 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1746 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1747 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1748 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1749 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1750 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1751 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1752 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1753 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1754 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1755 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1756 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1757 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1758 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1759 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1760 root             2       0      0 I<    [kworker/R-ext4-rsv-conversion] [kworker/R-ext4-rsv-conversion]
+ 1790 root             1 10818528  3216 S     boot_rescue                 boot_rescue --res 104857600 --step 10485760 --overflow 524288000 --underflow 10485760
+ 1796 system           1 10953720  4092 S     time_daemon                 time_daemon
+ 1848 root             1 11204932  9384 S     netd                        netd
+ 1850 statsd           1 10952880  4968 S     statsd                      statsd
+ 1851 root             1 15103640 172920 S    zygote64                    zygote64
+ 1852 root             2       0      0 I<    [kworker/R-at_usb0]         [kworker/R-at_usb0]
+ 1853 root             2       0      0 I<    [kworker/R-at_usb1]         [kworker/R-at_usb1]
+ 1854 root             2       0      0 I<    [kworker/R-at_usb2]         [kworker/R-at_usb2]
+ 1855 root             2       0      0 I<    [kworker/R-qdss]            [kworker/R-qdss]
+ 1856 root             2       0      0 I<    [kworker/R-qdss_mdm]        [kworker/R-qdss_mdm]
+ 1857 root             2       0      0 I<    [kworker/R-qdss_sw]         [kworker/R-qdss_sw]
+ 1866 root          1848 10836784  3256 S     iptables-restore            iptables-restore --noflush -w -v
+ 1867 root          1848 10816304  3360 S     ip6tables-restore           ip6tables-restore --noflush -w -v
+ 1926 system           1 12664412  5400 S     hlosminkdaemon              hlosminkdaemon
+ 1928 system           1 10842612  5876 S     sscrpcd                     sscrpcd sensorspd adsp
+ 1929 system           1 10881264  5384 S     diag-router                 diag-router
+ 1951 system           1 10906352  4176 S     qccsyshal_aidl-service      qccsyshal_aidl-service
+ 1952 bluetooth        1 11141340  6980 S     android.hardware.bluetooth@aidl-service-qti android.hardware.bluetooth@aidl-service-qti
+ 1953 media            1 10942604  5320 S     android.hardware.drm-service.clearkey android.hardware.drm-service.clearkey
+ 1954 gps              1 11467656 10484 S     android.hardware.gnss-aidl-service-qti android.hardware.gnss-aidl-service-qti
+ 1961 system           1 10863568  5064 S     android.hardware.health-service.qti android.hardware.health-service.qti
+ 1966 system           1 10829692  4920 S     android.hardware.ir-service android.hardware.ir-service
+ 1967 system           1 10872456  6100 S     android.hardware.power-service android.hardware.power-service
+ 1972 system           1 10907408  4988 S     android.hardware.powerstats-service.qti android.hardware.powerstats-service.qti
+ 1973 nfc              1 10925960  4764 S     android.hardware.secure_element-service-aidl android.hardware.secure_element-service-aidl
+ 1978 nobody           1 11051716  4936 S     android.hardware.security.secretkeeper-service-qti android.hardware.security.secretkeeper-service-qti
+ 1994 system           1 11196944  9884 S     android.hardware.sensors-service.multihal android.hardware.sensors-service.multihal
+ 1995 root             1 10892680  5416 S     android.hardware.thermal-service.qti android.hardware.thermal-service.qti
+ 1996 system           1 10835076  4904 S     android.hardware.usb-service.qti android.hardware.usb-service.qti
+ 1997 wifi             1 11027768 15500 S     android.hardware.wifi-service android.hardware.wifi-service
+ 2001 audioserver      1 12193848 26156 S     audiohalservice.qti         audiohalservice.qti
+ 2002 media            1 11175732  7912 S     hexlpservice                hexlpservice -domain signed
+ 2003 media            1 11153960  8176 S     hexlpservice                hexlpservice -domain unsigned
+ 2004 nobody           1 10874264  4660 S     vendor.qti.hardware.memtrack-service vendor.qti.hardware.memtrack-service
+ 2006 system           1 10978900  6768 S     poweropt-service            poweropt-service
+ 2007 media            1 10826852  4716 S     qconfigservice              qconfigservice
+ 2008 system           1 11245596  8332 S     qesdk-manager               qesdk-manager
+ 2009 system           1 10943784  6008 S     qesdk-secmanager            qesdk-secmanager
+ 2010 system           1 10861472  4992 S     snapdragon_services         snapdragon_services
+ 2011 system           1 10877424  5316 S     vendor.btaudio_intermediate.btaudiointeraidl-service vendor.btaudio_intermediate.btaudiointeraidl-service
+ 2012 cameraserver     1 14076772 49644 S     vendor.qti.camera.provider-service_64 vendor.qti.camera.provider-service_64
+ 2018 system           1 10903504  4712 S     vendor.qti.hardware.capabilityconfigstore-service vendor.qti.hardware.capabilityconfigstore-service
+ 2023 system           1 11112588 11472 S     vendor.qti.hardware.display.allocator-service vendor.qti.hardware.display.allocator-service
+ 2024 system           1 11484428 25372 S<    vendor.qti.hardware.display.composer-service vendor.qti.hardware.display.composer-service
+ 2025 system           1 10780724  4880 S     dspservice                  dspservice
+ 2028 system           1 10778172  4632 S     vendor.qti.hardware.lights.service vendor.qti.hardware.lights.service
+ 2029 root             1 11498376 12812 S     vendor.qti.hardware.perf2-hal-service vendor.qti.hardware.perf2-hal-service
+ 2031 system           1 10827560  5160 S     vendor.qti.hardware.servicetrackeraidl-service vendor.qti.hardware.servicetrackeraidl-service
+ 2036 mediacodec       1 11160888 18288 S     media.hwcodec               media.hwcodec /vendor.qti.media.c2@1.0-service
+ 2037 mediacodec       1 10958416  9624 S     media.audio.qc.codec        media.audio.qc.codec .qti.media.c2audio@1.0-service
+ 2039 system           1 10893032  4904 S     vendor.qti.qspa-service     vendor.qti.qspa-service
+ 2040 system           1 10867552  5476 S     vendor.qti.qspmhal-service  vendor.qti.qspmhal-service
+ 2044 system           1 10904620  4928 S     vendor.qti.syshealthmon-service vendor.qti.syshealthmon-service
+ 2046 media            1 10872852  4040 S     android.hardware.cas-service.example android.hardware.cas-service.example
+ 2050 media            1 10963684  6940 S     android.hardware.drm-service.widevine android.hardware.drm-service.widevine
+ 2061 system           1 10909128  3832 S     pd-mapper                   pd-mapper
+ 2063 system           1 10891276  4764 S     pm-service                  pm-service
+ 2064 audioserver      1 12116696 36872 S     audioserver                 audioserver
+ 2066 gpu_service      1 10994028  6892 S     gpuservice                  gpuservice
+ 2073 system           1 11505264 97780 S     surfaceflinger              surfaceflinger
+ 2074 system           1 10787484  3104 S     usbudev                     usbudev
+ 2078 system           1 10897064  4912 S     qsap_sensors                qsap_sensors
+ 2079 nobody           1 10905872  3812 S     rmt_storage                 rmt_storage
+ 2080 vendor_rfs       1 10840256  3884 S     tftp_server                 tftp_server
+ 2082 root             1 11038368  5312 S     vendordiag                  vendordiag
+ 2099 radio            1 12943448 19776 S     qcrilNrd                    qcrilNrd
+ 2100 radio            1 12513468 17960 S     qcrilNrd                    qcrilNrd -c 2
+ 2106 system           1 10857284  5548 S     qwesd                       qwesd
+ 2127 root             2       0      0 S     [irq/138-arm-smmu-context-fault] [irq/138-arm-smmu-context-fault]
+ 2134 root             2       0      0 S     [irq/454-swr_master_irq]    [irq/454-swr_master_irq]
+ 2136 root             2       0      0 S     [irq/455-swr_master_irq]    [irq/455-swr_master_irq]
+ 2137 root             2       0      0 S     [irq/456-swr_master_irq]    [irq/456-swr_master_irq]
+ 2141 system           1 10977532  4840 S     pm-proxy                    pm-proxy
+ 2166 root             2       0      0 I<    [kworker/R-aw882xx]         [kworker/R-aw882xx]
+ 2200 root             2       0      0 I<    [kworker/R-aw882xx]         [kworker/R-aw882xx]
+ 2205 drm              1 11068364  6296 S     drmserver                   drmserver
+ 2209 nobody           1 10806192  3456 S     traced_probes               traced_probes
+ 2216 nobody           1 11018864  6592 S     traced                      traced
+ 2233 root             2       0      0 S     [irq/468-swr_wake_irq]      [irq/468-swr_wake_irq]
+ 2352 system           1 10868404  4976 S     tcmd                        tcmd
+ 2371 radio            1 11012984  4272 S     qmipriod                    qmipriod
+ 2373 radio            1 11206720  7572 S     shsusrd                     shsusrd 0x22819000 0x0A
+ 2377 system           1 11178492  7308 S     vendor.dpmd                 vendor.dpmd
+ 2387 system           1 10943192  9160 S     cnss_diag                   cnss_diag -q -f -t HELIUM
+ 2388 cameraserver     1 11256328 29320 S     cameraserver                cameraserver
+ 2391 system           1 11924280 32660 S     gppservice                  gppservice
+ 2394 incidentd        1 10874652  4760 S     incidentd                   incidentd
+ 2396 root             1 10932920  4728 S     nubiahealthd                nubiahealthd -from=dumpstate
+ 2398 root             1 10890804  8144 S     zperfcubeservice            zperfcubeservice
+ 2399 root             1 10884996  7096 S     installd                    installd
+ 2400 mediaex          1 11444140 25056 S     media.extractor             media.extractor aextractor
+ 2403 media            1 10981952 16368 S     media.metrics               media.metrics diametrics
+ 2404 media            1 12020252 58624 S     mediaserver                 mediaserver
+ 2407 root             1 11005676  7976 SN    storaged                    storaged
+ 2409 wifi             1 10781768  6544 S     wificond                    wificond
+ 2416 system           1 11050136  7436 S     perfservice                 perfservice
+ 2417 root             1 10788980  2804 S     vendorcfgdeamon             vendorcfgdeamon
+ 2421 system           1 11322724  9672 S     cnd                         cnd
+ 2430 system           1 11024764  6592 S     qsap_dcfd                   qsap_dcfd
+ 2431 radio            1 10998884  5644 S     dlsc                        dlsc
+ 2439 radio            1 11399312  7520 S     imsdaemon                   imsdaemon
+ 2441 radio            1 10942820  4008 S     ipacm-diag                  ipacm-diag
+ 2443 radio            1 10987828  5276 S     ipacm                       ipacm
+ 2445 radio            1 12003388  7340 S     nicmd                       nicmd
+ 2447 radio            1 10867696  4204 S     port-bridge                 port-bridge
+ 2451 radio            1 11897368 12144 S     qms                         qms
+ 2452 radio            1 11144676  5060 S     tlpd                        tlpd boot
+ 2457 system           1 10844640  5072 S     qsap_mpamsvc                qsap_mpamsvc
+ 2459 system           1 10986556  5684 S     qsap_qapeservice            qsap_qapeservice
+ 2485 system           1 10966696  5892 S     adsprpcd                    adsprpcd rootpd adsp
+ 2487 system           1 10888872  6060 S     cdsprpcd                    cdsprpcd rootpd cdsp
+ 2522 mediacodec       1 12107092 31752 S     media.swcodec               media.swcodec oid.media.swcodec/bin/mediaswcodec
+ 2524 radio            1 10989808  4240 S     qti                         qti
+ 2525 system           1 10983876  5716 S     cnss-daemon                 cnss-daemon -n -l
+ 2529 radio            1 10772800  2856 S     ssgqmigd                    ssgqmigd
+ 2531 gps              1 10812376  4752 S     mlid                        mlid
+ 2534 system           1 10984648  7052 S     vendor.zte.fingerprint.ztecmdaidl-service vendor.zte.fingerprint.ztecmdaidl-service
+ 2535 system           1 10884040  5552 S     gatekeeperd                 gatekeeperd /data/misc/gatekeeper
+ 2537 root             1 10843696  6648 S     update_engine               update_engine --logtostderr --logtofile --foreground
+ 2540 root             1 10882312  4220 S     bootservice                 bootservice
+ 2565 radio         2452 10977044  4800 S     tlpd                        tlpd 02000000
+ 2577 system           1 10837416  8024 S     qsguard                     qsguard
+ 2588 root             1 10943924  4992 S     ssdaemon                    ssdaemon
+ 2604 system           1 10961072  5836 S     feature_enabler_client      feature_enabler_client
+ 2622 system           1 10979656  6420 S     qcc-vendor                  qcc-vendor
+ 2766 gps              1 11102820  8212 S     lowi-server                 lowi-server
+ 2783 root             1 10861020  5456 S     vendor.zte.ldd.cmd-service  vendor.zte.ldd.cmd-service
+ 2811 system           1 10873932  5584 S     vendor.qti.hardware.soter-service vendor.qti.hardware.soter-service
+ 2844 system           1 10876596  5476 S     vendor.zte.fingerprint.ifaaaidl-service vendor.zte.fingerprint.ifaaaidl-service
+ 2852 gps              1 11114572  8960 S     xtra-daemon                 xtra-daemon
+ 2868 radio            1 10930056  4184 S     adpl                        adpl
+ 2898 shell            1 11065088 12444 S     adbd                        adbd --root_seclabel=u:r:su:s0 --tim_seclabel=u:r:adbd_tradeinmode:s0
+ 2904 root             1 11051952  6304 S     NookModemDaemon             NookModemDaemon -i 0
+ 2907 root             1 11213744  6984 S     ssdaemon_vendor             ssdaemon_vendor -c libss-qti.so
+ 2928 root             1 11211032  6572 S     ssdaemon_vendor             ssdaemon_vendor -c libss-modem.so -i 0
+ 2939 root             1 11015792  6012 S     NookModemDaemon             NookModemDaemon -i 1
+ 2940 root             1 11099224  6540 S     ssdaemon_vendor             ssdaemon_vendor -c libss-modem.so -i 1
+ 2956 gps              1 10873032  4104 S     loc_launcher                loc_launcher
+ 2981 root             2       0      0 S     [irq/469-gf]                [irq/469-gf]
+ 3033 root             2       0      0 S     [gmu_f2h]                   [gmu_f2h]
+ 3133 root             2       0      0 S     [glink_modem]               [glink_modem]
+ 3187 root             2       0      0 S     [qrtr_rx]                   [qrtr_rx]
+ 3188 root             2       0      0 S     [glink-IPCRTR]              [glink-IPCRTR]
+ 3242 root             2       0      0 S     [glink-LOOPBACK_CTL_MPSS]   [glink-LOOPBACK_CTL_MPSS]
+ 3329 system        1851 26272176 829336 S<L  system_server               system_server
+ 3396 root             2       0      0 I<    [kworker/6:24H]             [kworker/6:24H]
+ 3398 root             2       0      0 I<    [kworker/6:25H-inputboost_wq] [kworker/6:25H-inputboost_wq]
+ 3701 root             2       0      0 S     [glink-DS]                  [glink-DS]
+ 3702 root             2       0      0 S     [glink-DATA1]               [glink-DATA1]
+ 3703 root             2       0      0 S     [glink-DATA4]               [glink-DATA4]
+ 3705 root             2       0      0 S     [glink-DATA11]              [glink-DATA11]
+ 3951 root             2       0      0 I<    [kworker/R-ipawq34]         [kworker/R-ipawq34]
+ 3952 root             2       0      0 I<    [kworker/R-iparepwq34]      [kworker/R-iparepwq34]
+ 3987 root             2       0      0 I<    [kworker/R-ipawq104]        [kworker/R-ipawq104]
+ 3988 root             2       0      0 I<    [kworker/R-iparepwq104]     [kworker/R-iparepwq104]
+ 3997 root             2       0      0 I<    [kworker/R-ipawq120]        [kworker/R-ipawq120]
+ 3998 root             2       0      0 I<    [kworker/R-iparepwq120]     [kworker/R-iparepwq120]
+ 4005 root             2       0      0 I<    [kworker/R-ipawq95]         [kworker/R-ipawq95]
+ 4007 root             2       0      0 I<    [kworker/R-iparepwq95]      [kworker/R-iparepwq95]
+ 4008 root             2       0      0 I<    [kworker/R-ipafreepagewq95] [kworker/R-ipafreepagewq95]
+ 4015 root             2       0      0 I<    [kworker/R-ipawq35]         [kworker/R-ipawq35]
+ 4016 root             2       0      0 I<    [kworker/R-iparepwq35]      [kworker/R-iparepwq35]
+ 4017 root             2       0      0 I<    [kworker/R-ipawq105]        [kworker/R-ipawq105]
+ 4018 root             2       0      0 I<    [kworker/R-iparepwq105]     [kworker/R-iparepwq105]
+ 4019 root             2       0      0 I<    [kworker/R-ipafreepagewq105] [kworker/R-ipafreepagewq105]
+ 4020 root             2       0      0 I<    [kworker/R-ipawq121]        [kworker/R-ipawq121]
+ 4021 root             2       0      0 I<    [kworker/R-iparepwq121]     [kworker/R-iparepwq121]
+ 4022 root             2       0      0 I<    [kworker/R-ipafreepagewq121] [kworker/R-ipafreepagewq121]
+ 4056 root             2       0      0 I<    [kworker/R-wda_wq]          [kworker/R-wda_wq]
+ 4228 u0_a468       1851 19663976 443556 S    com.android.systemui        com.android.systemui
+ 4279 webview_zygote 1851 17137752 84384 S    webview_zygote              webview_zygote
+ 4309 network_stack 1851 17059096 138524 S    com.android.networkstack.process com.android.networkstack.process
+ 4346 u0_a453       1851 16743296 115412 S    com.zte.toolsmanager        com.zte.toolsmanager
+ 4364 radio         1851 16863376 113172 S    .dataservices               .dataservices
+ 4371 oem_2918      1851 16846172 107380 S    .cacertservice              .cacertservice
+ 4378 u0_a407       1851 17046384 118732 S    com.qti.phone               com.qti.phone
+ 4396 u0_a384       1851 17048752 125892 S    .qms                        .qms
+ 4404 u0_a460       1851 16739400 113620 S    com.qualcomm.qtil.aptxals   com.qualcomm.qtil.aptxals
+ 4423 u0_a466       1851 16804368 119648 S    org.codeaurora.ims          org.codeaurora.ims
+ 4451 secure_element 1851 16732816 105800 S   com.android.se              com.android.se
+ 4468 system        1851 17142920 182756 S    com.fingerprint.sensorservice com.fingerprint.sensorservice
+ 4484 system        1851 16942804 113056 S    vendor.qti.frameworks.utils vendor.qti.frameworks.utils
+ 4497 u0_a383       1851 17161648 121888 S    .qtidataservices            .qtidataservices
+ 4506 radio         1851 17982456 163360 S    com.android.phone           com.android.phone
+ 4508 u0_a458       1851 16697764 103772 S    vendor.qti.bluetooth.xpan   vendor.qti.bluetooth.xpan
+ 4532 u0_a444       1851 16779416 106728 S    com.zte.nook.modem          com.zte.nook.modem
+ 4549 u0_a471       1851 16781152 111352 S    com.qti.qcc                 com.qti.qcc
+ 4566 u0_a464       1851 16708120 105108 S    com.qualcomm.qtil.aptxui    com.qualcomm.qtil.aptxui
+ 4581 u0_a463       1851 17715400 303816 S    com.zte.mifavor.launcher    com.zte.mifavor.launcher
+ 4593 u0_a306       1851 16946844 145052 S    cn.nubia.fan                cn.nubia.fan
+ 4621 u0_a349       1851 17651108 193828 S    cn.nubia.gameassist         cn.nubia.gameassist
+ 4674 system        1851 16749996 112144 S    com.zte.mifavor.launcher.adapter com.zte.mifavor.launcher.adapter
+ 4707 system        1851 17028436 134176 S    com.android.settings        com.android.settings
+ 4762 u0_a457       1851 17627568 118308 S    com.zte.voicemodel          com.zte.voicemodel
+ 4832 u0_a474       1851 16697708 102716 S    com.android.smspush         com.android.smspush
+ 4927 u0_a405       1851 45281444 495448 S<   com.google.android.gms      com.google.android.gms
+ 5030 u0_a489       1851 17270540 127096 S    com.google.android.permissioncontroller com.google.android.permissioncontroller
+ 5092 u0_a496       1851 16757412 112520 S    com.google.android.cellbroadcastreceiver com.google.android.cellbroadcastreceiver
+ 5158 root             2       0      0 S     [f2fs_ckpt-254:59]          [f2fs_ckpt-254:59]
+ 5162 radio         2451 11145572 10232 S     qsap_qms_0                  qsap_qms_0 4 qms 1 11
+ 5241 u0_a507       1851 16892672 132780 S    com.google.android.ext.services com.google.android.ext.services
+ 5250 u0_a316       1851 16860680 113936 S    com.zte.gallerylockscreen   com.zte.gallerylockscreen
+ 5286 system        1851 16732240 111508 S    com.android.aftersaleservice com.android.aftersaleservice
+ 5401 system           1 10838556  4888 S     qspmsvc                     qspmsvc
+ 5409 root             1 10918768  3600 S     qlm-service                 qlm-service
+ 5414 system           1 10911440  6448 S     qt-service                  qt-service
+ 5428 system           1 10823908  5600 S     vendor.qti.hardware.vibrator.service vendor.qti.hardware.vibrator.service
+ 5447 u0_a532       1851 17561744 210980 S<   dev.patrickgold.florisboard dev.patrickgold.florisboard
+ 5505 u0_a454       1851 16843092 116096 S    com.google.android.setupwizard com.google.android.setupwizard
+ 5563 u0_a462       1851 16736784 108920 S    com.qualcomm.location       com.qualcomm.location
+ 5650 system        1851 16812480 116660 S    zte.com.cn.alarmclock       zte.com.cn.alarmclock
+ 5719 system           1 10973592  5888 S     vendor.qti.hardware.alarm-service vendor.qti.hardware.alarm-service
+ 5777 radio            1 11110164  5892 S     ims-dataservice-daemon      ims-dataservice-daemon
+ 5778 radio            1 11076560  6988 S     ims_rtp_daemon              ims_rtp_daemon
+ 5779 root             1 13624536  5256 S<    thermal-engine-v2           thermal-engine-v2
+ 6026 u0_a278       1851 16864368 135108 S    android.process.acore       android.process.acore
+ 6403 root             2       0      0 S     [qrtr_rx]                   [qrtr_rx]
+ 6412 root             2       0      0 S<    [scheduler_thread]          [scheduler_thread]
+ 6413 root             2       0      0 S     [ipa_log_thread]            [ipa_log_thread]
+ 6414 root             2       0      0 S<    [dp_refill_thread]          [dp_refill_thread]
+ 6415 root             2       0      0 S<    [dp_rx_thread_0]            [dp_rx_thread_0]
+ 6416 root             2       0      0 S<    [dp_rx_thread_1]            [dp_rx_thread_1]
+ 6417 root             2       0      0 S<    [dp_rx_thread_2]            [dp_rx_thread_2]
+ 6418 root             2       0      0 S<    [dp_rx_thread_3]            [dp_rx_thread_3]
+ 6419 root             2       0      0 S<    [dp_rx_thread_4]            [dp_rx_thread_4]
+ 6433 wifi             1 10957652  8200 S     wpa_supplicant              wpa_supplicant -O/data/vendor/wifi/wpa/sockets -puse_p2p_group_interface=1 -dd -g@android:wpa_wlan0
+ 6587 u0_a504       1851 17672288 178012 S    com.google.android.providers.media.module com.google.android.providers.media.module
+ 6590 u0_a393       1851 17653484 170240 S    com.google.android.as       com.google.android.as
+ 6601 u0_a406       1851 18218036 183320 S    com.google.android.googlequicksearchbox:interactor com.google.android.googlequicksearchbox:interactor
+ 6638 u0_a402       1851 17272108 167820 S    com.google.android.apps.messaging:rcs com.google.android.apps.messaging:rcs
+ 6666 system        1851 16738316 113816 S    com.ztefingerprint.service  com.ztefingerprint.service
+ 6685 system        1851 16716348 103728 S    com.zte.thermald            com.zte.thermald
+ 6686 u0_a326       1851 16805432 120048 S    com.zte.privacyzone         com.zte.privacyzone
+ 6689 u0_a287       1851 16821036 118432 S    com.zte.device.state        com.zte.device.state
+ 6702 nfc           1851 16840808 121036 S    com.android.nfc             com.android.nfc
+ 6743 system        1851 17068744 155992 S    com.zte.zgesture            com.zte.zgesture
+ 6769 system        1851 16919576 122152 S    com.zte.linkspeedup         com.zte.linkspeedup
+ 6799 u0_a291       1851 16759788 109944 S    com.zte.faceverify          com.zte.faceverify
+ 6840 u0_a317       1851 16717580 103948 S    com.zte.thermalbridge       com.zte.thermalbridge
+ 6867 u0_a283       1851 16778388 149788 SL   com.zte.aiengine            com.zte.aiengine
+ 6889 system        1851 16981080 125108 S    com.android.subsys          com.android.subsys
+ 6903 system        1851 16900716 142456 S    com.zte.powersavemode       com.zte.powersavemode
+ 6976 u0_a406       1851 45072552 328844 S    com.google.android.googlequicksearchbox:googleapp com.google.android.googlequicksearchbox:googleapp
+ 7016 u0_a300       1851 17158220 135500 S    cn.nubia.gamelauncher       cn.nubia.gamelauncher
+ 7067 system        1851 17527316 107980 S    com.android.ztescreenshot   com.android.ztescreenshot
+ 7135 u0_a327       1851 16875020 126644 S    com.zte.zdm                 com.zte.zdm
+ 7234 u0_a541       1851 17256888 124280 S    com.ejemplo.app23 com.ejemplo.app23
+ 7269 u0_a340       1851 16906892 122816 S    com.dts.dtsxultra           com.dts.dtsxultra
+ 7279 u0_a451       1851 16795080 111516 S    com.zte.heartyservice.strategy com.zte.heartyservice.strategy
+ 7380 u0_a285       1851 16833580 124488 S    android.process.media       android.process.media
+ 7439 u0_a402       1851 18421516 304024 S    com.google.android.apps.messaging com.google.android.apps.messaging
+ 7572 u0_a282       1851 16736476 111224 S    com.android.providers.calendar com.android.providers.calendar
+ 7603 u0_a406       1851 44802012 327020 S<   com.google.android.googlequicksearchbox:search com.google.android.googlequicksearchbox:search
+ 7949 u0_a366       1851 16799088 119964 S    cn.nubia.gamewidget         cn.nubia.gamewidget
+ 8342 u0_a405       1851 17643872 240456 S    com.google.android.gms.unstable com.google.android.gms.unstable
+ 8390 root             2       0      0 I<    [kworker/1:2H-kblockd]      [kworker/1:2H-kblockd]
+ 8569 system        1851 17788448 151892 S    com.zte.floatassist         com.zte.floatassist
+ 8680 system        1851 17553284 108240 S    com.zte.floatassist:remoteservice com.zte.floatassist:remoteservice
+ 9058 u0_a394       1851 17190076 124428 S    com.google.android.apps.restore com.google.android.apps.restore
+ 9128 u0_a412       1851 16925392 116444 S    cn.zte.aigcinput            cn.zte.aigcinput
+ 9190 u0_a485       1851 16941500 123940 S    com.google.android.rkpdapp  com.google.android.rkpdapp
+ 9221 u0_a386       1851 16923176 112964 S    com.google.android.projection.gearhead:provider com.google.android.projection.gearhead:provider
+ 9259 u0_a302       1851 16703232 103612 S    com.android.managedprovisioning com.android.managedprovisioning
+ 9377 u0_a377       1851 17265356 134776 S    com.facebook.appmanager     com.facebook.appmanager
+ 9500 u0_a321       1851 17816524 151808 S    com.facebook.services       com.facebook.services
+ 9645 nfc              1 10811836  5664 S     android.hardware.nfc-service-aidl android.hardware.nfc-service-aidl
+ 9706 u0_a386       1851 17026628 124288 S    com.google.android.projection.gearhead:car com.google.android.projection.gearhead:car
+ 9781 u0_a424       1851 16818728 119940 S    com.google.android.webview:webview_service com.google.android.webview:webview_service
+10024 u0_a401       1851 17052448 136160 S    com.google.android.apps.turbo:aab com.google.android.apps.turbo:aab
+10220 u0_a405       1851 17472388 254120 S    com.google.android.gms:identitycredentials com.google.android.gms:identitycredentials
+10274 u0_a405       1851 42759404 268036 S    com.google.android.gms.ui   com.google.android.gms.ui
+10347 u0_a420       1851 17707712 142112 S    com.google.android.inputmethod.latin com.google.android.inputmethod.latin
+10597 u0_a431       1851 17945964 238576 S    com.google.android.tts      com.google.android.tts
+10661 u0_a388       1851 17325972 131916 S    com.google.android.verifier com.google.android.verifier
+11141 u0_a403       1851 17179336 154000 S    com.google.android.apps.wellbeing com.google.android.apps.wellbeing
+11353 u0_a296       1851 16758032 106764 S    com.zte.beautifyadapter     com.zte.beautifyadapter
+11489 system        1851 16721948 108532 S    com.zte.distservice.servicemanager com.zte.distservice.servicemanager
+11515 u0_a511       1851 16784292 115432 S    cn.nubia.notepad.preset     cn.nubia.notepad.preset
+11573 u0_a503       1851 16726540 103692 S    com.google.android.photopicker com.google.android.photopicker
+11609 system        1851 16836628 125044 S    com.zte.powersavemode:service com.zte.powersavemode:service
+11635 u0_a286       1851 16697896 106468 S    com.android.externalstorage com.android.externalstorage
+12179 u0_a493       1851 16772220 107944 S    com.google.android.adservices.api com.google.android.adservices.api
+12310 u0_a440       1851 17815700 154104 S    com.google.android.apps.photos:mediametadataservice com.google.android.apps.photos:mediametadataservice
+12365 system        1851 17073412 179096 S    system:ui                   system:ui
+12895 u0_i9009      4279 330072400 182160 S   com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+13159 system           1 10862744  4572 S     wfdvndservice               wfdvndservice
+15072 u0_a338       1851 16741312 109720 S    com.zte.gamecardassist      com.zte.gamecardassist
+16513 u0_a543       1851 20653140 435404 S    com.ejemplo.app26            com.ejemplo.app26
+16643 root             2       0      0 I<    [kworker/7:1H-kblockd]      [kworker/7:1H-kblockd]
+16650 root             2       0      0 I<    [kworker/3:0H-fsverity_read_queue] [kworker/3:0H-fsverity_read_queue]
+16651 root             2       0      0 I<    [kworker/3:1H-kverityd]     [kworker/3:1H-kverityd]
+17297 u0_a391       1851 16888060 116240 S    com.google.android.partnersetup com.google.android.partnersetup
+17328 u0_a414       1851 17145452 153928 S    com.google.android.contacts com.google.android.contacts
+17532 system        1851 16814668 108240 S    com.android.DeviceAsWebcam  com.android.DeviceAsWebcam
+17591 u0_a430       1851 18504276 234936 S    com.google.android.apps.maps com.google.android.apps.maps
+17703 root             2       0      0 I     [kworker/1:2-sock_diag_events] [kworker/1:2-sock_diag_events]
+18319 root             2       0      0 I     [kworker/u32:3-kgsl-lockless-work] [kworker/u32:3-kgsl-lockless-work]
+18742 root             2       0      0 I<    [kworker/4:7H]              [kworker/4:7H]
+19096 root             2       0      0 I     [kworker/5:0-events]        [kworker/5:0-events]
+19205 u0_a288       1851 16753784 117388 S    cn.zte.chargeseparation     cn.zte.chargeseparation
+19364 u0_a454       1851 16818788 115084 S    com.google.android.setupwizard:remote com.google.android.setupwizard:remote
+19522 root             2       0      0 I     [kworker/6:2-events_power_efficient] [kworker/6:2-events_power_efficient]
+19605 system        1851 16718532 109080 S    com.android.keychain        com.android.keychain
+19679 root             2       0      0 I     [kworker/7:1-events]        [kworker/7:1-events]
+19681 u0_a404       1851 18407528 241056 S    com.android.vending:background com.android.vending:background
+19718 root             2       0      0 I<    [kworker/5:0H-fsverity_read_queue] [kworker/5:0H-fsverity_read_queue]
+19790 system        1851 16719228 106200 S    cn.nubia.gpu.drivers        cn.nubia.gpu.drivers
+19862 root             2       0      0 I<    [kworker/4:0H-kverityd]     [kworker/4:0H-kverityd]
+19863 root             2       0      0 I     [kworker/2:0-mm_percpu_wq]  [kworker/2:0-mm_percpu_wq]
+19865 u0_a404       1851 17506200 155412 S    com.android.vending:quick_launch com.android.vending:quick_launch
+19949 root             2       0      0 I<    [kworker/u33:0-mhi_offload_wq] [kworker/u33:0-mhi_offload_wq]
+20090 root             2       0      0 I     [kworker/u32:6-memlat_wq]   [kworker/u32:6-memlat_wq]
+20099 root             2       0      0 I     [kworker/u32:16-memlat_wq]  [kworker/u32:16-memlat_wq]
+20113 root             2       0      0 I     [kworker/u32:30-kgsl-lockless-work] [kworker/u32:30-kgsl-lockless-work]
+20143 u0_a310       1851 17669820 129984 S    com.android.camera          com.android.camera
+20174 root             2       0      0 I     [kworker/u32:32-adb]        [kworker/u32:32-adb]
+20235 u0_a378       1851 17049196 165932 S    com.zte.weather             com.zte.weather
+20375 u0_a552       1851 21095752 247864 S    com.ejemplo.app54           com.ejemplo.app54
+20409 u0_a552       1851 17021184 127192 S    com.ejemplo.app54:crashhelper_disable_art_image_ com.ejemplo.app54:crashhelper_disable_art_image_
+20734 root             2       0      0 I     [kworker/4:3-events]        [kworker/4:3-events]
+20816 u0_a526       1851 45991756 309676 S    com.ejemplo.app22          com.ejemplo.app22
+20966 root             2       0      0 I<    [kworker/5:1H-fsverity_read_queue] [kworker/5:1H-fsverity_read_queue]
+20992 root             2       0      0 I<    [kworker/u33:2-hal_register_write_wq] [kworker/u33:2-hal_register_write_wq]
+21065 u0_i9012      4279 16691248 107232 S    com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+21100 u0_a413       1851 41499460 140020 S    com.android.chrome          com.android.chrome
+21260 root             2       0      0 I     [kworker/3:2-events]        [kworker/3:2-events]
+21352 root             2       0      0 I     [kworker/5:1-mm_percpu_wq]  [kworker/5:1-mm_percpu_wq]
+21355 root             2       0      0 I     [kworker/0:3-events]        [kworker/0:3-events]
+21454 root             2       0      0 I     [kworker/3:1-pm]            [kworker/3:1-pm]
+21564 root             2       0      0 S<    [irq/277-dwc3]              [irq/277-dwc3]
+21565 root             2       0      0 I     [kworker/0:4-events]        [kworker/0:4-events]
+21577 root             2       0      0 I     [kworker/1:0-mm_percpu_wq]  [kworker/1:0-mm_percpu_wq]
+21662 u0_a300       1851 17063092 165272 S    com.nubia.tgkservice        com.nubia.tgkservice
+21663 u0_a361       1851 16741204 122036 S    cn.nubia.gamepad            cn.nubia.gamepad
+21704 root             2       0      0 I     [kworker/6:1-events]        [kworker/6:1-events]
+21709 root             2       0      0 I     [kworker/7:0]               [kworker/7:0]
+21761 root             2       0      0 I     [kworker/2:2-mm_percpu_wq]  [kworker/2:2-mm_percpu_wq]
+21768 root             2       0      0 I     [kworker/4:0-events]        [kworker/4:0-events]
+21801 root             2       0      0 I     [kworker/1:1-events]        [kworker/1:1-events]
+21806 root             2       0      0 I     [kworker/0:0-pm]            [kworker/0:0-pm]
+21847 u0_a404       1851 18591944 287692 S    com.android.vending         com.android.vending
+21890 root             2       0      0 I     [kworker/5:2-pm]            [kworker/5:2-pm]
+21936 root             2       0      0 I     [kworker/u32:0-kgsl-lockless-work] [kworker/u32:0-kgsl-lockless-work]
+21941 root             2       0      0 I     [kworker/6:0-events]        [kworker/6:0-events]
+21944 root             2       0      0 I     [kworker/u32:1-memlat_wq]   [kworker/u32:1-memlat_wq]
+21953 root             2       0      0 I     [kworker/3:0-pm]            [kworker/3:0-pm]
+21973 root             2       0      0 I<    [kworker/5:2H-fsverity_read_queue] [kworker/5:2H-fsverity_read_queue]
+21974 root             2       0      0 I<    [kworker/5:3H-fsverity_read_queue] [kworker/5:3H-fsverity_read_queue]
+21975 root             2       0      0 I<    [kworker/5:4H-kverityd]     [kworker/5:4H-kverityd]
+21976 root             2       0      0 I<    [kworker/5:5H-fsverity_read_queue] [kworker/5:5H-fsverity_read_queue]
+21977 root             2       0      0 I<    [kworker/5:6H-kverityd]     [kworker/5:6H-kverityd]
+22067 root             2       0      0 I     [kworker/u32:2-memlat_wq]   [kworker/u32:2-memlat_wq]
+22068 root             2       0      0 I     [kworker/u32:4-kgsl-lockless-work] [kworker/u32:4-kgsl-lockless-work]
+22208 root             2       0      0 I     [kworker/4:1-events]        [kworker/4:1-events]
+22219 root             2       0      0 I     [kworker/5:3]               [kworker/5:3]
+22238 root             2       0      0 I     [kworker/2:1]               [kworker/2:1]
+22264 root             2       0      0 I     [kworker/0:1-events]        [kworker/0:1-events]
+22265 root             2       0      0 I     [kworker/0:2]               [kworker/0:2]
+22325 root             2       0      0 I<    [kworker/1:0H-kverityd]     [kworker/1:0H-kverityd]
+22340 artd             1 10952512 13640 S     artd                        artd
+22359 root             2       0      0 I<    [kworker/u33:1-hal_register_write_wq] [kworker/u33:1-hal_register_write_wq]
+22412 root             2       0      0 I<    [kworker/R-dsi_err_workq]   [kworker/R-dsi_err_workq]
+22464 root             2       0      0 I     [kworker/7:2]               [kworker/7:2]
+22525 shell         2898 10849476  5308 Rs    ps                          ps -A -o PID,USER,PPID,VSZ,RSS,STAT,NAME,ARGS
+24489 root             2       0      0 I<    [kworker/0:0H]              [kworker/0:0H]
+24627 system           1 11047732  9116 S     virtualizationservice       virtualizationservice
+24673 u0_i9006      4279 330001780 143104 S   com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+25327 u0_a421       1851 18850716 211468 S    com.google.android.apps.docs com.google.android.apps.docs
+25535 u0_a415       1851 18227728 163600 S    com.google.android.calendar com.google.android.calendar
+25644 u0_a405       1851 17303944 207456 S    com.google.android.gms:snet com.google.android.gms:snet
+26425 root             2       0      0 I<    [kworker/7:0H-kverityd]     [kworker/7:0H-kverityd]
+26473 system        1851 16736368 112548 S    cn.nubia.gamepi             cn.nubia.gamepi
+26525 u0_a322       1851 16768672 116568 SN   cn.nubia.virtualgamehandle  cn.nubia.virtualgamehandle
+26544 u0_a343       1851 16829056 122368 S    cn.nubia.gamehelperline     cn.nubia.gamehelperline
+26619 u0_a347       1851 16964616 161804 S    cn.zte.gamefloat            cn.zte.gamefloat
+26697 u0_a313       1851 17162792 125424 S    cn.nubia.redmagickyi.digitalhuman.service cn.nubia.redmagickyi.digitalhuman.service
+26723 u0_a313       1851 16780156 117840 S    cn.nubia.redmagickyi.digitalhuman.client.presist cn.nubia.redmagickyi.digitalhuman.client.presist
+26955 u0_a440       1851 20066648 413424 S<   com.google.android.apps.photos com.google.android.apps.photos

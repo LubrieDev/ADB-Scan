@@ -1,0 +1,134 @@
+Load: 4.6 / 4.9 / 5.22
+CPU usage from 109750ms to 1441ms ago (2026-11-13 20:08:26.732 to 2026-11-13 20:10:15.041):
+  2.7% 3329/system_server: 1.8% user + 0.8% kernel / faults: 33850 minor 11 major
+  2.2% 2073/surfaceflinger: 1.4% user + 0.7% kernel / faults: 2878 minor
+  2.1% 26955/com.google.android.apps.photos: 1.5% user + 0.5% kernel / faults: 15095 minor 1 major
+  1.9% 4228/com.android.systemui: 1.3% user + 0.6% kernel / faults: 23703 minor 16 major
+  1.2% 1239/crtc_commit:206: 0% user + 1.2% kernel
+  0.8% 2024/vendor.qti.hardware.display.composer-service: 0.5% user + 0.2% kernel / faults: 114 minor 2 major
+  0.6% 1240/crtc_event:206: 0% user + 0.6% kernel
+  0.5% 2387/cnss_diag: 0.3% user + 0.1% kernel
+  0.5% 1212/kgsl_hwsched: 0% user + 0.5% kernel
+  0.1% 21355/kworker/0:3-events: 0% user + 0.1% kernel
+  0.3% 1994/android.hardware.sensors-service.multihal: 0.3% user + 0% kernel / faults: 4 minor
+  0.3% 2534/vendor.zte.fingerprint.ztecmdaidl-service: 0% user + 0.3% kernel / faults: 11 minor
+  0.2% 20099/kworker/u32:16-wmi_rx_event_work_queue: 0% user + 0.2% kernel / faults: 8 minor
+  0.2% 1997/android.hardware.wifi-service: 0.1% user + 0.1% kernel / faults: 355 minor
+  0.2% 6889/com.android.subsys: 0.2% user + 0% kernel / faults: 3901 minor
+  0.2% 4927/com.google.android.gms: 0.1% user + 0% kernel / faults: 2313 minor 5 major
+  0.2% 4581/com.zte.mifavor.launcher: 0.1% user + 0% kernel / faults: 6862 minor 11 major
+  0.2% 20174/kworker/u32:32-async: 0% user + 0.2% kernel
+  0.1% 829/irq/243-310b3400.qcom,bwmon-llcc-gold: 0% user + 0.1% kernel
+  0.1% 1372/glink-IPCRTR: 0% user + 0.1% kernel
+  0.1% 6686/com.zte.privacyzone: 0.1% user + 0% kernel / faults: 212 minor 1 major
+  0% 17591/com.google.android.apps.maps: 0% user + 0% kernel / faults: 3608 minor 1134 major
+  0.1% 22067/kworker/u32:2-kgsl-lockless-work: 0% user + 0.1% kernel
+  0% 82/kcompactd0: 0% user + 0% kernel
+  0.1% 22068/kworker/u32:4-kvfree_rcu_reclaim: 0% user + 0.1% kernel / faults: 6 minor
+  0.1% 3033/gmu_f2h: 0% user + 0.1% kernel
+  0.1% 21806/kworker/0:0-pm: 0% user + 0.1% kernel
+  0.1% 21936/kworker/u32:0-memlat_wq: 0% user + 0.1% kernel / faults: 7 minor
+  0.1% 19949/kworker/u33:0-mhi_offload_wq: 0% user + 0.1% kernel
+  0.1% 2451/qms: 0% user + 0% kernel
+  0% 21944/kworker/u32:1-memlat_wq: 0% user + 0% kernel / faults: 8 minor
+  0% 2029/vendor.qti.hardware.perf2-hal-service: 0% user + 0% kernel / faults: 19 minor
+  0% 25327/com.google.android.apps.docs: 0% user + 0% kernel / faults: 92 minor 7 major
+  0% 4506/com.android.phone: 0% user + 0% kernel / faults: 930 minor 6 major
+  0% 1226/wlan_logging_thread: 0% user + 0% kernel
+  0% 2421/cnd: 0% user + 0% kernel
+  0% 6433/wpa_supplicant: 0% user + 0% kernel
+  0% 999/logd: 0% user + 0% kernel
+  0% 6976/com.google.android.googlequicksearchbox:googleapp: 0% user + 0% kernel / faults: 255 minor 1 major
+  0% 20090/kworker/u32:6-async: 0% user + 0% kernel
+  0% 93/kswapd0: 0% user + 0% kernel
+  0% 1396/irq/452-synaptics_tcm: 0% user + 0% kernel
+  0% 1850/statsd: 0% user + 0% kernel
+  0% 2898/adbd: 0% user + 0% kernel / faults: 3564 minor 1 major
+  0% 4468/com.fingerprint.sensorservice: 0% user + 0% kernel / faults: 107 minor
+  0% 17703/kworker/1:2-events: 0% user + 0% kernel
+  0% 21890/kworker/5:2-pm: 0% user + 0% kernel
+  0% 904/irq/249-qpt_data_irq: 0% user + 0% kernel
+  0% 4309/com.android.networkstack.process: 0% user + 0% kernel / faults: 692 minor 2 major
+  0% 1211/kgsl-events: 0% user + 0% kernel
+  0% 2377/vendor.dpmd: 0% user + 0% kernel / faults: 826 minor 5 major
+  0% 2396/nubiahealthd: 0% user + 0% kernel
+  0% 4621/cn.nubia.gameassist: 0% user + 0% kernel / faults: 68 minor
+  0% 6412/scheduler_thread: 0% user + 0% kernel
+  0% 7603/com.google.android.googlequicksearchbox:search: 0% user + 0% kernel / faults: 132 minor
+  0% 19681/com.android.vending:background: 0% user + 0% kernel / faults: 19 minor
+  0% 1/init: 0% user + 0% kernel / faults: 109 minor 1 major
+  0% 121/dmabuf-deferred-free-worker: 0% user + 0% kernel
+  0% 294/ueventd: 0% user + 0% kernel
+  0% 893/irq/246-31091000.qcom,bwmon-ddr: 0% user + 0% kernel
+  0% 1000/lmkd: 0% user + 0% kernel
+  0% 1001/servicemanager: 0% user + 0% kernel / faults: 2 minor 1 major
+  0% 1013/android.hardware.security.onekeymint-service-qti: 0% user + 0% kernel
+  0% 1135/android.system.suspend-service: 0% user + 0% kernel
+  0% 1167/glink-PMIC_RTR_SOCCP_APPS: 0% user + 0% kernel
+  0% 1848/netd: 0% user + 0% kernel / faults: 27 minor
+  0% 1961/android.hardware.health-service.qti: 0% user + 0% kernel
+  0% 1995/android.hardware.thermal-service.qti: 0% user + 0% kernel / faults: 6 major
+  0% 2006/poweropt-service: 0% user + 0% kernel
+  0% 4484/vendor.qti.frameworks.utils: 0% user + 0% kernel / faults: 98 minor
+  0% 4593/cn.nubia.fan: 0% user + 0% kernel / faults: 140 minor 17 major
+  0% 6743/com.zte.zgesture: 0% user + 0% kernel / faults: 95 minor 8 major
+  0% 7439/com.google.android.apps.messaging: 0% user + 0% kernel / faults: 76 minor 3 major
+  0% 8569/com.zte.floatassist: 0% user + 0% kernel / faults: 185 minor 4 major
+  0% 16651/kworker/3:1H-kblockd: 0% user + 0% kernel
+  0% 19679/kworker/7:1-pm: 0% user + 0% kernel
+  0% 19862/kworker/4:0H-kblockd: 0% user + 0% kernel
+  0% 20375/com.ejemplo.app54: 0% user + 0% kernel / faults: 996 minor 29 major
+  0% 22208/kworker/4:1: 0% user + 0% kernel
+  0% 18/rcu_preempt: 0% user + 0% kernel
+  0% 20/rcuop/0: 0% user + 0% kernel
+  0% 33/rcuop/1: 0% user + 0% kernel
+  0% 40/rcuop/2: 0% user + 0% kernel
+  0% 54/rcuog/4: 0% user + 0% kernel
+  0% 69/rcuop/6: 0% user + 0% kernel
+  0% 509/prng_seeder: 0% user + 0% kernel
+  0% 816/Surge kthread: 0% user + 0% kernel
+  0% 875/kworker/0:3H-kverityd: 0% user + 0% kernel
+  0% 955/msm_hw_fence_soccp_listener: 0% user + 0% kernel
+  0% 1017/battery_record_daemon: 0% user + 0% kernel
+  0% 1602/f2fs_discard-254:59: 0% user + 0% kernel
+  0% 1603/f2fs_gc-254:59: 0% user + 0% kernel
+  0% 1867/ip6tables-restore: 0% user + 0% kernel
+  0% 1929/diag-router: 0% user + 0% kernel
+  0% 2023/vendor.qti.hardware.display.allocator-service: 0% user + 0% kernel
+  0% 2031/vendor.qti.hardware.servicetrackeraidl-service: 0% user + 0% kernel
+  0% 2064/audioserver: 0% user + 0% kernel
+  0% 2099/qcrilNrd: 0% user + 0% kernel / faults: 39 minor
+  0% 2388/cameraserver: 0% user + 0% kernel
+  0% 2398/zperfcubeservice: 0% user + 0% kernel
+  0% 2443/ipacm: 0% user + 0% kernel
+  0% 2525/cnss-daemon: 0% user + 0% kernel
+  0% 2766/lowi-server: 0% user + 0% kernel
+  0% 2783/vendor.zte.ldd.cmd-service: 0% user + 0% kernel
+  0% 4346/com.zte.toolsmanager: 0% user + 0% kernel / faults: 290 minor 13 major
+  0% 4396/.qms: 0% user + 0% kernel / faults: 104 minor
+  0% 5030/com.google.android.permissioncontroller: 0% user + 0% kernel / faults: 57 minor 33 major
+  0% 5158/f2fs_ckpt-254:59: 0% user + 0% kernel
+  0% 5250/com.zte.gallerylockscreen: 0% user + 0% kernel / faults: 12 minor
+  0% 5409/qlm-service: 0% user + 0% kernel
+  0% 5447/dev.patrickgold.florisboard: 0% user + 0% kernel / faults: 119 minor
+  0% 6587/com.google.android.providers.media.module: 0% user + 0% kernel / faults: 55 minor
+  0% 6638/com.google.android.apps.messaging:rcs: 0% user + 0% kernel / faults: 279 minor 4 major
+  0% 6702/com.android.nfc: 0% user + 0% kernel / faults: 15 minor 1 major
+  0% 6769/com.zte.linkspeedup: 0% user + 0% kernel / faults: 34 minor
+  0% 10597/com.google.android.tts: 0% user + 0% kernel / faults: 34 minor
+  0% 11609/com.zte.powersavemode:service: 0% user + 0% kernel / faults: 39 minor
+  0% 12895/com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0: 0% user + 0% kernel / faults: 38 minor
+  0% 18319/kworker/u32:3-kgsl-lockless-work: 0% user + 0% kernel
+  0% 19205/cn.zte.chargeseparation: 0% user + 0% kernel / faults: 29 minor
+  0% 19522/kworker/6:2-events: 0% user + 0% kernel
+  0% 20734/kworker/4:3-pm: 0% user + 0% kernel
+  0% 21260/kworker/3:2-mm_percpu_wq: 0% user + 0% kernel
+  0% 21662/com.nubia.tgkservice: 0% user + 0% kernel / faults: 27 minor
+  0% 21977/kworker/5:6H-kblockd: 0% user + 0% kernel
+  0% 25644/com.google.android.gms:snet: 0% user + 0% kernel / faults: 14 minor 9 major
+  0% 26697/cn.nubia.redmagickyi.digitalhuman.service: 0% user + 0% kernel / faults: 21 minor
+ +0% 22340/artd: 0% user + 0% kernel
+ +0% 22359/kworker/u33:1-hal_register_write_wq: 0% user + 0% kernel
+ +0% 22412/kworker/R-dsi_err_workq: 0% user + 0% kernel
+ +0% 22464/kworker/7:2: 0% user + 0% kernel
+2.6% TOTAL: 1% user + 1.1% kernel + 0% iowait + 0.3% irq + 0% softirq

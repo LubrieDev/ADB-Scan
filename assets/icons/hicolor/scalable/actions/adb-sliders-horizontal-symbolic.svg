@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs/>
+  <rect fill="#bebebe" x="13" y="3" width="9" height="2" rx="1" ry="1"/>
+  <rect fill="#bebebe" x="2" y="3" width="9" height="2" rx="1" ry="1"/>
+  <rect fill="#bebebe" x="11" y="11" width="11" height="2" rx="1" ry="1"/>
+  <rect fill="#bebebe" x="2" y="11" width="7" height="2" rx="1" ry="1"/>
+  <rect fill="#bebebe" x="15" y="19" width="7" height="2" rx="1" ry="1"/>
+  <rect fill="#bebebe" x="2" y="19" width="11" height="2" rx="1" ry="1"/>
+  <rect fill="#bebebe" x="13" y="1" width="2" height="6" rx="1" ry="1"/>
+  <rect fill="#bebebe" x="7" y="9" width="2" height="6" rx="1" ry="1"/>
+  <rect fill="#bebebe" x="15" y="17" width="2" height="6" rx="1" ry="1"/>
+</svg>

@@ -1,0 +1,13 @@
+Wifi is enabled
+Wifi scanning is only available when wifi is enabled
+==== Primary ClientModeManager instance ====
+Wifi is connected to "Hogar"
+WifiInfo: SSID: "Hogar", BSSID: aa:bb:cc:dd:ee:ff, MAC: 02:11:22:33:44:55, IP: /192.168.1.228, Security type: 2, Supplicant state: COMPLETED, Wi-Fi standard: 11ac, RSSI: -59, Link speed: 234Mbps, Tx Link speed: 234Mbps, Max Supported Tx Link speed: 866Mbps, Calculated Tx : 213Mbps, Rx Link speed: 175Mbps, Max Supported Rx Link speed: 866Mbps, Calculated Rx : 166Mbps, Frequency: 5745MHz, Net ID: 14, Metered hint: false, score: 100, isUsable: true, CarrierMerged: false, SubscriptionId: -1, IsPrimary: 1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none>"Hogar"wpa2-pskMLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>, Vendor Data: <none>
+successfulTxPackets: 70024
+successfulTxPacketsPerSecond: 0.6036649106431037
+retriedTxPackets: 15014
+retriedTxPacketsPerSecond: 0.40506998350082984
+lostTxPackets: 14
+lostTxPacketsPerSecond: 9.501806611851131E-139
+successfulRxPackets: 454509
+successfulRxPacketsPerSecond: 1.5449239610632444

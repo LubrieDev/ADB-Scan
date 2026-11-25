@@ -1,0 +1,13 @@
+  Time on battery: 1d 8h 35m 37s 295ms (63.6%) realtime, 10h 46m 0s 52ms (33.0%) uptime
+  Time on battery screen off: 1d 1h 15m 13s 882ms (77.5%) realtime, 3h 25m 36s 632ms (10.5%) uptime
+  All kernel wake locks:
+  Kernel Wake lock PowerManagerService.WakeLocks: 3h 7m 4s 735ms (8 times) realtime
+  Kernel Wake lock qcom_rx_wakelock: 33m 48s 723ms (8701 times) realtime
+  Kernel Wake lock rmnet_ctl: 2m 36s 189ms (1041 times) realtime
+  Kernel Wake lock IPA_CLIENT_APPS_WAN_LOW_LAT_CONS: 2m 35s 191ms (1041 times) realtime
+  Kernel Wake lock smp2p-sleepstate: 2m 17s 705ms (623 times) realtime
+  All partial wake locks:
+  Wake lock u0a543 *job*r/@androidx.work.systemjobscheduler@com.example.chat/androidx.work.impl.background.systemjob.SystemJobService: 1h 1m 51s 609ms (15 times) max=1807241 actual=4223652 realtime
+  Wake lock u0a543 *job*e/@androidx.work.systemjobscheduler@com.example.chat/androidx.work.impl.background.systemjob.SystemJobService: 8m 54s 310ms (10 times) max=82040 actual=624934 realtime
+  Wake lock 1000 AnyMotionDetector: 23m 21s 195ms (31 times) max=348972 actual=1441658 realtime
+  Wake lock u0a578 AudioMix: 42m 32s 571ms (0 times) max=2676310 actual=2676310 realtime

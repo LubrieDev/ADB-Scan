@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.adbscan.AdbScan</id>
+  <name>ADB Scan</name>
+  <summary>Monitoring, diagnostics and tools for Android phones</summary>
+  <summary xml:lang="es">Supervisión, diagnóstico y herramientas para Android</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <description>
+    <p>Native app (GTK 4 + libadwaita) that detects and monitors Android phones. Without turning anything on in the
+    phone it offers a basic analysis (USB and file transfer); with USB or wireless debugging (QR code or manual
+    pairing): live telemetry, battery, performance, apps, files, logcat, a terminal, screen mirroring with scrcpy,
+    flashing with safeguards and a security audit without root.</p>
+    <p>Everything is processed locally, with no telemetry. It only connects to the Internet when you ask: the public
+    IP (queried by the phone) and downloading platform-tools or scrcpy from the tools assistant. At startup it checks
+    GitHub once for a newer version and only shows a link to it (this can be turned off).</p>
+    <p>The interface is available in English and Spanish.</p>
+  </description>
+  <launchable type="desktop-id">adb-scan.desktop</launchable>
+  <developer id="io.github.lubriedev">
+    <name>LubrieDev</name>
+  </developer>
+  <url type="homepage">https://github.com/LubrieDev/ADB-Scan</url>
+  <url type="bugtracker">https://github.com/LubrieDev/ADB-Scan/issues</url>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="1.0.0" date="2026-11-25">
+      <description>
+        <p>First stable release.</p>
+      </description>
+    </release>
+  </releases>
+</component>
