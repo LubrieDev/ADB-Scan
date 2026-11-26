@@ -63,9 +63,10 @@ completely: tray icon → Quit, or **Ctrl+Q**.
 ## Pages
 
 The sidebar groups the pages in four sections: **Status**, **Manage**,
-**Data** and **Advanced**. Click a section's title to fold or unfold it;
-right-click a page (or press and hold) to pin it to the top, under
-**Pinned**. Both are remembered.
+**Data** and **Advanced**. Click a section's title to fold or unfold it. The
+star that appears next to a page when the pointer is over it adds the page to
+the **Favorites**, at the top (right-click or press and hold does the same);
+click the filled star to take it out. Both are remembered.
 
 The search box at the top of the sidebar filters the pages by name or by
 what is in them (“calls” leaves Control); Enter opens the first one, and when
@@ -259,6 +260,15 @@ reboot.
   the “Install unknown apps” permission, open each app in Apps or turn off
   USB debugging. The report is exported as Markdown. **Delete reports**
   removes the saved ones for that phone (those exported to files are kept).
+- **Phone changes**: a timeline by day of the apps installed, updated and
+  uninstalled, and of the restarts and shutdowns, with Android's reason
+  (“by the user”, “to install a system update”…). Read-only, about 15 seconds.
+  The dates come from Android itself: installs and last updates from the
+  package manager, uninstalls from the battery history (only since it was
+  last reset, which the page tells), restarts from the last few kept by the
+  system. Android keeps no dated history of settings or permissions on a
+  normal phone. **Include preinstalled apps** adds the updates of the apps
+  that came with the phone.
 - **History**: connections, events and operations performed.
 
 ### Advanced
@@ -340,7 +350,9 @@ run only, without changing Preferences.
 ## Preferences
 
 - **General**: language (English or Spanish; applied when ADB Scan
-  restarts), light or dark, accent colour, animations; close to the tray,
+  restarts), light or dark, accent colour (one of eight, or any **custom
+  colour** from the colour picker) and its **intensity** (softer or more
+  vivid), animations; close to the tray,
   start hidden, start with the session; the optional invitation to the
   advanced analysis.
 - **Monitoring**: the telemetry interval with the window open and in the

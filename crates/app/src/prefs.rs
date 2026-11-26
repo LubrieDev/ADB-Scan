@@ -41,14 +41,34 @@ pub fn show(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
     let accents = util::hbox(6);
     accents.set_valign(gtk::Align::Center);
     let mut first: Option<gtk::ToggleButton> = None;
-    for (key, name, bg, _) in theme::ACCENTS {
+    // Applies and saves the accent after a change in the settings.
+    let apply = {
+        let ctx = ctx.clone();
+        move || {
+            theme::apply_accent(&ctx.settings.borrow());
+            ctx.save_settings();
+        }
+    };
+    let presets = theme::ACCENTS.iter().map(|(key, name, bg, _)| (*key, tr(name), bg.to_string()));
+    // The last one is the custom colour, shown with that colour.
+    let custom_css = gtk::CssProvider::new();
+    let custom_rule = |hex: &str| format!("button.accent-custom {{ background: {hex}; min-width: 22px; min-height: 22px; color: {}; }} button.accent-custom:checked {{ box-shadow: 0 0 0 3px alpha({hex}, 0.45); }}", theme::text_on(hex));
+    custom_css.load_from_string(&custom_rule(&s.accent_custom));
+    let mut custom_toggle = None;
+    for (key, name, bg) in presets.chain(std::iter::once(("custom", tr("Custom colour"), s.accent_custom.clone()))) {
         let b = gtk::ToggleButton::new();
-        b.set_tooltip_text(Some(tr(name)));
+        b.set_tooltip_text(Some(name));
         b.set_size_request(26, 26);
         b.add_css_class("circular");
-        let css = gtk::CssProvider::new();
-        css.load_from_string(&format!("button.accent-{key} {{ background: {bg}; min-width: 22px; min-height: 22px; }} button.accent-{key}:checked {{ box-shadow: 0 0 0 3px alpha({bg}, 0.45); }}"));
-        gtk::style_context_add_provider_for_display(&b.display(), &css, gtk::STYLE_PROVIDER_PRIORITY_APPLICATION);
+        if key == "custom" {
+            b.set_icon_name("adb-palette-symbolic");
+            gtk::style_context_add_provider_for_display(&b.display(), &custom_css, gtk::STYLE_PROVIDER_PRIORITY_APPLICATION);
+            custom_toggle = Some(b.clone());
+        } else {
+            let css = gtk::CssProvider::new();
+            css.load_from_string(&format!("button.accent-{key} {{ background: {bg}; min-width: 22px; min-height: 22px; }} button.accent-{key}:checked {{ box-shadow: 0 0 0 3px alpha({bg}, 0.45); }}"));
+            gtk::style_context_add_provider_for_display(&b.display(), &css, gtk::STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
         b.add_css_class(&format!("accent-{key}"));
         if let Some(f) = &first {
             b.set_group(Some(f));
@@ -56,18 +76,77 @@ pub fn show(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
             first = Some(b.clone());
         }
         b.set_active(s.accent == key);
-        let ctx2 = ctx.clone();
+        let (ctx2, apply) = (ctx.clone(), apply.clone());
         b.connect_toggled(move |b| {
             if b.is_active() {
                 ctx2.settings.borrow_mut().accent = key.to_string();
-                theme::apply_accent(key);
-                ctx2.save_settings();
+                apply();
             }
         });
         accents.append(&b);
     }
     accent_row.add_suffix(&accents);
     look.add(&accent_row);
+
+    // The custom colour: choosing one also selects it.
+    let custom_row = adw::ActionRow::builder().title(tr("Custom colour")).subtitle(tr("Any colour, chosen with the colour picker")).build();
+    let picker = gtk::ColorDialogButton::new(Some(gtk::ColorDialog::builder().title(tr("Accent colour")).with_alpha(false).build()));
+    picker.set_valign(gtk::Align::Center);
+    if let Ok(c) = gtk::gdk::RGBA::parse(&s.accent_custom) {
+        picker.set_rgba(&c);
+    }
+    {
+        let (ctx2, apply, toggle, css) = (ctx.clone(), apply.clone(), custom_toggle.clone(), custom_css.clone());
+        picker.connect_rgba_notify(move |p| {
+            let c = p.rgba();
+            let hex = format!("#{:02x}{:02x}{:02x}", (c.red() * 255.0).round() as u8, (c.green() * 255.0).round() as u8, (c.blue() * 255.0).round() as u8);
+            if ctx2.settings.borrow().accent_custom == hex && ctx2.settings.borrow().accent == "custom" {
+                return;
+            }
+            css.load_from_string(&custom_rule(&hex));
+            {
+                let mut s = ctx2.settings.borrow_mut();
+                s.accent_custom = hex;
+                s.accent = "custom".into();
+            }
+            match &toggle {
+                // Selecting the toggle applies and saves.
+                Some(t) if !t.is_active() => t.set_active(true),
+                _ => apply(),
+            }
+        });
+    }
+    custom_row.add_suffix(&picker);
+    look.add(&custom_row);
+
+    // Intensity: from soft (40 %) to vivid (160 %) saturation.
+    let intensity_row = adw::ActionRow::builder().title(tr("Colour intensity")).subtitle(tr("Softer or more vivid accent")).build();
+    let scale = gtk::Scale::with_range(gtk::Orientation::Horizontal, 40.0, 160.0, 5.0);
+    scale.set_value(s.accent_intensity as f64);
+    scale.set_draw_value(false);
+    scale.set_size_request(220, -1);
+    scale.set_valign(gtk::Align::Center);
+    scale.add_mark(100.0, gtk::PositionType::Bottom, None);
+    scale.set_tooltip_text(Some(tr("The middle mark is the colour as chosen")));
+    let reset = util::icon_button("adb-refresh-cw-symbolic", tr("Back to the colour as chosen"));
+    reset.add_css_class("flat");
+    reset.set_valign(gtk::Align::Center);
+    {
+        let (ctx2, apply) = (ctx.clone(), apply.clone());
+        scale.connect_value_changed(move |sc| {
+            let v = (sc.value().round() as u32).clamp(40, 160);
+            if ctx2.settings.borrow().accent_intensity == v {
+                return;
+            }
+            ctx2.settings.borrow_mut().accent_intensity = v;
+            apply();
+        });
+        let sc = scale.clone();
+        reset.connect_clicked(move |_| sc.set_value(100.0));
+    }
+    intensity_row.add_suffix(&scale);
+    intensity_row.add_suffix(&reset);
+    look.add(&intensity_row);
     let anim = adw::SwitchRow::builder().title(tr("Animations")).subtitle(tr("Transitions, smooth charts and animated indicators")).active(s.animations).build();
     look.add(&anim);
     general.add(&look);

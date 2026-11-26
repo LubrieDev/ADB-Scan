@@ -27,8 +27,10 @@ own installer (see [Windows](#windows)).
   rate drops when no window is visible.
 - **Pages**: Overview, Device, Performance, Battery (with history),
   Connection, Network, Apps, Files, Screen (scrcpy), Control, Preinstalled
-  apps, Permissions, Storage, Basic analysis, Phone data, Security, History,
-  Terminal, Logcat, Tools and Flasher. **Ctrl+K** searches pages and actions.
+  apps, Permissions, Storage, Basic analysis, Phone data, Security, Phone
+  changes, History, Terminal, Logcat, Tools and Flasher. **Ctrl+K** searches
+  pages and actions. The star next to a page adds it to the **favorites**, at
+  the top of the sidebar.
 - **Connection**: the cable (USB-C on both ends, USB 3 or USB 2.0 wires, its
   e-marker chip when the PC can read it), the PC's port (speed, lanes, limit,
   location, controller, hubs), the phone's port (roles, moisture detection,
@@ -101,6 +103,10 @@ own installer (see [Windows](#windows)).
   Do Not Disturb, keep the screen on while charging, stop all apps, clear
   caches or open the mirror when a phone (or a specific one) connects. At
   most once every 10 minutes per phone, recorded in History.
+- **Phone changes**: apps installed, updated and uninstalled, and restarts
+  and shutdowns, by day, from what Android itself keeps (read-only).
+- **Your colours**: eight accent colours or any colour of your own, softer or
+  more vivid, in Preferences.
 - **Watcher**: alerts for a maxed-out CPU (with the culprit process), low
   battery and high temperature.
 - **Battery usage per app**: what uses the most, what drains with the screen
@@ -152,7 +158,7 @@ Download the `.deb` of the latest version from
 it (Linux Mint 22 / Ubuntu 24.04 or newer, amd64):
 
 ```bash
-sudo apt install ./adb-scan_1.2.1-1_amd64.deb
+sudo apt install ./adb-scan_1.3.0-1_amd64.deb
 ```
 
 To build the package yourself, use `cargo deb -p adb-scan` (see

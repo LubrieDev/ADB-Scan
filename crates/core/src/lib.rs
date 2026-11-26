@@ -8,6 +8,7 @@ pub mod apk;
 pub mod automation;
 pub mod app_inspect;
 pub mod basic;
+pub mod changes;
 pub mod battery_usage;
 pub mod cleanup;
 pub mod controls;

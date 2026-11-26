@@ -13,7 +13,7 @@ Categories=Utility;System;HardwareSettings;Development;
 Keywords=adb;android;usb;fastboot;scrcpy;debugging;diagnostics;logcat;battery;apk;flash;
 Keywords[es]=adb;android;usb;fastboot;scrcpy;depuración;diagnóstico;logcat;batería;apk;flashear;
 StartupNotify=true
-StartupWMClass=com.adbscan.AdbScan
+StartupWMClass=adb-scan
 DBusActivatable=false
 Actions=Panel;Settings;
 

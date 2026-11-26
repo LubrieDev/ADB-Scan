@@ -1,6 +1,7 @@
 //! Behaviour of the sidebar list: each section can be folded (click its
-//! title), any page can be pinned to the top (right click or long press),
-//! and the search box filters the pages. What is folded and pinned is saved.
+//! title), any page can be added to the favorites at the top (the star that
+//! shows on hover, right click or long press), and the search box filters the
+//! pages. What is folded and favorite is saved (`sidebar_pinned`).
 //!
 //! Rows are found by their page id (the row's widget name), never by
 //! position: pinned pages move to the top.
@@ -28,6 +29,8 @@ pub struct Sidebar {
     pub list: gtk::ListBox,
     search: gtk::SearchEntry,
     entries: Vec<Entry>,
+    /// The star button of each page.
+    stars: std::cell::RefCell<Vec<(&'static str, gtk::Button)>>,
 }
 
 impl Sidebar {
@@ -38,7 +41,7 @@ impl Sidebar {
             .iter()
             .map(|d| Entry { id: d.id, title: d.title, section: d.section, group: defs.iter().find(|o| o.section == d.section).map(|o| o.id).unwrap_or(d.id) })
             .collect();
-        let this = Rc::new_cyclic(|me| Self { me: me.clone(), ctx: ctx.clone(), list: list.clone(), search: search.clone(), entries });
+        let this = Rc::new_cyclic(|me| Self { me: me.clone(), ctx: ctx.clone(), list: list.clone(), search: search.clone(), entries, stars: Default::default() });
         {
             let w = this.me.clone();
             list.set_filter_func(move |row| w.upgrade().map_or(true, |s| s.matches(row)));
@@ -72,6 +75,7 @@ impl Sidebar {
         while let Some(c) = child {
             if let Some(row) = c.downcast_ref::<gtk::ListBoxRow>() {
                 this.add_pin_menu(row);
+                this.add_star(row);
             }
             child = c.next_sibling();
         }
@@ -138,7 +142,7 @@ impl Sidebar {
     /// Group a row is shown in: “pinned” or its section.
     fn group_of(&self, row: &gtk::ListBoxRow) -> Option<(&'static str, &'static str)> {
         let e = self.entry(row)?;
-        Some(if self.pinned(e.id).is_some() { ("pinned", tr("PINNED")) } else { (e.group, e.section) })
+        Some(if self.pinned(e.id).is_some() { ("pinned", tr("FAVORITES")) } else { (e.group, e.section) })
     }
 
     fn header(&self, row: &gtk::ListBoxRow, before: Option<&gtk::ListBoxRow>) {
@@ -165,7 +169,7 @@ impl Sidebar {
         text.set_hexpand(true);
         content.append(&text);
         content.append(&chevron);
-        let button = gtk::Button::builder().child(&content).tooltip_text(if folded { tr("Unfold the section") } else { tr("Fold the section · right-click a page to pin it to the top") }).build();
+        let button = gtk::Button::builder().child(&content).tooltip_text(if folded { tr("Unfold the section") } else { tr("Fold the section · the star next to a page adds it to the favorites") }).build();
         button.add_css_class("flat");
         button.add_css_class("sidebar-section-toggle");
         let w = self.me.clone();
@@ -206,7 +210,26 @@ impl Sidebar {
         self.refresh();
     }
 
-    /// Right click or long press on a page: pin it to the top or unpin it.
+    /// A star at the end of the row (shown on hover, and always on a
+    /// favorite) that adds the page to the favorites or removes it.
+    fn add_star(&self, row: &gtk::ListBoxRow) {
+        let Some(id) = self.id_of(row) else { return };
+        let Some(content) = row.child().and_downcast::<gtk::Box>() else { return };
+        let star = gtk::Button::builder().icon_name("adb-star-symbolic").halign(gtk::Align::End).valign(gtk::Align::Center).hexpand(true).build();
+        star.add_css_class("flat");
+        star.add_css_class("sidebar-star");
+        let w = self.me.clone();
+        star.connect_clicked(move |_| {
+            if let Some(s) = w.upgrade() {
+                s.toggle_pin(id);
+            }
+        });
+        content.append(&star);
+        self.stars.borrow_mut().push((id, star));
+    }
+
+    /// Right click or long press on a page: add it to the favorites or
+    /// remove it.
     fn add_pin_menu(&self, row: &gtk::ListBoxRow) {
         let open = {
             let w = self.me.clone();
@@ -215,7 +238,7 @@ impl Sidebar {
                 let Some(s) = w.upgrade() else { return };
                 let Some(id) = s.id_of(&row) else { return };
                 let pinned = s.pinned(id).is_some();
-                let button = gtk::Button::with_label(if pinned { tr("Unpin") } else { tr("Pin to the top") });
+                let button = gtk::Button::with_label(if pinned { tr("Remove from favorites") } else { tr("Add to favorites") });
                 button.add_css_class("flat");
                 let popover = gtk::Popover::builder().child(&button).has_arrow(true).build();
                 popover.set_parent(&row);
@@ -245,6 +268,16 @@ impl Sidebar {
     /// Folds the rows of the folded sections. The open page stays in view,
     /// and a search shows every match.
     pub fn refresh(&self) {
+        for (id, star) in self.stars.borrow().iter() {
+            let on = self.pinned(id).is_some();
+            star.set_icon_name(if on { "adb-starred-symbolic" } else { "adb-star-symbolic" });
+            star.set_tooltip_text(Some(if on { tr("Remove from favorites") } else { tr("Add to favorites") }));
+            if on {
+                star.add_css_class("on");
+            } else {
+                star.remove_css_class("on");
+            }
+        }
         let searching = self.searching();
         let mut child = self.list.first_child();
         while let Some(c) = child {

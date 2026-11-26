@@ -60,6 +60,7 @@ pub fn page_defs() -> Vec<PageDef> {
         PageDef { id: "basic", title: tr("Basic analysis"), icon: "adb-search-symbolic", section: tr("DATA"), need: Need::Any, build: pages::basic::build },
         PageDef { id: "data", title: tr("Phone data"), icon: "adb-smartphone-lock-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::data::build },
         PageDef { id: "security", title: tr("Security"), icon: "adb-shield-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::security::build },
+        PageDef { id: "changes", title: tr("Phone changes"), icon: "adb-document-open-recent-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::changes::build },
         PageDef { id: "history", title: tr("History"), icon: "adb-history-symbolic", section: tr("DATA"), need: Need::Any, build: pages::history::build },
         PageDef { id: "terminal", title: "Terminal", icon: "adb-square-terminal-symbolic", section: tr("ADVANCED"), need: Need::Any, build: pages::terminal::build },
         PageDef { id: "logcat", title: "Logcat", icon: "adb-scroll-symbolic", section: tr("ADVANCED"), need: Need::Adb, build: pages::logcat::build },

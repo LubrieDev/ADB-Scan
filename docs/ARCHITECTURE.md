@@ -39,6 +39,7 @@ screen: the tests use real outputs captured from a REDMAGIC 11S Pro
 | `remote.rs` | **Remote** (changes the phone): media keys, call/answer/hang up, open links, prepare SMS and find the phone (clock timer). What the user types (numbers, links, messages) is validated and quoted. Read-only reading of the call state (`telephony.registry`) and of what is playing (`media_session`). |
 | `schedule.rs` | Scheduled actions: time, days and action; when each one is due (once per day, with a 5-minute window). Local time with `localtime_r` (respects daylight saving time). The app runs them (`ctx.rs`). |
 | `notifications.rs` | Phone notifications (`dumpsys notification --noredact`, read-only): title, text, ongoing ones and group summaries. Optional and off by default; nothing is stored. |
+| `changes.rs` | **Phone changes** (read-only): one script for the boot reason history (`persist.sys.boot.reason.history`), the uninstalls in the battery history (`pkgunin`, years from its `TIME:` lines), and each package's `firstInstallTime` / `lastUpdateTime` in the phone's time zone (`date +%z`). Factory dates (before 2010) and an install's own “update” are left out. |
 | `debloat.rs` | **Preinstalled apps** (they change the phone): the curated list (package, what it does, risk level, vendor), packages never offered (`is_protected`) and the state read in one script (listed apps still installed, every app removed for the user). Removing is `pm uninstall -k --user 0`; restoring is `cmd package install-existing`. |
 | `permissions.rs` | **Who can do what**: the accesses (runtime permission groups, App Ops, accessibility services, notification listeners) and their holders, from one read-only script (`dumpsys package packages`, user 0 only, up to “Hidden system packages”; `appops query-op`; two secure settings). Taking one away: `pm revoke`, `appops set … deny`, the accessibility list rewritten without the component, `cmd notification disallow_listener`. Permissions fixed by the system or a policy are shown as such. |
 | `storage.rs` | **Storage analyzer**: parses one `du -a -k /sdcard/` walk into a tree; largest files, space by type, places that grow, possible duplicates (same name and size, not caches) and `remove_file` to keep the view right after a deletion. `deletable` limits deletions to files inside `/sdcard/` (`Adb::delete_shared_file` uses `rm -f` without `-r` and checks the file is gone). |
@@ -113,7 +114,8 @@ adds it to the following snapshots.
 | `pages/dashboard.rs` | Overview. `save_health_report` makes the health report (`win.health-report`: the button in Component health, the ⋮ menu and the search), saves it where the user chooses and opens it. |
 | `pages/developer.rs` | Developer tab in Tools. A new resolution or density opens a dialog that undoes it by itself after 15 s without an answer. |
 | `pages/automations.rs` | Automations tab in Control (stored in `Settings::automations`). |
-| `sidebar.rs` | Sidebar list: sections fold from their title, pages can be pinned to the top (right click or long press), the search box filters; folded sections and pinned pages are saved. Rows are found by their page id, never by position. |
+| `sidebar.rs` | Sidebar list: sections fold from their title, pages go to the favorites at the top with the star on each row (shown on hover, filled on a favorite) or a right click / long press, the search box filters; folded sections and favorites (`sidebar_pinned`) are saved. Rows are found by their page id, never by position. |
+| `pages/changes.rs` | Phone changes: the timeline by day, read when shown and again when the phone changes. |
 | `search.rs` | Search everywhere (Ctrl+K, `win.search`): pages and common actions, matched by title and keywords without accents. |
 | `widgets.rs` | Circular gauge, charts, cards, animated bars and `RowList` (virtualised list). |
 | `anim.rs` | Icons with meaningful motion: an app box that opens (Cairo), the terminal cursor (two SVG layers) and arrows that spin during a reload. |
@@ -125,7 +127,7 @@ adds it to the following snapshots.
 | `wireless.rs` | **Ways to connect** dialog (`win.connect::<page>`; `win.wireless` opens the wireless one): basic analysis, USB debugging (live status) and wireless debugging with QR, manual pairing and connection to already paired phones. Waits stop when leaving the page or closing. |
 | `prefs.rs`, `help.rs` | Preferences (including the language and the restart), “About” and screenshots. |
 | `update.rs` | **Update now** (from the update banner): download dialog with the percentage, then the install. On Linux it offers to restart; on Windows ADB Scan quits and the installer opens it again. |
-| `theme.rs`, `style.css` | Light/dark theme, accent colours, styles. |
+| `theme.rs`, `style.css` | Light/dark theme, accent colours, styles. The accent is a palette colour or `accent_custom`, its saturation scaled by `accent_intensity` (HSL, 40–160 %); the text on it is white or near-black, whichever contrasts more. |
 | `util.rs` | Background work (`run_bg`), confirmation dialogs, file choosers, stall diagnosis. |
 
 ### Threads and events

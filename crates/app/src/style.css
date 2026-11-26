@@ -96,6 +96,20 @@
   opacity: 1;
   color: @accent_color;
 }
+/* Favorite star: on hover, or always once the page is a favorite. */
+.navigation-sidebar row button.sidebar-star {
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  margin: -4px 2px -4px 0;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+.navigation-sidebar row:hover button.sidebar-star,
+.navigation-sidebar row button.sidebar-star:focus-visible { opacity: 0.6; }
+.navigation-sidebar row button.sidebar-star:hover { opacity: 1; }
+.navigation-sidebar row button.sidebar-star.on { opacity: 1; }
+.navigation-sidebar row button.sidebar-star.on image { color: @accent_color; opacity: 1; }
 .sidebar-device {
   margin: 8px;
   padding: 10px 12px;

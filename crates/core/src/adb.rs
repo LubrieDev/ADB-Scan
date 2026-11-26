@@ -1325,6 +1325,13 @@ impl Adb {
         self.shell(serial, &["pm", verb, package, permission], NORMAL)?.into_result()
     }
 
+    /// What changed on the phone: apps installed, updated and removed,
+    /// restarts and shutdowns (see [`crate::changes`]). Read-only.
+    pub fn phone_changes(&self, serial: &str) -> Result<crate::changes::Timeline> {
+        let r = self.shell_script(serial, crate::changes::SCRIPT, LONG)?;
+        Ok(crate::changes::parse(&r.stdout))
+    }
+
     /// Every sensitive permission and special access, by app (see
     /// [`crate::permissions`]). Read-only.
     pub fn permission_overview(&self, serial: &str) -> Result<crate::permissions::Overview> {

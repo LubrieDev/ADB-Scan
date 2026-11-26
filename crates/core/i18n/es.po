@@ -9191,8 +9191,8 @@ msgid "fast charging"
 msgstr "carga rápida"
 
 #: crates/app/src/sidebar.rs
-msgid "Fold the section · right-click a page to pin it to the top"
-msgstr "Plegar la sección · clic derecho en una página para fijarla arriba"
+msgid "Fold the section · the star next to a page adds it to the favorites"
+msgstr "Plegar la sección · la estrella junto a una página la añade a favoritos"
 
 #: crates/app/src/pages/connection.rs
 msgid "Measure with each cable or port to compare them; the best one is marked"
@@ -9211,12 +9211,12 @@ msgid "now"
 msgstr "ahora"
 
 #: crates/app/src/sidebar.rs
-msgid "Pin to the top"
-msgstr "Fijar arriba"
+msgid "Add to favorites"
+msgstr "Añadir a favoritos"
 
 #: crates/app/src/sidebar.rs
-msgid "PINNED"
-msgstr "FIJADAS"
+msgid "FAVORITES"
+msgstr "FAVORITOS"
 
 #: crates/app/src/pages/connection.rs
 msgid "Previous measurements ({})"
@@ -9259,8 +9259,8 @@ msgid "Unfold the section"
 msgstr "Desplegar la sección"
 
 #: crates/app/src/sidebar.rs
-msgid "Unpin"
-msgstr "Quitar de arriba"
+msgid "Remove from favorites"
+msgstr "Quitar de favoritos"
 
 msgid "ADB Scan {} is available"
 msgstr "ADB Scan {} está disponible"
@@ -10799,3 +10799,107 @@ msgstr "<p>1.2.0 — actualizaciones desde la app</p><ul><li>Actualizar ahora: A
 #: crates/app/src/help.rs
 msgid "<p>1.2.1</p><ul><li>Publishes the Windows installer, which version 1.2.0 could not build.</li></ul>"
 msgstr "<p>1.2.1</p><ul><li>Publica el instalador de Windows, que la versión 1.2.0 no pudo generar.</li></ul>"
+
+#: crates/app/src/pages/changes.rs
+msgid "Custom colour"
+msgstr "Color personalizado"
+
+#: crates/app/src/pages/changes.rs
+msgid "Any colour, chosen with the colour picker"
+msgstr "Cualquier color, elegido con el selector de color"
+
+#: crates/app/src/pages/changes.rs
+msgid "Colour intensity"
+msgstr "Intensidad del color"
+
+#: crates/app/src/pages/changes.rs
+msgid "Softer or more vivid accent"
+msgstr "Color de acento más suave o más vivo"
+
+#: crates/app/src/pages/changes.rs
+msgid "The middle mark is the colour as chosen"
+msgstr "La marca central es el color tal como se eligió"
+
+#: crates/app/src/pages/changes.rs
+msgid "Back to the colour as chosen"
+msgstr "Volver al color tal como se eligió"
+
+#: crates/app/src/pages/changes.rs
+msgid "Phone changes"
+msgstr "Cambios en el teléfono"
+
+#: crates/app/src/pages/changes.rs
+msgid "by the user"
+msgstr "por el usuario"
+
+#: crates/app/src/pages/changes.rs
+msgid "to install a system update"
+msgstr "para instalar una actualización del sistema"
+
+#: crates/app/src/pages/changes.rs
+msgid "What changed on the phone"
+msgstr "Qué ha cambiado en el teléfono"
+
+#: crates/app/src/pages/changes.rs
+msgid "Apps installed, updated and removed, and restarts, from what Android itself keeps. Android does not keep a dated history of settings or permissions; what ADB Scan changed is in History → Operations."
+msgstr "Apps instaladas, actualizadas y desinstaladas, y reinicios, a partir de lo que guarda el propio Android. Android no guarda un historial con fechas de los ajustes ni de los permisos; lo que cambió ADB Scan está en Historial → Operaciones."
+
+#: crates/app/src/pages/changes.rs
+msgid "Updates of the apps that came with the phone (Google, the manufacturer…)."
+msgstr "Actualizaciones de las apps que venían con el teléfono (Google, el fabricante…)."
+
+#: crates/app/src/pages/changes.rs
+msgid "Reading what changed on the phone (about 15 seconds)…"
+msgstr "Leyendo qué ha cambiado en el teléfono (unos 15 segundos)…"
+
+#: crates/app/src/pages/changes.rs
+msgid "Restarted"
+msgstr "Reiniciado"
+
+#: crates/app/src/pages/changes.rs
+msgid "Nothing to show."
+msgstr "No hay nada que mostrar."
+
+#: crates/app/src/pages/changes.rs
+msgid "1 change."
+msgstr "1 cambio."
+
+#: crates/app/src/pages/changes.rs
+msgid "{} changes."
+msgstr "{} cambios."
+
+#: crates/app/src/pages/changes.rs
+msgid "This phone does not say which apps were uninstalled."
+msgstr "Este teléfono no indica qué apps se desinstalaron."
+
+#: crates/app/src/pages/changes.rs
+msgid "after an error ({})"
+msgstr "tras un error ({})"
+
+#: crates/app/src/pages/changes.rs
+msgid "for safety ({})"
+msgstr "por seguridad ({})"
+
+#: crates/app/src/pages/changes.rs
+msgid "Could not read the changes: {}"
+msgstr "No se pudieron leer los cambios: {}"
+
+#: crates/app/src/pages/changes.rs
+msgid "{} installed"
+msgstr "{} instalada"
+
+#: crates/app/src/pages/changes.rs
+msgid "{} updated"
+msgstr "{} actualizada"
+
+#: crates/app/src/pages/changes.rs
+msgid "Uninstalled apps are known since {}."
+msgstr "Las apps desinstaladas se conocen desde el {}."
+
+#: crates/app/src/pages/changes.rs
+msgid "timeline installed updated uninstalled removed restarts reboots shutdown what changed modifications"
+msgstr "cronología instalada actualizada desinstalada eliminada reinicios apagado qué cambió modificaciones cambios historial"
+
+#: crates/app/src/help.rs
+msgid "<p>1.3.0 — favorites, colours and phone changes</p><ul><li>Favorites: the star next to each section adds it to the top of the sidebar.</li><li>Any accent colour of your own, and its intensity, in Preferences.</li><li>Phone changes: apps installed, updated and uninstalled, and restarts, by day.</li></ul>"
+msgstr "<p>1.3.0 — favoritos, colores y cambios en el teléfono</p><ul><li>Favoritos: la estrella junto a cada sección la añade arriba del panel lateral.</li><li>Cualquier color de acento propio, y su intensidad, en Ajustes.</li><li>Cambios en el teléfono: apps instaladas, actualizadas y desinstaladas, y reinicios, por día.</li></ul>"

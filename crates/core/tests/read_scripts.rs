@@ -1,11 +1,11 @@
 //! The read scripts of the newer pages (Preinstalled apps, Permissions,
-//! Storage, Developer) only read: no verb that changes the phone.
+//! Storage, Developer, Phone changes) only read: no verb that changes the phone.
 
-use adbscan_core::{debloat, devtools, permissions, storage};
+use adbscan_core::{changes, debloat, devtools, permissions, storage};
 
 #[test]
 fn read_scripts_only_read() {
-    for script in [debloat::STATE_SCRIPT, permissions::SCRIPT, devtools::STATE_SCRIPT, storage::SCAN_SCRIPT] {
+    for script in [debloat::STATE_SCRIPT, permissions::SCRIPT, devtools::STATE_SCRIPT, storage::SCAN_SCRIPT, changes::SCRIPT] {
         for forbidden in [
             "setprop",
             "settings put",

@@ -2,6 +2,7 @@ pub mod apps;
 pub mod automations;
 pub mod basic;
 pub mod bulk;
+pub mod changes;
 pub mod connection;
 pub mod control;
 pub mod battery;

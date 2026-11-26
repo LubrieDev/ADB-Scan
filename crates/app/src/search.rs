@@ -39,6 +39,7 @@ fn page_keywords(id: &str) -> &'static str {
         "basic" => tr("without debugging mtp"),
         "data" => tr("imei sim accounts mac public ip"),
         "security" => tr("audit score permissions risk"),
+        "changes" => tr("timeline installed updated uninstalled removed restarts reboots shutdown what changed modifications"),
         "history" => tr("log events sessions charts"),
         "terminal" => tr("shell command console"),
         "logcat" => tr("log errors crash debug"),

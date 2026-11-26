@@ -399,9 +399,9 @@ impl TerminalPage {
 
     fn restyle(&self) {
         let s = self.ctx.settings.borrow();
-        let accent = crate::theme::accent_hex(&s.accent);
+        let accent = crate::theme::accent_color(&s);
         for sess in [&self.phone, &self.pc] {
-            sess.apply_style(&s.terminal_font, s.terminal_scrollback_lines, accent);
+            sess.apply_style(&s.terminal_font, s.terminal_scrollback_lines, &accent);
         }
     }
 

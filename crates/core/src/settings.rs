@@ -128,8 +128,13 @@ pub struct Settings {
     pub theme: ThemeMode,
     /// Interface language (English by default). Applied at startup.
     pub language: Language,
-    /// Accent colour (palette name).
+    /// Accent colour: a palette name, or `custom` for [`Self::accent_custom`].
     pub accent: String,
+    /// The custom accent colour, `#rrggbb`.
+    pub accent_custom: String,
+    /// How vivid the accent is, in percent of its saturation (40–160; 100 is
+    /// the colour as chosen).
+    pub accent_intensity: u32,
     pub animations: bool,
     /// Hides serial numbers, IPs, MACs, Wi-Fi networks and nicknames on screen.
     /// Display only: it does not change data, queries or logs.
@@ -220,6 +225,8 @@ impl Default for Settings {
             panel_pinned: false,
             theme: ThemeMode::System,
             accent: "orange".into(),
+            accent_custom: "#e66100".into(),
+            accent_intensity: 100,
             animations: true,
             privacy_mode: false,
             sidebar_visible: true,
@@ -284,6 +291,11 @@ impl Settings {
         };
         if !renamed.is_empty() {
             self.accent = renamed.into();
+        }
+        self.accent_intensity = self.accent_intensity.clamp(40, 160);
+        let hex = self.accent_custom.trim();
+        if !(hex.len() == 7 && hex.starts_with('#') && hex[1..].chars().all(|c| c.is_ascii_hexdigit())) {
+            self.accent_custom = Settings::default().accent_custom;
         }
         // Migration of older settings: `dark_mode` → `theme`.
         if let Some(Value::Bool(dark)) = self.extra.remove("dark_mode") {
