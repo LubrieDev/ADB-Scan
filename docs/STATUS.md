@@ -1,7 +1,8 @@
 # Status
 
-Version 1.1.0 · 25 November 2026 · Windows version and new sections to
-control the phone. Version 1.0.0 (24 November 2026) was the first stable
+Version 1.2.0 · 25 November 2026 · updates from the app (“Update now”) and
+an installer for Windows. Version 1.1.0 added the Windows version and the
+sections to control the phone; 1.0.0 (24 November 2026) was the first stable
 release.
 
 Everything on this page was checked with a REDMAGIC 11S Pro (Android 16,

@@ -4,11 +4,15 @@ Pushing a tag `vX.Y.Z` runs [`.github/workflows/release.yml`](.github/workflows/
 it checks that the tag matches the version in `Cargo.toml`, builds the `.deb`
 on Ubuntu 24.04 with `cargo-deb` and publishes a GitHub Release with the
 `.deb` attached. Installed copies of ADB Scan see the new release the next
-time they start (a banner with a link to the release page).
+time they start, with an **Update now** button that downloads and installs
+it. That button needs the SHA-256 sum GitHub computes when a file is uploaded
+to a release: upload the files with the workflows (or by hand on the release
+page), never by renaming or replacing them some other way.
 
 The same tag runs [`.github/workflows/windows.yml`](.github/workflows/windows.yml),
-which builds `ADB-Scan-windows-x64.zip` (it also checks the tag against
-`Cargo.toml`) and attaches it to that release. Both workflows add to the same
+which builds the installer `ADB-Scan-<version>-setup-x64.exe` (it also checks
+the tag against `Cargo.toml`, and installs and uninstalls it once) and
+attaches it to that release. Both workflows add to the same
 release: whichever finishes first creates it. If one of them fails, re-run it
 from the Actions tab; the other's file stays.
 

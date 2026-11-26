@@ -17,14 +17,17 @@ pub fn about(parent: &gtk::Widget) {
             tr("Monitors battery, performance, network and temperature live; manages apps and files; opens a real adb shell terminal; mirrors the screen with scrcpy and flashes with fastboot behind safeguards. Everything is processed on your computer: no telemetry, no accounts and no root."),
         )
         .release_notes(
-            tr("<p>1.1.0 — Windows and control of the phone</p><ul>\
+            tr("<p>1.2.0 — updates from the app</p><ul>\
+             <li>Update now: ADB Scan downloads the new version, showing the percentage, checks it and installs it.</li>\
+             <li>Installer for Windows, instead of the zip: Start menu, desktop shortcut and uninstalling from Settings.</li></ul>")
+                .to_string()
+                + tr("<p>1.1.0 — Windows and control of the phone</p><ul>\
              <li>Version for Windows 10 and 11, as a portable zip.</li>\
              <li>Preinstalled apps: remove and restore manufacturer and carrier apps without root.</li>\
              <li>Permissions: which apps can use the camera, microphone, location and other accesses, and take them away.</li>\
              <li>Storage: folders, largest files and duplicates.</li>\
              <li>Developer tools: touches, animations, resolution and density, demo mode and port forwarding.</li>\
              <li>Health report to save and share, export apps and install them on another phone, and automations when a phone connects.</li></ul>")
-                .to_string()
                 + tr("<p>1.0.0 — first stable release</p><ul>\
              <li>Basic analysis without developer options: identification over USB and, with “File transfer”, battery and storage over MTP.</li>\
              <li>Ways to connect: USB and wireless debugging, pairing with a QR code or manually.</li>\

@@ -87,7 +87,7 @@ pub fn diagnosis_rows(ctx: &Rc<Ctx>) -> Vec<(u8, String, String)> {
     let mut rows: Vec<(u8, String, String)> = Vec::new();
     match ctx.adb() {
         Some(a) => rows.push((0, tr("ADB available").into(), a.path().display().to_string())),
-        None if cfg!(windows) => rows.push((2, tr("ADB not found").into(), tr("Extract the whole zip: adb.exe is in the platform-tools folder").into())),
+        None if cfg!(windows) => rows.push((2, tr("ADB not found").into(), tr("Reinstall ADB Scan: adb.exe comes in its platform-tools folder").into())),
         None => rows.push((2, tr("ADB not found").into(), tr("Install adb: sudo apt install adb").into())),
     }
     if let Some(p) = ctx.monitor_problem() {

@@ -16,6 +16,7 @@ mod setup;
 mod sidebar;
 mod theme;
 mod tray;
+mod update;
 mod util;
 mod widgets;
 #[cfg(windows)]

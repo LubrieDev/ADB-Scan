@@ -424,11 +424,22 @@ impl MainWindow {
         self.window.present();
     }
 
-    /// Shows that a newer version was published, with a button that opens its
-    /// release page in the browser (nothing is downloaded).
+    /// Shows that a newer version was published. Its button downloads and
+    /// installs it when this copy can (see `crate::update`); otherwise it
+    /// opens the release page in the browser.
     pub fn show_update(&self, update: &adbscan_core::updater::Update) {
         let banner = &self.update_banner;
         banner.set_title(&t!("ADB Scan {} is available", update.version));
+        if crate::update::available(update) {
+            banner.set_button_label(Some(tr("Update now")));
+            let (ctx, window, update) = (self.ctx.clone(), self.window.clone(), update.clone());
+            banner.connect_button_clicked(move |b| {
+                b.set_revealed(false);
+                crate::update::start(&ctx, window.upcast_ref(), &update);
+            });
+            banner.set_revealed(true);
+            return;
+        }
         banner.set_button_label(Some(tr("View release")));
         let url = update.url.clone();
         banner.connect_button_clicked(move |b| {
@@ -534,7 +545,7 @@ impl MainWindow {
     fn empty_message(&self) -> (String, String, &'static str) {
         if self.ctx.adb().is_none() {
             let how = if cfg!(windows) {
-                tr("Extract the whole zip: adb.exe is in the platform-tools folder next to adb-scan.exe. Or set the path in Preferences → Tools.")
+                tr("adb.exe should be in the platform-tools folder next to adb-scan.exe: reinstall ADB Scan, or set the path in Preferences → Tools.")
             } else {
                 tr("Install the Android tools (sudo apt install adb) or set the path in Preferences → Tools.")
             };

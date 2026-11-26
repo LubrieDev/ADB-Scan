@@ -96,7 +96,7 @@ pub fn tool_candidates(tool: Tool) -> Vec<PathBuf> {
 }
 
 /// The copy that travels with ADB Scan, next to its executable (the Windows
-/// zip: `platform-tools\adb.exe`, `scrcpy\scrcpy.exe`). Only on Windows: on
+/// installer: `platform-tools\adb.exe`, `scrcpy\scrcpy.exe`). Only on Windows: on
 /// Linux the executable is in `/usr/bin`, and “next to it” would be the
 /// system's adb, which would override the path chosen in Preferences.
 pub fn bundled_tool(tool: Tool) -> Option<PathBuf> {

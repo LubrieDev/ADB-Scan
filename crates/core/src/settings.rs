@@ -116,7 +116,7 @@ pub struct Settings {
     pub retain_session_days: u32,
     pub audit_log: bool,
     /// Ask GitHub once per start whether there is a newer release (see
-    /// `updater`). It only shows a link, it never downloads anything.
+    /// `updater`). Nothing is downloaded until the user presses “Update now”.
     pub check_updates: bool,
     // Window and interface
     pub window_width: i32,

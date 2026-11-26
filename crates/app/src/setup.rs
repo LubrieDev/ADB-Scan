@@ -158,8 +158,8 @@ pub fn show(ctx: &Rc<Ctx>, parent: &impl IsA<gtk::Widget>) {
         packages.push(Rc::new(PackageRow { pkg, row, button, progress, cancel: RefCell::new(None) }));
     }
     if cfg!(windows) {
-        // The zip carries them: this assistant only downloads the Linux builds.
-        dg.set_description(Some(tr("The Windows zip already includes adb, fastboot and scrcpy next to adb-scan.exe. To use others, choose their paths above.")));
+        // The installer carries them: this assistant only downloads the Linux builds.
+        dg.set_description(Some(tr("ADB Scan for Windows already includes adb, fastboot and scrcpy in its folder. To use others, choose their paths above.")));
         for p in &packages {
             p.button.set_sensitive(false);
         }

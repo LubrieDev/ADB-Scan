@@ -365,11 +365,25 @@ run only, without changing Preferences.
 
 At startup ADB Scan asks GitHub once, in the background, for the latest
 release of `LubrieDev/ADB-Scan`. If it is newer than the running version, a
-banner under the header bar says so, and its **View release** button opens
-the release page in the browser. Nothing is downloaded or installed: the
-new `.deb` is installed by hand. Without Internet, without releases or with
-any other problem nothing is shown. It can be turned off in Preferences →
+banner under the header bar says so. Without Internet, without releases or
+with any other problem nothing is shown. It can be turned off in Preferences →
 Privacy and data → Updates.
+
+Its **Update now** button downloads the new version, showing the percentage,
+and installs it:
+
+- **Linux** (installed from the `.deb`): apt installs the new `.deb` after a
+  desktop window asks for your password. Then **Restart now** opens the new
+  version.
+- **Windows** (installed with the installer): ADB Scan closes, the installer
+  runs without windows and opens ADB Scan again, already updated.
+
+The file comes only from this repository's releases and is installed only if
+its SHA-256 sum matches the one GitHub publishes; otherwise nothing is
+installed and the dialog offers the release page. Every update is recorded in
+History (`app_update`). A copy that was not installed from those packages (a
+build of your own) shows **View release** instead, which opens the release
+page.
 
 ## Virtual webcam
 

@@ -9271,8 +9271,8 @@ msgstr "Ver versión"
 msgid "Check for new versions"
 msgstr "Buscar versiones nuevas"
 
-msgid "Once at startup, on GitHub. It only shows a notice with a link: nothing is downloaded or installed"
-msgstr "Una vez al iniciar, en GitHub. Solo muestra un aviso con un enlace: no descarga ni instala nada"
+msgid "Once at startup, on GitHub. Nothing is downloaded until you press “Update now”"
+msgstr "Una vez al iniciar, en GitHub. No se descarga nada hasta que pulses «Actualizar ahora»"
 
 #: crates/app/src/setup.rs:262
 msgid "included with ADB Scan"
@@ -9293,12 +9293,12 @@ msgid "Not available on Windows: there is no tray icon"
 msgstr "No disponible en Windows: no hay icono en el panel"
 
 #: crates/app/src/prefs.rs
-msgid "The Windows zip already includes adb, fastboot and scrcpy next to adb-scan.exe. Here you can choose another path."
-msgstr "El zip de Windows ya incluye adb, fastboot y scrcpy junto a adb-scan.exe. Aquí puedes elegir otra ruta."
+msgid "ADB Scan for Windows already includes adb, fastboot and scrcpy in its folder. Here you can choose another path."
+msgstr "ADB Scan para Windows ya incluye adb, fastboot y scrcpy en su carpeta. Aquí puedes elegir otra ruta."
 
 #: crates/app/src/window.rs
-msgid "Extract the whole zip: adb.exe is in the platform-tools folder next to adb-scan.exe. Or set the path in Preferences → Tools."
-msgstr "Extrae el zip completo: adb.exe está en la carpeta platform-tools, junto a adb-scan.exe. O indica la ruta en Ajustes → Herramientas."
+msgid "adb.exe should be in the platform-tools folder next to adb-scan.exe: reinstall ADB Scan, or set the path in Preferences → Tools."
+msgstr "adb.exe debería estar en la carpeta platform-tools, junto a adb-scan.exe: reinstala ADB Scan o indica la ruta en Ajustes → Herramientas."
 
 #: crates/app/src/window.rs
 msgid "Windows does not let adb open the phone: install its USB driver (Google USB Driver or the manufacturer's)."
@@ -9309,12 +9309,12 @@ msgid "This section uses ADB: connect a phone with USB debugging turned on or ov
 msgstr "Esta sección usa ADB: conecta un teléfono con la depuración USB activada o por Wi-Fi con la depuración inalámbrica. Si Windows no ve el teléfono, instala su driver USB."
 
 #: crates/app/src/setup.rs
-msgid "The Windows zip already includes adb, fastboot and scrcpy next to adb-scan.exe. To use others, choose their paths above."
-msgstr "El zip de Windows ya incluye adb, fastboot y scrcpy junto a adb-scan.exe. Para usar otros, elige sus rutas arriba."
+msgid "ADB Scan for Windows already includes adb, fastboot and scrcpy in its folder. To use others, choose their paths above."
+msgstr "ADB Scan para Windows ya incluye adb, fastboot y scrcpy en su carpeta. Para usar otros, elige sus rutas arriba."
 
 #: crates/app/src/pages/connection.rs crates/app/src/wireless.rs
-msgid "Extract the whole zip: adb.exe is in the platform-tools folder"
-msgstr "Extrae el zip completo: adb.exe está en la carpeta platform-tools"
+msgid "Reinstall ADB Scan: adb.exe comes in its platform-tools folder"
+msgstr "Reinstala ADB Scan: adb.exe viene en su carpeta platform-tools"
 
 #: crates/app/src/pages/connection.rs
 msgid "Not available on Windows: the phone is seen only through adb"
@@ -9349,20 +9349,20 @@ msgid "Connect an Android phone with USB debugging or wireless debugging turned 
 msgstr "Conecta un teléfono Android con la depuración USB o la depuración inalámbrica activada"
 
 #: crates/app/src/pages/flasher.rs
-msgid "Extract the whole zip: fastboot.exe is in the platform-tools folder. Or set its path in Preferences"
-msgstr "Extrae el zip completo: fastboot.exe está en la carpeta platform-tools. O indica su ruta en Ajustes"
+msgid "Reinstall ADB Scan: fastboot.exe comes in its platform-tools folder. Or set its path in Preferences"
+msgstr "Reinstala ADB Scan: fastboot.exe viene en su carpeta platform-tools. O indica su ruta en Ajustes"
 
 #: crates/app/src/pages/network.rs
 msgid "TShark is not installed. Install Wireshark (it includes TShark) or set the path of tshark.exe in Preferences."
 msgstr "TShark no está instalado. Instala Wireshark (incluye TShark) o indica la ruta de tshark.exe en Ajustes."
 
 #: crates/app/src/pages/mirror.rs
-msgid "Extract the whole zip: scrcpy.exe is in the scrcpy folder next to adb-scan.exe. Or set its path in Preferences."
-msgstr "Extrae el zip completo: scrcpy.exe está en la carpeta scrcpy, junto a adb-scan.exe. O indica su ruta en Ajustes."
+msgid "scrcpy.exe should be in the scrcpy folder next to adb-scan.exe: reinstall ADB Scan, or set its path in Preferences."
+msgstr "scrcpy.exe debería estar en la carpeta scrcpy, junto a adb-scan.exe: reinstala ADB Scan o indica su ruta en Ajustes."
 
 #: crates/app/src/pages/mirror.rs
-msgid "Extract the whole zip: scrcpy.exe is in the scrcpy folder next to adb-scan.exe. Or set its path in Preferences → Tools."
-msgstr "Extrae el zip completo: scrcpy.exe está en la carpeta scrcpy, junto a adb-scan.exe. O indica su ruta en Ajustes → Herramientas."
+msgid "scrcpy.exe should be in the scrcpy folder next to adb-scan.exe: reinstall ADB Scan, or set its path in Preferences → Tools."
+msgstr "scrcpy.exe debería estar en la carpeta scrcpy, junto a adb-scan.exe: reinstala ADB Scan o indica su ruta en Ajustes → Herramientas."
 
 #: crates/app/src/pages/mirror.rs
 msgid "Not available on Windows: it uses Linux's v4l2loopback module"
@@ -10723,3 +10723,75 @@ msgstr "Ancho (px)"
 #: crates/core/src crates/app/src/pages
 msgid "Window, transition and animator scale. Off makes the phone feel faster."
 msgstr "Escala de ventanas, transiciones y animador. Desactivadas, el teléfono se siente más rápido."
+
+#: crates/app/src/update.rs
+msgid "could not download {}: {}"
+msgstr "no se pudo descargar {}: {}"
+
+#: crates/app/src/update.rs
+msgid "the download of {} was cancelled"
+msgstr "se canceló la descarga de {}"
+
+#: crates/app/src/update.rs
+msgid "{} arrived incomplete ({} of {} bytes); nothing was installed"
+msgstr "{} llegó incompleto ({} de {} bytes); no se instaló nada"
+
+#: crates/app/src/update.rs
+msgid "the administrator password was not given; nothing was installed"
+msgstr "no se introdujo la contraseña de administrador; no se instaló nada"
+
+#: crates/app/src/update.rs
+msgid "apt failed (code {})"
+msgstr "apt falló (código {})"
+
+#: crates/app/src/update.rs
+msgid "this copy of ADB Scan was not installed with the installer"
+msgstr "esta copia de ADB Scan no se instaló con el instalador"
+
+#: crates/app/src/update.rs
+msgid "Update now"
+msgstr "Actualizar ahora"
+
+#: crates/app/src/update.rs
+msgid "Update to ADB Scan {}"
+msgstr "Actualizar a ADB Scan {}"
+
+#: crates/app/src/update.rs
+msgid "Downloading {}…"
+msgstr "Descargando {}…"
+
+#: crates/app/src/update.rs
+msgid "{} % · {} of {}"
+msgstr "{} % · {} de {}"
+
+#: crates/app/src/update.rs
+msgid "Could not download the update: {}"
+msgstr "No se pudo descargar la actualización: {}"
+
+#: crates/app/src/update.rs
+msgid "Installing… Type your password in the window that opens."
+msgstr "Instalando… Escribe tu contraseña en la ventana que se abre."
+
+#: crates/app/src/update.rs
+msgid "ADB Scan {} is installed"
+msgstr "ADB Scan {} está instalado"
+
+#: crates/app/src/update.rs
+msgid "Restart ADB Scan to use the new version."
+msgstr "Reinicia ADB Scan para usar la nueva versión."
+
+#: crates/app/src/update.rs
+msgid "Later"
+msgstr "Más tarde"
+
+#: crates/app/src/update.rs
+msgid "Could not install the update: {}"
+msgstr "No se pudo instalar la actualización: {}"
+
+#: crates/app/src/update.rs
+msgid "Installing: ADB Scan closes now and opens again by itself in a few seconds."
+msgstr "Instalando: ADB Scan se cierra ahora y vuelve a abrirse solo en unos segundos."
+
+#: crates/app/src/help.rs
+msgid "<p>1.2.0 — updates from the app</p><ul><li>Update now: ADB Scan downloads the new version, showing the percentage, checks it and installs it.</li><li>Installer for Windows, instead of the zip: Start menu, desktop shortcut and uninstalling from Settings.</li></ul>"
+msgstr "<p>1.2.0 — actualizaciones desde la app</p><ul><li>Actualizar ahora: ADB Scan descarga la nueva versión mostrando el porcentaje, la comprueba y la instala.</li><li>Instalador para Windows en lugar del zip: menú Inicio, acceso directo en el escritorio y desinstalación desde Configuración.</li></ul>"

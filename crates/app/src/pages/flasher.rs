@@ -344,7 +344,7 @@ impl FlasherPage {
             (_, None) => {
                 self.state_row.set_title(tr("fastboot is not installed"));
                 self.state_row.set_subtitle(if cfg!(windows) {
-                    tr("Extract the whole zip: fastboot.exe is in the platform-tools folder. Or set its path in Preferences")
+                    tr("Reinstall ADB Scan: fastboot.exe comes in its platform-tools folder. Or set its path in Preferences")
                 } else {
                     tr("Install it with “sudo apt install fastboot” or set its path in Preferences")
                 });

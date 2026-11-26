@@ -404,7 +404,7 @@ impl MirrorPage {
             None => {
                 self.status.set_title(tr("scrcpy is not installed"));
                 self.status.set_subtitle(if cfg!(windows) {
-                    tr("Extract the whole zip: scrcpy.exe is in the scrcpy folder next to adb-scan.exe. Or set its path in Preferences.")
+                    tr("scrcpy.exe should be in the scrcpy folder next to adb-scan.exe: reinstall ADB Scan, or set its path in Preferences.")
                 } else {
                     tr("Install it with “sudo apt install scrcpy” or “sudo snap install scrcpy” (newer version), or set its path in Preferences.")
                 });
@@ -609,7 +609,7 @@ pub fn quick_mirror(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
     }
     let Some(sc) = ctx.scrcpy() else {
         let how = if cfg!(windows) {
-            tr("Extract the whole zip: scrcpy.exe is in the scrcpy folder next to adb-scan.exe. Or set its path in Preferences → Tools.")
+            tr("scrcpy.exe should be in the scrcpy folder next to adb-scan.exe: reinstall ADB Scan, or set its path in Preferences → Tools.")
         } else {
             tr("Install it with “sudo apt install scrcpy” or set its path in Preferences → Tools.")
         };

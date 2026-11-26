@@ -1,8 +1,9 @@
-# Builds ADB Scan for Windows 11 (x64) and packs a portable zip:
-# adb-scan.exe with the GTK 4 / libadwaita runtime it needs, Google's
-# platform-tools (adb, fastboot) and scrcpy, both pinned by version and
-# SHA-256. The zip is uploaded as an artifact of the run; for a version tag it
-# is also attached to the GitHub Release (the .deb comes from release.yml).
+# Builds ADB Scan for Windows 10 and 11 (x64) and its installer
+# (packaging/windows/adb-scan.nsi, NSIS): adb-scan.exe with the GTK 4 /
+# libadwaita runtime it needs, Google's platform-tools (adb, fastboot) and
+# scrcpy, both pinned by version and SHA-256. The installer is uploaded as an
+# artifact of the run; for a version tag it is also attached to the GitHub
+# Release (the .deb comes from release.yml).
 name: Windows
 
 on:
@@ -30,11 +31,10 @@ env:
   SCRCPY_VERSION: "5.0.1"
   # The same digest GitHub shows for the release asset.
   SCRCPY_SHA256: "b12a2c4ee8be317422451fc7dcf8ee20a71b5ea7ef9ad73ddd825a25316227a5"
-  ZIP_NAME: ADB-Scan-windows-x64.zip
 
 jobs:
   build:
-    name: Build the Windows zip
+    name: Build the Windows installer
     runs-on: windows-latest
     permissions:
       contents: read
@@ -57,8 +57,8 @@ jobs:
           update: true
           path-type: inherit
           install: >-
-            zip
             unzip
+            mingw-w64-ucrt-x86_64-nsis
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-pkgconf
             mingw-w64-ucrt-x86_64-gtk4
@@ -80,7 +80,7 @@ jobs:
           $pkg = $meta.packages | Where-Object { $_.name -eq 'adb-scan' }
           if (-not $pkg) { Write-Output "::error::The adb-scan package is not in Cargo.toml"; exit 1 }
           $bin = $pkg.targets | Where-Object { $_.kind -contains 'bin' } | Select-Object -First 1 -ExpandProperty name
-          # The zip, the README and the app's messages say adb-scan.exe.
+          # The installer, the README and the app's messages say adb-scan.exe.
           if ($bin -ne 'adb-scan') { Write-Output "::error::The binary in Cargo.toml is '$bin', not 'adb-scan'"; exit 1 }
           if ($env:GITHUB_REF_TYPE -eq 'tag') {
             $tag = $env:GITHUB_REF_NAME -replace '^v', ''
@@ -90,6 +90,8 @@ jobs:
             }
           }
           Write-Output "Binary: $bin.exe · version $($pkg.version)"
+          "VERSION=$($pkg.version)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "SETUP_NAME=ADB-Scan-$($pkg.version)-setup-x64.exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Cache the Rust build
         uses: Swatinem/rust-cache@v2
@@ -167,22 +169,62 @@ jobs:
           & "$dir\scrcpy\scrcpy.exe" --version
           if ($LASTEXITCODE -ne 0) { exit 1 }
 
-      - name: Pack the zip
+      # Warnings are errors (-WX): a missing file or a misspelt define fails
+      # here. makensis is a Windows program: it gets Windows paths, and
+      # options with "-" (MSYS2 would rewrite a "/D…" as a path).
+      - name: Build the installer
         run: |
           set -euo pipefail
-          cd dist-win/ADB-Scan
-          zip -q -r -9 "../$ZIP_NAME" .
-          ls -l "../$ZIP_NAME"
+          makensis -V2 -WX \
+            "-DVERSION=$VERSION" \
+            "-DSOURCE=$(cygpath -w "$PWD/dist-win/ADB-Scan")" \
+            "-DOUTFILE=$(cygpath -w "$PWD/dist-win/$SETUP_NAME")" \
+            packaging/windows/adb-scan.nsi
+          ls -l "dist-win/$SETUP_NAME"
+          sha256sum "dist-win/$SETUP_NAME"
 
-      - name: Upload the zip
+      # What a user does, silently: install, start the installed copy with
+      # only the system folders in the PATH, then uninstall it. "_?=" runs
+      # the uninstaller in place, so that -Wait waits for it (it leaves only
+      # itself behind).
+      - name: Install, start and uninstall it
+        shell: pwsh
+        run: |
+          $setup = Resolve-Path "dist-win\$env:SETUP_NAME"
+          $dir = Join-Path $env:RUNNER_TEMP 'ADB Scan'
+          $key = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\ADB Scan'
+          $lnk = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\ADB Scan.lnk'
+          $p = Start-Process -FilePath $setup -ArgumentList '/S', "/D=$dir" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { Write-Output "::error::The installer exited with $($p.ExitCode)"; exit 1 }
+          foreach ($f in 'adb-scan.exe', 'uninstall.exe', 'platform-tools\adb.exe', 'scrcpy\scrcpy.exe', 'lib\gdk-pixbuf-2.0\2.10.0\loaders.cache') {
+            if (-not (Test-Path (Join-Path $dir $f))) { Write-Output "::error::Not installed: $f"; exit 1 }
+          }
+          if (-not (Test-Path $lnk)) { Write-Output "::error::No Start menu shortcut"; exit 1 }
+          $shown = (Get-ItemProperty $key).DisplayVersion
+          if ($shown -ne $env:VERSION) { Write-Output "::error::Settings → Apps shows version '$shown'"; exit 1 }
+
+          $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
+          $p = Start-Process -FilePath "$dir\adb-scan.exe" -ArgumentList '--version' -Wait -NoNewWindow -PassThru -RedirectStandardOutput installed-version.txt
+          $text = Get-Content installed-version.txt -Raw
+          Write-Output "Installed adb-scan.exe --version (exit $($p.ExitCode)): $text"
+          if ($p.ExitCode -ne 0 -or $text -notmatch 'ADB Scan') { Write-Output "::error::The installed adb-scan.exe does not start"; exit 1 }
+
+          $p = Start-Process -FilePath "$dir\uninstall.exe" -ArgumentList '/S', "_?=$dir" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { Write-Output "::error::The uninstaller exited with $($p.ExitCode)"; exit 1 }
+          $left = Get-ChildItem $dir -Recurse -Force | Where-Object { $_.Name -ne 'uninstall.exe' }
+          if ($left) { Write-Output "::error::Left after uninstalling: $($left.FullName -join ', ')"; exit 1 }
+          if ((Test-Path $key) -or (Test-Path $lnk)) { Write-Output "::error::The Settings entry or the shortcut is still there"; exit 1 }
+          Write-Output "Installed, started and uninstalled."
+
+      - name: Upload the installer
         uses: actions/upload-artifact@v4
         with:
           name: ADB-Scan-windows-x64
-          path: dist-win/${{ env.ZIP_NAME }}
+          path: dist-win/${{ env.SETUP_NAME }}
           if-no-files-found: error
 
   publish:
-    name: Attach the zip to the release
+    name: Attach the installer to the release
     needs: build
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
@@ -190,7 +232,7 @@ jobs:
       # Create the release (or add to the one release.yml creates).
       contents: write
     steps:
-      - name: Download the zip
+      - name: Download the installer
         uses: actions/download-artifact@v4
         with:
           name: ADB-Scan-windows-x64
@@ -199,6 +241,6 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           name: ADB Scan ${{ github.ref_name }}
-          files: ${{ env.ZIP_NAME }}
+          files: ADB-Scan-*-setup-x64.exe
           fail_on_unmatched_files: true
           prerelease: ${{ contains(github.ref_name, '-') }}

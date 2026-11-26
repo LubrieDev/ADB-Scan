@@ -307,7 +307,11 @@ fn build_ui(app: &adw::Application) {
     if !capture_mode() && ctx.settings.borrow().check_updates {
         let weak = Rc::downgrade(&window);
         crate::util::run_bg(
-            || adbscan_core::updater::check(env!("CARGO_PKG_VERSION")),
+            || {
+                // The installer of an earlier update is no longer needed.
+                adbscan_core::updater::clean_downloads();
+                adbscan_core::updater::check(env!("CARGO_PKG_VERSION"))
+            },
             move |update| {
                 if let (Some(update), Some(window)) = (update, weak.upgrade()) {
                     window.show_update(&update);

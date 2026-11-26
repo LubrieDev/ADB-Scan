@@ -194,7 +194,7 @@ pub fn show(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
     let wizard = adw::ActionRow::builder()
         .title(tr("Tools assistant"))
         .subtitle(if cfg!(windows) {
-            tr("The Windows zip already includes adb, fastboot and scrcpy next to adb-scan.exe. Here you can choose another path.")
+            tr("ADB Scan for Windows already includes adb, fastboot and scrcpy in its folder. Here you can choose another path.")
         } else {
             tr("Downloads the missing ones from their official (verified) sources or lets you choose another path. Also: sudo apt install adb fastboot scrcpy")
         })
@@ -257,7 +257,7 @@ pub fn show(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
     let updates_group = adw::PreferencesGroup::builder().title(tr("Updates")).build();
     let updates = adw::SwitchRow::builder()
         .title(tr("Check for new versions"))
-        .subtitle(tr("Once at startup, on GitHub. It only shows a notice with a link: nothing is downloaded or installed"))
+        .subtitle(tr("Once at startup, on GitHub. Nothing is downloaded until you press “Update now”"))
         .active(s.check_updates)
         .build();
     updates_group.add(&updates);
@@ -507,7 +507,7 @@ pub fn set_autostart(enable: bool) -> std::io::Result<()> {
 /// exited: ADB Scan is a single instance, and started earlier it would just
 /// hand over to the old one.
 #[cfg(windows)]
-fn restart(ctx: &Rc<Ctx>) {
+pub fn restart(ctx: &Rc<Ctx>) {
     match crate::win::spawn_restart() {
         Ok(()) => ctx.app.quit(),
         Err(e) => ctx.toast(&t!("Could not restart: {}", e)),
@@ -515,8 +515,9 @@ fn restart(ctx: &Rc<Ctx>) {
 }
 
 #[cfg(unix)]
-fn restart(ctx: &Rc<Ctx>) {
-    let Ok(exe) = std::env::current_exe() else {
+pub fn restart(ctx: &Rc<Ctx>) {
+    // Not `current_exe` as is: after an update it names the replaced file.
+    let Some(exe) = adbscan_core::updater::running_exe() else {
         ctx.toast(tr("Could not restart: reopen ADB Scan by hand"));
         return;
     };

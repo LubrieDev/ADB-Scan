@@ -196,7 +196,7 @@ impl Ui {
     fn usb_state(&self) -> (&'static str, String, String) {
         let ctx = &self.ctx;
         if ctx.adb().is_none() {
-            let how = if cfg!(windows) { tr("Extract the whole zip: adb.exe is in the platform-tools folder") } else { tr("Install it (apt install adb) or download it from Preferences → Tools") };
+            let how = if cfg!(windows) { tr("Reinstall ADB Scan: adb.exe comes in its platform-tools folder") } else { tr("Install it (apt install adb) or download it from Preferences → Tools") };
             return ("adb-circle-x-symbolic", tr("ADB not found").into(), how.into());
         }
         let devices = ctx.devices();

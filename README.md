@@ -2,8 +2,8 @@
 
 Native desktop app for Linux Mint Cinnamon that detects, monitors,
 diagnoses and manages Android devices over ADB and fastboot. Written in
-**Rust + GTK 4 + libadwaita**. It also runs on Windows 10 and 11 as a
-portable zip (see [Windows](#windows)).
+**Rust + GTK 4 + libadwaita**. It also runs on Windows 10 and 11, with its
+own installer (see [Windows](#windows)).
 
 ## Features
 
@@ -113,7 +113,8 @@ portable zip (see [Windows](#windows)).
   by the phone) and downloading platform-tools or scrcpy from the tools
   assistant. The one exception, which can be turned off in Preferences →
   Privacy and data, is a single check for a newer release on GitHub at
-  startup: it only shows a notice with a link to the release page.
+  startup. It only shows a notice: nothing is downloaded until you press
+  **Update now** (see [Updates](#updates)).
 
 ## Requirements
 
@@ -151,7 +152,7 @@ Download the `.deb` of the latest version from
 it (Linux Mint 22 / Ubuntu 24.04 or newer, amd64):
 
 ```bash
-sudo apt install ./adb-scan_1.1.0-1_amd64.deb
+sudo apt install ./adb-scan_1.2.0-1_amd64.deb
 ```
 
 To build the package yourself, use `cargo deb -p adb-scan` (see
@@ -160,33 +161,55 @@ To build the package yourself, use `cargo deb -p adb-scan` (see
 
 The package also installs the udev rules needed to access USB without root.
 
+## Updates
+
+When a newer version is published, a notice appears under the header bar.
+Its **Update now** button downloads the new version (with its progress),
+checks it and installs it:
+
+- **Linux**: it downloads the release's `.deb` and installs it with apt. A
+  window of the desktop asks for your password (`pkexec`). Then ADB Scan
+  offers to restart.
+- **Windows**: it downloads the installer and runs it. ADB Scan closes and
+  opens again by itself a few seconds later, already updated.
+
+The file is downloaded only from this repository's releases, and it is
+installed only if its SHA-256 sum is the one GitHub publishes for it.
+Otherwise nothing is installed, and the notice links to the release page. A
+copy that was not installed from those packages (a build of your own) gets
+only that link. The check can be turned off in Preferences → Privacy and
+data.
+
 ## Windows
 
-ADB Scan also runs on **Windows 10 and 11 (64-bit)** as a portable zip: nothing
-is installed and nothing needs administrator rights.
+ADB Scan also runs on **Windows 10 and 11 (64-bit)**. It installs for your
+user only: it does not need administrator rights.
 
-### Getting it running
+### Installing
 
-1. Download `ADB-Scan-windows-x64.zip` from
+1. Download `ADB-Scan-<version>-setup-x64.exe` from
    [Releases](https://github.com/LubrieDev/ADB-Scan/releases/latest) (or, for
    a build that is not released yet, from the **Windows** workflow run in the
-   Actions tab: the zip is in its *Artifacts*).
-2. Right-click the zip → **Extract All…**, into a folder of your own (for
-   example `Documents\ADB Scan`). Do not run it from inside the zip: it needs
-   the folders next to it.
-3. Open the folder and double-click **`adb-scan.exe`**.
+   Actions tab: the installer is in its *Artifacts*).
+2. Double-click it and follow the steps. It installs into
+   `%LOCALAPPDATA%\Programs\ADB Scan`, adds ADB Scan to the Start menu (and,
+   if you tick it on the last page, to the desktop) and to **Settings →
+   Apps**, from where it is uninstalled.
 
-The folder holds `adb-scan.exe`, the GTK and libadwaita DLLs it uses,
+To update, use **Update now** in ADB Scan (see [Updates](#updates)), or run
+the new installer over the installed copy. Uninstalling keeps your settings
+and history.
+
+The installed folder holds `adb-scan.exe`, the GTK and libadwaita DLLs it uses,
 `platform-tools\` (Google's `adb.exe` and `fastboot.exe`) and `scrcpy\`
 (screen mirroring). ADB Scan uses these copies first; a different `adb` can be
 chosen in Preferences → Tools.
 
 ### “Windows protected your PC” (SmartScreen)
 
-The `.exe` is not signed with a paid certificate, so the first time Windows may
-show a blue **“Windows protected your PC”** window. Click **More info** →
-**Run anyway**. If the zip was blocked as a whole, right-click it before
-extracting → **Properties** → tick **Unblock** → **OK**.
+The installer is not signed with a paid certificate, so Windows may show a
+blue **“Windows protected your PC”** window. Click **More info** → **Run
+anyway**.
 
 ### Turning on USB debugging on the phone
 
@@ -221,17 +244,21 @@ cable carries data (some only charge) and that the phone is unlocked.
   `%LOCALAPPDATA%\adb-scan` (cache). The log is
   `%LOCALAPPDATA%\adb-scan\adb-scan.log`: attach it when reporting a problem.
 - If the window stays blank or flickers (some virtual machines or old
-  graphics drivers), start it with the software renderer: in the folder, type
-  `cmd` in the address bar and run `set GSK_RENDERER=cairo && adb-scan.exe`.
+  graphics drivers), start it with the software renderer: in the installed
+  folder, type `cmd` in the address bar and run
+  `set GSK_RENDERER=cairo && adb-scan.exe`.
 
 ### Building for Windows
 
-[`.github/workflows/windows.yml`](.github/workflows/windows.yml) builds the
-zip on `windows-latest` with MSYS2 (UCRT64: GTK 4, libadwaita) and the
-`stable-x86_64-pc-windows-gnu` Rust toolchain, downloads platform-tools and
-scrcpy pinned by version and SHA-256, and checks that `adb-scan.exe` starts
-with only the bundled DLLs. It runs on pushes to `main`, on version tags (the
-zip is attached to the release) and by hand from the Actions tab.
+[`.github/workflows/windows.yml`](.github/workflows/windows.yml) builds
+`adb-scan.exe` on `windows-latest` with MSYS2 (UCRT64: GTK 4, libadwaita) and
+the `stable-x86_64-pc-windows-gnu` Rust toolchain, downloads platform-tools
+and scrcpy pinned by version and SHA-256, and checks that `adb-scan.exe`
+starts with only the bundled DLLs. Then it builds the installer with NSIS from
+[`packaging/windows/adb-scan.nsi`](packaging/windows/adb-scan.nsi), installs
+it silently, starts the installed copy and uninstalls it. It runs on pushes to
+`main`, on version tags (the installer is attached to the release) and by hand
+from the Actions tab.
 
 ## Usage
 

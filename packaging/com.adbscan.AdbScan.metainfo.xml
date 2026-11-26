@@ -13,7 +13,8 @@
     flashing with safeguards and a security audit without root.</p>
     <p>Everything is processed locally, with no telemetry. It only connects to the Internet when you ask: the public
     IP (queried by the phone) and downloading platform-tools or scrcpy from the tools assistant. At startup it checks
-    GitHub once for a newer version and only shows a link to it (this can be turned off).</p>
+    GitHub once for a newer version and shows a notice; nothing is downloaded until you press “Update now”
+    (this can be turned off).</p>
     <p>The interface is available in English and Spanish.</p>
   </description>
   <launchable type="desktop-id">adb-scan.desktop</launchable>
@@ -24,6 +25,14 @@
   <url type="bugtracker">https://github.com/LubrieDev/ADB-Scan/issues</url>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.2.0" date="2026-11-25">
+      <description>
+        <ul>
+          <li>Update now: ADB Scan downloads the new version, showing the percentage, checks it and installs it.</li>
+          <li>Installer for Windows, instead of the zip: Start menu, desktop shortcut and uninstalling from Settings.</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.0" date="2026-11-25">
       <description>
         <p>Version for Windows 10 and 11, and new sections to take control of the phone without root:</p>

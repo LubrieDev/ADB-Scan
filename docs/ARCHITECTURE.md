@@ -53,7 +53,7 @@ screen: the tests use real outputs captured from a REDMAGIC 11S Pro
 | `db.rs` | SQLite: sessions, events, audit log, battery samples, security reports. |
 | `settings.rs` | Settings in JSON. Keeps unknown keys. Interface language. History of the phone terminal. |
 | `tools_setup.rs` | Tools assistant: downloads platform-tools and scrcpy from their official sources on request, with a pinned SHA-256 sum (see “Managed tools”). |
-| `updater.rs` | Update check: asks GitHub once per start for the latest release (5 s timeout, any failure means “no update”) and compares its tag with the running version using semver. It never downloads anything; the window shows a banner with a link to the release page. |
+| `updater.rs` | Updates. The check asks GitHub once per start for the latest release (5 s timeout, any failure means “no update”) and compares its tag with the running version using semver. It also picks this system's package among the release's files (`adb-scan_*_amd64.deb` or `ADB-Scan-*-setup-x64.exe`), only from this repository's downloads and only with the SHA-256 sum GitHub publishes. `download` fetches it with progress and checks size and sum (nothing is kept otherwise); `install_deb` runs `pkexec apt-get install` and `start_installer` runs the Windows installer silently with `/RUN`. `can_install` says whether this copy came from those packages. |
 | `i18n.rs` | Interface language: `tr`, `trc`, `t!` and `tc!`, the `.po` catalog reader and `Language`. See “Translations”. |
 | `paths.rs`, `format.rs`, `error.rs` | XDG paths, number and date formatting (following the language), errors. |
 
@@ -124,6 +124,7 @@ adds it to the following snapshots.
 | `tray.rs`, `panel.rs` | Tray icon (StatusNotifierItem) and quick panel. |
 | `wireless.rs` | **Ways to connect** dialog (`win.connect::<page>`; `win.wireless` opens the wireless one): basic analysis, USB debugging (live status) and wireless debugging with QR, manual pairing and connection to already paired phones. Waits stop when leaving the page or closing. |
 | `prefs.rs`, `help.rs` | Preferences (including the language and the restart), “About” and screenshots. |
+| `update.rs` | **Update now** (from the update banner): download dialog with the percentage, then the install. On Linux it offers to restart; on Windows ADB Scan quits and the installer opens it again. |
 | `theme.rs`, `style.css` | Light/dark theme, accent colours, styles. |
 | `util.rs` | Background work (`run_bg`), confirmation dialogs, file choosers, stall diagnosis. |
 

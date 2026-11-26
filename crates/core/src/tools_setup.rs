@@ -114,7 +114,7 @@ pub enum Origin {
     Managed,
     /// From the system (PATH or a usual location).
     System,
-    /// Next to ADB Scan's executable (the Windows zip).
+    /// Next to ADB Scan's executable (the Windows installer puts them there).
     Bundled,
 }
 
