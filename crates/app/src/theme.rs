@@ -62,6 +62,7 @@ pub fn accent_hex(key: &str) -> &'static str {
 }
 
 /// Linux Mint theme whose dark palette ADB Scan uses.
+#[cfg(unix)]
 const MINT_THEME: &str = "Mint-Y-Aqua";
 
 /// Before starting GTK: if ADB Scan is going to open in dark mode, make Mint's
@@ -70,6 +71,7 @@ const MINT_THEME: &str = "Mint-Y-Aqua";
 /// libadwaita (the variable does not exist in GNOME's), if Mint-Y is installed
 /// and if the user has not set another theme. It is decided at startup:
 /// switching to light without restarting still shows Mint-Y.
+#[cfg(unix)]
 pub fn prefer_mint_palette() {
     const VAR: &str = "ADW_DEBUG_THEME_NAME";
     if std::env::var_os(VAR).is_some() || std::env::var_os("GTK_THEME").is_some() {
@@ -91,6 +93,7 @@ pub fn prefer_mint_palette() {
 }
 
 /// The desktop's dark preference (before GTK reads it).
+#[cfg(unix)]
 fn system_prefers_dark() -> bool {
     use gtk::gio::{self, prelude::SettingsExt};
     let Some(source) = gio::SettingsSchemaSource::default() else { return false };

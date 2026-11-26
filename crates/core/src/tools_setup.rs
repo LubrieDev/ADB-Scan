@@ -102,7 +102,7 @@ pub fn installed_version(p: &Package) -> Option<String> {
 
 /// Path of a tool inside the managed copy (whether it exists or not).
 pub fn managed_path(tool: Tool) -> PathBuf {
-    install_dir(&package_for(tool)).join(tool.name())
+    install_dir(&package_for(tool)).join(exec::exe_name(tool.name()))
 }
 
 /// Where a found tool is.
@@ -114,6 +114,8 @@ pub enum Origin {
     Managed,
     /// From the system (PATH or a usual location).
     System,
+    /// Next to ADB Scan's executable (the Windows zip).
+    Bundled,
 }
 
 /// State of a tool for the assistant.
@@ -128,8 +130,11 @@ pub struct ToolState {
 /// Looks for a tool the way the app does and says where it comes from.
 pub fn tool_state(tool: Tool, configured: &str) -> ToolState {
     let path = crate::adb::find_tool(tool, Some(configured));
+    let bundled = crate::adb::bundled_tool(tool);
     let origin = path.as_ref().map(|p| {
-        if *p == managed_path(tool) {
+        if bundled.as_ref() == Some(p) {
+            Origin::Bundled
+        } else if *p == managed_path(tool) {
             Origin::Managed
         } else if !configured.trim().is_empty() {
             Origin::Configured
@@ -186,7 +191,7 @@ fn install_in(p: &Package, root: &Path, staging: &Path, progress: &dyn Fn(Stage)
     }
     let fresh = out.join(p.top_dir);
     for tool in p.provides {
-        if !exec::is_executable(&fresh.join(tool.name())) {
+        if !exec::is_executable(&fresh.join(exec::exe_name(tool.name()))) {
             return Err(Error::Invalid(t!("the package does not include an executable {}", tool.name())));
         }
     }
@@ -283,6 +288,7 @@ fn safe_join(dest: &Path, rel: &Path) -> Option<PathBuf> {
 }
 
 fn extract_zip(archive: &Path, dest: &Path) -> Result<()> {
+    #[cfg(unix)]
     use std::os::unix::fs::PermissionsExt;
     let bad = |e: zip::result::ZipError| Error::Invalid(t!("invalid ZIP archive: {}", e));
     let mut zip = zip::ZipArchive::new(std::io::BufReader::new(std::fs::File::open(archive)?)).map_err(bad)?;
@@ -299,6 +305,7 @@ fn extract_zip(archive: &Path, dest: &Path) -> Result<()> {
         let mut f = std::fs::File::create(&out)?;
         std::io::copy(&mut entry, &mut f)?;
         // Keeps the executable bit (adb, fastboot…); no setuid.
+        #[cfg(unix)]
         if let Some(mode) = entry.unix_mode() {
             std::fs::set_permissions(&out, std::fs::Permissions::from_mode(mode & 0o755))?;
         }
@@ -330,7 +337,9 @@ fn extract_tar_gz(archive: &Path, dest: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(unix)]
     use std::io::Write;
+    #[cfg(unix)]
     use std::os::unix::fs::PermissionsExt;
 
     fn scratch(name: &str) -> PathBuf {
@@ -371,6 +380,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(unix)]
     fn zip_keeps_exec_bit_and_skips_traversal() {
         let d = scratch("zip");
         let archive = d.join("t.zip");

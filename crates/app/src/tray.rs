@@ -2,9 +2,18 @@
 //! XApp applet through `xapp-sn-watcher`).
 //!
 //! Left click: quick panel. Right click: menu.
+//!
+//! Linux only. On Windows there is no tray icon yet: [`TrayHandle::spawn`]
+//! gives `None`, so closing the window quits and “start hidden” is off.
 
+// On Windows the icon states and commands exist but are never shown.
+#![cfg_attr(windows, allow(dead_code))]
+
+#[cfg(unix)]
 use adbscan_core::i18n::tr;
+#[cfg(unix)]
 use ksni::blocking::TrayMethods;
+#[cfg(unix)]
 use ksni::menu::{MenuItem, StandardItem};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -36,6 +45,7 @@ pub enum TrayCmd {
     Quit,
 }
 
+#[cfg(unix)]
 struct AdbTray {
     icon: TrayIcon,
     tooltip: String,
@@ -43,12 +53,14 @@ struct AdbTray {
     tx: async_channel::Sender<crate::ctx::Msg>,
 }
 
+#[cfg(unix)]
 impl AdbTray {
     fn send(&self, cmd: TrayCmd) {
         let _ = self.tx.send_blocking(crate::ctx::Msg::Tray(cmd));
     }
 }
 
+#[cfg(unix)]
 impl ksni::Tray for AdbTray {
     const MENU_ON_ACTIVATE: bool = false;
 
@@ -96,12 +108,14 @@ impl ksni::Tray for AdbTray {
     }
 }
 
+#[cfg(unix)]
 pub struct TrayHandle {
     handle: ksni::blocking::Handle<AdbTray>,
     /// Last state sent: avoids D-Bus calls on every snapshot.
     last: std::cell::RefCell<Option<(TrayIcon, String)>>,
 }
 
+#[cfg(unix)]
 impl TrayHandle {
     pub fn spawn(tx: async_channel::Sender<crate::ctx::Msg>) -> Option<Self> {
         let tray = AdbTray { icon: TrayIcon::Disconnected, tooltip: tr("No device").into(), theme_path: crate::theme::icons_dir().display().to_string(), tx };
@@ -129,8 +143,22 @@ impl TrayHandle {
     }
 }
 
+#[cfg(unix)]
 impl Drop for TrayHandle {
     fn drop(&mut self) {
         self.handle.shutdown().wait();
     }
+}
+
+/// No tray icon on Windows (see the module notes).
+#[cfg(windows)]
+pub struct TrayHandle;
+
+#[cfg(windows)]
+impl TrayHandle {
+    pub fn spawn(_tx: async_channel::Sender<crate::ctx::Msg>) -> Option<Self> {
+        None
+    }
+
+    pub fn set_state(&self, _icon: TrayIcon, _tooltip: String) {}
 }

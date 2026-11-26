@@ -154,7 +154,7 @@ pub fn civil_from_unix(ts: i64, offset_secs: i64) -> (i64, u32, u32, u32, u32, u
 }
 
 /// Local offset from UTC. Read from `TZ_OFFSET_SECS` if set (useful in tests)
-/// and, otherwise, from `date +%z` only once.
+/// and, otherwise, from the system only once.
 pub fn local_offset_secs() -> i64 {
     use std::sync::OnceLock;
     static OFFSET: OnceLock<i64> = OnceLock::new();
@@ -164,10 +164,34 @@ pub fn local_offset_secs() -> i64 {
                 return n;
             }
         }
-        let out = std::process::Command::new("date").arg("+%z").output();
-        let Ok(out) = out else { return 0 };
-        parse_tz_offset(String::from_utf8_lossy(&out.stdout).trim()).unwrap_or(0)
+        system_offset_secs()
     })
+}
+
+/// `date +%z`.
+#[cfg(unix)]
+fn system_offset_secs() -> i64 {
+    let out = std::process::Command::new("date").arg("+%z").output();
+    let Ok(out) = out else { return 0 };
+    parse_tz_offset(String::from_utf8_lossy(&out.stdout).trim()).unwrap_or(0)
+}
+
+/// The time zone's bias, with daylight saving time if it is in effect.
+#[cfg(windows)]
+fn system_offset_secs() -> i64 {
+    use windows_sys::Win32::System::Time::{GetTimeZoneInformation, TIME_ZONE_INFORMATION};
+    // SAFETY: it only writes to `tz`, which lives on this stack.
+    let mut tz: TIME_ZONE_INFORMATION = unsafe { std::mem::zeroed() };
+    let id = unsafe { GetTimeZoneInformation(&mut tz) };
+    // UTC = local time + bias, in minutes. 1: standard time, 2: daylight
+    // saving time, 0: the zone has no daylight saving time.
+    let bias = match id {
+        0 => tz.Bias,
+        1 => tz.Bias + tz.StandardBias,
+        2 => tz.Bias + tz.DaylightBias,
+        _ => return 0,
+    };
+    -i64::from(bias) * 60
 }
 
 pub fn parse_tz_offset(text: &str) -> Option<i64> {
@@ -202,6 +226,17 @@ pub fn date(ts: Option<f64>) -> String {
 
 /// Date in the order of the interface language: `2026-11-21` (ISO 8601,
 /// unambiguous in English) or `21/11/2026` in Spanish.
+/// Days since 1970-01-01 of a civil date: the inverse of
+/// [`civil_from_unix`] (Howard Hinnant's `days_from_civil`).
+pub fn days_from_civil(y: i64, m: i64, d: i64) -> i64 {
+    let y = if m <= 2 { y - 1 } else { y };
+    let era = y.div_euclid(400);
+    let yoe = y - era * 400;
+    let doy = (153 * ((m + 9) % 12) + 2) / 5 + d - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    era * 146_097 + doe - 719_468
+}
+
 pub fn civil_date(y: i64, m: u32, d: u32) -> String {
     match crate::i18n::language() {
         Language::English => format!("{y}-{m:02}-{d:02}"),
@@ -272,6 +307,18 @@ mod tests {
         assert_eq!(civil_from_unix(1_795_291_200, 0), (2026, 11, 21, 20, 0, 0));
         assert_eq!(parse_tz_offset("-0600"), Some(-21_600));
         assert_eq!(parse_tz_offset("+0530"), Some(19_800));
+    }
+
+    #[test]
+    fn days_from_civil_is_the_inverse() {
+        assert_eq!(days_from_civil(1970, 1, 1), 0);
+        assert_eq!(days_from_civil(2026, 11, 21), 1_795_291_200 / 86_400);
+        assert_eq!(days_from_civil(2000, 2, 29), 11_016);
+        assert_eq!(days_from_civil(1969, 12, 31), -1);
+        for day in (-800_000..800_000).step_by(997) {
+            let (y, m, d, ..) = civil_from_unix(day * 86_400, 0);
+            assert_eq!(days_from_civil(y, m.into(), d.into()), day);
+        }
     }
 
     #[test]

@@ -9,8 +9,36 @@
   opacity: 0.55;
   margin: 8px 12px 2px 14px;
 }
-/* More sections below: gradient towards the sidebar background and an arrow. */
+/* Sidebar scrollbar: its own 12px column at the panel's edge (not overlaid
+   on the rows), with a slim slider and no trough of its own. */
+.sidebar-scroll > scrollbar.vertical {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.sidebar-scroll > scrollbar.vertical > range > trough {
+  min-width: 12px;
+  background: none;
+  border: none;
+}
+.sidebar-scroll > scrollbar.vertical > range > trough > slider {
+  min-width: 6px;
+  min-height: 40px;
+  margin: 2px 3px;
+  border: none;
+  border-radius: 99px;
+  background-color: alpha(currentColor, 0.25);
+}
+.sidebar-scroll > scrollbar.vertical > range > trough > slider:hover {
+  background-color: alpha(currentColor, 0.4);
+}
+.sidebar-scroll > scrollbar.vertical > range > trough > slider:active {
+  background-color: alpha(currentColor, 0.55);
+}
+/* More sections below: gradient towards the sidebar background and an arrow.
+   It stops short of the scrollbar column so the slider stays visible. */
 .sidebar-more {
+  margin-right: 12px;
   min-height: 34px;
   border-radius: 0;
   padding: 0;

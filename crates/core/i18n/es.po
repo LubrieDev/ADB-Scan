@@ -134,6 +134,10 @@ msgid "Monitors battery, performance, network and temperature live; manages apps
 msgstr "Supervisa en directo la batería, el rendimiento, la red y la temperatura; gestiona apps y archivos; abre una terminal adb shell real; duplica la pantalla con scrcpy y flashea con fastboot con salvaguardas. Todo se procesa en tu equipo: sin telemetría, sin cuentas y sin root."
 
 #: crates/app/src/help.rs:21
+msgid "<p>1.1.0 — Windows and control of the phone</p><ul><li>Version for Windows 10 and 11, as a portable zip.</li><li>Preinstalled apps: remove and restore manufacturer and carrier apps without root.</li><li>Permissions: which apps can use the camera, microphone, location and other accesses, and take them away.</li><li>Storage: folders, largest files and duplicates.</li><li>Developer tools: touches, animations, resolution and density, demo mode and port forwarding.</li><li>Health report to save and share, export apps and install them on another phone, and automations when a phone connects.</li></ul>"
+msgstr "<p>1.1.0 — Windows y control del teléfono</p><ul><li>Versión para Windows 10 y 11, como zip portátil.</li><li>Apps preinstaladas: quitar y restaurar apps del fabricante y del operador sin root.</li><li>Permisos: qué apps pueden usar la cámara, el micrófono, la ubicación y otros accesos, y retirárselos.</li><li>Almacenamiento: carpetas, archivos más grandes y duplicados.</li><li>Herramientas de desarrollador: toques, animaciones, resolución y densidad, modo demo y redirección de puertos.</li><li>Informe de salud para guardar y compartir, exportar apps e instalarlas en otro teléfono, y automatizaciones al conectar un teléfono.</li></ul>"
+
+#: crates/app/src/help.rs
 msgid "<p>1.0.0 — first stable release</p><ul><li>Basic analysis without developer options: identification over USB and, with “File transfer”, battery and storage over MTP.</li><li>Ways to connect: USB and wireless debugging, pairing with a QR code or manually.</li><li>Live telemetry, battery and storage health, per-app usage, performance with GPU and FPS.</li><li>Apps with technical details, files, photo backup, real terminal, logcat and mirroring with scrcpy.</li><li>Phone controls and remote, scheduled actions, security audit and a Flasher with safeguards.</li><li>Private mode (Ctrl+Shift+P) and phone data hidden until requested.</li></ul>"
 msgstr "<p>1.0.0 — primera versión estable</p><ul><li>Análisis básico sin opciones de desarrollador: identificación por USB y, con «Transferencia de archivos», batería y espacio por MTP.</li><li>Formas de conectar: depuración USB e inalámbrica, emparejando por código QR o manualmente.</li><li>Telemetría en directo, salud de batería y almacenamiento, consumo por app, rendimiento con GPU y FPS.</li><li>Aplicaciones con ficha técnica, archivos, copia de fotos, terminal real, logcat y duplicado con scrcpy.</li><li>Controles y mando del teléfono, acciones programadas, auditoría de seguridad y Flasher con salvaguardas.</li><li>Modo privado (Ctrl+Mayús+P) y datos del teléfono ocultos hasta pedirlos.</li></ul>"
 
@@ -9269,3 +9273,1453 @@ msgstr "Buscar versiones nuevas"
 
 msgid "Once at startup, on GitHub. It only shows a notice with a link: nothing is downloaded or installed"
 msgstr "Una vez al iniciar, en GitHub. Solo muestra un aviso con un enlace: no descarga ni instala nada"
+
+#: crates/app/src/setup.rs:262
+msgid "included with ADB Scan"
+msgstr "incluido con ADB Scan"
+
+#: crates/core/src/mtp.rs
+msgid "Not available on Windows"
+msgstr "No disponible en Windows"
+
+# Windows (crates/app/src/win.rs and the Windows variants of each section)
+
+#: crates/app/src/prefs.rs
+msgid "Opens ADB Scan when you sign in to Windows"
+msgstr "Abre ADB Scan al iniciar sesión en Windows"
+
+#: crates/app/src/prefs.rs
+msgid "Not available on Windows: there is no tray icon"
+msgstr "No disponible en Windows: no hay icono en el panel"
+
+#: crates/app/src/prefs.rs
+msgid "The Windows zip already includes adb, fastboot and scrcpy next to adb-scan.exe. Here you can choose another path."
+msgstr "El zip de Windows ya incluye adb, fastboot y scrcpy junto a adb-scan.exe. Aquí puedes elegir otra ruta."
+
+#: crates/app/src/window.rs
+msgid "Extract the whole zip: adb.exe is in the platform-tools folder next to adb-scan.exe. Or set the path in Preferences → Tools."
+msgstr "Extrae el zip completo: adb.exe está en la carpeta platform-tools, junto a adb-scan.exe. O indica la ruta en Ajustes → Herramientas."
+
+#: crates/app/src/window.rs
+msgid "Windows does not let adb open the phone: install its USB driver (Google USB Driver or the manufacturer's)."
+msgstr "Windows no deja que adb abra el teléfono: instala su driver USB (Google USB Driver o el del fabricante)."
+
+#: crates/app/src/window.rs
+msgid "This section uses ADB: connect a phone with USB debugging turned on or over Wi-Fi with wireless debugging. If Windows does not see the phone, install its USB driver."
+msgstr "Esta sección usa ADB: conecta un teléfono con la depuración USB activada o por Wi-Fi con la depuración inalámbrica. Si Windows no ve el teléfono, instala su driver USB."
+
+#: crates/app/src/setup.rs
+msgid "The Windows zip already includes adb, fastboot and scrcpy next to adb-scan.exe. To use others, choose their paths above."
+msgstr "El zip de Windows ya incluye adb, fastboot y scrcpy junto a adb-scan.exe. Para usar otros, elige sus rutas arriba."
+
+#: crates/app/src/pages/connection.rs crates/app/src/wireless.rs
+msgid "Extract the whole zip: adb.exe is in the platform-tools folder"
+msgstr "Extrae el zip completo: adb.exe está en la carpeta platform-tools"
+
+#: crates/app/src/pages/connection.rs
+msgid "Not available on Windows: the phone is seen only through adb"
+msgstr "No disponible en Windows: el teléfono solo se ve a través de adb"
+
+#: crates/app/src/pages/connection.rs
+msgid "PC side: not available on Windows"
+msgstr "Lado del PC: no disponible en Windows"
+
+#: crates/app/src/pages/connection.rs
+msgid "The cable and the PC's port are read from Linux's USB system. The phone's port, the power, the cuts and the speed test come through adb and do work."
+msgstr "El cable y el puerto del PC se leen del sistema USB de Linux. El puerto del teléfono, la alimentación, los cortes y la prueba de velocidad llegan por adb y sí funcionan."
+
+#: crates/app/src/pages/terminal_windows.rs
+msgid "Open the phone's shell"
+msgstr "Abrir la shell del teléfono"
+
+#: crates/app/src/pages/terminal_windows.rs
+msgid "Open a command prompt with adb"
+msgstr "Abrir un símbolo del sistema con adb"
+
+#: crates/app/src/pages/terminal_windows.rs
+msgid "The built-in terminal needs Linux. On Windows, the phone's shell (adb shell) and a command prompt with adb and fastboot open in a window of their own."
+msgstr "El terminal integrado necesita Linux. En Windows, la shell del teléfono (adb shell) y un símbolo del sistema con adb y fastboot se abren en una ventana propia."
+
+#: crates/app/src/pages/terminal_windows.rs
+msgid "Connect a phone with debugging authorised"
+msgstr "Conecta un teléfono con la depuración autorizada"
+
+#: crates/app/src/pages/dashboard.rs
+msgid "Connect an Android phone with USB debugging or wireless debugging turned on"
+msgstr "Conecta un teléfono Android con la depuración USB o la depuración inalámbrica activada"
+
+#: crates/app/src/pages/flasher.rs
+msgid "Extract the whole zip: fastboot.exe is in the platform-tools folder. Or set its path in Preferences"
+msgstr "Extrae el zip completo: fastboot.exe está en la carpeta platform-tools. O indica su ruta en Ajustes"
+
+#: crates/app/src/pages/network.rs
+msgid "TShark is not installed. Install Wireshark (it includes TShark) or set the path of tshark.exe in Preferences."
+msgstr "TShark no está instalado. Instala Wireshark (incluye TShark) o indica la ruta de tshark.exe en Ajustes."
+
+#: crates/app/src/pages/mirror.rs
+msgid "Extract the whole zip: scrcpy.exe is in the scrcpy folder next to adb-scan.exe. Or set its path in Preferences."
+msgstr "Extrae el zip completo: scrcpy.exe está en la carpeta scrcpy, junto a adb-scan.exe. O indica su ruta en Ajustes."
+
+#: crates/app/src/pages/mirror.rs
+msgid "Extract the whole zip: scrcpy.exe is in the scrcpy folder next to adb-scan.exe. Or set its path in Preferences → Tools."
+msgstr "Extrae el zip completo: scrcpy.exe está en la carpeta scrcpy, junto a adb-scan.exe. O indica su ruta en Ajustes → Herramientas."
+
+#: crates/app/src/pages/mirror.rs
+msgid "Not available on Windows: it uses Linux's v4l2loopback module"
+msgstr "No disponible en Windows: usa el módulo v4l2loopback de Linux"
+
+#: crates/app/src/pages/basic.rs crates/app/src/wireless.rs
+msgid "The basic analysis reads the phone straight from the USB bus, without debugging, and that only works on Linux. On Windows, turn on USB debugging or wireless debugging to see the phone in the other sections."
+msgstr "El análisis básico lee el teléfono directamente del bus USB, sin depuración, y eso solo funciona en Linux. En Windows, activa la depuración USB o la inalámbrica para ver el teléfono en las demás secciones."
+
+#: crates/app/src/wireless.rs
+msgid "Install the phone's USB driver (Google USB Driver or the manufacturer's)"
+msgstr "Instala el driver USB del teléfono (Google USB Driver o el del fabricante)"
+
+#: crates/app/src/wireless.rs
+msgid "Turn on “Wireless debugging” on the phone. On Windows the phone is found with adb's mDNS: if the firewall asks, allow adb on private networks"
+msgstr "Activa «Depuración inalámbrica» en el teléfono. En Windows el teléfono se encuentra con el mDNS de adb: si el firewall pregunta, permite adb en redes privadas"
+
+#: crates/app/src/wireless.rs
+msgid "avahi: not available on Windows. ADB Scan uses adb's own mDNS; if the Windows firewall asks, allow adb on private networks."
+msgstr "avahi: no disponible en Windows. ADB Scan usa el mDNS propio de adb; si el firewall de Windows pregunta, permite adb en redes privadas."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "{}\n\nYou can restore them from “Removed for your user”."
+msgstr "{}\n\nPuedes restaurarlas desde «Quitadas para tu usuario»."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "{} apps on the list are installed. Removed apps keep their data and can be restored."
+msgstr "Hay {} apps de la lista instaladas. Las apps quitadas conservan sus datos y se pueden restaurar."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "{} of {} apps removed"
+msgstr "{} de {} apps quitadas"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Ads, telemetry, duplicates and promotional apps. Nothing you use stops working."
+msgstr "Publicidad, telemetría, duplicados y apps promocionales. Nada de lo que usas deja de funcionar."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Animated avatars for the camera."
+msgstr "Avatares animados para la cámara."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "App restored"
+msgstr "App restaurada"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Apps with a feature some people use. Remove them if you do not."
+msgstr "Apps con una función que algunas personas usan. Quítalas si tú no."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Augmented reality effects for the camera."
+msgstr "Efectos de realidad aumentada para la cámara."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Augmented reality. Some games and shops with AR need it."
+msgstr "Realidad aumentada. Algunos juegos y tiendas con RA la necesitan."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Background services for Facebook apps preinstalled by the manufacturer."
+msgstr "Servicios en segundo plano para las apps de Facebook que preinstaló el fabricante."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Business directory and caller information."
+msgstr "Directorio de negocios e información de quien llama."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Calendar app. Your events stay in your Google account."
+msgstr "App de calendario. Tus eventos siguen en tu cuenta de Google."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Collects usage data for Xiaomi."
+msgstr "Recopila datos de uso para Xiaomi."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Compass."
+msgstr "Brújula."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Copies apps and data from another phone during setup. Not used afterwards."
+msgstr "Copia apps y datos de otro teléfono durante la configuración inicial. Después no se usa."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Could not read the apps: {}"
+msgstr "No se pudieron leer las apps: {}"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "debloat bloatware remove preinstalled system apps restore uninstall"
+msgstr "debloat bloatware quitar preinstaladas sistema apps restaurar desinstalar basura"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "E-book reader and shop."
+msgstr "Lector y tienda de libros electrónicos."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Every app removed with “pm uninstall --user 0”, by ADB Scan or by another tool. Restoring reinstalls the copy kept in the system partition."
+msgstr "Toda app quitada con «pm uninstall --user 0», por ADB Scan o por otra herramienta. Restaurarla reinstala la copia que se conserva en la partición del sistema."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Expert"
+msgstr "Experto"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Film and series shop and player."
+msgstr "Tienda y reproductor de películas y series."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Gallery and cloud backup of photos. Without it, use the manufacturer's gallery."
+msgstr "Galería y copia de fotos en la nube. Sin ella, usa la galería del fabricante."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Game hub and in-game tools (Game Booster)."
+msgstr "Centro de juegos y herramientas durante el juego (Game Booster)."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Google cloud storage."
+msgstr "Almacenamiento en la nube de Google."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Google mail app."
+msgstr "App de correo de Google."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Google One subscription app. Your Google storage is not affected."
+msgstr "App de la suscripción Google One. Tu almacenamiento de Google no se ve afectado."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Google search, Discover and the assistant. The search widget and “Hey Google” stop working."
+msgstr "Búsqueda de Google, Discover y el asistente. El widget de búsqueda y «Hey Google» dejan de funcionar."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Google's AI assistant app."
+msgstr "App del asistente de IA de Google."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Installer of the children's mode."
+msgstr "Instalador del modo para niños."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Installs and updates Facebook apps in the background. The Facebook app, if you use it, updates from Play Store."
+msgstr "Instala y actualiza apps de Facebook en segundo plano. La app de Facebook, si la usas, se actualiza desde Play Store."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Installs Facebook apps without Play Store. Not needed to use Facebook."
+msgstr "Instala apps de Facebook sin Play Store. No hace falta para usar Facebook."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Maps and navigation. Apps that open a map will ask for another one."
+msgstr "Mapas y navegación. Las apps que abren un mapa pedirán otra."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Music player and streaming. YouTube keeps working."
+msgstr "Reproductor y streaming de música. YouTube sigue funcionando."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "News and promotions panel to the left of the home screen."
+msgstr "Panel de noticias y promociones a la izquierda de la pantalla de inicio."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "News reader."
+msgstr "Lector de noticias."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "No app has been removed"
+msgstr "No se ha quitado ninguna app"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "None of the apps on the list is installed on this phone."
+msgstr "Ninguna app de la lista está instalada en este teléfono."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Notes."
+msgstr "Notas."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "nubia's animated wallpapers. Choose a still wallpaper first."
+msgstr "Fondos animados de nubia. Elige antes un fondo fijo."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "nubia's app store."
+msgstr "Tienda de apps de nubia."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "nubia's browser. Install another browser first, or links will not open."
+msgstr "Navegador de nubia. Instala antes otro navegador, o los enlaces no se abrirán."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "nubia's on-screen translation."
+msgstr "Traducción en pantalla de nubia."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "nubia's weather app and its widget."
+msgstr "App del tiempo de nubia y su widget."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Optional"
+msgstr "Opcional"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Part of a system feature. Remove only if you know you do not need it."
+msgstr "Forma parte de una función del sistema. Quítala solo si sabes que no la necesitas."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Phone on the car's screen. Needed only if you use Android Auto."
+msgstr "El teléfono en la pantalla del coche. Solo hace falta si usas Android Auto."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Podcast player."
+msgstr "Reproductor de pódcasts."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Preinstalled Amazon shop."
+msgstr "Tienda de Amazon preinstalada."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Preinstalled apps"
+msgstr "Apps preinstaladas"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Preinstalled LinkedIn app."
+msgstr "App de LinkedIn preinstalada."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Preinstalled Microsoft cloud storage."
+msgstr "Almacenamiento en la nube de Microsoft preinstalado."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Preinstalled Microsoft Office app."
+msgstr "App de Microsoft Office preinstalada."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Preinstalled Netflix app. It can be installed again from Play Store."
+msgstr "App de Netflix preinstalada. Se puede volver a instalar desde Play Store."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Preinstalled Spotify app. It can be installed again from Play Store."
+msgstr "App de Spotify preinstalada. Se puede volver a instalar desde Play Store."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Promotions for Galaxy accessories."
+msgstr "Promociones de accesorios Galaxy."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Reading the installed apps…"
+msgstr "Leyendo las apps instaladas…"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Recognises objects and text with the camera."
+msgstr "Reconoce objetos y texto con la cámara."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Recommended"
+msgstr "Recomendado"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "REDMAGIC's game mode: shoulder triggers, fan and performance profiles depend on it."
+msgstr "Modo de juego de REDMAGIC: los gatillos, el ventilador y los perfiles de rendimiento dependen de él."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "REDMAGIC's game shop and hub."
+msgstr "Tienda y centro de juegos de REDMAGIC."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Remove {}?"
+msgstr "¿Quitar {}?"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Remove {} apps?"
+msgstr "¿Quitar {} apps?"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Remove all ({})"
+msgstr "Quitar todas ({})"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Removed for your user"
+msgstr "Quitadas para tu usuario"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Removes apps the manufacturer or carrier preinstalled, only for your user (pm uninstall --user 0). Their APK stays in the system partition: you can restore them here at any time, and a factory reset brings them back. No root needed."
+msgstr "Quita las apps que preinstaló el fabricante o el operador, solo para tu usuario (pm uninstall --user 0). Su APK se queda en la partición del sistema: puedes restaurarlas aquí cuando quieras, y un restablecimiento de fábrica las devuelve. No hace falta root."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Removing…"
+msgstr "Quitando…"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Restore"
+msgstr "Restaurar"
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Samsung's browser. Install another browser first."
+msgstr "Navegador de Samsung. Instala antes otro navegador."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Samsung's store. Without it, some Samsung apps stop updating."
+msgstr "Tienda de Samsung. Sin ella, algunas apps de Samsung dejan de actualizarse."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Samsung's tips."
+msgstr "Consejos de Samsung."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Samsung's voice assistant. The side key can open something else instead."
+msgstr "Asistente de voz de Samsung. La tecla lateral puede abrir otra cosa en su lugar."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Screen time, app timers and bedtime mode."
+msgstr "Tiempo de pantalla, temporizadores de apps y modo descanso."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Sends bug reports to Xiaomi."
+msgstr "Envía informes de errores a Xiaomi."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Sends feedback reports about apps installed from Play Store."
+msgstr "Envía comentarios sobre las apps instaladas desde Play Store."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Shortcut to the assistant. The Google app still provides it."
+msgstr "Acceso directo al asistente. La app de Google lo sigue ofreciendo."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Shows ads in Xiaomi's system apps."
+msgstr "Muestra publicidad en las apps del sistema de Xiaomi."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Suggests apps to install."
+msgstr "Sugiere apps para instalar."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Suggests printing plugins. Printing still works with the plugins you install."
+msgstr "Sugiere complementos de impresión. Imprimir sigue funcionando con los complementos que instales."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Tells Netflix the phone came with the app preinstalled. Not needed to use Netflix."
+msgstr "Le indica a Netflix que el teléfono traía la app preinstalada. No hace falta para usar Netflix."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "The Facebook app preinstalled by the manufacturer. It can be installed again from Play Store."
+msgstr "La app de Facebook que preinstaló el fabricante. Se puede volver a instalar desde Play Store."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "The YouTube app."
+msgstr "La app de YouTube."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Translator."
+msgstr "Traductor."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Video calls (formerly Duo). Without it, video calls from the dialer may not be offered."
+msgstr "Videollamadas (antes Duo). Sin ella, puede que el marcador no ofrezca videollamadas."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Voice recorder."
+msgstr "Grabadora de voz."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Xiaomi's app store, which also shows suggestions and ads."
+msgstr "Tienda de apps de Xiaomi, que además muestra sugerencias y publicidad."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Xiaomi's browser, with news and ads. Install another browser first."
+msgstr "Navegador de Xiaomi, con noticias y publicidad. Instala antes otro navegador."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Xiaomi's game shop."
+msgstr "Tienda de juegos de Xiaomi."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Xiaomi's music player."
+msgstr "Reproductor de música de Xiaomi."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Xiaomi's notes. Back up your notes first."
+msgstr "Notas de Xiaomi. Respalda antes tus notas."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Xiaomi's video player."
+msgstr "Reproductor de vídeo de Xiaomi."
+
+#: crates/core/src/debloat.rs crates/app/src/pages/debloat.rs
+msgid "Xiaomi's weather app and its widget."
+msgstr "App del tiempo de Xiaomi y su widget."
+
+#: crates/core/src crates/app/src/pages
+msgid "{} · {}\n\nThe file is deleted from the phone for good: the shared storage has no recycle bin."
+msgstr "{} · {}\n\nEl archivo se borra del teléfono para siempre: el almacenamiento compartido no tiene papelera."
+
+#: crates/core/src crates/app/src/pages
+msgid " · {} cycles"
+msgstr " · {} ciclos"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} · audit of {}"
+msgstr "{} · auditoría del {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} apps"
+msgstr "{} apps"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} apps exported."
+msgstr "{} apps exportadas."
+
+#: crates/core/src crates/app/src/pages
+msgid "{} apps exported on {}. Apps the phone already has are unchecked. Only the apps are installed: their data comes from each app's own backup."
+msgstr "{} apps exportadas el {}. Las que el teléfono ya tiene aparecen sin marcar. Solo se instalan las apps: sus datos vienen del respaldo propio de cada app."
+
+#: crates/core/src crates/app/src/pages
+msgid "{} apps have at least one of these permissions{}."
+msgstr "{} apps tienen al menos uno de estos permisos{}."
+
+#: crates/core/src crates/app/src/pages
+msgid "{} apps installed."
+msgstr "{} apps instaladas."
+
+#: crates/core/src crates/app/src/pages
+msgid "{} at {} dpi{}"
+msgstr "{} a {} dpi{}"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} copies of {} · {} could be freed"
+msgstr "{} copias de {} · se podrían liberar {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} freed"
+msgstr "{} liberados"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} has no {}: choose a folder exported by ADB Scan"
+msgstr "{} no tiene {}: elige una carpeta exportada por ADB Scan"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} has no APK in the export"
+msgstr "{} no tiene ningún APK en la exportación"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} in {} files, scanned in {} s."
+msgstr "{} en {} archivos, escaneados en {} s."
+
+#: crates/core/src crates/app/src/pages
+msgid "{} is missing from the export"
+msgstr "Falta {} en la exportación"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} more items"
+msgstr "{} elementos más"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} new photos and videos copied ({})"
+msgstr "{} fotos y vídeos nuevos copiados ({})"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} of {} mAh{}"
+msgstr "{} de {} mAh{}"
+
+#: crates/core/src crates/app/src/pages
+msgid " (original: {} at {} dpi)"
+msgstr " (original: {} a {} dpi)"
+
+#: crates/core/src crates/app/src/pages
+msgid " (preinstalled apps hidden)"
+msgstr " (apps preinstaladas ocultas)"
+
+#: crates/core/src crates/app/src/pages
+msgid "“{}” taken away"
+msgstr "«{}» retirado"
+
+#: crates/core/src crates/app/src/pages
+msgid "{} was not deleted"
+msgstr "{} no se borró"
+
+#: crates/core/src crates/app/src/pages
+msgid "1 app"
+msgstr "1 app"
+
+#: crates/core/src crates/app/src/pages
+msgid "1× (normal)"
+msgstr "1× (normal)"
+
+#: crates/core/src crates/app/src/pages
+msgid "A circle where you touch: useful when recording the screen."
+msgstr "Un círculo donde tocas: útil al grabar la pantalla."
+
+#: crates/core/src crates/app/src/pages
+msgid "Accesses granted from Settings → Apps → Special app access. They are more powerful than ordinary permissions."
+msgstr "Accesos que se conceden en Ajustes → Apps → Acceso especial de apps. Son más potentes que los permisos normales."
+
+#: crates/core/src crates/app/src/pages
+msgid "Accessibility service"
+msgstr "Servicio de accesibilidad"
+
+#: crates/core/src crates/app/src/pages
+msgid "ADB Scan runs these actions by itself when the phone connects (by cable or Wi-Fi) or when it starts with the phone connected, while it is open or in the tray. Each one runs at most once every {} minutes per phone, and every run is recorded in History."
+msgstr "ADB Scan hace estas acciones por sí solo cuando el teléfono se conecta (por cable o Wi-Fi) o cuando arranca con el teléfono conectado, mientras está abierto o en la bandeja. Cada una se ejecuta como mucho una vez cada {} minutos por teléfono, y cada ejecución queda en Historial."
+
+#: crates/core/src crates/app/src/pages
+msgid "Add one below."
+msgstr "Añade una abajo."
+
+#: crates/core/src crates/app/src/pages
+msgid "Add rule"
+msgstr "Añadir regla"
+
+#: crates/core/src crates/app/src/pages
+msgid "Already installed"
+msgstr "Ya instalada"
+
+#: crates/core/src crates/app/src/pages
+msgid "Android or a device policy grants it and does not let it be taken away."
+msgstr "Lo concede Android o una política del dispositivo, y no deja retirarlo."
+
+#: crates/core/src crates/app/src/pages
+msgid "Animation speed"
+msgstr "Velocidad de las animaciones"
+
+#: crates/core/src crates/app/src/pages
+msgid "Animation speed: {}"
+msgstr "Velocidad de las animaciones: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Any phone"
+msgstr "Cualquier teléfono"
+
+#: crates/core/src crates/app/src/pages
+msgid "App files"
+msgstr "Archivos de apps"
+
+#: crates/core/src crates/app/src/pages
+msgid "App list"
+msgstr "Lista de apps"
+
+#: crates/core/src crates/app/src/pages
+msgid "Apply"
+msgstr "Aplicar"
+
+#: crates/core/src crates/app/src/pages
+msgid "Apps of {} {}"
+msgstr "Apps de {} {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Archives, APKs and disk images"
+msgstr "Comprimidos, APK e imágenes de disco"
+
+#: crates/core/src crates/app/src/pages
+msgid "Audio"
+msgstr "Audio"
+
+#: crates/core/src crates/app/src/pages
+msgid "Automation added: it runs the next time the phone connects"
+msgstr "Automatización añadida: se ejecutará la próxima vez que se conecte el teléfono"
+
+#: crates/core/src crates/app/src/pages
+msgid "Automations"
+msgstr "Automatizaciones"
+
+#: crates/core/src crates/app/src/pages
+msgid "Automations run"
+msgstr "Automatizaciones ejecutadas"
+
+#: crates/core/src crates/app/src/pages
+msgid "Battery health"
+msgstr "Salud de la batería"
+
+#: crates/core/src crates/app/src/pages
+msgid "Battery, storage, bootloader and security in one page"
+msgstr "Batería, almacenamiento, bootloader y seguridad en una página"
+
+#: crates/core/src crates/app/src/pages
+msgid "Bootloader"
+msgstr "Bootloader"
+
+#: crates/core/src crates/app/src/pages
+msgid "brightness volume do not disturb airplane remote media calls find quick settings automations on connect"
+msgstr "brillo volumen no molestar avión remoto multimedia llamadas buscar ajustes rápidos automatizaciones al conectar"
+
+#: crates/core/src crates/app/src/pages
+msgid "By type"
+msgstr "Por tipo"
+
+#: crates/core/src crates/app/src/pages
+msgid "Calendar"
+msgstr "Calendario"
+
+#: crates/core/src crates/app/src/pages
+msgid "Call log"
+msgstr "Registro de llamadas"
+
+#: crates/core/src crates/app/src/pages
+msgid "camera microphone location contacts sms accessibility notifications overlay revoke privacy special access"
+msgstr "cámara micrófono ubicación contactos sms accesibilidad notificaciones superposición revocar retirar privacidad acceso especial"
+
+#: crates/core/src crates/app/src/pages
+msgid "Cancelled: {} apps exported."
+msgstr "Cancelado: {} apps exportadas."
+
+#: crates/core/src crates/app/src/pages
+msgid "Cancelled: {} apps installed."
+msgstr "Cancelado: {} apps instaladas."
+
+#: crates/core/src crates/app/src/pages
+msgid "Changes settings such as brightness or the ringtone."
+msgstr "Cambia ajustes como el brillo o el tono de llamada."
+
+#: crates/core/src crates/app/src/pages
+msgid "choose the photos folder first (Files → Copy photos)"
+msgstr "elige antes la carpeta de fotos (Archivos → Copiar fotos)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Close"
+msgstr "Cerrar"
+
+#: crates/core/src crates/app/src/pages
+msgid "Contacts"
+msgstr "Contactos"
+
+#: crates/core/src crates/app/src/pages
+msgid "Coordinates and trail of every touch at the top of the screen."
+msgstr "Coordenadas y rastro de cada toque en la parte superior de la pantalla."
+
+#: crates/core/src crates/app/src/pages
+msgid "Copies your apps (APKs) to a folder, to install them on another phone"
+msgstr "Copia tus apps (APK) a una carpeta, para instalarlas en otro teléfono"
+
+#: crates/core/src crates/app/src/pages
+msgid "Copy the new photos to the PC"
+msgstr "Copiar las fotos nuevas al PC"
+
+#: crates/core/src crates/app/src/pages
+msgid "Copying {}…"
+msgstr "Copiando {}…"
+
+#: crates/core/src crates/app/src/pages
+msgid "Copying photos uses the folder chosen in Files → Copy photos; choose it there once."
+msgstr "Copiar fotos usa la carpeta elegida en Archivos → Copiar fotos; elígela allí una vez."
+
+#: crates/core/src crates/app/src/pages
+msgid "Could not create the folder: {}"
+msgstr "No se pudo crear la carpeta: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Could not read the developer settings: {}"
+msgstr "No se pudieron leer los ajustes de desarrollador: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Could not read the permissions: {}"
+msgstr "No se pudieron leer los permisos: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Could not save the report: {}"
+msgstr "No se pudo guardar el informe: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Could not start the scan: {}"
+msgstr "No se pudo iniciar el escaneo: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Current"
+msgstr "Actual"
+
+#: crates/core/src crates/app/src/pages
+msgid "Delete {}?"
+msgstr "¿Borrar {}?"
+
+#: crates/core/src crates/app/src/pages
+msgid "Delete this file"
+msgstr "Borrar este archivo"
+
+#: crates/core/src crates/app/src/pages
+msgid "Demo mode"
+msgstr "Modo demo"
+
+#: crates/core/src crates/app/src/pages
+msgid "Demo mode off"
+msgstr "Modo demo desactivado"
+
+#: crates/core/src crates/app/src/pages
+msgid "Demo mode on"
+msgstr "Modo demo activado"
+
+#: crates/core/src crates/app/src/pages
+msgid "Density (dpi)"
+msgstr "Densidad (dpi)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Developer"
+msgstr "Desarrollador"
+
+#: crates/core/src crates/app/src/pages
+msgid "Developer switches"
+msgstr "Interruptores de desarrollador"
+
+#: crates/core/src crates/app/src/pages
+msgid "Direction"
+msgstr "Sentido"
+
+#: crates/core/src crates/app/src/pages
+msgid "Draws on top of other apps (bubbles, floating windows, and also fake screens)."
+msgstr "Dibuja encima de otras apps (burbujas, ventanas flotantes, y también pantallas falsas)."
+
+#: crates/core/src crates/app/src/pages
+msgid "Duplicates"
+msgstr "Duplicados"
+
+#: crates/core/src crates/app/src/pages
+msgid "Each sensitive permission and special access, with the apps that have it. Taking one away is the same as turning it off in Settings: the app can ask for it again, and you can grant it again from Settings or from Apps."
+msgstr "Cada permiso sensible y acceso especial, con las apps que lo tienen. Retirarlo es lo mismo que desactivarlo en Ajustes: la app puede volver a pedirlo, y tú puedes volver a concederlo desde Ajustes o desde Aplicaciones."
+
+#: crates/core/src crates/app/src/pages
+msgid "each side must be between 240 and 8192 pixels"
+msgstr "cada lado debe estar entre 240 y 8192 píxeles"
+
+#: crates/core/src crates/app/src/pages
+msgid "Everything downloaded from the browser and other apps."
+msgstr "Todo lo descargado desde el navegador y otras apps."
+
+#: crates/core/src crates/app/src/pages
+msgid "Export apps"
+msgstr "Exportar apps"
+
+#: crates/core/src crates/app/src/pages
+msgid "Export apps…"
+msgstr "Exportar apps…"
+
+#: crates/core/src crates/app/src/pages
+msgid "Exporting apps"
+msgstr "Exportando apps"
+
+#: crates/core/src crates/app/src/pages
+msgid "Extra data of installed games. Uninstalling the game deletes it."
+msgstr "Datos extra de los juegos instalados. Desinstalar el juego los borra."
+
+#: crates/core/src crates/app/src/pages
+msgid "File deleted"
+msgstr "Archivo borrado"
+
+#: crates/core/src crates/app/src/pages
+msgid "Files apps keep in shared storage. Clearing an app's data in Apps deletes its folder here."
+msgstr "Archivos que las apps guardan en el almacenamiento compartido. Borrar los datos de una app en Aplicaciones borra su carpeta aquí."
+
+#: crates/core/src crates/app/src/pages
+msgid "Files downloaded by Telegram. Telegram can clear its cache in Settings → Data and storage."
+msgstr "Archivos descargados por Telegram. Telegram puede borrar su caché en Ajustes → Datos y almacenamiento."
+
+#: crates/core/src crates/app/src/pages
+msgid "Files of 1 MB or more with the same name and size in different folders: {} could be freed. Check them before deleting: they are probably, not certainly, the same file."
+msgstr "Archivos de 1 MB o más con el mismo nombre y tamaño en carpetas distintas: se podrían liberar {}. Revísalos antes de borrar: probablemente, no seguro, son el mismo archivo."
+
+#: crates/core/src crates/app/src/pages
+msgid "Find and connect to Bluetooth, Wi-Fi and UWB devices nearby."
+msgstr "Buscar y conectarse a dispositivos Bluetooth, Wi-Fi y UWB cercanos."
+
+#: crates/core/src crates/app/src/pages
+msgid "Finds what takes up space in the phone's shared storage (photos, downloads, chats, app files). The scan only reads, and takes about a minute for every 50 GB. Nothing is deleted without your confirmation, one file at a time."
+msgstr "Encuentra lo que ocupa espacio en el almacenamiento compartido del teléfono (fotos, descargas, chats, archivos de apps). El escaneo solo lee y tarda alrededor de un minuto por cada 50 GB. No se borra nada sin tu confirmación, archivo por archivo."
+
+#: crates/core/src crates/app/src/pages
+msgid "Fixed by the system"
+msgstr "Fijado por el sistema"
+
+#: crates/core/src crates/app/src/pages
+msgid "Folder of an export"
+msgstr "Carpeta de una exportación"
+
+#: crates/core/src crates/app/src/pages
+msgid "Folder to export the apps to"
+msgstr "Carpeta donde exportar las apps"
+
+#: crates/core/src crates/app/src/pages
+msgid "Folders"
+msgstr "Carpetas"
+
+#: crates/core/src crates/app/src/pages
+msgid "Folders that fill up without anyone noticing. Open one to see what is inside."
+msgstr "Carpetas que se llenan sin que nadie lo note. Abre una para ver qué hay dentro."
+
+#: crates/core/src crates/app/src/pages
+msgid "Full battery, full signal, 12:00 and no notification icons: clean screenshots and recordings. It does not change the real battery or network."
+msgstr "Batería llena, señal completa, 12:00 y sin iconos de notificaciones: capturas y grabaciones limpias. No cambia la batería ni la red reales."
+
+#: crates/core/src crates/app/src/pages
+msgid "Game data (OBB)"
+msgstr "Datos de juegos (OBB)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Health report"
+msgstr "Informe de salud"
+
+#: crates/core/src crates/app/src/pages
+msgid "Health report…"
+msgstr "Informe de salud…"
+
+#: crates/core/src crates/app/src/pages
+msgid "health report {}"
+msgstr "informe de salud {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Health report saved"
+msgstr "Informe de salud guardado"
+
+#: crates/core/src crates/app/src/pages
+msgid "Heart rate and other health sensors."
+msgstr "Ritmo cardiaco y otros sensores de salud."
+
+#: crates/core/src crates/app/src/pages
+msgid "Height (px)"
+msgstr "Alto (px)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Images"
+msgstr "Imágenes"
+
+#: crates/core/src crates/app/src/pages
+msgid "Include preinstalled apps"
+msgstr "Incluir apps preinstaladas"
+
+#: crates/core/src crates/app/src/pages
+msgid "Install apps from {}"
+msgstr "Instalar apps de {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Install from an export"
+msgstr "Instalar desde una exportación"
+
+#: crates/core/src crates/app/src/pages
+msgid "Install from an export…"
+msgstr "Instalar desde una exportación…"
+
+#: crates/core/src crates/app/src/pages
+msgid "Install unknown apps"
+msgstr "Instalar apps desconocidas"
+
+#: crates/core/src crates/app/src/pages
+msgid "Installed, older version"
+msgstr "Instalada, versión anterior"
+
+#: crates/core/src crates/app/src/pages
+msgid "Installing {}…"
+msgstr "Instalando {}…"
+
+#: crates/core/src crates/app/src/pages
+msgid "Installing apps"
+msgstr "Instalando apps"
+
+#: crates/core/src crates/app/src/pages
+msgid "Installs APKs without going through the store."
+msgstr "Instala APK sin pasar por la tienda."
+
+#: crates/core/src crates/app/src/pages
+msgid "Installs the apps of a folder exported by ADB Scan"
+msgstr "Instala las apps de una carpeta exportada por ADB Scan"
+
+#: crates/core/src crates/app/src/pages
+msgid "invalid package in the manifest: {}"
+msgstr "paquete no válido en el manifiesto: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "It is a preinstalled app: a system feature may stop working until you grant it again."
+msgstr "Es una app preinstalada: alguna función del sistema puede dejar de funcionar hasta que lo vuelvas a conceder."
+
+#: crates/core/src crates/app/src/pages
+msgid "It will be undone in {} seconds."
+msgstr "Se deshará en {} segundos."
+
+#: crates/core/src crates/app/src/pages
+msgid "Keep"
+msgstr "Mantener"
+
+#: crates/core/src crates/app/src/pages
+msgid "Keep the screen on while charging"
+msgstr "Mantener la pantalla encendida mientras carga"
+
+#: crates/core/src crates/app/src/pages
+msgid "Keep this screen?"
+msgstr "¿Mantener esta pantalla?"
+
+#: crates/core/src crates/app/src/pages
+msgid "Knows which apps you use and for how long."
+msgstr "Sabe qué apps usas y durante cuánto tiempo."
+
+#: crates/core/src crates/app/src/pages
+msgid "Largest files"
+msgstr "Archivos más grandes"
+
+#: crates/core/src crates/app/src/pages
+msgid "Let the screen turn off while charging"
+msgstr "Dejar que la pantalla se apague mientras carga"
+
+#: crates/core/src crates/app/src/pages
+msgid "Location even when the app is not open."
+msgstr "Ubicación aunque la app no esté abierta."
+
+#: crates/core/src crates/app/src/pages
+msgid "Location in the background"
+msgstr "Ubicación en segundo plano"
+
+#: crates/core/src crates/app/src/pages
+msgid "Made on {} with ADB Scan"
+msgstr "Hecho el {} con ADB Scan"
+
+#: crates/core/src crates/app/src/pages
+msgid "Make calls and read the phone's status and number."
+msgstr "Hacer llamadas y leer el estado y el número del teléfono."
+
+#: crates/core/src crates/app/src/pages
+msgid "migrate move new phone backup apk transfer"
+msgstr "migrar mover teléfono nuevo respaldo copia apk transferir"
+
+#: crates/core/src crates/app/src/pages
+msgid "migrate restore new phone apk"
+msgstr "migrar restaurar teléfono nuevo apk"
+
+#: crates/core/src crates/app/src/pages
+msgid "Modify system settings"
+msgstr "Modificar ajustes del sistema"
+
+#: crates/core/src crates/app/src/pages
+msgid "Nearby devices"
+msgstr "Dispositivos cercanos"
+
+#: crates/core/src crates/app/src/pages
+msgid "New automation"
+msgstr "Nueva automatización"
+
+#: crates/core/src crates/app/src/pages
+msgid "No app"
+msgstr "Ninguna app"
+
+#: crates/core/src crates/app/src/pages
+msgid "No audit yet: run one in Security"
+msgstr "Todavía no hay auditoría: haz una en Seguridad"
+
+#: crates/core/src crates/app/src/pages
+msgid "No automations yet"
+msgstr "Todavía no hay automatizaciones"
+
+#: crates/core/src crates/app/src/pages
+msgid "No duplicates found"
+msgstr "No se encontraron duplicados"
+
+#: crates/core/src crates/app/src/pages
+msgid "No rules"
+msgstr "No hay reglas"
+
+#: crates/core/src crates/app/src/pages
+msgid "None of these places takes up space"
+msgstr "Ninguno de estos lugares ocupa espacio"
+
+#: crates/core/src crates/app/src/pages
+msgid "Not done:"
+msgstr "Sin hacer:"
+
+#: crates/core/src crates/app/src/pages
+msgid "Not scanned yet."
+msgstr "Todavía sin escanear."
+
+#: crates/core/src crates/app/src/pages
+msgid "Nothing changed"
+msgstr "No cambió nada"
+
+#: crates/core/src crates/app/src/pages
+msgid "Notification access"
+msgstr "Acceso a notificaciones"
+
+#: crates/core/src crates/app/src/pages
+msgid "Only {}"
+msgstr "Solo {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Only the apps are copied, not their data: restore each app's data from its own backup."
+msgstr "Solo se copian las apps, no sus datos: restaura los datos de cada app desde su propio respaldo."
+
+#: crates/core/src crates/app/src/pages
+msgid "Only this phone ({})"
+msgstr "Solo este teléfono ({})"
+
+#: crates/core/src crates/app/src/pages
+msgid "Original system (green)"
+msgstr "Sistema original (verde)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Outlines every view and its margins. Apps already open update when they redraw."
+msgstr "Marca el contorno de cada vista y sus márgenes. Las apps ya abiertas se actualizan cuando se redibujan."
+
+#: crates/core/src crates/app/src/pages
+msgid "Parent folder"
+msgstr "Carpeta superior"
+
+#: crates/core/src crates/app/src/pages
+msgid "PC {} → phone {}"
+msgstr "PC {} → teléfono {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "PC → phone (adb forward)"
+msgstr "PC → teléfono (adb forward)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Permissions"
+msgstr "Permisos"
+
+#: crates/core/src crates/app/src/pages
+msgid "Phone {} → PC {}"
+msgstr "Teléfono {} → PC {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Phone → PC (adb reverse)"
+msgstr "Teléfono → PC (adb reverse)"
+
+#: crates/core/src crates/app/src/pages
+msgid "“Phone → PC” makes a server running on the PC reachable on the phone as localhost (web development, Metro, Vite). “PC → phone” does the opposite. Rules last until ADB or the phone restarts."
+msgstr "«Teléfono → PC» hace que un servidor del PC se vea en el teléfono como localhost (desarrollo web, Metro, Vite). «PC → teléfono» hace lo contrario. Las reglas duran hasta que se reinicie ADB o el teléfono."
+
+#: crates/core/src crates/app/src/pages
+msgid "Phone health report — {}"
+msgstr "Informe de salud del teléfono — {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Photos and videos taken with the phone."
+msgstr "Fotos y vídeos hechos con el teléfono."
+
+#: crates/core/src crates/app/src/pages
+msgid "Photos, videos and files"
+msgstr "Fotos, vídeos y archivos"
+
+#: crates/core/src crates/app/src/pages
+msgid "Photos, videos, voice notes and documents received in chats. Delete them from WhatsApp → Settings → Storage to keep the chats tidy."
+msgstr "Fotos, vídeos, notas de voz y documentos recibidos en los chats. Bórralos desde WhatsApp → Ajustes → Almacenamiento para que los chats queden en orden."
+
+#: crates/core/src crates/app/src/pages
+msgid "Places that grow"
+msgstr "Lugares que crecen"
+
+#: crates/core/src crates/app/src/pages
+msgid "Pointer location"
+msgstr "Ubicación del puntero"
+
+#: crates/core/src crates/app/src/pages
+msgid "Port forwarding"
+msgstr "Redirección de puertos"
+
+#: crates/core/src crates/app/src/pages
+msgid "Port on the PC"
+msgstr "Puerto en el PC"
+
+#: crates/core/src crates/app/src/pages
+msgid "Port on the phone"
+msgstr "Puerto en el teléfono"
+
+#: crates/core/src crates/app/src/pages
+msgid "Possible duplicates"
+msgstr "Posibles duplicados"
+
+#: crates/core/src crates/app/src/pages
+msgid "preinstalled"
+msgstr "preinstalada"
+
+#: crates/core/src crates/app/src/pages
+msgid "processes sensors services developer options port forwarding reverse demo mode resolution density animations show taps layout bounds"
+msgstr "procesos sensores servicios opciones de desarrollador redirección de puertos reverse modo demo resolución densidad animaciones mostrar toques límites de diseño"
+
+#: crates/core/src crates/app/src/pages
+msgid "Read and change the call history."
+msgstr "Leer y cambiar el historial de llamadas."
+
+#: crates/core/src crates/app/src/pages
+msgid "Read and change your contacts."
+msgstr "Leer y cambiar tus contactos."
+
+#: crates/core/src crates/app/src/pages
+msgid "Read and change your events."
+msgstr "Leer y cambiar tus eventos."
+
+#: crates/core/src crates/app/src/pages
+msgid "Read from the phone over ADB, without root and without changing anything. It has no serial number, IMEI or accounts, so it can be shared. Battery health is the capacity the battery reports compared with its design capacity; storage life is the wear the memory chip reports, in steps of 10 %."
+msgstr "Leído del teléfono por ADB, sin root y sin cambiar nada. No incluye número de serie, IMEI ni cuentas, así que se puede compartir. La salud de la batería es la capacidad que informa la batería comparada con su capacidad de diseño; la vida del almacenamiento es el desgaste que informa el chip de memoria, en pasos del 10 %."
+
+#: crates/core/src crates/app/src/pages
+msgid "Read, receive and send text messages."
+msgstr "Leer, recibir y enviar mensajes de texto."
+
+#: crates/core/src crates/app/src/pages
+msgid "Read the photos, videos, audio and files on the phone."
+msgstr "Leer las fotos, vídeos, audios y archivos del teléfono."
+
+#: crates/core/src crates/app/src/pages
+msgid "Reading the permissions of every app…"
+msgstr "Leyendo los permisos de todas las apps…"
+
+#: crates/core/src crates/app/src/pages
+msgid "Reads and changes every file in the shared storage."
+msgstr "Lee y cambia todos los archivos del almacenamiento compartido."
+
+#: crates/core/src crates/app/src/pages
+msgid "Reads every notification, including messages and codes."
+msgstr "Lee todas las notificaciones, incluidos mensajes y códigos."
+
+#: crates/core/src crates/app/src/pages
+msgid "Record audio."
+msgstr "Grabar audio."
+
+#: crates/core/src crates/app/src/pages
+msgid "Remove the rule"
+msgstr "Quitar la regla"
+
+#: crates/core/src crates/app/src/pages
+msgid "Resolution and density (what “Display size” changes). After applying, you have {} seconds to keep the change: if you do not answer, it is undone by itself."
+msgstr "Resolución y densidad (lo que cambia «Tamaño de visualización»). Tras aplicar, tienes {} segundos para mantener el cambio: si no respondes, se deshace solo."
+
+#: crates/core/src crates/app/src/pages
+msgid "Restore the original"
+msgstr "Restaurar la original"
+
+#: crates/core/src crates/app/src/pages
+msgid "Rule added"
+msgstr "Regla añadida"
+
+#: crates/core/src crates/app/src/pages
+msgid "Rule removed"
+msgstr "Regla quitada"
+
+#: crates/core/src crates/app/src/pages
+msgid "Save a page with the battery, storage, bootloader and security, to share or print"
+msgstr "Guarda una página con la batería, el almacenamiento, el bootloader y la seguridad, para compartir o imprimir"
+
+#: crates/core/src crates/app/src/pages
+msgid "Save health report"
+msgstr "Guardar informe de salud"
+
+#: crates/core/src crates/app/src/pages
+msgid "Scan"
+msgstr "Escanear"
+
+#: crates/core/src crates/app/src/pages
+msgid "Scan cancelled."
+msgstr "Escaneo cancelado."
+
+#: crates/core/src crates/app/src/pages
+msgid "Scanning…"
+msgstr "Escaneando…"
+
+#: crates/core/src crates/app/src/pages
+msgid "Scanning… {} files and folders read ({} s)"
+msgstr "Escaneando… {} archivos y carpetas leídos ({} s)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Screen changed"
+msgstr "Pantalla cambiada"
+
+#: crates/core/src crates/app/src/pages
+msgid "Screen restored"
+msgstr "Pantalla restaurada"
+
+#: crates/core/src crates/app/src/pages
+msgid "Screenshots and screen recordings."
+msgstr "Capturas y grabaciones de pantalla."
+
+#: crates/core/src crates/app/src/pages
+msgid "Security findings"
+msgstr "Hallazgos de seguridad"
+
+#: crates/core/src crates/app/src/pages
+msgid "Security patch: {}"
+msgstr "Parche de seguridad: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Sees everything on the screen and can tap for you. The most powerful access an app can get."
+msgstr "Ve todo lo que hay en pantalla y puede tocar por ti. El acceso más potente que puede tener una app."
+
+#: crates/core/src crates/app/src/pages
+msgid "sell buy used second hand certificate pdf print battery health"
+msgstr "vender comprar usado segunda mano certificado pdf imprimir salud batería"
+
+#: crates/core/src crates/app/src/pages
+msgid "Show layout bounds"
+msgstr "Mostrar límites de diseño"
+
+#: crates/core/src crates/app/src/pages
+msgid "Show taps"
+msgstr "Mostrar toques"
+
+#: crates/core/src crates/app/src/pages
+msgid "Signed with its own key (yellow)"
+msgstr "Firmado con clave propia (amarillo)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Small copies of your photos made by galleries. They are made again when needed."
+msgstr "Copias pequeñas de tus fotos que hacen las galerías. Se vuelven a crear cuando hacen falta."
+
+#: crates/core/src crates/app/src/pages
+msgid "SMS"
+msgstr "SMS"
+
+#: crates/core/src crates/app/src/pages
+msgid "Some automations failed"
+msgstr "Algunas automatizaciones fallaron"
+
+#: crates/core/src crates/app/src/pages
+msgid "space full analyzer large files duplicates whatsapp downloads free up clean"
+msgstr "espacio lleno analizador archivos grandes duplicados whatsapp descargas liberar limpiar"
+
+#: crates/core/src crates/app/src/pages
+msgid "Special access"
+msgstr "Acceso especial"
+
+#: crates/core/src crates/app/src/pages
+msgid "Status bar demo mode"
+msgstr "Modo demo de la barra de estado"
+
+#: crates/core/src crates/app/src/pages
+msgid "Stay awake while charging"
+msgstr "Pantalla activa mientras carga"
+
+#: crates/core/src crates/app/src/pages
+msgid "Storage in use"
+msgstr "Almacenamiento en uso"
+
+#: crates/core/src crates/app/src/pages
+msgid "Storage life"
+msgstr "Vida del almacenamiento"
+
+#: crates/core/src crates/app/src/pages
+msgid "System apps usually need their permissions: change them only if you know what they are for."
+msgstr "Las apps del sistema suelen necesitar sus permisos: cámbialos solo si sabes para qué son."
+
+#: crates/core/src crates/app/src/pages
+msgid "Take “{}” away from {}?"
+msgstr "¿Retirar «{}» a {}?"
+
+#: crates/core/src crates/app/src/pages
+msgid "Take away"
+msgstr "Retirar"
+
+#: crates/core/src crates/app/src/pages
+msgid "Take photos and record video."
+msgstr "Hacer fotos y grabar vídeo."
+
+#: crates/core/src crates/app/src/pages
+msgid "Telegram"
+msgstr "Telegram"
+
+#: crates/core/src crates/app/src/pages
+msgid "That automation already exists"
+msgstr "Esa automatización ya existe"
+
+#: crates/core/src crates/app/src/pages
+msgid "The app will stop working as an accessibility service until you turn it on again in Settings → Accessibility."
+msgstr "La app dejará de funcionar como servicio de accesibilidad hasta que la vuelvas a activar en Ajustes → Accesibilidad."
+
+#: crates/core/src crates/app/src/pages
+msgid "The audit found nothing to fix."
+msgstr "La auditoría no encontró nada que corregir."
+
+#: crates/core/src crates/app/src/pages
+msgid "the density must be between 72 and 1200 dpi"
+msgstr "la densidad debe estar entre 72 y 1200 dpi"
+
+#: crates/core/src crates/app/src/pages
+msgid "the export was made by a newer ADB Scan"
+msgstr "la exportación la hizo un ADB Scan más reciente"
+
+#: crates/core/src crates/app/src/pages
+msgid "the manifest cannot be read: {}"
+msgstr "no se puede leer el manifiesto: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "The phone does not publish its capacity"
+msgstr "El teléfono no publica su capacidad"
+
+#: crates/core/src crates/app/src/pages
+msgid "the port must be between 1 and 65535"
+msgstr "el puerto debe estar entre 1 y 65535"
+
+#: crates/core/src crates/app/src/pages
+msgid "The same switches as in Developer options, without looking for them on the phone."
+msgstr "Los mismos interruptores que en Opciones de desarrollador, sin buscarlos en el teléfono."
+
+#: crates/core/src crates/app/src/pages
+msgid "The scan returned nothing: the shared storage may not be readable."
+msgstr "El escaneo no devolvió nada: puede que el almacenamiento compartido no se pueda leer."
+
+#: crates/core/src crates/app/src/pages
+msgid "the screen mirror is opened by the window"
+msgstr "la duplicación de pantalla la abre la ventana"
+
+#: crates/core/src crates/app/src/pages
+msgid "The screen never turns off while the phone is charging."
+msgstr "La pantalla no se apaga nunca mientras el teléfono carga."
+
+#: crates/core/src crates/app/src/pages
+msgid "This folder cannot be installed"
+msgstr "Esta carpeta no se puede instalar"
+
+#: crates/core/src crates/app/src/pages
+msgid "Thumbnail caches"
+msgstr "Cachés de miniaturas"
+
+#: crates/core/src crates/app/src/pages
+msgid "Turned off"
+msgstr "Desactivado"
+
+#: crates/core/src crates/app/src/pages
+msgid "Turned on"
+msgstr "Activado"
+
+#: crates/core/src crates/app/src/pages
+msgid "Undo"
+msgstr "Deshacer"
+
+#: crates/core/src crates/app/src/pages
+msgid "Unlocked means the system can be modified"
+msgstr "Desbloqueado significa que el sistema se puede modificar"
+
+#: crates/core/src crates/app/src/pages
+msgid "unsafe path in the manifest: {}"
+msgstr "ruta insegura en el manifiesto: {}"
+
+#: crates/core/src crates/app/src/pages
+msgid "Unverified system (orange)"
+msgstr "Sistema sin verificar (naranja)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Usage access"
+msgstr "Acceso al uso"
+
+#: crates/core/src crates/app/src/pages
+msgid "Verification failed (red)"
+msgstr "Verificación fallida (rojo)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Videos"
+msgstr "Vídeos"
+
+#: crates/core/src crates/app/src/pages
+msgid "Voice and call recordings."
+msgstr "Grabaciones de voz y de llamadas."
+
+#: crates/core/src crates/app/src/pages
+msgid "WhatsApp media"
+msgstr "Multimedia de WhatsApp"
+
+#: crates/core/src crates/app/src/pages
+msgid "When a phone connects"
+msgstr "Cuando se conecta un teléfono"
+
+#: crates/core/src crates/app/src/pages
+msgid "Where the phone is, precisely or approximately."
+msgstr "Dónde está el teléfono, de forma precisa o aproximada."
+
+#: crates/core/src crates/app/src/pages
+msgid "Who can do what"
+msgstr "Quién puede hacer qué"
+
+#: crates/core/src crates/app/src/pages
+msgid "Width (px)"
+msgstr "Ancho (px)"
+
+#: crates/core/src crates/app/src/pages
+msgid "Window, transition and animator scale. Off makes the phone feel faster."
+msgstr "Escala de ventanas, transiciones y animador. Desactivadas, el teléfono se siente más rápido."

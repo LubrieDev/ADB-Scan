@@ -36,7 +36,7 @@ fn with_check(base: &str) -> String {
 #[test]
 fn parcel_strings_round_trip_and_exceptions_are_none() {
     assert_eq!(parse_parcel_string(&parcel("490154203237518")).as_deref(), Some("490154203237518"));
-    assert_eq!(parse_parcel_string(&parcel("+52")).as_deref(), Some("+52"));
+    assert_eq!(parse_parcel_string(&parcel("+00")).as_deref(), Some("+00"));
     assert_eq!(parse_parcel_string(EXCEPTION), None);
     // Null string (length -1) and a short reply on a single line.
     assert_eq!(parse_parcel_string("Result: Parcel(00000000 ffffffff   '........')"), None);
@@ -45,17 +45,17 @@ fn parcel_strings_round_trip_and_exceptions_are_none() {
 
 #[test]
 fn imei_imsi_and_iccid_are_told_apart_by_shape() {
-    let codes = vec!["334020".to_string()];
+    let codes = vec!["00101".to_string()];
     assert!(luhn_ok("490154203237518"));
     assert!(is_imei("490154203237518", &codes));
     assert!(!is_imei("490154203237519", &codes), "wrong check digit");
     // A 15-digit IMSI that passes Luhn is not mistaken for an IMEI.
-    let imsi_luhn = with_check("33402012345678");
+    let imsi_luhn = with_check("00101012345678");
     assert!(luhn_ok(&imsi_luhn));
     assert!(!is_imei(&imsi_luhn, &codes));
     assert!(is_imsi(&imsi_luhn, &codes));
     assert!(!is_imsi("310260123456789", &codes), "another carrier");
-    assert!(is_iccid(&with_check("895202123456789012")));
+    assert!(is_iccid(&with_check("890000123456789012")));
     assert!(!is_iccid("123456789012345678"));
 }
 
@@ -64,28 +64,28 @@ fn sample_output(imei0: &str, imei1: &str, imsi: &str, iccid: &str) -> String {
         "@@@IMEI0@@@\n{}\n@@@IMEI1@@@\n{}\n@@@IMEI@@@\n{}\n@@@IMSI@@@\n{}\n@@@ICCID@@@\n{}\n@@@LINE1@@@\n{}\n\
          @@@SERIAL@@@\nABC123DEF\n@@@ANDROIDID@@@\n0123456789abcdef\n@@@DEVNAME@@@\nCafé phone\n\
          @@@BTNAME@@@\nnull\n@@@BTMAC@@@\ndc:f0:12:34:ac:56\n\
-         @@@SIM@@@\nLOADED,ABSENT\nTELCEL,\n334020,\nmx,\n\
-         @@@ACCOUNTS@@@\n    Account {{name=ana@example.com, type=com.google}}\n    Account {{name=ana@example.com, type=com.google}}\n    Account {{name=5512345678, type=com.whatsapp}}\n@@@END@@@\n",
+         @@@SIM@@@\nLOADED,ABSENT\nCARRIER,\n00101,\nzz,\n\
+         @@@ACCOUNTS@@@\n    Account {{name=ana@example.com, type=com.google}}\n    Account {{name=ana@example.com, type=com.google}}\n    Account {{name=0000000000, type=com.whatsapp}}\n@@@END@@@\n",
         parcel(imei0),
         parcel(imei1),
         parcel(imei0),
         parcel(imsi),
         parcel(iccid),
-        parcel("+52"),
+        parcel("+00"),
     )
 }
 
 #[test]
 fn private_info_from_script_output() {
     let imei2 = with_check("35123456789012");
-    let imsi = "334020123456789";
-    let iccid = with_check("895202123456789012");
+    let imsi = "001010123456789";
+    let iccid = with_check("890000123456789012");
     let info = parse_private(&sample_output("490154203237518", &imei2, imsi, &iccid));
     assert_eq!(info.imei[0].as_deref(), Some("490154203237518"));
     assert_eq!(info.imei[1].as_deref(), Some(imei2.as_str()));
     assert_eq!(info.imsi.as_deref(), Some(imsi));
     assert_eq!(info.iccid.as_deref(), Some(iccid.as_str()));
-    // “+52” without a number: the SIM does not store the line.
+    // “+00” without a number: the SIM does not store the line.
     assert_eq!(info.phone_number, None);
     assert_eq!(info.serial.as_deref(), Some("ABC123DEF"));
     assert_eq!(info.android_id.as_deref(), Some("0123456789abcdef"));
@@ -93,8 +93,8 @@ fn private_info_from_script_output() {
     assert_eq!(info.bluetooth_name, None);
     assert_eq!(info.bluetooth_mac.as_deref(), Some("DC:F0:12:34:AC:56"));
     assert_eq!(info.sims.len(), 2);
-    assert_eq!(info.sims[0].operator, "TELCEL");
-    assert_eq!(info.sims[0].country, "MX");
+    assert_eq!(info.sims[0].operator, "CARRIER");
+    assert_eq!(info.sims[0].country, "ZZ");
     assert!(info.sims[0].present());
     assert!(!info.sims[1].present());
     assert_eq!(info.sims[1].state_label(), "Empty");
@@ -117,7 +117,7 @@ fn account_types_have_readable_names() {
 fn wrong_shapes_are_dropped_not_shown() {
     // If another Android version returns something else for those codes, it is
     // not shown: the IMSI in the IMEI slot, a repeated IMEI, exceptions.
-    let imsi = with_check("33402012345678");
+    let imsi = with_check("00101012345678");
     let mut text = sample_output(&imsi, "490154203237518", "990000000000000", "1234");
     text = text.replace(&parcel("490154203237518"), EXCEPTION);
     let info = parse_private(&text);

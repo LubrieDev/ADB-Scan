@@ -143,7 +143,12 @@ impl Ui {
             &["dim"],
         ));
         let g = adw::PreferencesGroup::builder().title(tr("Without debugging")).build();
-        let basic = nav_row(tr("Basic analysis"), tr("No developer options. Over USB: identification and mode; with “File transfer”, battery and storage."), "adb-search-symbolic");
+        let basic_sub = if adbscan_core::usb::HOST_USB {
+            tr("No developer options. Over USB: identification and mode; with “File transfer”, battery and storage.")
+        } else {
+            tr("Not available on Windows")
+        };
+        let basic = nav_row(tr("Basic analysis"), basic_sub, "adb-search-symbolic");
         basic.connect_activated(self.push("basic"));
         g.add(&basic);
         c.append(&g);
@@ -162,6 +167,14 @@ impl Ui {
 
     fn basic_page(self: &Rc<Self>) -> adw::NavigationPage {
         let c = util::vbox(14);
+        if !adbscan_core::usb::HOST_USB {
+            c.append(&text(tr("Not available on Windows"), &["heading"]));
+            c.append(&text(
+                tr("The basic analysis reads the phone straight from the USB bus, without debugging, and that only works on Linux. On Windows, turn on USB debugging or wireless debugging to see the phone in the other sections."),
+                &["dim"],
+            ));
+            return page(tr("Basic analysis"), "basic", &c);
+        }
         c.append(&text(tr("Nothing needs to be turned on on the phone. ADB Scan does not use ADB in this mode."), &[]));
         c.append(&text(
             tr("• With the cable, in any mode with data: manufacturer, model, serial number, speed, USB mode and whether it was connected before.\n• With “File transfer” and the screen unlocked: confirmation that it is Android, battery and free space (descriptive data only, no files).\n• In “Charging only” mode many phones share no data at all.\n• There is no basic analysis over Wi-Fi: without wireless debugging the phone does not announce itself on the network."),
@@ -183,14 +196,18 @@ impl Ui {
     fn usb_state(&self) -> (&'static str, String, String) {
         let ctx = &self.ctx;
         if ctx.adb().is_none() {
-            return ("adb-circle-x-symbolic", tr("ADB not found").into(), tr("Install it (apt install adb) or download it from Preferences → Tools").into());
+            let how = if cfg!(windows) { tr("Extract the whole zip: adb.exe is in the platform-tools folder") } else { tr("Install it (apt install adb) or download it from Preferences → Tools") };
+            return ("adb-circle-x-symbolic", tr("ADB not found").into(), how.into());
         }
         let devices = ctx.devices();
         let usb_dev = devices.iter().find(|d| d.is_usb() && !d.is_wireless());
         match usb_dev.map(|d| (d, d.state)) {
             Some((d, DeviceState::Device)) => ("adb-emblem-ok-symbolic", tr("Connected and authorised").into(), ctx.device_label(d)),
             Some((_, DeviceState::Unauthorized | DeviceState::Authorizing)) => ("adb-key-round-symbolic", tr("Authorisation needed").into(), tr("Unlock the phone and accept “Allow USB debugging?”").into()),
-            Some((_, DeviceState::NoPermissions)) => ("adb-triangle-alert-symbolic", tr("No USB permissions").into(), tr("Install ADB Scan's udev rules").into()),
+            Some((_, DeviceState::NoPermissions)) => {
+                let how = if cfg!(windows) { tr("Install the phone's USB driver (Google USB Driver or the manufacturer's)") } else { tr("Install ADB Scan's udev rules") };
+                ("adb-triangle-alert-symbolic", tr("No USB permissions").into(), how.into())
+            }
             Some((d, _)) => ("adb-info-symbolic", d.state_label(), String::new()),
             None => {
                 let usb = ctx.usb_devices();
@@ -340,7 +357,13 @@ impl Ui {
                             list.remove(&c);
                         }
                         if services.is_empty() {
-                            let hint = if adbscan_core::exec::which("avahi-browse").is_none() { tr("Turn on “Wireless debugging”. Without avahi-utils, it is only visible if your adb has mDNS") } else { tr("Turn on “Wireless debugging” on the phone") };
+                            let hint = if cfg!(windows) {
+                                tr("Turn on “Wireless debugging” on the phone. On Windows the phone is found with adb's mDNS: if the firewall asks, allow adb on private networks")
+                            } else if adbscan_core::exec::which("avahi-browse").is_none() {
+                                tr("Turn on “Wireless debugging”. Without avahi-utils, it is only visible if your adb has mDNS")
+                            } else {
+                                tr("Turn on “Wireless debugging” on the phone")
+                            };
                             list.append(&adw::ActionRow::builder().title(tr("No phone was found")).subtitle(hint).build());
                         }
                         for s in services {
@@ -491,7 +514,12 @@ impl Ui {
             tr("The code only works for this pairing and expires after 3 minutes or when leaving this screen. ADB Scan listens for the phone's mDNS announcement on your network; it does not scan the network. If it does not work (some networks block mDNS), use manual pairing."),
             &["dim", "caption"],
         ));
-        if adbscan_core::exec::which("avahi-browse").is_none() {
+        if cfg!(windows) {
+            c.append(&text(
+                tr("avahi: not available on Windows. ADB Scan uses adb's own mDNS; if the Windows firewall asks, allow adb on private networks."),
+                &["dim", "caption"],
+            ));
+        } else if adbscan_core::exec::which("avahi-browse").is_none() {
             c.append(&text(tr("Warning: avahi-browse is missing (avahi-utils package). Without it, the QR code only works if your adb includes mDNS."), &["caption", "warning"]));
         }
 

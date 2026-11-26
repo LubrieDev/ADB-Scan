@@ -223,8 +223,22 @@ pub fn info_row(title: &str) -> (adw::ActionRow, gtk::Label) {
     (row, value)
 }
 
-/// Path for display, with the home folder abbreviated to `~`.
+/// A text usable in a local file name. Windows does not allow `\ / : * ? " < > |`
+/// (a wireless serial is `192.168.1.5:5555`); on Linux it stays as it is.
+pub fn file_safe(text: &str) -> String {
+    if cfg!(windows) {
+        text.chars().map(|c| if c.is_control() || "\\/:*?\"<>|".contains(c) { '_' } else { c }).collect()
+    } else {
+        text.to_string()
+    }
+}
+
+/// Path for display, with the home folder abbreviated to `~` (a Unix
+/// convention: on Windows the full path).
 pub fn tilde(path: &std::path::Path) -> String {
+    if cfg!(windows) {
+        return path.display().to_string();
+    }
     match std::env::var_os("HOME").map(PathBuf::from) {
         Some(home) if path.starts_with(&home) => format!("~/{}", path.strip_prefix(&home).unwrap_or(path).display()),
         _ => path.display().to_string(),

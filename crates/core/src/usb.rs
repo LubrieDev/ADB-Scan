@@ -3,6 +3,9 @@
 //! It lets us know a phone is connected before ADB authorises it, and tell ADB,
 //! fastboot or MTP-only apart by the USB interfaces. It does not need libudev:
 //! the `NETLINK_KOBJECT_UEVENT` socket is listened to directly.
+//!
+//! Linux only ([`HOST_USB`]): elsewhere the bus is not read and phones are only
+//! seen through adb.
 
 use crate::i18n::tr;
 use std::fs;
@@ -10,6 +13,7 @@ use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread;
+#[cfg(target_os = "linux")]
 use std::time::Duration;
 
 /// Common Android vendor IDs. Only a hint: the reliable part is the ADB
@@ -247,6 +251,10 @@ fn is_device_dir(name: &str) -> bool {
 
 pub const SYSFS_USB: &str = "/sys/bus/usb/devices";
 
+/// Whether ADB Scan reads the USB bus itself (sysfs, usbfs): only on Linux. On
+/// Windows the USB, MTP and cable sections say they are not available.
+pub const HOST_USB: bool = cfg!(target_os = "linux");
+
 /// Android-related USB devices found in sysfs.
 pub fn scan(root: &Path) -> Vec<UsbDevice> {
     let Ok(entries) = fs::read_dir(root) else {
@@ -374,10 +382,17 @@ pub fn node_path(dev: &UsbDevice) -> Option<String> {
 
 /// Checks whether the user can open the USB node (`/dev/bus/usb/BBB/DDD`). If
 /// not, ADB will show “no permissions” and udev rules are needed.
+#[cfg(target_os = "linux")]
 pub fn node_accessible(dev: &UsbDevice) -> Option<bool> {
     let c = std::ffi::CString::new(node_path(dev)?).ok()?;
     // SAFETY: access(2) with a valid NUL-terminated path.
     Some(unsafe { libc::access(c.as_ptr(), libc::R_OK | libc::W_OK) } == 0)
+}
+
+/// There are no usbfs nodes outside Linux: unknown.
+#[cfg(not(target_os = "linux"))]
+pub fn node_accessible(_dev: &UsbDevice) -> Option<bool> {
+    None
 }
 
 // ---------------------------------------------------------------------------
@@ -386,7 +401,7 @@ pub fn node_accessible(dev: &UsbDevice) -> Option<bool> {
 
 /// Listens to uevents from the USB subsystem and calls `on_change` with the new
 /// list (grouping bursts within 300 ms). If netlink is not available, it polls
-/// sysfs every 2 s.
+/// sysfs every 2 s. Outside Linux it reports an empty list once.
 pub struct UsbMonitor {
     stop: Arc<AtomicBool>,
     handle: Option<thread::JoinHandle<()>>,
@@ -417,6 +432,7 @@ impl Drop for UsbMonitor {
     }
 }
 
+#[cfg(target_os = "linux")]
 fn open_uevent_socket() -> Option<i32> {
     // SAFETY: direct socket/bind/setsockopt calls with zero-initialised
     // structures; every return code is checked.
@@ -438,6 +454,13 @@ fn open_uevent_socket() -> Option<i32> {
     }
 }
 
+/// Without sysfs there is no bus to watch.
+#[cfg(not(target_os = "linux"))]
+fn run_monitor<F: Fn(Vec<UsbDevice>)>(_stop: Arc<AtomicBool>, on_change: F) {
+    on_change(Vec::new());
+}
+
+#[cfg(target_os = "linux")]
 fn run_monitor<F: Fn(Vec<UsbDevice>)>(stop: Arc<AtomicBool>, on_change: F) {
     let root = PathBuf::from(SYSFS_USB);
     let mut last = scan(&root);

@@ -75,9 +75,16 @@ pub fn show(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
     let resid = adw::PreferencesGroup::builder().title(tr("Background")).build();
     let close_tray = adw::SwitchRow::builder().title(tr("Close to the tray")).subtitle(tr("When the window is closed, ADB Scan stays in the tray")).active(s.close_to_tray).build();
     let hidden = adw::SwitchRow::builder().title(tr("Start hidden")).subtitle(tr("Only the tray icon when the app opens")).active(s.start_hidden).build();
-    let autostart = adw::SwitchRow::builder().title(tr("Start with the session")).subtitle(tr("Opens in the tray when you log in")).active(autostart_enabled()).build();
+    let autostart_sub = if cfg!(windows) { tr("Opens ADB Scan when you sign in to Windows") } else { tr("Opens in the tray when you log in") };
+    let autostart = adw::SwitchRow::builder().title(tr("Start with the session")).subtitle(autostart_sub).active(autostart_enabled()).build();
     for r in [&close_tray, &hidden, &autostart] {
         resid.add(r);
+    }
+    // No tray icon on Windows yet: closing the window quits.
+    #[cfg(windows)]
+    for r in [&close_tray, &hidden] {
+        r.set_sensitive(false);
+        r.set_subtitle(tr("Not available on Windows: there is no tray icon"));
     }
     general.add(&resid);
 
@@ -186,7 +193,11 @@ pub fn show(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
         .collect();
     let wizard = adw::ActionRow::builder()
         .title(tr("Tools assistant"))
-        .subtitle(tr("Downloads the missing ones from their official (verified) sources or lets you choose another path. Also: sudo apt install adb fastboot scrcpy"))
+        .subtitle(if cfg!(windows) {
+            tr("The Windows zip already includes adb, fastboot and scrcpy next to adb-scan.exe. Here you can choose another path.")
+        } else {
+            tr("Downloads the missing ones from their official (verified) sources or lets you choose another path. Also: sudo apt install adb fastboot scrcpy")
+        })
         .activatable(true)
         .build();
     wizard.add_suffix(&util::icon("adb-wrench-symbolic"));
@@ -454,11 +465,24 @@ pub fn show(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
     dialog.present(Some(parent));
 }
 
+#[cfg(unix)]
 fn autostart_enabled() -> bool {
     paths::autostart_file().exists()
 }
 
+#[cfg(windows)]
+fn autostart_enabled() -> bool {
+    crate::win::autostart_enabled()
+}
+
+/// The `Run` value in the user's registry.
+#[cfg(windows)]
+pub fn set_autostart(enable: bool) -> std::io::Result<()> {
+    crate::win::set_autostart(enable)
+}
+
 /// Creates or removes `~/.config/autostart/adb-scan.desktop`.
+#[cfg(unix)]
 pub fn set_autostart(enable: bool) -> std::io::Result<()> {
     let file = paths::autostart_file();
     if !enable {
@@ -482,6 +506,15 @@ pub fn set_autostart(enable: bool) -> std::io::Result<()> {
 /// Quits and starts ADB Scan again. The new process waits until this one has
 /// exited: ADB Scan is a single instance, and started earlier it would just
 /// hand over to the old one.
+#[cfg(windows)]
+fn restart(ctx: &Rc<Ctx>) {
+    match crate::win::spawn_restart() {
+        Ok(()) => ctx.app.quit(),
+        Err(e) => ctx.toast(&t!("Could not restart: {}", e)),
+    }
+}
+
+#[cfg(unix)]
 fn restart(ctx: &Rc<Ctx>) {
     let Ok(exe) = std::env::current_exe() else {
         ctx.toast(tr("Could not restart: reopen ADB Scan by hand"));

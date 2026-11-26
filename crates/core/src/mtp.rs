@@ -14,6 +14,13 @@
 //! Format (PTP, ISO 15740, and its MTP extension): containers with a 12-byte
 //! header (length, type, code, transaction) in little endian; strings as a
 //! length byte (including the NUL) and UTF-16LE.
+//!
+//! The transport (usbfs) and GVfs are Linux only; on Windows [`probe`] answers
+//! [`MtpError::Unsupported`]. The parsers are the same everywhere.
+
+// Outside Linux the operation codes, the transport limits and its imports are
+// not used.
+#![cfg_attr(not(target_os = "linux"), allow(dead_code, unused_imports))]
 
 use crate::{i18n::tr, t};
 use std::path::Path;
@@ -156,6 +163,8 @@ pub enum MtpError {
     /// It disconnected during the read.
     Gone,
     Protocol(String),
+    /// This system has no direct access to the USB bus (Windows).
+    Unsupported,
 }
 
 impl MtpError {
@@ -167,12 +176,13 @@ impl MtpError {
             Self::Timeout => tr("The phone did not respond: unlock it and press Refresh").into(),
             Self::Gone => tr("It disconnected during the read").into(),
             Self::Protocol(e) => t!("Invalid MTP response ({})", e),
+            Self::Unsupported => tr("Not available on Windows").into(),
         }
     }
 
     pub fn to_probe<T>(&self) -> Probe<T> {
         match self {
-            Self::NotOffered => Probe::Unsupported(self.message()),
+            Self::NotOffered | Self::Unsupported => Probe::Unsupported(self.message()),
             Self::NoPermission | Self::Busy => Probe::Restricted(self.message()),
             _ => Probe::Failed(self.message()),
         }
@@ -364,6 +374,7 @@ pub fn parse_gio_fs(text: &str) -> (Option<u64>, Option<u64>) {
 
 /// Storages of the phone mounted by GVfs, without listing their content. `None`
 /// if it is not mounted or there is no `gio`.
+#[cfg(target_os = "linux")]
 pub fn gvfs_storages(dev: &UsbDevice) -> Option<Vec<GvfsStorage>> {
     let gio = crate::exec::which("gio")?;
     let run = |args: &[&str]| -> Option<String> {
@@ -382,10 +393,17 @@ pub fn gvfs_storages(dev: &UsbDevice) -> Option<Vec<GvfsStorage>> {
     Some(out)
 }
 
+/// GVfs is a Linux desktop service.
+#[cfg(not(target_os = "linux"))]
+pub fn gvfs_storages(_dev: &UsbDevice) -> Option<Vec<GvfsStorage>> {
+    None
+}
+
 // ---------------------------------------------------------------------------
-// Transport: usbfs
+// Transport: usbfs (Linux)
 // ---------------------------------------------------------------------------
 
+#[cfg(target_os = "linux")]
 #[repr(C)]
 struct BulkTransfer {
     ep: libc::c_uint,
@@ -394,12 +412,16 @@ struct BulkTransfer {
     data: *mut libc::c_void,
 }
 
+#[cfg(target_os = "linux")]
 const fn ioc(dir: u32, nr: u32, size: usize) -> u32 {
     (dir << 30) | ((size as u32) << 16) | ((b'U' as u32) << 8) | nr
 }
 // <linux/usbdevice_fs.h>
+#[cfg(target_os = "linux")]
 const USBDEVFS_BULK: u32 = ioc(3, 2, std::mem::size_of::<BulkTransfer>());
+#[cfg(target_os = "linux")]
 const USBDEVFS_CLAIMINTERFACE: u32 = ioc(2, 15, std::mem::size_of::<libc::c_uint>());
+#[cfg(target_os = "linux")]
 const USBDEVFS_RELEASEINTERFACE: u32 = ioc(2, 16, std::mem::size_of::<libc::c_uint>());
 
 const TIMEOUT_MS: u32 = 3000;
@@ -407,10 +429,12 @@ const CHUNK: usize = 64 * 1024;
 /// Cap on a response: DeviceInfo and StorageInfo take a few hundred bytes.
 const MAX_DATA: usize = 1024 * 1024;
 
+#[cfg(target_os = "linux")]
 fn errno() -> i32 {
     std::io::Error::last_os_error().raw_os_error().unwrap_or(0)
 }
 
+#[cfg(target_os = "linux")]
 fn io_error(code: i32) -> MtpError {
     match code {
         libc::ETIMEDOUT => MtpError::Timeout,
@@ -422,6 +446,7 @@ fn io_error(code: i32) -> MtpError {
 }
 
 /// Claimed MTP/PTP interface; released and closed when dropped.
+#[cfg(target_os = "linux")]
 struct Session {
     fd: i32,
     iface: libc::c_uint,
@@ -431,6 +456,7 @@ struct Session {
     in_session: bool,
 }
 
+#[cfg(target_os = "linux")]
 impl Session {
     fn open(node: &Path, iface: u8, ep_in: u8, ep_out: u8) -> Result<Self, MtpError> {
         let c = std::ffi::CString::new(node.as_os_str().as_encoded_bytes()).map_err(|_| MtpError::Protocol("path".into()))?;
@@ -521,6 +547,7 @@ impl Session {
     }
 }
 
+#[cfg(target_os = "linux")]
 impl Drop for Session {
     fn drop(&mut self) {
         // SAFETY: fd opened and claimed by us.
@@ -534,6 +561,7 @@ impl Drop for Session {
 /// Reads over MTP/PTP what the phone describes about itself. Read-only: it
 /// opens a session, asks for information, storages and three properties, and
 /// closes it. It takes a few tenths of a second.
+#[cfg(target_os = "linux")]
 pub fn probe(dev: &UsbDevice) -> Result<MtpReport, MtpError> {
     let iface = dev.transfer_interface().ok_or(MtpError::NotOffered)?;
     let function = iface.function(&dev.vendor_id, &dev.product_id).unwrap_or(UsbFunction::Mtp);
@@ -591,6 +619,12 @@ pub fn probe(dev: &UsbDevice) -> Result<MtpReport, MtpError> {
     };
     let _ = s.transact(OP_CLOSE_SESSION, &[]);
     Ok(MtpReport { function, info, battery, friendly_name, perceived_type, storages })
+}
+
+/// Without usbfs the phone cannot be read over MTP from here.
+#[cfg(not(target_os = "linux"))]
+pub fn probe(_dev: &UsbDevice) -> Result<MtpReport, MtpError> {
+    Err(MtpError::Unsupported)
 }
 
 #[cfg(test)]
@@ -700,6 +734,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(target_os = "linux")]
     fn ioctl_numbers_match_linux() {
         // Values of <linux/usbdevice_fs.h> on 64-bit.
         if std::mem::size_of::<usize>() == 8 {

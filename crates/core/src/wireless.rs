@@ -125,6 +125,8 @@ pub fn discover(adb: Option<&Adb>) -> Vec<MdnsService> {
             out.extend(parse_adb_mdns(&r.stdout));
         }
     }
+    // avahi only exists on Linux: on Windows adb's own mDNS is used.
+    #[cfg(unix)]
     if let Some(avahi) = crate::exec::which("avahi-browse") {
         for t in [PAIRING_TYPE, CONNECT_TYPE] {
             if let Ok(r) = crate::exec::run(&avahi, &["-tpr".into(), t.into()], Duration::from_secs(6), None) {
@@ -154,11 +156,27 @@ pub struct QrPairing {
 
 const ALNUM: &[u8] = b"abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-fn random_alnum(n: usize) -> String {
+/// Fills `buf` from the system's random generator: `/dev/urandom`.
+#[cfg(unix)]
+fn fill_random(buf: &mut [u8]) -> bool {
     use std::io::Read;
+    std::fs::File::open("/dev/urandom").and_then(|mut f| f.read_exact(buf)).is_ok()
+}
+
+/// Fills `buf` from the system's random generator: `BCryptGenRandom`.
+#[cfg(windows)]
+fn fill_random(buf: &mut [u8]) -> bool {
+    use windows_sys::Win32::Security::Cryptography::{BCryptGenRandom, BCRYPT_USE_SYSTEM_PREFERRED_RNG};
+    // SAFETY: valid buffer of the length given; no algorithm handle with the
+    // system's preferred generator.
+    unsafe { BCryptGenRandom(std::ptr::null_mut(), buf.as_mut_ptr(), buf.len() as u32, BCRYPT_USE_SYSTEM_PREFERRED_RNG) == 0 }
+}
+
+fn random_alnum(n: usize) -> String {
     let mut buf = vec![0u8; n * 2];
-    // /dev/urandom always exists on Linux; if it failed, the clock is mixed in.
-    if std::fs::File::open("/dev/urandom").and_then(|mut f| f.read_exact(&mut buf)).is_err() {
+    // The system's generator is always there; if it failed, the clock is
+    // mixed in.
+    if !fill_random(&mut buf) {
         let t = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0);
         for (i, b) in buf.iter_mut().enumerate() {
             *b = (t >> ((i % 16) * 8)) as u8 ^ (i as u8).wrapping_mul(97);

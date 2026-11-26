@@ -15,14 +15,28 @@ path = "src/main.rs"
 adbscan-core = { path = "../core" }
 gtk = { package = "gtk4", version = "0.10", features = ["v4_14"] }
 adw = { package = "libadwaita", version = "0.8", features = ["v1_5"] }
-libc = "0.2"
-vte = { package = "vte4", version = "0.9", features = ["v0_76"] }
 async-channel = "2"
 pangocairo = "0.21"
-ksni = { version = "0.3", default-features = false, features = ["blocking", "async-io"] }
 log.workspace = true
 regex.workspace = true
 serde_json.workspace = true
+
+# Linux desktop only: the embedded terminal (VTE, Unix PTYs) and the tray icon
+# (StatusNotifierItem over D-Bus).
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+vte = { package = "vte4", version = "0.9", features = ["v0_76"] }
+ksni = { version = "0.3", default-features = false, features = ["blocking", "async-io"] }
+
+# Windows: start with the session (registry) and wait for the previous
+# instance when restarting.
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_System_Registry", "Win32_System_Threading"] }
+
+# Icon and version information of the .exe. A build dependency runs on the
+# machine that builds: it is only needed when building on Windows (the CI).
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1"
 
 # Debian package: `cargo deb -p adb-scan` (see RELEASING.md). Paths are
 # relative to this crate; `target/release/` is the workspace's build output.

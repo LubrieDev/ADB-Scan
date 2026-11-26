@@ -157,7 +157,13 @@ pub fn show(ctx: &Rc<Ctx>, parent: &impl IsA<gtk::Widget>) {
         dg.add(&row);
         packages.push(Rc::new(PackageRow { pkg, row, button, progress, cancel: RefCell::new(None) }));
     }
-    if !ts::supported() {
+    if cfg!(windows) {
+        // The zip carries them: this assistant only downloads the Linux builds.
+        dg.set_description(Some(tr("The Windows zip already includes adb, fastboot and scrcpy next to adb-scan.exe. To use others, choose their paths above.")));
+        for p in &packages {
+            p.button.set_sensitive(false);
+        }
+    } else if !ts::supported() {
         dg.set_description(Some(tr("Google and scrcpy only publish these tools for 64-bit Linux (x86-64). On this computer, install them with your package manager and choose their paths above.")));
         for p in &packages {
             p.button.set_sensitive(false);
@@ -259,6 +265,7 @@ impl Wizard {
                                 Origin::Managed => tr("downloaded by ADB Scan"),
                                 Origin::Configured => tr("chosen path"),
                                 Origin::System => tr("system"),
+                                Origin::Bundled => tr("included with ADB Scan"),
                             };
                             let version = st.version.as_deref().map(short_version).unwrap_or_default();
                             format!("{} · {from}\n{}", if version.is_empty() { tr("Unknown version").to_string() } else { version }, util::tilde(path))

@@ -135,7 +135,17 @@ impl Dashboard {
         content.append(&grid);
 
         // -- health ----------------------------------------------------------
-        content.append(&util::label(tr("Component health"), &["section-title"]));
+        let health_head = util::hbox(8);
+        let health_title = util::label(tr("Component health"), &["section-title"]);
+        health_title.set_hexpand(true);
+        let report_btn = util::pill_button("adb-file-text-symbolic", tr("Health report"));
+        report_btn.add_css_class("flat");
+        report_btn.set_tooltip_text(Some(tr("Save a page with the battery, storage, bootloader and security, to share or print")));
+        report_btn.set_valign(gtk::Align::Center);
+        report_btn.set_action_name(Some("win.health-report"));
+        health_head.append(&health_title);
+        health_head.append(&report_btn);
+        content.append(&health_head);
         let health_grid =
             gtk::FlowBox::builder().selection_mode(gtk::SelectionMode::None).homogeneous(true).min_children_per_line(1).max_children_per_line(2).column_spacing(12).row_spacing(12).build();
         let batt_health = StatCard::new("adb-battery-symbolic", tr("Battery"));
@@ -217,6 +227,7 @@ impl Dashboard {
                 self.hero_sub.set_text(match phone {
                     Some(u) if u.has_adb_interface() => tr("Accept the “Allow USB debugging?” prompt on the phone"),
                     Some(_) => tr("Basic analysis available · USB debugging is optional"),
+                    None if usb.is_empty() && !adbscan_core::usb::HOST_USB => tr("Connect an Android phone with USB debugging or wireless debugging turned on"),
                     None if usb.is_empty() => tr("Connect an Android phone over USB. Without debugging you get the basic analysis"),
                     None => tr("The phone is not in normal Android mode"),
                 });
@@ -476,4 +487,36 @@ impl Page for Dashboard {
         self.refresh_snapshot();
         self.refresh_diag();
     }
+}
+
+/// Saves the health report (see `adbscan_core::health_report`) where the
+/// user chooses and opens it in the browser.
+pub fn save_health_report(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
+    let Some(snapshot) = ctx.snapshot() else {
+        ctx.toast(tr("No device is ready"));
+        return;
+    };
+    let security = match (ctx.history.clone(), ctx.ready_serial()) {
+        (Some(h), Some(serial)) => h.security_reports(&serial, 1).ok().and_then(|r| r.into_iter().next()).and_then(|(_, _, _, json)| serde_json::from_str::<adbscan_core::security::Report>(&json).ok()),
+        _ => None,
+    };
+    let hint = ctx.selected_device().map(|d| d.display_name()).unwrap_or_default();
+    let html = adbscan_core::health_report::to_html(&adbscan_core::health_report::Input {
+        snapshot: &snapshot,
+        security: security.as_ref(),
+        commercial_hint: &hint,
+        generated: adbscan_core::models::now_secs(),
+    });
+    let date = gtk::glib::DateTime::now_local().ok().and_then(|d| d.format("%Y-%m-%d").ok()).map(|d| d.to_string()).unwrap_or_default();
+    let name = format!("{}-{}.html", util::file_safe(&t!("health report {}", snapshot.model())), date);
+    let ctx = ctx.clone();
+    util::save_file(parent, tr("Save health report"), &name, move |path| match std::fs::write(&path, &html) {
+        Ok(()) => {
+            ctx.audit("health_report", Some(&path.display().to_string()), true, None);
+            let p = path.clone();
+            ctx.toast_action(tr("Health report saved"), tr("Open"), move || util::open_path(&p));
+            util::open_path(&path);
+        }
+        Err(e) => ctx.toast(&t!("Could not save the report: {}", e)),
+    });
 }

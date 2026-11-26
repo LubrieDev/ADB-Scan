@@ -343,7 +343,11 @@ impl FlasherPage {
         match (&dev, self.ctx.fastboot()) {
             (_, None) => {
                 self.state_row.set_title(tr("fastboot is not installed"));
-                self.state_row.set_subtitle(tr("Install it with “sudo apt install fastboot” or set its path in Preferences"));
+                self.state_row.set_subtitle(if cfg!(windows) {
+                    tr("Extract the whole zip: fastboot.exe is in the platform-tools folder. Or set its path in Preferences")
+                } else {
+                    tr("Install it with “sudo apt install fastboot” or set its path in Preferences")
+                });
             }
             (Some(d), _) if in_fb => {
                 self.state_row.set_title(&format!("{} · {}", self.ctx.device_label(d), d.state_label()));

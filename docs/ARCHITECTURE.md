@@ -39,6 +39,13 @@ screen: the tests use real outputs captured from a REDMAGIC 11S Pro
 | `remote.rs` | **Remote** (changes the phone): media keys, call/answer/hang up, open links, prepare SMS and find the phone (clock timer). What the user types (numbers, links, messages) is validated and quoted. Read-only reading of the call state (`telephony.registry`) and of what is playing (`media_session`). |
 | `schedule.rs` | Scheduled actions: time, days and action; when each one is due (once per day, with a 5-minute window). Local time with `localtime_r` (respects daylight saving time). The app runs them (`ctx.rs`). |
 | `notifications.rs` | Phone notifications (`dumpsys notification --noredact`, read-only): title, text, ongoing ones and group summaries. Optional and off by default; nothing is stored. |
+| `debloat.rs` | **Preinstalled apps** (they change the phone): the curated list (package, what it does, risk level, vendor), packages never offered (`is_protected`) and the state read in one script (listed apps still installed, every app removed for the user). Removing is `pm uninstall -k --user 0`; restoring is `cmd package install-existing`. |
+| `permissions.rs` | **Who can do what**: the accesses (runtime permission groups, App Ops, accessibility services, notification listeners) and their holders, from one read-only script (`dumpsys package packages`, user 0 only, up to “Hidden system packages”; `appops query-op`; two secure settings). Taking one away: `pm revoke`, `appops set … deny`, the accessibility list rewritten without the component, `cmd notification disallow_listener`. Permissions fixed by the system or a policy are shown as such. |
+| `storage.rs` | **Storage analyzer**: parses one `du -a -k /sdcard/` walk into a tree; largest files, space by type, places that grow, possible duplicates (same name and size, not caches) and `remove_file` to keep the view right after a deletion. `deletable` limits deletions to files inside `/sdcard/` (`Adb::delete_shared_file` uses `rm -f` without `-r` and checks the file is gone). |
+| `devtools.rs` | **Developer tools**: the switches and their fixed scripts, the state script, animation scales, demo mode, port rules (`adb forward/reverse --list`) and the checks on every number that reaches the phone (ports, size, density). |
+| `health_report.rs` | **Health report**: self-contained HTML from the snapshot and the latest audit, with no serial number, IMEI or accounts. Nothing is read from the phone. |
+| `migration.rs` | **App migration**: the manifest (`adb-scan-apps.json`), the user's apps with their version, and the checks on the paths read back from it (`safe_relative`: nothing outside the export folder). |
+| `automation.rs` | **Automations on connect**: actions, which phone (hardware serial `ro.serialno`, the same over USB and Wi-Fi) and `due` with the 10-minute cooldown. `Ctx::run_automations` runs them on a phone's first telemetry; `Adb::run_automation` does each one. |
 | `photos.rs` | Photo backup: read-only listing of `DCIM`, `Pictures` and `Movies`, and a plan of what is new (same name and size = already copied). It never writes outside the destination folder. |
 | `probe.rs` | Availability of each item (`Probe`): available, not published, restricted by Android, not supported or an error. Classifies the error messages of `toybox`, `cmd` and `dumpsys`. |
 | `platform.rs` | Platform sheet: a read-only script (~0.4 s) with SELinux, kernel, memory page size, GPU (GLES and Vulkan), CPU clusters, the manufacturer's thermal limits and hardware features; plus what is derived from `getprop` (Treble, A/B, verified boot, encryption…). |
@@ -65,8 +72,9 @@ fixed script (adb.rs) ─▶ @@@X@@@ sections ─▶ pure parser ─▶ Probe<T>
 
 A failing section does not invalidate the others, and an error inside a line
 (e.g. the frequencies of a cluster) does not invalidate the section. The
-`scripts_only_read` tests check that the scripts contain no verb that modifies
-the phone.
+`scripts_only_read` tests (and `read_scripts_only_read`, for the Preinstalled
+apps, Permissions, Storage and Developer scripts) check that the scripts
+contain no verb that modifies the phone.
 
 ### Live telemetry
 
@@ -96,10 +104,15 @@ adds it to the following snapshots.
 | `main.rs`, `app.rs` | Startup (the language is fixed first), single instance (`com.adbscan.AdbScan`), command-line options, capture mode for tests. |
 | `ctx.rs` | Shared state (`Rc<Ctx>`) on the GTK thread: devices, snapshot, metrics, session log, alerts (including the USB link ones from `LinkWatch`), settings. Receives `Msg` from the worker threads and emits `Event` to the pages. |
 | `window.rs` | Main window, sidebar, lazy page construction, event dispatch. |
-| `pages/*.rs` | One page per section (18). Renamed or merged ids keep working through `window::page_alias` (`controls`, `remote` → `control`). |
+| `pages/*.rs` | One page per section (21). Renamed or merged ids keep working through `window::page_alias` (`controls`, `remote` → `control`). |
 | `pages/connection.rs` | Connection page: tabs USB (summary, cable, PC port, phone's port, power, stability, speed test), Wi-Fi (wireless ADB) and Diagnosis (`diagnosis_rows`, also summed up on the Overview; USB mode; ADB server). Reads both sides in the background when shown, on device changes and every 10 s while in view. |
-| `pages/control.rs` | Control page: the Controls and Remote pages as two tabs; telemetry, their clock, only reaches the tab in view. |
-| `pages/bulk.rs` | Actions on all apps (the ⋮ menu in Apps, `win.bulk::close|stop|caches`, the search). |
+| `pages/control.rs` | Control page: the Controls, Remote and Automations pages as three tabs; telemetry, their clock, only reaches the tab in view. |
+| `pages/bulk.rs` | Actions on all apps (the ⋮ menu in Apps, `win.bulk::close|stop|caches|export|import`, the search). |
+| `pages/migration.rs` | Export and install apps (from `bulk.rs`): folder choice, a progress dialog that can be cancelled, and the list of apps to install with those the phone already has unchecked. |
+| `pages/debloat.rs`, `pages/permissions.rs`, `pages/storage.rs` | Preinstalled apps, Permissions and Storage pages. They read when shown and again when the phone changes; the storage scan only runs from its button (it streams `du` and shows the count while it reads). |
+| `pages/dashboard.rs` | Overview. `save_health_report` makes the health report (`win.health-report`: the button in Component health, the ⋮ menu and the search), saves it where the user chooses and opens it. |
+| `pages/developer.rs` | Developer tab in Tools. A new resolution or density opens a dialog that undoes it by itself after 15 s without an answer. |
+| `pages/automations.rs` | Automations tab in Control (stored in `Settings::automations`). |
 | `sidebar.rs` | Sidebar list: sections fold from their title, pages can be pinned to the top (right click or long press), the search box filters; folded sections and pinned pages are saved. Rows are found by their page id, never by position. |
 | `search.rs` | Search everywhere (Ctrl+K, `win.search`): pages and common actions, matched by title and keywords without accents. |
 | `widgets.rs` | Circular gauge, charts, cards, animated bars and `RowList` (virtualised list). |
@@ -241,13 +254,18 @@ touched:
 
 ```bash
 S=$(mktemp -d)
+# Screenshots and recordings of the phone go to the user folders; without
+# this file they would fall back to ~/Pictures and ~/Videos.
+mkdir -p $S/c && printf 'XDG_PICTURES_DIR="%s"\nXDG_VIDEOS_DIR="%s"\n' $S/p $S/v > $S/c/user-dirs.dirs
 XDG_CONFIG_HOME=$S/c XDG_DATA_HOME=$S/d XDG_CACHE_HOME=$S/k XDG_STATE_HOME=$S/s \
 ADB_SCAN_LANG=en ADB_SCAN_SCREENSHOT=$S/shots ADB_SCAN_PAGES=dashboard,apps,action:app.about \
 target/debug/adb-scan
 ```
 
 It runs as a separate instance without a tray icon, so it can coexist with the
-installed ADB Scan. Besides pages and `action:` (also with a parameter:
+installed ADB Scan. Its window ignores the real keyboard and mouse and has no
+shortcuts: it takes the focus when it opens, and a key meant for another
+window used to press the focused button (the dashboard's Screenshot). Besides pages and `action:` (also with a parameter:
 `action:win.connect::qr`), `ADB_SCAN_PAGES` accepts `app:<package>` (opens that
 app's details), `row:<n>` (selects row `n` of the visible list, like a click),
 `click:<text>` (clicks the first visible button with that text, also in

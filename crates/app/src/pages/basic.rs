@@ -55,6 +55,13 @@ pub struct Basic {
 }
 
 pub fn build(ctx: &Rc<Ctx>) -> Rc<dyn Page> {
+    // It reads the phone from the USB bus (sysfs, usbfs): Linux only.
+    if !adbscan_core::usb::HOST_USB {
+        return crate::pages::unavailable_on_windows(
+            "adb-search-symbolic",
+            tr("The basic analysis reads the phone straight from the USB bus, without debugging, and that only works on Linux. On Windows, turn on USB debugging or wireless debugging to see the phone in the other sections."),
+        );
+    }
     Basic::new(ctx)
 }
 

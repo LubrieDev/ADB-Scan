@@ -96,6 +96,8 @@ pub struct Settings {
     pub photos_dir: String,
     /// Scheduled actions (see `schedule`).
     pub scheduled: Vec<crate::schedule::Scheduled>,
+    /// Actions run when a phone connects (see `automation`).
+    pub automations: Vec<crate::automation::Automation>,
     // Background
     pub start_hidden: bool,
     pub close_to_tray: bool,
@@ -194,6 +196,7 @@ impl Default for Settings {
             notify_usb_unstable: true,
             notify_usb_slow: true,
             scheduled: Vec::new(),
+            automations: Vec::new(),
             photos_dir: String::new(),
             mirror_notifications: false,
             start_hidden: false,

@@ -24,6 +24,20 @@
   <url type="bugtracker">https://github.com/LubrieDev/ADB-Scan/issues</url>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.1.0" date="2026-11-25">
+      <description>
+        <p>Version for Windows 10 and 11, and new sections to take control of the phone without root:</p>
+        <ul>
+          <li>Preinstalled apps: remove and restore manufacturer and carrier apps.</li>
+          <li>Permissions: which apps can use the camera, microphone, location and other accesses, and take them away.</li>
+          <li>Storage: folders, largest files and duplicates of the phone's shared storage.</li>
+          <li>Developer tools: show touches, animation speed, resolution and density, demo mode and port forwarding.</li>
+          <li>Health report to save and share, without the serial number.</li>
+          <li>Export the installed apps and install them on another phone.</li>
+          <li>Automations that run when a phone connects.</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.0" date="2026-11-25">
       <description>
         <p>First stable release.</p>

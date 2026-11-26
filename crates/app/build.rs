@@ -1,4 +1,5 @@
-//! Embeds the SVG icons from `assets/icons` into the binary.
+//! Embeds the SVG icons from `assets/icons` into the binary and, on Windows,
+//! the icon and version information of `adb-scan.exe`.
 use std::fmt::Write;
 use std::path::Path;
 
@@ -29,4 +30,28 @@ fn main() {
     code.push_str("];\n");
     let out = Path::new(&std::env::var("OUT_DIR").unwrap()).join("icons.rs");
     std::fs::write(out, code).unwrap();
+    windows_resources();
 }
+
+/// Icon (`assets/windows/adb-scan.ico`, made from `adb-scan.svg`) and version
+/// information of the .exe. `winresource` is a build dependency only when
+/// building on Windows (the CI), and it is only used for a Windows target.
+#[cfg(windows)]
+fn windows_resources() {
+    if std::env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {
+        return;
+    }
+    let manifest = std::env::var("CARGO_MANIFEST_DIR").unwrap();
+    // Without canonicalize: a `\\?\` path is not understood by windres.
+    let ico = Path::new(&manifest).parent().and_then(Path::parent).unwrap().join("assets").join("windows").join("adb-scan.ico");
+    println!("cargo:rerun-if-changed={}", ico.display());
+    let mut res = winresource::WindowsResource::new();
+    res.set_icon(&ico.display().to_string());
+    res.set("ProductName", "ADB Scan");
+    res.set("FileDescription", "ADB Scan");
+    res.set("LegalCopyright", "2026, LubrieDev");
+    res.compile().expect("could not embed the Windows icon (windres)");
+}
+
+#[cfg(not(windows))]
+fn windows_resources() {}

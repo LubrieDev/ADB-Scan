@@ -34,7 +34,7 @@ fn ui() -> Option<Rc<Ui>> {
 
 /// Capture mode (development): independent instance without a tray icon, so it
 /// does not interfere with the ADB Scan the user has open.
-fn capture_mode() -> bool {
+pub fn capture_mode() -> bool {
     std::env::var_os("ADB_SCAN_SCREENSHOT").is_some()
 }
 
@@ -75,7 +75,10 @@ pub fn run() -> glib::ExitCode {
         let Some(ui) = ui() else {
             return glib::ExitCode::FAILURE;
         };
-        let hidden = opts.contains("hidden") || (first && ui.ctx.settings.borrow().start_hidden && tray_available());
+        // Without a tray icon (Windows) a hidden start would leave nothing on
+        // screen: `--hidden` is ignored there.
+        let hidden_asked = opts.contains("hidden") && (cfg!(unix) || tray_available());
+        let hidden = hidden_asked || (first && ui.ctx.settings.borrow().start_hidden && tray_available());
         if let Some(page) = opts.lookup::<String>("page").ok().flatten() {
             ui.window.show_page(&page);
         }
@@ -96,6 +99,7 @@ pub fn run() -> glib::ExitCode {
             let pages: Vec<String> = std::env::var("ADB_SCAN_PAGES").unwrap_or_else(|_| "dashboard".into()).split(',').map(String::from).collect();
             let delay = std::env::var("ADB_SCAN_SHOT_DELAY").ok().and_then(|v| v.parse().ok()).unwrap_or(3500);
             ui.window.present();
+            block_real_input(ui.window.window.upcast_ref());
             shoot_pages(ui.clone(), dir, pages, 0, delay);
         }
         glib::ExitCode::SUCCESS
@@ -106,6 +110,23 @@ pub fn run() -> glib::ExitCode {
         }
     });
     app.run()
+}
+
+/// Capture mode: the window ignores the real keyboard and mouse. It takes the
+/// focus when it opens, and a key typed for another window (Enter, Space)
+/// landed on the focused button of the page, the dashboard's Screenshot
+/// included, and acted on the connected phone. The steps (`click:`, `row:`,
+/// `action:`…) do not go through input events, so they keep working.
+fn block_real_input(window: &gtk::Window) {
+    use gtk::gdk::EventType as E;
+    use gtk::prelude::*;
+    let guard = gtk::EventControllerLegacy::new();
+    guard.set_propagation_phase(gtk::PropagationPhase::Capture);
+    guard.connect_event(|_, event| match event.event_type() {
+        E::KeyPress | E::KeyRelease | E::ButtonPress | E::ButtonRelease | E::TouchBegin | E::TouchUpdate | E::TouchEnd | E::Scroll => glib::Propagation::Stop,
+        _ => glib::Propagation::Proceed,
+    });
+    window.add_controller(guard);
 }
 
 /// Capture mode: moves the largest scrollable area of the visible page to

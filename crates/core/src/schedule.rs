@@ -101,6 +101,7 @@ pub struct LocalTime {
 
 impl LocalTime {
     /// The system's local time (respects daylight saving time).
+    #[cfg(unix)]
     pub fn now() -> Self {
         let t = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as libc::time_t).unwrap_or(0);
         // SAFETY: localtime_r only writes to `tm`, which lives on this stack.
@@ -114,6 +115,21 @@ impl LocalTime {
             // tm_wday: Sunday = 0.
             weekday: ((tm.tm_wday + 6) % 7) as u8,
             minute: (tm.tm_hour * 60 + tm.tm_min) as u16,
+        }
+    }
+
+    /// The system's local time (respects daylight saving time).
+    #[cfg(windows)]
+    pub fn now() -> Self {
+        use windows_sys::Win32::System::SystemInformation::GetLocalTime;
+        // SAFETY: GetLocalTime only writes to `st`, which lives on this stack.
+        let mut st: windows_sys::Win32::Foundation::SYSTEMTIME = unsafe { std::mem::zeroed() };
+        unsafe { GetLocalTime(&mut st) };
+        Self {
+            day: crate::format::days_from_civil(st.wYear.into(), st.wMonth.into(), st.wDay.into()),
+            // wDayOfWeek: Sunday = 0.
+            weekday: ((st.wDayOfWeek + 6) % 7) as u8,
+            minute: st.wHour * 60 + st.wMinute,
         }
     }
 }

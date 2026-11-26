@@ -1,0 +1,204 @@
+# Builds ADB Scan for Windows 11 (x64) and packs a portable zip:
+# adb-scan.exe with the GTK 4 / libadwaita runtime it needs, Google's
+# platform-tools (adb, fastboot) and scrcpy, both pinned by version and
+# SHA-256. The zip is uploaded as an artifact of the run; for a version tag it
+# is also attached to the GitHub Release (the .deb comes from release.yml).
+name: Windows
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  # By hand from the Actions tab, on any branch.
+  workflow_dispatch:
+
+# Nothing by default; each job asks only for what it needs.
+permissions: {}
+
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+env:
+  # Same versions as the Linux build (crates/core/src/tools_setup.rs).
+  PLATFORM_TOOLS_VERSION: "37.0.1"
+  # Computed over Google's official archive (Google's index only lists the
+  # latest version's SHA-1).
+  PLATFORM_TOOLS_SHA256: "45f4d63113e895ebde0c90f194099a4676b6ac653bd28d54314a9e022bbc1a99"
+  SCRCPY_VERSION: "5.0.1"
+  # The same digest GitHub shows for the release asset.
+  SCRCPY_SHA256: "b12a2c4ee8be317422451fc7dcf8ee20a71b5ea7ef9ad73ddd825a25316227a5"
+  ZIP_NAME: ADB-Scan-windows-x64.zip
+
+jobs:
+  build:
+    name: Build the Windows zip
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        # MSYS2's UCRT64 shell: GTK 4, libadwaita, gcc, pkg-config and windres.
+        # (MSYS2 no longer builds GTK 4 or libadwaita for MINGW64.)
+        # `path-type: inherit` keeps cargo (from the Windows PATH) reachable.
+        shell: msys2 {0}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Install MSYS2 with GTK 4 and libadwaita
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          path-type: inherit
+          install: >-
+            zip
+            unzip
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-pkgconf
+            mingw-w64-ucrt-x86_64-gtk4
+            mingw-w64-ucrt-x86_64-libadwaita
+            mingw-w64-ucrt-x86_64-librsvg
+            mingw-w64-ucrt-x86_64-adwaita-icon-theme
+
+      # The GNU toolchain, as gtk-rs documents for MSYS2: it links with
+      # MSYS2's gcc and libraries, and winresource uses its windres.
+      - name: Install Rust (stable, GNU)
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable-x86_64-pc-windows-gnu
+
+      - name: Check the binary name and, for a tag, the version
+        shell: pwsh
+        run: |
+          $meta = cargo metadata --no-deps --format-version 1 --locked | ConvertFrom-Json
+          $pkg = $meta.packages | Where-Object { $_.name -eq 'adb-scan' }
+          if (-not $pkg) { Write-Output "::error::The adb-scan package is not in Cargo.toml"; exit 1 }
+          $bin = $pkg.targets | Where-Object { $_.kind -contains 'bin' } | Select-Object -First 1 -ExpandProperty name
+          # The zip, the README and the app's messages say adb-scan.exe.
+          if ($bin -ne 'adb-scan') { Write-Output "::error::The binary in Cargo.toml is '$bin', not 'adb-scan'"; exit 1 }
+          if ($env:GITHUB_REF_TYPE -eq 'tag') {
+            $tag = $env:GITHUB_REF_NAME -replace '^v', ''
+            if ($tag -ne $pkg.version) {
+              Write-Output "::error::The tag is $env:GITHUB_REF_NAME but Cargo.toml says $($pkg.version)"
+              exit 1
+            }
+          }
+          Write-Output "Binary: $bin.exe · version $($pkg.version)"
+
+      - name: Cache the Rust build
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build adb-scan.exe
+        run: cargo build --release --locked -p adb-scan
+
+      - name: Download and verify platform-tools and scrcpy
+        run: |
+          set -euo pipefail
+          mkdir -p downloads
+          cd downloads
+          curl -fsSL --proto '=https' --retry 3 -o platform-tools.zip \
+            "https://dl.google.com/android/repository/platform-tools_r${PLATFORM_TOOLS_VERSION}-win.zip"
+          curl -fsSL --proto '=https' --retry 3 -o scrcpy.zip \
+            "https://github.com/Genymobile/scrcpy/releases/download/v${SCRCPY_VERSION}/scrcpy-win64-v${SCRCPY_VERSION}.zip"
+          printf '%s  platform-tools.zip\n%s  scrcpy.zip\n' "$PLATFORM_TOOLS_SHA256" "$SCRCPY_SHA256" | sha256sum -c -
+
+      - name: Assemble the folder
+        run: |
+          set -euo pipefail
+          out="dist-win/ADB-Scan"
+          rm -rf dist-win
+          mkdir -p "$out"
+          cp target/release/adb-scan.exe "$out/"
+
+          # DLLs from MSYS2 that a program or module loads, next to the .exe.
+          # (No gdbus.exe: GLib would leave it running as a session bus after
+          # ADB Scan closes, holding the folder; without a bus ADB Scan simply
+          # runs as a normal, non-unique application.)
+          copy_deps() {
+            ldd "$@" | awk '$3 ~ /^\/ucrt64\// { print $3 }' | sort -u | while read -r dll; do
+              [ -e "$out/$(basename "$dll")" ] || cp "$dll" "$out/"
+            done
+          }
+          copy_deps "$out/adb-scan.exe"
+
+          # Image loaders (SVG icons through librsvg) and their DLLs. The
+          # cache uses paths relative to the folder of the GTK DLLs.
+          loaders="lib/gdk-pixbuf-2.0/2.10.0"
+          mkdir -p "$out/$loaders/loaders"
+          cp /ucrt64/$loaders/loaders/*.dll "$out/$loaders/loaders/"
+          copy_deps "$out/$loaders/loaders/"*.dll
+          sed -E 's#^"[^"]*(lib[\\/]+gdk-pixbuf-2\.0)#"\1#' /ucrt64/$loaders/loaders.cache > "$out/$loaders/loaders.cache"
+
+          # GSettings schemas and the icon themes GTK falls back to.
+          mkdir -p "$out/share/glib-2.0/schemas" "$out/share/icons"
+          cp /ucrt64/share/glib-2.0/schemas/gschemas.compiled "$out/share/glib-2.0/schemas/"
+          cp -r /ucrt64/share/icons/Adwaita /ucrt64/share/icons/hicolor "$out/share/icons/"
+
+          # platform-tools/ (adb.exe, fastboot.exe) and scrcpy/ (scrcpy.exe):
+          # where ADB Scan looks first, next to its .exe.
+          unzip -q downloads/platform-tools.zip -d "$out"
+          unzip -q downloads/scrcpy.zip -d dist-win/scrcpy-tmp
+          mv "dist-win/scrcpy-tmp/scrcpy-win64-v${SCRCPY_VERSION}" "$out/scrcpy"
+
+          cp README.md LICENSE "$out/"
+          cp assets/icons/LICENSE-lucide "$out/"
+          echo "Contents:"
+          ls "$out"
+
+      # With only the system folders in the PATH: a missing DLL makes it fail
+      # here (0xC0000135) instead of on the user's computer.
+      - name: Check that it starts with the bundled DLLs
+        shell: pwsh
+        run: |
+          $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
+          $dir = Resolve-Path dist-win\ADB-Scan
+          $p = Start-Process -FilePath "$dir\adb-scan.exe" -ArgumentList '--version' -Wait -NoNewWindow -PassThru -RedirectStandardOutput version.txt
+          $text = Get-Content version.txt -Raw
+          Write-Output "adb-scan.exe --version (exit $($p.ExitCode)): $text"
+          if ($p.ExitCode -ne 0 -or $text -notmatch 'ADB Scan') { Write-Output "::error::adb-scan.exe does not start with the bundled DLLs"; exit 1 }
+          & "$dir\platform-tools\adb.exe" version
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          & "$dir\scrcpy\scrcpy.exe" --version
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Pack the zip
+        run: |
+          set -euo pipefail
+          cd dist-win/ADB-Scan
+          zip -q -r -9 "../$ZIP_NAME" .
+          ls -l "../$ZIP_NAME"
+
+      - name: Upload the zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: ADB-Scan-windows-x64
+          path: dist-win/${{ env.ZIP_NAME }}
+          if-no-files-found: error
+
+  publish:
+    name: Attach the zip to the release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    permissions:
+      # Create the release (or add to the one release.yml creates).
+      contents: write
+    steps:
+      - name: Download the zip
+        uses: actions/download-artifact@v4
+        with:
+          name: ADB-Scan-windows-x64
+
+      - name: Attach it to the release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: ADB Scan ${{ github.ref_name }}
+          files: ${{ env.ZIP_NAME }}
+          fail_on_unmatched_files: true
+          prerelease: ${{ contains(github.ref_name, '-') }}

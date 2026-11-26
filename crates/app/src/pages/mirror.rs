@@ -403,7 +403,11 @@ impl MirrorPage {
             }
             None => {
                 self.status.set_title(tr("scrcpy is not installed"));
-                self.status.set_subtitle(tr("Install it with “sudo apt install scrcpy” or “sudo snap install scrcpy” (newer version), or set its path in Preferences."));
+                self.status.set_subtitle(if cfg!(windows) {
+                    tr("Extract the whole zip: scrcpy.exe is in the scrcpy folder next to adb-scan.exe. Or set its path in Preferences.")
+                } else {
+                    tr("Install it with “sudo apt install scrcpy” or “sudo snap install scrcpy” (newer version), or set its path in Preferences.")
+                });
                 self.start_btn.set_sensitive(false);
             }
         }
@@ -470,6 +474,13 @@ impl MirrorPage {
 }
 
 impl MirrorPage {
+    /// v4l2loopback is a Linux kernel module.
+    #[cfg(windows)]
+    fn loopback_device(&self) -> Option<String> {
+        None
+    }
+
+    #[cfg(unix)]
     fn loopback_device(&self) -> Option<String> {
         adbscan_core::scrcpy::v4l2_loopback_devices(std::path::Path::new("/sys/class/video4linux")).into_iter().next().map(|(d, _)| d)
     }
@@ -477,6 +488,12 @@ impl MirrorPage {
     /// Virtual webcam: needs the v4l2loopback module loaded (scrcpy sends the
     /// video to /dev/videoN and any video-call app sees it).
     fn refresh_webcam(&self) {
+        if cfg!(windows) {
+            self.webcam.set_active(false);
+            self.webcam.set_sensitive(false);
+            self.webcam.set_subtitle(tr("Not available on Windows: it uses Linux's v4l2loopback module"));
+            return;
+        }
         match adbscan_core::scrcpy::v4l2_loopback_devices(std::path::Path::new("/sys/class/video4linux")).into_iter().next() {
             Some((dev, name)) => {
                 self.webcam.set_sensitive(true);
@@ -591,7 +608,12 @@ pub fn quick_mirror(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
         return;
     }
     let Some(sc) = ctx.scrcpy() else {
-        util::show_error(parent, tr("scrcpy is not installed"), tr("Install it with “sudo apt install scrcpy” or set its path in Preferences → Tools."));
+        let how = if cfg!(windows) {
+            tr("Extract the whole zip: scrcpy.exe is in the scrcpy folder next to adb-scan.exe. Or set its path in Preferences → Tools.")
+        } else {
+            tr("Install it with “sudo apt install scrcpy” or set its path in Preferences → Tools.")
+        };
+        util::show_error(parent, tr("scrcpy is not installed"), how);
         return;
     };
     let Some(dev) = ctx.selected_device().filter(|d| d.connected()) else {

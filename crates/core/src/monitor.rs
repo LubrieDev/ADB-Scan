@@ -80,10 +80,8 @@ impl DeviceMonitor {
     pub fn stop(&mut self) {
         self.stop.store(true, Ordering::SeqCst);
         if let Some(pid) = self.child_pid.lock().unwrap().take() {
-            // SAFETY: pid of a child of ours with its own group.
-            unsafe {
-                libc::kill(-(pid as i32), libc::SIGTERM);
-            }
+            // A child of ours with its own group.
+            exec::terminate(pid);
         }
         if let Some(h) = self.handle.take() {
             let _ = h.join();
@@ -169,10 +167,8 @@ fn run(adb: Adb, stop: Arc<AtomicBool>, refresh: Arc<AtomicU32>, child_pid: Arc<
                         Err(std::sync::mpsc::RecvTimeoutError::Timeout) => {}
                     }
                 }
-                // SAFETY: pid of our child (own group).
-                unsafe {
-                    libc::kill(-(child.id() as i32), libc::SIGTERM);
-                }
+                // Our child (own group).
+                exec::terminate(child.id());
                 let _ = child.wait();
                 let _ = reader.join();
                 *child_pid.lock().unwrap() = None;

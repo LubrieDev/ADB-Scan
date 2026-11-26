@@ -6,6 +6,12 @@ on Ubuntu 24.04 with `cargo-deb` and publishes a GitHub Release with the
 `.deb` attached. Installed copies of ADB Scan see the new release the next
 time they start (a banner with a link to the release page).
 
+The same tag runs [`.github/workflows/windows.yml`](.github/workflows/windows.yml),
+which builds `ADB-Scan-windows-x64.zip` (it also checks the tag against
+`Cargo.toml`) and attaches it to that release. Both workflows add to the same
+release: whichever finishes first creates it. If one of them fails, re-run it
+from the Actions tab; the other's file stays.
+
 1. Set the new version in the root `Cargo.toml`, `[workspace.package]`:
 
    ```toml

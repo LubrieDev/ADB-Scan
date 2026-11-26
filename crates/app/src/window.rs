@@ -53,6 +53,9 @@ pub fn page_defs() -> Vec<PageDef> {
         PageDef { id: "files", title: tr("Files"), icon: "adb-folder-symbolic", section: tr("MANAGE"), need: Need::Adb, build: pages::files::build },
         PageDef { id: "mirror", title: tr("Screen"), icon: "adb-monitor-symbolic", section: tr("MANAGE"), need: Need::Adb, build: pages::mirror::build },
         PageDef { id: "control", title: tr("Control"), icon: "adb-sliders-horizontal-symbolic", section: tr("MANAGE"), need: Need::Adb, build: pages::control::build },
+        PageDef { id: "debloat", title: tr("Preinstalled apps"), icon: "adb-eraser-symbolic", section: tr("MANAGE"), need: Need::Adb, build: pages::debloat::build },
+        PageDef { id: "permissions", title: tr("Permissions"), icon: "adb-key-round-symbolic", section: tr("MANAGE"), need: Need::Adb, build: pages::permissions::build },
+        PageDef { id: "storage", title: tr("Storage"), icon: "adb-hard-drive-symbolic", section: tr("MANAGE"), need: Need::Adb, build: pages::storage::build },
         // Without ADB: always available.
         PageDef { id: "basic", title: tr("Basic analysis"), icon: "adb-search-symbolic", section: tr("DATA"), need: Need::Any, build: pages::basic::build },
         PageDef { id: "data", title: tr("Phone data"), icon: "adb-smartphone-lock-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::data::build },
@@ -202,7 +205,12 @@ impl MainWindow {
         let side_box = util::vbox(0);
         side_box.append(&card);
         side_box.append(&side_search);
-        let side_scroll = gtk::ScrolledWindow::builder().hscrollbar_policy(gtk::PolicyType::Never).vexpand(true).child(&sidebar).build();
+        // The scrollbar gets its own column at the panel's edge instead of
+        // floating over the rows (it covered the fold chevrons and the
+        // selected row). The panel is widened by that column (see
+        // `min_sidebar_width`), so the rows keep their width.
+        let side_scroll = gtk::ScrolledWindow::builder().hscrollbar_policy(gtk::PolicyType::Never).overlay_scrolling(false).vexpand(true).child(&sidebar).build();
+        side_scroll.add_css_class("sidebar-scroll");
         // If there are pages below, a gradient with an arrow says so (and
         // clicking it scrolls to the end). Without it, the cut-off list seemed
         // to end there and Flasher and Tools went unnoticed.
@@ -273,6 +281,12 @@ impl MainWindow {
         pop_actions.append(&refresh_btn);
         pop_box.append(&pop_actions);
         let popover = gtk::Popover::builder().child(&pop_box).build();
+        // Opening the connection dialog closes the menu: otherwise it stayed
+        // on top and the first click in the dialog only dismissed it.
+        {
+            let p = popover.clone();
+            wifi_btn.connect_clicked(move |_| p.popdown());
+        }
         let device_menu = gtk::MenuButton::builder().icon_name("adb-smartphone-symbolic").tooltip_text(tr("Choose device")).popover(&popover).build();
 
         // Private mode: hides serials, IPs, MACs, networks and nicknames on
@@ -295,6 +309,7 @@ impl MainWindow {
         }
         menu.append_section(None, &power);
         let general = gtk::gio::Menu::new();
+        general.append(Some(tr("Health report…")), Some("win.health-report"));
         general.append(Some(tr("Quick panel")), Some("app.panel"));
         general.append(Some(tr("Preferences")), Some("app.settings"));
         general.append(Some(tr("Keyboard shortcuts")), Some("win.show-help-overlay"));
@@ -317,8 +332,8 @@ impl MainWindow {
         let split = adw::OverlaySplitView::builder()
             .sidebar(&side_view)
             .content(&content_view)
-            .min_sidebar_width(210.0)
-            .max_sidebar_width(260.0)
+            .min_sidebar_width(222.0)
+            .max_sidebar_width(272.0)
             .sidebar_width_fraction(0.22)
             .show_sidebar(s.sidebar_visible)
             .build();
@@ -509,7 +524,8 @@ impl MainWindow {
             // Without debugging (or without a phone) the basic analysis is
             // always there.
             let usb = self.ctx.usb_devices();
-            let offer_basic = self.ctx.selected_device().is_none() && (usb.is_empty() || usb.iter().any(|u| u.mode == adbscan_core::usb::UsbMode::Other));
+            // The basic analysis does not exist on Windows (no direct USB access).
+            let offer_basic = adbscan_core::usb::HOST_USB && self.ctx.selected_device().is_none() && (usb.is_empty() || usb.iter().any(|u| u.mode == adbscan_core::usb::UsbMode::Other));
             slot.basic_btn.set_visible(offer_basic);
             slot.gate.set_visible_child_name("empty");
         }
@@ -517,14 +533,24 @@ impl MainWindow {
 
     fn empty_message(&self) -> (String, String, &'static str) {
         if self.ctx.adb().is_none() {
-            return (tr("ADB was not found").into(), tr("Install the Android tools (sudo apt install adb) or set the path in Preferences → Tools.").into(), "adb-triangle-alert-symbolic");
+            let how = if cfg!(windows) {
+                tr("Extract the whole zip: adb.exe is in the platform-tools folder next to adb-scan.exe. Or set the path in Preferences → Tools.")
+            } else {
+                tr("Install the Android tools (sudo apt install adb) or set the path in Preferences → Tools.")
+            };
+            return (tr("ADB was not found").into(), how.into(), "adb-triangle-alert-symbolic");
         }
         match self.ctx.selected_device().map(|d| d.state) {
             Some(DeviceState::Unauthorized) => {
                 (tr("Waiting for authorisation").into(), tr("Unlock the phone and accept “Allow USB debugging?”. Tick “Always allow from this computer”.").into(), "adb-key-round-symbolic")
             }
             Some(DeviceState::NoPermissions) => {
-                (tr("No USB permissions").into(), tr("The system does not allow access to the device. Install the package's udev rules or add your user to the plugdev group.").into(), "adb-triangle-alert-symbolic")
+                let how = if cfg!(windows) {
+                    tr("Windows does not let adb open the phone: install its USB driver (Google USB Driver or the manufacturer's).")
+                } else {
+                    tr("The system does not allow access to the device. Install the package's udev rules or add your user to the plugdev group.")
+                };
+                (tr("No USB permissions").into(), how.into(), "adb-triangle-alert-symbolic")
             }
             Some(DeviceState::Offline) => {
                 (tr("Device offline").into(), tr("Unplug and replug the cable, or restart the ADB server from Tools.").into(), "adb-triangle-alert-symbolic")
@@ -541,6 +567,11 @@ impl MainWindow {
             _ if !self.ctx.usb_devices().is_empty() => (
                 tr("Advanced analysis section").into(),
                 tr("This section uses ADB and needs USB debugging, which is optional. The basic analysis already shows what your phone shares without it.").into(),
+                "adb-smartphone-symbolic",
+            ),
+            _ if !adbscan_core::usb::HOST_USB => (
+                tr("Connect a device").into(),
+                tr("This section uses ADB: connect a phone with USB debugging turned on or over Wi-Fi with wireless debugging. If Windows does not see the phone, install its USB driver.").into(),
                 "adb-smartphone-symbolic",
             ),
             _ => (
@@ -719,6 +750,11 @@ impl MainWindow {
         {
             let ctx = self.ctx.clone();
             let w = self.window.clone();
+            add("health-report", Box::new(move || crate::pages::dashboard::save_health_report(&ctx, w.upcast_ref())));
+        }
+        {
+            let ctx = self.ctx.clone();
+            let w = self.window.clone();
             add("mirror", Box::new(move || crate::pages::mirror::quick_mirror(&ctx, w.upcast_ref())));
         }
         {
@@ -775,7 +811,13 @@ impl MainWindow {
             });
             win.add_action(&a);
         }
-        // Shortcuts
+        // Shortcuts (not in capture mode: a key pressed while its window has
+        // the focus must not act on the phone; see `app::block_real_input`).
+        let overlay = crate::help::shortcuts_window(&self.defs);
+        self.window.set_help_overlay(Some(&overlay));
+        if crate::app::capture_mode() {
+            return;
+        }
         let app = &self.ctx.app;
         app.set_accels_for_action("win.search", &["<Control>k"]);
         app.set_accels_for_action("win.screenshot", &["<Control><Shift>s"]);
@@ -788,8 +830,6 @@ impl MainWindow {
         for (i, d) in self.defs.iter().enumerate().take(9) {
             app.set_accels_for_action(&format!("win.go::{}", d.id), &[&format!("<Alt>{}", i + 1)]);
         }
-        let overlay = crate::help::shortcuts_window(&self.defs);
-        self.window.set_help_overlay(Some(&overlay));
     }
 
     fn track_visibility(self: &Rc<Self>) {

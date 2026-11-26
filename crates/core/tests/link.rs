@@ -1,6 +1,10 @@
 //! The USB link: sysfs on the PC (a made-up tree with the shape of a
 //! Comet Lake laptop), the phone's `dumpsys usb`/`dumpsys battery` (REDMAGIC
 //! 11S Pro, Android 16) and the deductions.
+//!
+//! Linux only: the tree is built with symlinks, as sysfs has them, and only
+//! Linux reads the bus from the PC.
+#![cfg(target_os = "linux")]
 
 use std::collections::HashMap;
 use std::fs;

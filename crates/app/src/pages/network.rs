@@ -305,7 +305,11 @@ impl NetworkPage {
 
     fn load_capture_ifaces(&self) {
         let Some(tshark) = self.tshark() else {
-            self.capture_status.set_text(tr("TShark is not installed. Install it with “sudo apt install tshark” or set its path in Preferences."));
+            self.capture_status.set_text(if cfg!(windows) {
+                tr("TShark is not installed. Install Wireshark (it includes TShark) or set the path of tshark.exe in Preferences.")
+            } else {
+                tr("TShark is not installed. Install it with “sudo apt install tshark” or set its path in Preferences.")
+            });
             self.capture_btn.set_sensitive(false);
             self.capture_iface.set_sensitive(false);
             self.capture_filter.set_sensitive(false);

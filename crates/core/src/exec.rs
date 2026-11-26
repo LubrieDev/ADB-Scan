@@ -1,10 +1,17 @@
 //! Safe process execution: always an argument vector (never a host shell), a
 //! timeout, a controlled environment and cancellation of the whole process
 //! group.
+//!
+//! Unix: own process group, SIGTERM/SIGKILL to the group and, on Linux,
+//! `PR_SET_PDEATHSIG`. Windows: no console window (`CREATE_NO_WINDOW`), a job
+//! object that ends the children with ADB Scan and `TerminateProcess`.
 
 use crate::i18n::{tr, trc};
 use std::io::{Read, Write};
+#[cfg(unix)]
 use std::os::unix::process::CommandExt;
+#[cfg(windows)]
+use std::os::windows::process::CommandExt;
 use std::path::{Path, PathBuf};
 use std::process::{Child, Command, ExitStatus, Stdio};
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -67,6 +74,7 @@ pub fn base_command(program: &Path) -> Command {
     cmd.env("LC_ALL", "C").env("LANG", "C");
     cmd.stdin(Stdio::null());
     // Own group: cancelling also kills the children (e.g. adb fork-server).
+    #[cfg(unix)]
     cmd.process_group(0);
     // Because it is in another group, the child does not die with ADB Scan. If
     // the app closes abruptly (crash, kill), an orphaned `adb shell` keeps its
@@ -90,13 +98,29 @@ pub fn base_command(program: &Path) -> Command {
             });
         }
     }
+    // ADB Scan is a window program: without this flag every adb call would
+    // flash a console. [`spawn`] ties the child to ADB Scan's lifetime.
+    #[cfg(windows)]
+    hide_console(&mut cmd);
     cmd
+}
+
+/// `CREATE_NO_WINDOW`: the console program runs without opening a window.
+#[cfg(windows)]
+pub const CREATE_NO_WINDOW: u32 = windows_sys::Win32::System::Threading::CREATE_NO_WINDOW;
+
+/// Windows: starts `cmd` without a console window. For the commands that do
+/// not go through [`base_command`].
+#[cfg(windows)]
+pub fn hide_console(cmd: &mut Command) {
+    cmd.creation_flags(CREATE_NO_WINDOW);
 }
 
 /// Creates the process of a [`base_command`]. It is always created from the
 /// same thread, which lives as long as the app: Linux notifies the child when
 /// the *thread* that created it dies, and a worker thread that ends before the
-/// process would kill it at the wrong time.
+/// process would kill it at the wrong time. On Windows the child joins a job
+/// object that ends it when ADB Scan ends, crash included.
 pub fn spawn(mut cmd: Command) -> std::io::Result<Child> {
     type Job = Box<dyn FnOnce() + Send>;
     static SPAWNER: OnceLock<mpsc::Sender<Job>> = OnceLock::new();
@@ -114,32 +138,163 @@ pub fn spawn(mut cmd: Command) -> std::io::Result<Child> {
     });
     let (tx, rx) = mpsc::sync_channel(1);
     jobs.send(Box::new(move || {
-        let _ = tx.send(cmd.spawn());
+        let child = cmd.spawn();
+        #[cfg(windows)]
+        if let Ok(c) = &child {
+            win::tie_to_app(c);
+        }
+        let _ = tx.send(child);
     }))
     .map_err(|_| std::io::Error::other("the process spawner thread is not available"))?;
     rx.recv().unwrap_or_else(|_| Err(std::io::Error::other("the process spawner thread did not respond")))
 }
 
-/// Looks for an executable in `PATH` without invoking any shell.
+/// Looks for an executable in `PATH` without invoking any shell. A name with a
+/// path separator is checked as it is. On Windows, `adb` also finds `adb.exe`
+/// (the extensions in `PATHEXT`).
 pub fn which(name: &str) -> Option<PathBuf> {
-    if name.contains('/') {
-        let p = PathBuf::from(name);
-        return is_executable(&p).then_some(p);
+    if name.contains('/') || (cfg!(windows) && name.contains('\\')) {
+        return executable_variant(Path::new(name));
     }
     let path = std::env::var_os("PATH")?;
-    std::env::split_paths(&path).map(|dir| dir.join(name)).find(|p| is_executable(p))
+    std::env::split_paths(&path).find_map(|dir| executable_variant(&dir.join(name)))
 }
 
+/// `path` if it is executable; on Windows, also `path` plus each extension in
+/// `PATHEXT` (`adb` → `adb.exe`), in that order.
+fn executable_variant(path: &Path) -> Option<PathBuf> {
+    if is_executable(path) {
+        return Some(path.to_path_buf());
+    }
+    #[cfg(windows)]
+    for ext in path_exts() {
+        let mut name = path.as_os_str().to_owned();
+        name.push(&ext);
+        let p = PathBuf::from(name);
+        if is_executable(&p) {
+            return Some(p);
+        }
+    }
+    None
+}
+
+/// Name of an executable file on this system: `adb` on Unix, `adb.exe` on
+/// Windows.
+pub fn exe_name(name: &str) -> String {
+    format!("{name}{}", std::env::consts::EXE_SUFFIX)
+}
+
+#[cfg(unix)]
 pub fn is_executable(path: &Path) -> bool {
     use std::os::unix::fs::PermissionsExt;
     path.metadata().map(|m| m.is_file() && m.permissions().mode() & 0o111 != 0).unwrap_or(false)
 }
 
+/// Windows has no executable bit: a file whose extension is in `PATHEXT`.
+#[cfg(windows)]
+pub fn is_executable(path: &Path) -> bool {
+    let ext = path.extension().map(|e| format!(".{}", e.to_string_lossy()).to_ascii_lowercase());
+    path.is_file() && ext.is_some_and(|e| path_exts().contains(&e))
+}
+
+/// Executable extensions (`PATHEXT`), in lower case and with the dot.
+#[cfg(windows)]
+fn path_exts() -> Vec<String> {
+    let var = std::env::var("PATHEXT").unwrap_or_default();
+    let list: Vec<String> = var.split(';').map(|e| e.trim().to_ascii_lowercase()).filter(|e| e.starts_with('.') && e.len() > 1).collect();
+    if list.is_empty() {
+        [".com", ".exe", ".bat", ".cmd"].map(String::from).to_vec()
+    } else {
+        list
+    }
+}
+
+#[cfg(unix)]
 fn kill_group(pid: u32, signal: i32) {
     // SAFETY: kill(2) with a negative pgid sends the signal to the group; the
     // pid belongs to a child we created with process_group(0).
     unsafe {
         libc::kill(-(pid as i32), signal);
+    }
+}
+
+/// Asks a child of ours to end: SIGTERM to its group on Unix. Windows has no
+/// gentle equivalent for a console program without a window: it is ended.
+pub(crate) fn terminate(pid: u32) {
+    #[cfg(unix)]
+    kill_group(pid, libc::SIGTERM);
+    #[cfg(windows)]
+    win::terminate(pid);
+}
+
+/// Ends a child of ours that did not stop with [`terminate`]: SIGKILL to its
+/// group on Unix.
+pub(crate) fn force_kill(pid: u32) {
+    #[cfg(unix)]
+    kill_group(pid, libc::SIGKILL);
+    #[cfg(windows)]
+    win::terminate(pid);
+}
+
+#[cfg(windows)]
+mod win {
+    use std::os::windows::io::AsRawHandle;
+    use std::sync::OnceLock;
+    use windows_sys::Win32::Foundation::{CloseHandle, HANDLE};
+    use windows_sys::Win32::System::JobObjects::{
+        AssignProcessToJobObject, CreateJobObjectW, JobObjectExtendedLimitInformation, SetInformationJobObject, JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE,
+        JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK,
+    };
+    use windows_sys::Win32::System::Threading::{OpenProcess, TerminateProcess, PROCESS_TERMINATE};
+
+    /// The app's job object, created once and never closed: when ADB Scan
+    /// ends (crash or kill included) Windows closes it and ends its processes,
+    /// like `PR_SET_PDEATHSIG` on Linux. With `SILENT_BREAKAWAY_OK` only our
+    /// direct children are in it: the adb server that an `adb` call starts
+    /// keeps running, as on Linux.
+    fn job() -> Option<HANDLE> {
+        static JOB: OnceLock<usize> = OnceLock::new();
+        let raw = *JOB.get_or_init(|| {
+            // SAFETY: plain Win32 calls with a zeroed structure of the right
+            // size; the handle is checked before use.
+            unsafe {
+                let job = CreateJobObjectW(std::ptr::null(), std::ptr::null());
+                if job.is_null() {
+                    return 0;
+                }
+                let mut info: JOBOBJECT_EXTENDED_LIMIT_INFORMATION = std::mem::zeroed();
+                info.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK;
+                let size = std::mem::size_of::<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>() as u32;
+                if SetInformationJobObject(job, JobObjectExtendedLimitInformation, &info as *const _ as *const core::ffi::c_void, size) == 0 {
+                    CloseHandle(job);
+                    return 0;
+                }
+                job as usize
+            }
+        });
+        (raw != 0).then_some(raw as HANDLE)
+    }
+
+    /// Puts a child that has just been created into the app's job object.
+    pub(super) fn tie_to_app(child: &std::process::Child) {
+        if let Some(job) = job() {
+            // SAFETY: the child's handle is valid while `child` lives.
+            if unsafe { AssignProcessToJobObject(job, child.as_raw_handle() as HANDLE) } == 0 {
+                log::debug!("could not add pid {} to the job object: {}", child.id(), std::io::Error::last_os_error());
+            }
+        }
+    }
+
+    pub(super) fn terminate(pid: u32) {
+        // SAFETY: the handle is checked and closed; TerminateProcess on a
+        // process that has already ended only returns an error.
+        unsafe {
+            let h = OpenProcess(PROCESS_TERMINATE, 0, pid);
+            if !h.is_null() {
+                TerminateProcess(h, 1);
+                CloseHandle(h);
+            }
+        }
     }
 }
 
@@ -163,10 +318,10 @@ fn wait_with_timeout(child: &mut Child, timeout: Duration) -> (Option<ExitStatus
             Err(_) => return (None, false),
         }
         if start.elapsed() >= timeout {
-            kill_group(child.id(), libc::SIGTERM);
+            terminate(child.id());
             thread::sleep(Duration::from_millis(150));
             if !matches!(child.try_wait(), Ok(Some(_))) {
-                kill_group(child.id(), libc::SIGKILL);
+                force_kill(child.id());
             }
             let status = child.wait().ok();
             return (status, true);
@@ -256,13 +411,13 @@ impl StreamHandle {
     }
 
     /// Cancels with SIGTERM and, if it does not end within 1 s, SIGKILL to the
-    /// group.
+    /// group (on Windows, `TerminateProcess`).
     pub fn cancel(&self) {
         if self.finished.load(Ordering::SeqCst) || self.cancelled.swap(true, Ordering::SeqCst) {
             return;
         }
         self.stdin.lock().unwrap().take();
-        kill_group(self.pid, libc::SIGTERM);
+        terminate(self.pid);
         let pid = self.pid;
         let finished = self.finished.clone();
         thread::spawn(move || {
@@ -273,7 +428,7 @@ impl StreamHandle {
                 }
                 thread::sleep(Duration::from_millis(50));
             }
-            kill_group(pid, libc::SIGKILL);
+            force_kill(pid);
         });
     }
 }
@@ -411,6 +566,7 @@ pub fn shell_join<S: AsRef<str>>(args: &[S]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(unix)]
     use std::sync::mpsc;
 
     #[test]
@@ -424,6 +580,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(unix)]
     fn run_and_timeout() {
         let sh = which("sh").unwrap();
         let r = run(&sh, &["-c".into(), "echo hola; echo err >&2; exit 3".into()], Duration::from_secs(5), None).unwrap();
@@ -437,6 +594,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(unix)]
     fn stdin_input() {
         let cat = which("cat").unwrap();
         let r = run(&cat, &[], Duration::from_secs(5), Some(b"entrada")).unwrap();
@@ -444,6 +602,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(unix)]
     fn streaming_lines_and_exit_once() {
         let sh = which("sh").unwrap();
         let (tx, rx) = mpsc::channel();
@@ -471,6 +630,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(unix)]
     fn cancel_kills_group() {
         let sh = which("sh").unwrap();
         let (tx, rx) = mpsc::channel();
@@ -487,6 +647,7 @@ mod tests {
     /// A process created from a worker thread does not die when that thread
     /// ends: only when ADB Scan ends (see [`spawn`]).
     #[test]
+    #[cfg(unix)]
     fn child_outlives_worker_thread() {
         let sh = which("sh").unwrap();
         let mut child = thread::spawn(move || {

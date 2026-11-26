@@ -367,7 +367,7 @@ impl LogcatPage {
         let writer: Option<Arc<Mutex<std::io::BufWriter<std::fs::File>>>> = if self.ctx.settings.borrow().logcat_save_sessions {
             let dir = paths::logcat_dir();
             let _ = std::fs::create_dir_all(&dir);
-            let path = dir.join(format!("{}-{}.log", dev.serial, format::file_stamp(now_secs())));
+            let path = dir.join(format!("{}-{}.log", util::file_safe(&dev.serial), format::file_stamp(now_secs())));
             match std::fs::File::create(&path) {
                 Ok(f) => {
                     if let Some(h) = &self.ctx.history {

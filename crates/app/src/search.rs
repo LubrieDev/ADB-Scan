@@ -32,14 +32,17 @@ fn page_keywords(id: &str) -> &'static str {
         "apps" => tr("install uninstall cache permissions apk packages"),
         "files" => tr("photos transfer copy storage folders"),
         "mirror" => tr("scrcpy mirror record camera webcam screenshot"),
-        "control" => tr("brightness volume do not disturb airplane remote media calls find quick settings"),
+        "control" => tr("brightness volume do not disturb airplane remote media calls find quick settings automations on connect"),
+        "debloat" => tr("debloat bloatware remove preinstalled system apps restore uninstall"),
+        "permissions" => tr("camera microphone location contacts sms accessibility notifications overlay revoke privacy special access"),
+        "storage" => tr("space full analyzer large files duplicates whatsapp downloads free up clean"),
         "basic" => tr("without debugging mtp"),
         "data" => tr("imei sim accounts mac public ip"),
         "security" => tr("audit score permissions risk"),
         "history" => tr("log events sessions charts"),
         "terminal" => tr("shell command console"),
         "logcat" => tr("log errors crash debug"),
-        "tools" => tr("processes sensors services"),
+        "tools" => tr("processes sensors services developer options port forwarding reverse demo mode resolution density animations show taps layout bounds"),
         "flasher" => tr("fastboot flash bootloader recovery rom firmware"),
         _ => "",
     }
@@ -52,6 +55,9 @@ fn entries() -> Vec<Entry> {
         .collect();
     let action = |icon, title: &str, subtitle: &str, keywords, action, target| Entry { icon, title: title.into(), subtitle: subtitle.into(), keywords, action, target };
     out.extend([
+        action("adb-file-text-symbolic", tr("Health report"), tr("Battery, storage, bootloader and security in one page"), tr("sell buy used second hand certificate pdf print battery health"), "win.health-report", None),
+        action("adb-save-symbolic", tr("Export apps"), tr("Apps"), tr("migrate move new phone backup apk transfer"), "win.bulk", Some("export")),
+        action("adb-system-software-install-symbolic", tr("Install from an export"), tr("Apps"), tr("migrate restore new phone apk"), "win.bulk", Some("import")),
         action("adb-camera-photo-symbolic", tr("Take a screenshot"), tr("Saves the phone's screen"), tr("capture picture"), "win.screenshot", None),
         action("adb-video-display-symbolic", tr("Mirror the screen"), "scrcpy", tr("scrcpy cast"), "win.mirror", None),
         action("adb-eye-off-symbolic", tr("Private mode"), tr("Hides serial numbers, IPs and networks"), tr("privacy hide"), "win.privacy", None),

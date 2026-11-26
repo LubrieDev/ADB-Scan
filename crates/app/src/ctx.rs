@@ -32,6 +32,8 @@ pub enum Msg {
     Usb(Vec<UsbDevice>),
     Fastboot(Vec<AdbDevice>),
     Live { generation: u64, ev: LiveEvent },
+    // No tray icon on Windows: nothing sends it there.
+    #[cfg_attr(windows, allow(dead_code))]
     Tray(TrayCmd),
 }
 
@@ -127,6 +129,11 @@ pub struct Ctx {
     notif_busy: Cell<bool>,
     /// Scheduled actions already run today: id → day.
     schedule_runs: RefCell<HashMap<u64, i64>>,
+    /// ADB serials whose connection already ran the automations (cleared
+    /// when the phone leaves).
+    auto_seen: RefCell<std::collections::HashSet<String>>,
+    /// Last run of each automation on each phone: (id, hardware serial) → time.
+    auto_runs: RefCell<HashMap<(u64, String), f64>>,
     session_log: RefCell<VecDeque<SessionSample>>,
     /// Last GPU/FPS reading (time, GPU %, FPS).
     gpu_fps: Cell<(f64, Option<f64>, Option<f64>)>,
@@ -189,6 +196,8 @@ impl Ctx {
             low_alerted: Cell::new(false),
             link_watch: RefCell::new(Default::default()),
             schedule_runs: RefCell::new(HashMap::new()),
+            auto_seen: RefCell::new(Default::default()),
+            auto_runs: RefCell::new(HashMap::new()),
             notif_seen: RefCell::new(None),
             notif_busy: Cell::new(false),
             session_log: RefCell::new(VecDeque::new()),
@@ -628,6 +637,8 @@ impl Ctx {
         for d in &devices {
             self.learn_private(&d.serial);
         }
+        // A phone that left runs its automations again when it comes back.
+        self.auto_seen.borrow_mut().retain(|s| devices.iter().any(|d| &d.serial == s && d.state == DeviceState::Device));
         let actions = self.tracker.borrow_mut().update_devices(devices, now_secs());
         self.apply(actions);
         self.update_selection();
@@ -862,6 +873,7 @@ impl Ctx {
             return;
         }
         self.fill_battery_capacity(&mut snap);
+        self.run_automations(&snap);
         if let Some(w) = &snap.wifi {
             self.learn_private(&w.ssid);
         }
@@ -1118,6 +1130,62 @@ impl Ctx {
                 },
             );
         }
+    }
+
+    /// First telemetry of a phone that just connected: runs its automations
+    /// (see `adbscan_core::automation`), one after another in the
+    /// background, each recorded in History.
+    fn run_automations(self: &Rc<Self>, snap: &Snapshot) {
+        if !self.auto_seen.borrow_mut().insert(snap.serial.clone()) {
+            return;
+        }
+        let hw = snap.prop("ro.serialno").to_string();
+        let hw = if hw.is_empty() { snap.serial.clone() } else { hw };
+        let now = now_secs();
+        let due: Vec<adbscan_core::automation::Automation> = {
+            let runs = self.auto_runs.borrow();
+            let list = &self.settings.borrow().automations;
+            adbscan_core::automation::due(list, &hw, now, |id| runs.get(&(id, hw.clone())).copied()).into_iter().cloned().collect()
+        };
+        if due.is_empty() {
+            return;
+        }
+        for a in &due {
+            self.auto_runs.borrow_mut().insert((a.id, hw.clone()), now);
+        }
+        // The mirror opens a window: the interface does it.
+        if due.iter().any(|a| a.action == adbscan_core::automation::AutoAction::Mirror) {
+            if let Some(w) = self.app.active_window() {
+                let _ = gtk::prelude::WidgetExt::activate_action(&w, "win.mirror", None);
+            }
+            self.audit("auto_mirror", None, true, None);
+        }
+        let actions: Vec<_> = due.iter().map(|a| a.action).filter(|a| *a != adbscan_core::automation::AutoAction::Mirror).collect();
+        let (Some(adb), serial) = (self.adb(), snap.serial.clone()) else { return };
+        let photos = std::path::PathBuf::from(self.settings.borrow().photos_dir.clone());
+        let notify = self.settings.borrow().notifications_enabled;
+        let weak = Rc::downgrade(self);
+        crate::util::run_bg(
+            move || actions.into_iter().map(|a| (a, adb.run_automation(&serial, a, &photos).map_err(|e| e.to_string()))).collect::<Vec<_>>(),
+            move |results| {
+                let Some(ctx) = weak.upgrade() else { return };
+                let mut lines = Vec::new();
+                let mut all_ok = true;
+                for (a, r) in &results {
+                    let (ok, detail) = match r {
+                        Ok(d) => (true, d.clone()),
+                        Err(e) => (false, e.clone()),
+                    };
+                    all_ok &= ok;
+                    ctx.audit(&format!("auto_{}", a.key()), None, ok, Some(&detail));
+                    lines.push(format!("{}: {}", a.label(), detail));
+                }
+                if notify && !lines.is_empty() {
+                    let title = if all_ok { tr("Automations run") } else { tr("Some automations failed") };
+                    ctx.send_notification("automation", title, &lines.join("\n"), if all_ok { "adb-scan-connected" } else { "adb-scan-error" }, false);
+                }
+            },
+        );
     }
 
     /// CPU above 80 % for more than a minute: alerts with the processes that

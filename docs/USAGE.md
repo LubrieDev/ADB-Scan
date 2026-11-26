@@ -79,8 +79,13 @@ reboot.
   display, network and USB connection, live. Quick actions for screenshots,
   mirroring, files, apps and basic analysis. **Component health**: battery
   capacity compared to the original, charge cycles and storage lifetime
-  (UFS/eMMC) when the phone exposes it. **Connection** sums up the
-  connection checks in one row that leads to the Connection page.
+  (UFS/eMMC) when the phone exposes it. **Health report** saves one page
+  (HTML, printable to PDF from the browser) with the battery, storage life,
+  bootloader, verified boot, the latest security audit and the public sheet;
+  it has no serial number or IMEI, so it can be shared when selling or
+  repairing the phone. It is also in the ⋮ menu and in the search.
+  **Connection** sums up the connection checks in one row that leads to the
+  Connection page.
 - **Device**: identity, software, hardware and display (active and
   configured refresh rate), the phone's nickname, reboots (system, recovery,
   bootloader, fastbootd, sideload, EDL) and all properties with a search box.
@@ -157,6 +162,12 @@ reboot.
     accounts or settings. Clearing the cache of a single app needs an Android
     that supports it (`pm clear --cache-only`); on older versions ADB Scan
     refuses instead of risking the app's data.
+  - **Export apps…**: copies the APKs of your apps (splits included) to a new
+    folder with a manifest, to install them on another phone. Only the apps:
+    their data comes from each app's own backup (WhatsApp, Telegram, the
+    Google account…), because without root Android does not let ADB read it.
+  - **Install from an export…**: choose an exported folder, check the apps
+    (those the phone already has start unchecked) and install them.
 - **Files**: browser of the phone's storage with uploads and downloads with
   progress. The folder refreshes by itself if it changes. The **photos**
   button copies the new photos and videos from `DCIM`, `Pictures` and
@@ -166,7 +177,7 @@ reboot.
 - **Screen**: mirroring with scrcpy (recording, the phone's camera, a virtual
   webcam on the PC, profiles), screenshots and remote keys (power, volume,
   home, back…).
-- **Control**, in two tabs:
+- **Control**, in three tabs:
   - **Quick settings**: the phone's quick settings (Wi-Fi, mobile data,
     Bluetooth, airplane mode, brightness, volume, Do Not Disturb…) and
     **Power**: restart or power off (clean shutdown; it is turned back on with
@@ -185,6 +196,37 @@ reboot.
       turn off the screen at a time and on some days. ADB Scan runs them while
       it is open (also when hidden in the tray) and the phone is connected; it
       notifies each time.
+  - **Automations**: actions that run by themselves when a phone connects
+    (by cable or Wi-Fi) or when ADB Scan starts with it connected: copy the
+    new photos (to the folder chosen in Files), turn Do Not Disturb on or
+    off, keep the screen on while charging or let it turn off, stop all
+    apps, clear all caches or open the mirror. For any phone or only for
+    the one connected when you add it. Each one runs at most once every
+    10 minutes per phone and is recorded in History.
+- **Preinstalled apps**: the manufacturer's, the carrier's and Google's
+  apps that can be removed, from a curated list, grouped as *Recommended*
+  (ads, telemetry, promotional apps), *Optional* (a feature some people use)
+  and *Expert* (part of a system feature; it asks first). **Remove** takes
+  the app away for your user only (`pm uninstall --user 0`): its APK stays
+  in the system partition. **Removed for your user** lists every app removed
+  that way, by ADB Scan or another tool, with **Restore**; a factory reset
+  also brings them back.
+- **Permissions**: each sensitive permission (location, location in the
+  background, camera, microphone, contacts, SMS, call log, phone, calendar,
+  photos and files, body sensors, nearby devices) and special access
+  (accessibility, notification access, display over other apps, install
+  unknown apps, all files access, usage access, modify system settings) with
+  the apps that have it. **Take away** turns it off as Settings would; the
+  app can ask again. Preinstalled apps are hidden unless you include them,
+  and taking a permission from one asks first. Permissions fixed by the
+  system or a device policy are shown as such.
+- **Storage**: **Scan** reads the shared storage once (about a minute for
+  every 50 GB; it can be cancelled). Then: space by file type, *places that
+  grow* (WhatsApp media, Telegram, downloads, camera, screenshots,
+  recordings, app files, game data, thumbnail caches), a folder browser
+  sorted by size, the 100 largest files and possible duplicates (same name
+  and size in different folders). Files are deleted one at a time, after
+  confirming; folders are never deleted from here.
 
 ### Data
 
@@ -231,7 +273,18 @@ reboot.
   commands. The up arrow brings back commands, also from previous sessions.
 - **Logcat**: live system log with filters by level, tag, text and package;
   it can be saved.
-- **Tools**: live processes (stop user apps), sensors and system services.
+- **Tools**: live processes (stop user apps), sensors, system services and
+  **Developer**:
+  - Switches: show taps, pointer location, layout bounds and stay awake while
+    charging; the animation speed (the three scales at once).
+  - **Screen**: resolution and density. After **Apply** a dialog asks to keep
+    the change and undoes it by itself after 15 seconds without an answer;
+    **Restore the original** goes back to the phone's own values.
+  - **Status bar demo mode**: full battery and signal, 12:00 and no
+    notification icons, for clean screenshots. It changes nothing real.
+  - **Port forwarding**: *Phone → PC* (`adb reverse`) makes a server on the PC
+    reachable on the phone as `localhost`; *PC → phone* (`adb forward`) the
+    opposite. Rules last until ADB or the phone restarts.
 
 ## Private mode
 

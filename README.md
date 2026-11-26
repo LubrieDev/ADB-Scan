@@ -2,7 +2,8 @@
 
 Native desktop app for Linux Mint Cinnamon that detects, monitors,
 diagnoses and manages Android devices over ADB and fastboot. Written in
-**Rust + GTK 4 + libadwaita**.
+**Rust + GTK 4 + libadwaita**. It also runs on Windows 10 and 11 as a
+portable zip (see [Windows](#windows)).
 
 ## Features
 
@@ -25,9 +26,9 @@ diagnoses and manages Android devices over ADB and fastboot. Written in
 - **Live telemetry every 500 ms** with a single `adb shell` per device; the
   rate drops when no window is visible.
 - **Pages**: Overview, Device, Performance, Battery (with history),
-  Connection, Network, Apps, Files, Screen (scrcpy), Control, Basic analysis,
-  Phone data, Security, History, Terminal, Logcat, Tools and Flasher. **Ctrl+K**
-  searches pages and actions.
+  Connection, Network, Apps, Files, Screen (scrcpy), Control, Preinstalled
+  apps, Permissions, Storage, Basic analysis, Phone data, Security, History,
+  Terminal, Logcat, Tools and Flasher. **Ctrl+K** searches pages and actions.
 - **Connection**: the cable (USB-C on both ends, USB 3 or USB 2.0 wires, its
   e-marker chip when the PC can read it), the PC's port (speed, lanes, limit,
   location, controller, hubs), the phone's port (roles, moisture detection,
@@ -71,6 +72,35 @@ diagnoses and manages Android devices over ADB and fastboot. Written in
   phone, its notifications on the desktop (optional) and scheduled actions
   (power off at a given time, Do Not Disturb…).
 - **Photo backup**: new photos and videos from the phone to the laptop.
+- **Preinstalled apps (debloat)**: a curated list of manufacturer, carrier
+  and Google apps (Facebook services, ads, telemetry, duplicates…) with what
+  each one does and a risk level. They are removed only for the user
+  (`pm uninstall --user 0`): the APK stays in the system partition and every
+  removed app, by ADB Scan or another tool, can be restored from the same page.
+- **Permissions**: who can do what, seen from the permission's side: which
+  apps can use the location, camera, microphone, contacts, SMS…, and the
+  special accesses (accessibility, notification access, display over other
+  apps, install unknown apps, all files, usage access). Each one can be taken
+  away from an app.
+- **Storage analyzer**: one read-only scan of the shared storage, then the
+  space by file type, places that grow (WhatsApp media, downloads,
+  thumbnails…), a folder browser, the largest files and possible duplicates.
+  Files are deleted one at a time and only after confirming.
+- **Developer tools** (Tools → Developer): port forwarding (`adb reverse` /
+  `adb forward`), the status bar's demo mode for clean screenshots,
+  resolution and density (undone by themselves if not confirmed in 15 s),
+  animation speed, show taps, pointer location, layout bounds and stay awake.
+- **Health report**: one HTML page, printable to PDF, with battery wear,
+  storage life, bootloader and verified boot, the latest security audit and
+  the public sheet. It has no serial number or IMEI, so it can be shared
+  when selling or repairing the phone.
+- **App migration** (Apps → ⋮): exports the user's apps (APKs and splits)
+  to a folder with a manifest and installs them on another phone. Only the
+  apps travel: their data comes from each app's own backup.
+- **Automations on connect** (Control → Automations): copy the new photos,
+  Do Not Disturb, keep the screen on while charging, stop all apps, clear
+  caches or open the mirror when a phone (or a specific one) connects. At
+  most once every 10 minutes per phone, recorded in History.
 - **Watcher**: alerts for a maxed-out CPU (with the culprit process), low
   battery and high temperature.
 - **Battery usage per app**: what uses the most, what drains with the screen
@@ -121,7 +151,7 @@ Download the `.deb` of the latest version from
 it (Linux Mint 22 / Ubuntu 24.04 or newer, amd64):
 
 ```bash
-sudo apt install ./adb-scan_1.0.0-1_amd64.deb
+sudo apt install ./adb-scan_1.1.0-1_amd64.deb
 ```
 
 To build the package yourself, use `cargo deb -p adb-scan` (see
@@ -129,6 +159,79 @@ To build the package yourself, use `cargo deb -p adb-scan` (see
 `dist/adb-scan_<version>_amd64.deb`.
 
 The package also installs the udev rules needed to access USB without root.
+
+## Windows
+
+ADB Scan also runs on **Windows 10 and 11 (64-bit)** as a portable zip: nothing
+is installed and nothing needs administrator rights.
+
+### Getting it running
+
+1. Download `ADB-Scan-windows-x64.zip` from
+   [Releases](https://github.com/LubrieDev/ADB-Scan/releases/latest) (or, for
+   a build that is not released yet, from the **Windows** workflow run in the
+   Actions tab: the zip is in its *Artifacts*).
+2. Right-click the zip → **Extract All…**, into a folder of your own (for
+   example `Documents\ADB Scan`). Do not run it from inside the zip: it needs
+   the folders next to it.
+3. Open the folder and double-click **`adb-scan.exe`**.
+
+The folder holds `adb-scan.exe`, the GTK and libadwaita DLLs it uses,
+`platform-tools\` (Google's `adb.exe` and `fastboot.exe`) and `scrcpy\`
+(screen mirroring). ADB Scan uses these copies first; a different `adb` can be
+chosen in Preferences → Tools.
+
+### “Windows protected your PC” (SmartScreen)
+
+The `.exe` is not signed with a paid certificate, so the first time Windows may
+show a blue **“Windows protected your PC”** window. Click **More info** →
+**Run anyway**. If the zip was blocked as a whole, right-click it before
+extracting → **Properties** → tick **Unblock** → **OK**.
+
+### Turning on USB debugging on the phone
+
+1. **Settings → About phone** → tap **Build number** seven times (on some
+   phones it is under *Software information*) until it says you are a
+   developer.
+2. **Settings → System → Developer options** → turn on **USB debugging**.
+3. Connect the phone with a data cable, unlock it and accept **“Allow USB
+   debugging?”** (tick *Always allow from this computer*).
+
+Wireless debugging (Android 11+) works too, from the **Connect** dialog. If the
+Windows firewall asks about `adb.exe`, allow it on **private networks**: that
+is how the phone is found on the Wi-Fi.
+
+### If ADB Scan does not see the phone
+
+Windows needs a USB driver for ADB. Pixel phones and many others work with
+Google's [USB driver](https://developer.android.com/studio/run/win-usb); other
+brands publish their own (Samsung, Xiaomi, OnePlus…: search for “<brand> USB
+driver”). After installing it, unplug and replug the cable. Also check that the
+cable carries data (some only charge) and that the phone is unlocked.
+
+### What is different on Windows
+
+- **Not available on Windows** (each section says so): the basic analysis
+  without debugging, the PC side of the cable (port, hubs, cable chip), the
+  embedded terminal (the Terminal section opens `adb shell` or a command
+  prompt in a window of their own instead), the virtual webcam
+  (v4l2loopback) and avahi (adb's own mDNS is used).
+- There is no tray icon yet: closing the window quits ADB Scan.
+- Data lives in `%APPDATA%\adb-scan` (settings, history, logcat) and
+  `%LOCALAPPDATA%\adb-scan` (cache). The log is
+  `%LOCALAPPDATA%\adb-scan\adb-scan.log`: attach it when reporting a problem.
+- If the window stays blank or flickers (some virtual machines or old
+  graphics drivers), start it with the software renderer: in the folder, type
+  `cmd` in the address bar and run `set GSK_RENDERER=cairo && adb-scan.exe`.
+
+### Building for Windows
+
+[`.github/workflows/windows.yml`](.github/workflows/windows.yml) builds the
+zip on `windows-latest` with MSYS2 (UCRT64: GTK 4, libadwaita) and the
+`stable-x86_64-pc-windows-gnu` Rust toolchain, downloads platform-tools and
+scrcpy pinned by version and SHA-256, and checks that `adb-scan.exe` starts
+with only the bundled DLLs. It runs on pushes to `main`, on version tags (the
+zip is attached to the release) and by hand from the Actions tab.
 
 ## Usage
 

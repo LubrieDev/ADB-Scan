@@ -87,12 +87,16 @@ pub fn diagnosis_rows(ctx: &Rc<Ctx>) -> Vec<(u8, String, String)> {
     let mut rows: Vec<(u8, String, String)> = Vec::new();
     match ctx.adb() {
         Some(a) => rows.push((0, tr("ADB available").into(), a.path().display().to_string())),
+        None if cfg!(windows) => rows.push((2, tr("ADB not found").into(), tr("Extract the whole zip: adb.exe is in the platform-tools folder").into())),
         None => rows.push((2, tr("ADB not found").into(), tr("Install adb: sudo apt install adb").into())),
     }
     if let Some(p) = ctx.monitor_problem() {
         rows.push((1, tr("ADB server").into(), p));
     }
     let phone = usb.iter().find(|u| u.mode != UsbMode::Other).or(usb.first());
+    if !usb::HOST_USB {
+        rows.push((3, tr("Phone over USB").into(), tr("Not available on Windows: the phone is seen only through adb").into()));
+    }
     match phone {
         Some(u) => {
             rows.push((0, tr("Phone connected over USB").into(), format!("{} · {}", u.display_name(), u.speed_label())));
@@ -113,7 +117,7 @@ pub fn diagnosis_rows(ctx: &Rc<Ctx>) -> Vec<(u8, String, String)> {
                 None => {}
             }
         }
-        None if dev.as_ref().is_some_and(|d| d.is_wireless()) => {}
+        None if dev.as_ref().is_some_and(|d| d.is_wireless()) || !usb::HOST_USB => {}
         None => rows.push((3, tr("Phone over USB").into(), tr("No connected Android phone detected").into())),
     }
     match dev.as_ref().map(|d| d.state) {
@@ -432,7 +436,13 @@ impl ConnectionPage {
         }
 
         // -- summary ---------------------------------------------------------
-        if dev.is_none() {
+        if !usb::HOST_USB {
+            self.summary.status(
+                Level::Info,
+                tr("PC side: not available on Windows"),
+                tr("The cable and the PC's port are read from Linux's USB system. The phone's port, the power, the cuts and the speed test come through adb and do work."),
+            );
+        } else if dev.is_none() {
             let wireless = self.ctx.selected_device().is_some_and(|d| d.is_wireless());
             self.summary.status(
                 Level::Info,

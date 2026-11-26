@@ -46,20 +46,26 @@ impl Tool {
     }
 }
 
+#[cfg(unix)]
 fn home() -> PathBuf {
     std::env::var_os("HOME").map(PathBuf::from).unwrap_or_else(|| PathBuf::from("/"))
+}
+
+/// Folder of a tool inside a package (`platform-tools` or `scrcpy`).
+fn package_folder(tool: Tool) -> &'static str {
+    match tool {
+        Tool::Scrcpy => "scrcpy",
+        _ => "platform-tools",
+    }
 }
 
 /// Usual locations besides `PATH`, including those managed by the app.
 pub fn tool_candidates(tool: Tool) -> Vec<PathBuf> {
     let name = tool.name();
+    let mut out = vec![crate::paths::managed_tools_dir().join(package_folder(tool)).join(exec::exe_name(name))];
+    #[cfg(unix)]
     let h = home();
-    let mut out = vec![crate::paths::managed_tools_dir()
-        .join(match tool {
-            Tool::Scrcpy => "scrcpy",
-            _ => "platform-tools",
-        })
-        .join(name)];
+    #[cfg(unix)]
     match tool {
         Tool::Adb | Tool::Fastboot => {
             for base in [
@@ -79,11 +85,36 @@ pub fn tool_candidates(tool: Tool) -> Vec<PathBuf> {
             out.push(h.join(".local/bin/scrcpy"));
         }
     }
+    // Android Studio's SDK (`%LOCALAPPDATA%\Android\Sdk`).
+    #[cfg(windows)]
+    if matches!(tool, Tool::Adb | Tool::Fastboot) {
+        if let Some(local) = dirs::data_local_dir() {
+            out.push(local.join("Android").join("Sdk").join("platform-tools").join(exec::exe_name(name)));
+        }
+    }
     out
 }
 
-/// Looks for a tool: configured path → PATH → usual locations.
+/// The copy that travels with ADB Scan, next to its executable (the Windows
+/// zip: `platform-tools\adb.exe`, `scrcpy\scrcpy.exe`). Only on Windows: on
+/// Linux the executable is in `/usr/bin`, and “next to it” would be the
+/// system's adb, which would override the path chosen in Preferences.
+pub fn bundled_tool(tool: Tool) -> Option<PathBuf> {
+    if !cfg!(windows) {
+        return None;
+    }
+    let exe = std::env::current_exe().ok()?;
+    let dir = exe.parent()?;
+    let file = exec::exe_name(tool.name());
+    [dir.join(package_folder(tool)).join(&file), dir.join(&file)].into_iter().find(|p| exec::is_executable(p))
+}
+
+/// Looks for a tool: the copy next to the executable (Windows) → configured
+/// path → PATH → usual locations.
 pub fn find_tool(tool: Tool, configured: Option<&str>) -> Option<PathBuf> {
+    if let Some(p) = bundled_tool(tool) {
+        return Some(p);
+    }
     if let Some(cfg) = configured.map(str::trim).filter(|c| !c.is_empty()) {
         return exec::which(cfg);
     }
@@ -1025,7 +1056,49 @@ impl Adb {
         }
     }
 
+    /// Runs an automation (see [`crate::automation`]) and returns a summary
+    /// for History. `photos_dir`: where the photo backup copies (empty = not
+    /// chosen yet). [`AutoAction::Mirror`](crate::automation::AutoAction) is
+    /// run by the interface.
+    pub fn run_automation(&self, serial: &str, action: crate::automation::AutoAction, photos_dir: &Path) -> Result<String> {
+        use crate::automation::AutoAction as A;
+        use crate::schedule::ScheduledAction as S;
+        match action {
+            A::BackupPhotos => {
+                if photos_dir.as_os_str().is_empty() {
+                    return Err(Error::Invalid(tr("choose the photos folder first (Files → Copy photos)").into()));
+                }
+                let list = self.list_media(serial)?;
+                let items = crate::photos::plan(&list, photos_dir, |p| std::fs::metadata(p).ok().map(|m| m.len()));
+                let cancel = CancelToken::new();
+                let (mut n, mut bytes) = (0usize, 0u64);
+                for (remote, size, local) in items {
+                    if let Some(parent) = local.parent() {
+                        std::fs::create_dir_all(parent)?;
+                    }
+                    self.pull(serial, &remote, &local, size, &cancel, |_| {})?.into_result()?;
+                    n += 1;
+                    bytes += size;
+                }
+                Ok(t!("{} new photos and videos copied ({})", n, crate::format::human_bytes(Some(bytes as f64))))
+            }
+            A::DndOn => self.run_scheduled(serial, S::DndOn),
+            A::DndOff => self.run_scheduled(serial, S::DndOff),
+            A::StopAll => self.run_scheduled(serial, S::StopAll),
+            A::StayAwakeOn | A::StayAwakeOff => self.dev_switch(serial, crate::devtools::Switch::StayAwake, action == A::StayAwakeOn).map(|_| action.label().to_string()),
+            A::ClearCaches => self.trim_caches(serial).map(|k| k.map(|k| t!("{} freed", crate::format::human_kib(Some(k)))).unwrap_or_else(|| tr("Caches cleared").into())),
+            A::Mirror => Err(Error::Invalid(tr("the screen mirror is opened by the window").into())),
+        }
+    }
+
     // -- stop all (it changes the phone) ----------------------------------------
+
+    /// Preinstalled apps from [`crate::debloat`] still present, and every
+    /// app removed for the user. Read-only.
+    pub fn debloat_state(&self, serial: &str) -> Result<crate::debloat::DebloatState> {
+        let r = self.shell_script(serial, crate::debloat::STATE_SCRIPT, NORMAL)?;
+        Ok(crate::debloat::parse_state_output(&r.stdout))
+    }
 
     /// What “Stop all” would close right now (see [`crate::cleanup`]).
     /// Read-only.
@@ -1252,6 +1325,148 @@ impl Adb {
         self.shell(serial, &["pm", verb, package, permission], NORMAL)?.into_result()
     }
 
+    /// Every sensitive permission and special access, by app (see
+    /// [`crate::permissions`]). Read-only.
+    pub fn permission_overview(&self, serial: &str) -> Result<crate::permissions::Overview> {
+        let r = self.shell_script(serial, crate::permissions::SCRIPT, LONG)?;
+        Ok(crate::permissions::parse(&r.stdout))
+    }
+
+    /// Sets an App Op from [`crate::permissions::APP_OPS`] to allow or deny
+    /// for user 0 (the same switch as in Settings → Special app access).
+    pub fn set_app_op(&self, serial: &str, package: &str, op: &str, allow: bool) -> Result<CommandResult> {
+        check_package(package)?;
+        if !crate::permissions::APP_OPS.contains(&op) {
+            return Err(Error::Invalid(op.into()));
+        }
+        self.shell(serial, &["appops", "set", "--user", "0", package, op, if allow { "allow" } else { "deny" }], SHORT)?.into_result()
+    }
+
+    /// Turns off one accessibility service: rewrites the list of enabled
+    /// services without it.
+    pub fn disable_accessibility_service(&self, serial: &str, component: &str) -> Result<CommandResult> {
+        if !crate::permissions::is_valid_component(component) {
+            return Err(Error::Invalid(component.into()));
+        }
+        let current = self.shell(serial, &["settings", "get", "secure", "enabled_accessibility_services"], SHORT)?.into_result()?;
+        let rest = crate::permissions::without_component(&current.stdout, component);
+        let r = if rest.is_empty() {
+            self.shell(serial, &["settings", "delete", "secure", "enabled_accessibility_services"], SHORT)?
+        } else {
+            self.shell(serial, &["settings", "put", "secure", "enabled_accessibility_services", &rest], SHORT)?
+        };
+        r.into_result()
+    }
+
+    /// Takes away an app's access to notifications.
+    pub fn disallow_notification_listener(&self, serial: &str, component: &str) -> Result<CommandResult> {
+        if !crate::permissions::is_valid_component(component) {
+            return Err(Error::Invalid(component.into()));
+        }
+        self.shell(serial, &["cmd", "notification", "disallow_listener", component], SHORT)?.into_result()
+    }
+
+    // -- developer tools (see `crate::devtools`) ------------------------------
+
+    pub fn dev_state(&self, serial: &str) -> Result<crate::devtools::DevState> {
+        let r = self.shell_script(serial, crate::devtools::STATE_SCRIPT, NORMAL)?;
+        Ok(crate::devtools::parse_state(&r.stdout))
+    }
+
+    pub fn dev_switch(&self, serial: &str, switch: crate::devtools::Switch, on: bool) -> Result<CommandResult> {
+        self.shell_script(serial, &switch.script(on), SHORT)?.into_result()
+    }
+
+    /// Sets the three animation scales (window, transition, animator).
+    pub fn set_animation_scale(&self, serial: &str, scale: &str) -> Result<CommandResult> {
+        if !crate::devtools::ANIMATION_SCALES.contains(&scale) {
+            return Err(Error::Invalid(scale.into()));
+        }
+        let script = format!("settings put global window_animation_scale {scale}; settings put global transition_animation_scale {scale}; settings put global animator_duration_scale {scale}");
+        self.shell_script(serial, &script, SHORT)?.into_result()
+    }
+
+    /// Screen resolution: `Some` sets an override, `None` goes back to the
+    /// physical one.
+    pub fn set_display_size(&self, serial: &str, size: Option<(u32, u32)>) -> Result<CommandResult> {
+        let arg = match size {
+            Some((w, h)) => {
+                let (w, h) = crate::devtools::check_size(w, h)?;
+                format!("{w}x{h}")
+            }
+            None => "reset".into(),
+        };
+        self.shell(serial, &["wm", "size", &arg], SHORT)?.into_result()
+    }
+
+    pub fn set_density(&self, serial: &str, dpi: Option<u32>) -> Result<CommandResult> {
+        let arg = match dpi {
+            Some(d) => crate::devtools::check_density(d)?.to_string(),
+            None => "reset".into(),
+        };
+        self.shell(serial, &["wm", "density", &arg], SHORT)?.into_result()
+    }
+
+    pub fn demo_mode(&self, serial: &str, on: bool) -> Result<CommandResult> {
+        self.shell_script(serial, crate::devtools::demo_script(on), NORMAL)?.into_result()
+    }
+
+    /// Forwarding rules of this phone: `adb forward` (PC → phone) and `adb
+    /// reverse` (phone → PC).
+    pub fn port_rules(&self, serial: &str) -> Vec<crate::devtools::PortRule> {
+        let fwd = self.run(None, &["forward", "--list"], SHORT).map(|r| r.stdout).unwrap_or_default();
+        let rev = self.run(Some(serial), &["reverse", "--list"], SHORT).map(|r| r.stdout).unwrap_or_default();
+        let mut v = crate::devtools::parse_rules(&fwd, false, serial);
+        v.extend(crate::devtools::parse_rules(&rev, true, serial));
+        v
+    }
+
+    /// Adds a TCP rule. `reverse`: the phone's `local` port reaches the PC's
+    /// `remote` port (a web server on the PC seen as localhost on the phone).
+    pub fn add_port_rule(&self, serial: &str, reverse: bool, local: u32, remote: u32) -> Result<CommandResult> {
+        let (l, r) = (crate::devtools::check_port(local)?, crate::devtools::check_port(remote)?);
+        let (l, r) = (format!("tcp:{l}"), format!("tcp:{r}"));
+        self.run(Some(serial), &[if reverse { "reverse" } else { "forward" }, &l, &r], SHORT)?.into_result()
+    }
+
+    pub fn remove_port_rule(&self, serial: &str, rule: &crate::devtools::PortRule) -> Result<CommandResult> {
+        let ok = |s: &str| s.split_once(':').is_some_and(|(k, v)| k.chars().all(|c| c.is_ascii_lowercase()) && !v.is_empty() && v.chars().all(|c| c.is_ascii_alphanumeric() || matches!(c, '_' | '.' | '-' | '/')));
+        if !ok(&rule.local) {
+            return Err(Error::Invalid(rule.local.clone()));
+        }
+        self.run(Some(serial), &[if rule.reverse { "reverse" } else { "forward" }, "--remove", &rule.local], SHORT)?.into_result()
+    }
+
+    // -- app migration (see `crate::migration`) ------------------------------
+
+    /// The user's apps with their version code. Read-only.
+    pub fn user_packages(&self, serial: &str) -> Result<Vec<(String, Option<i64>)>> {
+        let r = self.shell(serial, &["pm", "list", "packages", "-3", "--show-versioncode"], NORMAL)?.into_result()?;
+        Ok(crate::migration::parse_user_packages(&r.stdout))
+    }
+
+    /// Copies an app's APKs to `<dir>/<package>/` keeping their names, and
+    /// returns them relative to `dir` (as the manifest stores them).
+    pub fn export_app(&self, serial: &str, package: &str, dir: &Path) -> Result<Vec<String>> {
+        let remote = self.package_apk_paths(serial, package)?;
+        if remote.is_empty() {
+            return Err(Error::Command { summary: tr("No APKs were found").into(), code: None });
+        }
+        let folder = dir.join(package);
+        std::fs::create_dir_all(&folder)?;
+        let mut out = Vec::new();
+        for r in remote {
+            let Some(name) = crate::migration::apk_file_name(&r) else { continue };
+            let local = folder.join(&name);
+            self.run(Some(serial), &["pull", &r, &local.display().to_string()], TRANSFER)?.into_result()?;
+            out.push(format!("{package}/{name}"));
+        }
+        if out.is_empty() {
+            return Err(Error::Command { summary: tr("No APKs were found").into(), code: None });
+        }
+        Ok(out)
+    }
+
     /// Extracts all of a package's APKs to `dest_dir`.
     pub fn pull_apks(&self, serial: &str, package: &str, dest_dir: &Path) -> Result<Vec<PathBuf>> {
         let paths = self.package_apk_paths(serial, package)?;
@@ -1297,6 +1512,22 @@ impl Adb {
             return Err(Error::Guarded(t!("{} is a protected path", path)));
         }
         self.shell(serial, &["rm", "-rf", &path], LONG)?.into_result()
+    }
+
+    /// Deletes one file of the shared storage (never a folder: `rm -f`
+    /// without `-r`). Used by the storage analyzer.
+    pub fn delete_shared_file(&self, serial: &str, path: &str) -> Result<CommandResult> {
+        let path = validate_remote_path(path)?;
+        if !crate::storage::deletable(&path) {
+            return Err(Error::Guarded(t!("{} is a protected path", path)));
+        }
+        let r = self.shell(serial, &["rm", "-f", "--", &path], NORMAL)?.into_result()?;
+        // `rm -f` does not fail on a folder or a missing file: check.
+        let left = self.shell(serial, &["ls", "-d", "--", &path], SHORT)?;
+        if left.ok() {
+            return Err(Error::Command { summary: t!("{} was not deleted", path), code: left.code });
+        }
+        Ok(r)
     }
 
     pub fn rename(&self, serial: &str, from: &str, to: &str) -> Result<CommandResult> {

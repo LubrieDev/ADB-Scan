@@ -1,6 +1,7 @@
 //! Actions on all apps at once, from the menu next to “Install APK” in Apps:
 //! close the open apps (as “Clear all” in Recents), stop every app except the
-//! ones the phone needs, and clear the cache of every app. Each one reads
+//! ones the phone needs, clear the cache of every app, and export or install
+//! the user's apps (see `migration`). Each one reads
 //! first, shows what it will do and runs only after it is confirmed (see
 //! `adbscan_core::cleanup`).
 
@@ -36,6 +37,8 @@ pub fn run(ctx: &Rc<Ctx>, parent: &gtk::Widget, which: &str) {
         "close" => close_open_apps(ctx, parent, &busy),
         "stop" => stop_all(ctx, parent, &busy),
         "caches" => clear_all_caches(ctx, parent, &busy),
+        "export" => super::migration::export(ctx, parent, &busy),
+        "import" => super::migration::import(ctx, parent, &busy),
         _ => {}
     }
 }
@@ -45,10 +48,12 @@ pub fn menu_button(ctx: &Rc<Ctx>) -> gtk::MenuButton {
     let list = gtk::ListBox::new();
     list.add_css_class("boxed-list");
     list.set_selection_mode(gtk::SelectionMode::None);
-    let actions: [(&str, &str, &str, fn(&Rc<Ctx>, &gtk::Widget, &Rc<Cell<bool>>)); 3] = [
+    let actions: [(&str, &str, &str, fn(&Rc<Ctx>, &gtk::Widget, &Rc<Cell<bool>>)); 5] = [
         ("adb-circle-x-symbolic", tr("Close open apps"), tr("Like “Clear all” in Recents"), close_open_apps),
         ("adb-media-playback-stop-symbolic", tr("Stop all apps"), tr("Also those running in the background, except the ones the phone needs"), stop_all),
         ("adb-edit-clear-symbolic", tr("Clear all caches"), tr("Frees space. No data, accounts or settings are deleted"), clear_all_caches),
+        ("adb-save-symbolic", tr("Export apps…"), tr("Copies your apps (APKs) to a folder, to install them on another phone"), super::migration::export),
+        ("adb-system-software-install-symbolic", tr("Install from an export…"), tr("Installs the apps of a folder exported by ADB Scan"), super::migration::import),
     ];
     let busy = busy_flag();
     let popover = gtk::Popover::builder().child(&list).build();

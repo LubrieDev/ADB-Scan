@@ -145,7 +145,9 @@ impl Scrcpy {
         F: Fn(StreamEvent) + Send + Sync + 'static,
     {
         let args = self.build_args(preset, opts)?;
-        // scrcpy uses the ADB variable to find adb.
+        // scrcpy uses the ADB variable to find adb. On Windows this matters
+        // even more: scrcpy's zip carries its own adb.exe, of another version,
+        // and two different adb servers keep restarting each other.
         let env = adb.map(|p| vec![("ADB".to_string(), p.display().to_string())]).unwrap_or_default();
         exec::stream(&self.path, &args, StreamOptions { with_stdin: false, env, user_locale: true }, on_event)
     }

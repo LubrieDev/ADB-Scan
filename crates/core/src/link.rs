@@ -342,9 +342,16 @@ pub fn pc_link(root: &Path, dev: &UsbDevice, pci_ids: Option<&str>) -> PcLink {
 }
 
 /// [`pc_link`] on this PC.
+#[cfg(target_os = "linux")]
 pub fn read_pc_link(dev: &UsbDevice) -> PcLink {
     let ids = PCI_IDS.iter().find_map(|p| fs::read_to_string(p).ok());
     pc_link(Path::new(crate::usb::SYSFS_USB), dev, ids.as_deref())
+}
+
+/// Without sysfs the PC side of the link is unknown (see [`crate::usb::HOST_USB`]).
+#[cfg(not(target_os = "linux"))]
+pub fn read_pc_link(_dev: &UsbDevice) -> PcLink {
+    PcLink::default()
 }
 
 // ---------------------------------------------------------------------------

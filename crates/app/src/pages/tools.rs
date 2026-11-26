@@ -1,5 +1,5 @@
-//! Tools: processes, sensors and services. (The USB mode and the ADB server
-//! are in Connection.)
+//! Tools: processes, sensors, services and developer tools (see
+//! `developer`). (The USB mode and the ADB server are in Connection.)
 
 use adbscan_core::{i18n::tr, t};
 use adw::prelude::*;
@@ -33,6 +33,7 @@ struct ToolsPage {
     services: RefCell<Vec<ServiceInfo>>,
     service_list: crate::widgets::RowList,
     service_search: gtk::SearchEntry,
+    developer: Rc<dyn Page>,
 }
 
 pub fn build(ctx: &Rc<Ctx>) -> Rc<dyn Page> {
@@ -93,6 +94,10 @@ impl ToolsPage {
         svbox.append(&service_list.root);
         stack.add_titled_with_icon(&tab(&svbox), Some("services"), tr("Services"), "adb-list-symbolic");
 
+        // Developer
+        let developer = super::developer::build(ctx);
+        stack.add_titled_with_icon(&developer.widget(), Some("developer"), tr("Developer"), "adb-square-terminal-symbolic");
+
         let root = util::vbox(0);
         root.append(&switcher);
         root.append(&stack);
@@ -117,6 +122,7 @@ impl ToolsPage {
             services: RefCell::new(Vec::new()),
             service_list,
             service_search,
+            developer,
         });
         macro_rules! on {
             ($w:expr, $sig:ident, |$t:ident| $body:expr) => {{
@@ -149,6 +155,7 @@ impl ToolsPage {
                 match s.visible_child_name().as_deref() {
                     Some("sensors") if t.sensors.first_child().is_none() => t.load_sensors(),
                     Some("services") if t.services.borrow().is_empty() => t.load_services(),
+                    Some("developer") => t.developer.shown(),
                     _ => {}
                 }
             });
@@ -316,7 +323,13 @@ impl Page for ToolsPage {
     fn widget(&self) -> gtk::Widget {
         self.root.clone().upcast()
     }
+    fn shown(&self) {
+        if self.tabs.visible_child_name().as_deref() == Some("developer") {
+            self.developer.shown();
+        }
+    }
     fn on_event(&self, ev: &Event) {
+        self.developer.on_event(ev);
         if matches!(ev, Event::Privacy) {
             self.render_procs();
         }

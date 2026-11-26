@@ -12,7 +12,6 @@ serde.workspace = true
 serde_json.workspace = true
 rusqlite.workspace = true
 log.workspace = true
-libc = "0.2"
 zip = { version = "2", default-features = false, features = ["deflate"] }
 sha2 = "0.10"
 flate2 = "1"
@@ -21,3 +20,21 @@ tar = { version = "0.4", default-features = false }
 qrcode = { version = "0.14", default-features = false }
 semver = "1.0.28"
 ureq = "3.2.1"
+
+# POSIX calls: process groups and signals, usbfs, netlink, localtime_r.
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+# Windows: known folders (%APPDATA%, Pictures…), job objects, process
+# termination, the time zone and the system's random generator.
+[target.'cfg(windows)'.dependencies]
+dirs = "6"
+windows-sys = { version = "0.61", features = [
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_Security_Cryptography",
+    "Win32_System_JobObjects",
+    "Win32_System_SystemInformation",
+    "Win32_System_Threading",
+    "Win32_System_Time",
+] }

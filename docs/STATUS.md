@@ -1,6 +1,8 @@
 # Status
 
-Version 1.0.0 · 24 November 2026 · first stable release.
+Version 1.1.0 · 25 November 2026 · Windows version and new sections to
+control the phone. Version 1.0.0 (24 November 2026) was the first stable
+release.
 
 Everything on this page was checked with a REDMAGIC 11S Pro (Android 16,
 without root) on Linux Mint 22 Cinnamon, with the app's configuration isolated
@@ -100,6 +102,15 @@ so the real data was not touched.
 - The platform sheet on screen (the data was verified with
   `--example inspect`).
 - Storage wear (UFS): it gives “Permission denied” without root.
+- Added on 2026-11-25, read with the phone but not yet run on it (they
+  change it): removing and restoring preinstalled apps, taking permissions
+  away, deleting files from Storage, the developer switches, screen size and
+  density with the automatic undo, demo mode, port rules, exporting and
+  installing apps, and the photo backup as an automation. Verified with the
+  phone: the Preinstalled apps, Permissions and Developer readings, a full
+  Storage scan (50 GB, 140 000 files, 37 s) and an automation run on connect.
+- The nubia/REDMAGIC entries of the preinstalled apps list were chosen from
+  the packages of one NX809J; other models may name them differently.
 
 ## Ideas for after 1.0
 
