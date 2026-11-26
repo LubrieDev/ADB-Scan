@@ -174,14 +174,22 @@ jobs:
       # options with "-" (MSYS2 would rewrite a "/D…" as a path). The script
       # is UTF-8; on Windows makensis would otherwise read it in the system's
       # code page.
+      # On failure, makensis's last lines also go out as annotations: they
+      # can be read without signing in, unlike the log.
       - name: Build the installer
         run: |
           set -euo pipefail
-          makensis -INPUTCHARSET UTF8 -V2 -WX \
-            "-DVERSION=$VERSION" \
-            "-DSOURCE=$(cygpath -w "$PWD/dist-win/ADB-Scan")" \
-            "-DOUTFILE=$(cygpath -w "$PWD/dist-win/$SETUP_NAME")" \
-            packaging/windows/adb-scan.nsi
+          fail() { printf '%s\n' "$@" | tail -n 25 | while IFS= read -r line; do echo "::error title=Build the installer::$line"; done; exit 1; }
+          [ -n "${VERSION:-}" ] && [ -n "${SETUP_NAME:-}" ] || fail "VERSION or SETUP_NAME is not set (from the version check step)"
+          command -v makensis >/dev/null || fail "makensis is not in the PATH: $PATH"
+          makensis -VERSION
+          src="$(cygpath -w "$PWD/dist-win/ADB-Scan")"
+          out="$(cygpath -w "$PWD/dist-win/$SETUP_NAME")"
+          if ! makensis -INPUTCHARSET UTF8 -V2 -WX "-DVERSION=$VERSION" "-DSOURCE=$src" "-DOUTFILE=$out" packaging/windows/adb-scan.nsi > makensis.log 2>&1; then
+            cat makensis.log
+            fail "$(cat makensis.log)"
+          fi
+          cat makensis.log
           ls -l "dist-win/$SETUP_NAME"
           sha256sum "dist-win/$SETUP_NAME"
 

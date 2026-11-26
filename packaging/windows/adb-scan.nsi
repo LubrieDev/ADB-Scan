@@ -17,7 +17,9 @@
 ; settings and history (in %APPDATA% and %LOCALAPPDATA%) are kept, also when
 ; uninstalling.
 
-Unicode true
+; A 64-bit installer (ADB Scan only runs on 64-bit Windows). MSYS2's NSIS,
+; which the workflow uses, only ships the 64-bit stubs and plugins.
+Target amd64-unicode
 ManifestDPIAware true
 SetCompressor /SOLID lzma
 RequestExecutionLevel user
@@ -73,8 +75,8 @@ VIAddVersionKey /LANG=0 "LegalCopyright" "2026, ${PUBLISHER} · GPL-3.0-or-later
 
 ; -- pages -----------------------------------------------------------------------
 
-!define MUI_ICON "../../assets/windows/adb-scan.ico"
-!define MUI_UNICON "../../assets/windows/adb-scan.ico"
+!define MUI_ICON "..\..\assets\windows\adb-scan.ico"
+!define MUI_UNICON "..\..\assets\windows\adb-scan.ico"
 !define MUI_ABORTWARNING
 
 !insertmacro MUI_PAGE_WELCOME
@@ -82,7 +84,7 @@ VIAddVersionKey /LANG=0 "LegalCopyright" "2026, ${PUBLISHER} · GPL-3.0-or-later
 ; information, with “Next” instead of “I Agree”.
 !define MUI_LICENSEPAGE_TEXT_BOTTOM "$(LicenseNote)"
 !define MUI_LICENSEPAGE_BUTTON "$(^NextBtn)"
-!insertmacro MUI_PAGE_LICENSE "../../LICENSE"
+!insertmacro MUI_PAGE_LICENSE "..\..\LICENSE"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !define MUI_FINISHPAGE_RUN "$INSTDIR\${EXE}"
@@ -238,8 +240,10 @@ Section "ADB Scan"
   ${EndIf}
 
   SetOutPath "$INSTDIR"
-  File /r "${SOURCE}/*"
-  File "/oname=adb-scan.ico" "../../assets/windows/adb-scan.ico"
+  ; Paths in this script use backslashes: makensis on Windows finds no files
+  ; with "D:\...\ADB-Scan/*", and makensis on Linux takes them as separators.
+  File /r "${SOURCE}\*"
+  File "/oname=adb-scan.ico" "..\..\assets\windows\adb-scan.ico"
   WriteUninstaller "$INSTDIR\uninstall.exe"
 
   CreateShortcut "$SMPROGRAMS\${APP}.lnk" "$INSTDIR\${EXE}" "" "$INSTDIR\adb-scan.ico" 0
