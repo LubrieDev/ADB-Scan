@@ -25,6 +25,11 @@
   <url type="bugtracker">https://github.com/LubrieDev/ADB-Scan/issues</url>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.2.1" date="2026-11-25">
+      <description>
+        <p>Publishes the Windows installer, which version 1.2.0 could not build.</p>
+      </description>
+    </release>
     <release version="1.2.0" date="2026-11-25">
       <description>
         <ul>

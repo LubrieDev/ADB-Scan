@@ -171,11 +171,13 @@ jobs:
 
       # Warnings are errors (-WX): a missing file or a misspelt define fails
       # here. makensis is a Windows program: it gets Windows paths, and
-      # options with "-" (MSYS2 would rewrite a "/D…" as a path).
+      # options with "-" (MSYS2 would rewrite a "/D…" as a path). The script
+      # is UTF-8; on Windows makensis would otherwise read it in the system's
+      # code page.
       - name: Build the installer
         run: |
           set -euo pipefail
-          makensis -V2 -WX \
+          makensis -INPUTCHARSET UTF8 -V2 -WX \
             "-DVERSION=$VERSION" \
             "-DSOURCE=$(cygpath -w "$PWD/dist-win/ADB-Scan")" \
             "-DOUTFILE=$(cygpath -w "$PWD/dist-win/$SETUP_NAME")" \

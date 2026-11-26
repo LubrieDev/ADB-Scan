@@ -17,10 +17,11 @@ pub fn about(parent: &gtk::Widget) {
             tr("Monitors battery, performance, network and temperature live; manages apps and files; opens a real adb shell terminal; mirrors the screen with scrcpy and flashes with fastboot behind safeguards. Everything is processed on your computer: no telemetry, no accounts and no root."),
         )
         .release_notes(
-            tr("<p>1.2.0 — updates from the app</p><ul>\
+            tr("<p>1.2.1</p><ul><li>Publishes the Windows installer, which version 1.2.0 could not build.</li></ul>")
+                .to_string()
+                + tr("<p>1.2.0 — updates from the app</p><ul>\
              <li>Update now: ADB Scan downloads the new version, showing the percentage, checks it and installs it.</li>\
              <li>Installer for Windows, instead of the zip: Start menu, desktop shortcut and uninstalling from Settings.</li></ul>")
-                .to_string()
                 + tr("<p>1.1.0 — Windows and control of the phone</p><ul>\
              <li>Version for Windows 10 and 11, as a portable zip.</li>\
              <li>Preinstalled apps: remove and restore manufacturer and carrier apps without root.</li>\

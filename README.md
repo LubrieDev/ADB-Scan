@@ -152,7 +152,7 @@ Download the `.deb` of the latest version from
 it (Linux Mint 22 / Ubuntu 24.04 or newer, amd64):
 
 ```bash
-sudo apt install ./adb-scan_1.2.0-1_amd64.deb
+sudo apt install ./adb-scan_1.2.1-1_amd64.deb
 ```
 
 To build the package yourself, use `cargo deb -p adb-scan` (see

@@ -10795,3 +10795,7 @@ msgstr "Instalando: ADB Scan se cierra ahora y vuelve a abrirse solo en unos seg
 #: crates/app/src/help.rs
 msgid "<p>1.2.0 — updates from the app</p><ul><li>Update now: ADB Scan downloads the new version, showing the percentage, checks it and installs it.</li><li>Installer for Windows, instead of the zip: Start menu, desktop shortcut and uninstalling from Settings.</li></ul>"
 msgstr "<p>1.2.0 — actualizaciones desde la app</p><ul><li>Actualizar ahora: ADB Scan descarga la nueva versión mostrando el porcentaje, la comprueba y la instala.</li><li>Instalador para Windows en lugar del zip: menú Inicio, acceso directo en el escritorio y desinstalación desde Configuración.</li></ul>"
+
+#: crates/app/src/help.rs
+msgid "<p>1.2.1</p><ul><li>Publishes the Windows installer, which version 1.2.0 could not build.</li></ul>"
+msgstr "<p>1.2.1</p><ul><li>Publica el instalador de Windows, que la versión 1.2.0 no pudo generar.</li></ul>"

@@ -1,7 +1,8 @@
 # Status
 
-Version 1.2.0 · 25 November 2026 · updates from the app (“Update now”) and
-an installer for Windows. Version 1.1.0 added the Windows version and the
+Version 1.2.1 · 25 November 2026 · publishes the Windows installer, which
+1.2.0 could not build. Version 1.2.0 added updates from the app (“Update
+now”) and the installer for Windows. Version 1.1.0 added the Windows version and the
 sections to control the phone; 1.0.0 (24 November 2026) was the first stable
 release.
 

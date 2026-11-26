@@ -1,6 +1,9 @@
-; Installer of ADB Scan for Windows 10 and 11 (x64), built with NSIS 3.
+﻿; Installer of ADB Scan for Windows 10 and 11 (x64), built with NSIS 3.
 ;
-;   makensis -DVERSION=1.1.0 -DSOURCE=<folder> -DOUTFILE=<setup.exe> packaging/windows/adb-scan.nsi
+;   makensis -INPUTCHARSET UTF8 -DVERSION=1.2.0 -DSOURCE=<folder> -DOUTFILE=<setup.exe> packaging/windows/adb-scan.nsi
+;
+; The file is UTF-8 with a BOM: without it, makensis on Windows reads it in
+; the system's code page and stops at the first “ or ” (“Bad text encoding”).
 ;
 ; SOURCE is the assembled folder (adb-scan.exe, its DLLs, lib/, share/,
 ; platform-tools/ and scrcpy/), as the Windows workflow builds it. Paths in
