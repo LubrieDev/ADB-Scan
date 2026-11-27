@@ -249,6 +249,24 @@ pub fn parse_wear(text: &str) -> ComponentHealth {
     h
 }
 
+/// Samsung's lines in `dumpsys battery` (One UI): `mSavedBatteryAsoc: [89]`
+/// (capacity left, %), `mSavedBatteryUsage: [20179]` (charge used over its
+/// life in %, so 100 is one full cycle) and `battery FirstUseDate:
+/// [20240813]`. Only those three fields are filled.
+pub fn parse_samsung_battery(text: &str) -> ComponentHealth {
+    let field = |key: &str| {
+        text.lines().find_map(|l| l.trim().strip_prefix(key)).map(|v| v.trim().trim_start_matches('[').trim_end_matches(']').trim().to_string()).filter(|v| !v.is_empty())
+    };
+    ComponentHealth {
+        battery_asoc: field("mSavedBatteryAsoc:").and_then(|v| v.parse::<u8>().ok()).filter(|p| (1..=100).contains(p)),
+        battery_cycles: field("mSavedBatteryUsage:").and_then(|v| v.parse::<i64>().ok()).filter(|u| (1..=1_000_000).contains(u)).map(|u| (u + 50) / 100),
+        battery_first_use: field("battery FirstUseDate:")
+            .filter(|d| d.len() == 8 && d.bytes().all(|b| b.is_ascii_digit()) && d.as_str() > "2000")
+            .map(|d| format!("{}-{}-{}", &d[..4], &d[4..6], &d[6..])),
+        ..Default::default()
+    }
+}
+
 /// `dumpsys batterystats`: (design capacity, last learned capacity) in mAh.
 /// Fallback when sysfs is not readable (it takes ~10 s: never live).
 pub fn parse_batterystats_capacity(text: &str) -> (Option<i64>, Option<i64>) {
@@ -391,7 +409,7 @@ pub fn external_sd_mounts(entries: &[StorageInfo]) -> Vec<StorageInfo> {
 // Thermals
 // ---------------------------------------------------------------------------
 
-re!(TEMP_RE, r"Temperature\{mValue=(?P<value>-?\d+(?:\.\d+)?),\s*mType=(?P<type>\d+),\s*mName=(?P<name>[^,}]+),\s*mStatus=(?P<status>\d+)\}");
+re!(TEMP_RE, r"Temperature\{mValue=(?P<value>-?\d+(?:\.\d+)?),\s*mType=(?P<type>-?\d+),\s*mName=(?P<name>[^,}]+),\s*mStatus=(?P<status>\d+)\}");
 re!(THERMAL_STATUS_RE, r"Thermal Status:\s*(\d+)");
 
 fn find_from(text: &str, needle: &str, from: usize) -> Option<usize> {
@@ -984,9 +1002,26 @@ pub fn parse_wifi_status(text: &str) -> WifiStatus {
     status
 }
 
-/// `Wi-Fi standard: 11ac` → “Wi-Fi 5 (802.11ac)”.
+/// `ip -o -4 addr show wlan0` → its IPv4 address.
+pub fn interface_ipv4(text: &str) -> Option<String> {
+    let addr = text.split_whitespace().skip_while(|t| *t != "inet").nth(1)?;
+    let ip = addr.split('/').next()?;
+    ip.parse::<std::net::Ipv4Addr>().ok().map(|_| ip.to_string())
+}
+
+/// `Wi-Fi standard: 11ac` → “Wi-Fi 5 (802.11ac)”. Android 11 gives the
+/// number of `ScanResult.WIFI_STANDARD_*` instead (4 → 11n).
 pub fn wifi_standard_name(raw: &str) -> String {
-    let raw = raw.trim();
+    let raw = match raw.trim() {
+        "0" => "unknown",
+        "1" => "legacy",
+        "4" => "11n",
+        "5" => "11ac",
+        "6" => "11ax",
+        "7" => "11ad",
+        "8" => "11be",
+        other => other,
+    };
     let gen = match raw {
         "11n" => "Wi-Fi 4",
         "11ac" => "Wi-Fi 5",

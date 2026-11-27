@@ -215,7 +215,7 @@ impl Sidebar {
     fn add_star(&self, row: &gtk::ListBoxRow) {
         let Some(id) = self.id_of(row) else { return };
         let Some(content) = row.child().and_downcast::<gtk::Box>() else { return };
-        let star = gtk::Button::builder().icon_name("adb-star-symbolic").halign(gtk::Align::End).valign(gtk::Align::Center).hexpand(true).build();
+        let star = gtk::Button::builder().icon_name("adb-star-symbolic").tooltip_text(tr("Add to favorites")).halign(gtk::Align::End).valign(gtk::Align::Center).hexpand(true).build();
         star.add_css_class("flat");
         star.add_css_class("sidebar-star");
         let w = self.me.clone();
@@ -270,8 +270,13 @@ impl Sidebar {
     pub fn refresh(&self) {
         for (id, star) in self.stars.borrow().iter() {
             let on = self.pinned(id).is_some();
-            star.set_icon_name(if on { "adb-starred-symbolic" } else { "adb-star-symbolic" });
-            star.set_tooltip_text(Some(if on { tr("Remove from favorites") } else { tr("Add to favorites") }));
+            // Only when it changes: setting an icon resets the image and asks
+            // the sidebar for a new layout, and this runs on every page switch.
+            let icon = if on { "adb-starred-symbolic" } else { "adb-star-symbolic" };
+            if star.icon_name().as_deref() != Some(icon) {
+                star.set_icon_name(icon);
+                star.set_tooltip_text(Some(if on { tr("Remove from favorites") } else { tr("Add to favorites") }));
+            }
             if on {
                 star.add_css_class("on");
             } else {

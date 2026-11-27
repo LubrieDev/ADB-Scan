@@ -28,9 +28,10 @@ own installer (see [Windows](#windows)).
 - **Pages**: Overview, Device, Performance, Battery (with history),
   Connection, Network, Apps, Files, Screen (scrcpy), Control, Preinstalled
   apps, Permissions, Storage, Basic analysis, Phone data, Security, Phone
-  changes, History, Terminal, Logcat, Tools and Flasher. **Ctrl+K** searches
-  pages and actions. The star next to a page adds it to the **favorites**, at
-  the top of the sidebar.
+  changes, Usage, Stability, History, Terminal, Logcat, Tools, Flasher and
+  Root.
+  **Ctrl+K** searches pages and actions. The star next to a page adds it to
+  the **favorites**, at the top of the sidebar.
 - **Connection**: the cable (USB-C on both ends, USB 3 or USB 2.0 wires, its
   e-marker chip when the PC can read it), the PC's port (speed, lanes, limit,
   location, controller, hubs), the phone's port (roles, moisture detection,
@@ -105,12 +106,49 @@ own installer (see [Windows](#windows)).
   most once every 10 minutes per phone, recorded in History.
 - **Phone changes**: apps installed, updated and uninstalled, and restarts
   and shutdowns, by day, from what Android itself keeps (read-only).
+- **Private DNS (ad blocking)** (Control → Quick settings): AdGuard, Mullvad,
+  Quad9, Cloudflare or your own server, for every app, without root or a VPN.
+- **Limits per app** (Apps → details): pause an app (`pm suspend`), restrict
+  its background activity, block its background mobile data or give it
+  unrestricted battery (for notifications that arrive late), each undone
+  with the same switch.
+- **Tuning per app** (Apps → details): how smoothly it draws (slow frames),
+  its own language, and for games the game mode: lower resolution and a
+  frame rate cap to save battery and heat.
+- **Usage**: screen time per app (today or this week) with unlocks, data per
+  app in the last 30 days, notifications per app in the last 24 hours, and
+  the apps you installed and have not opened in 90 days.
+- **Stability**: apps that closed unexpectedly or froze, native crashes,
+  system failures and the reason of the last start; **bug report** to a
+  folder.
+- **Settings snapshots** (Phone changes → Settings): what changed in the
+  phone's settings since a snapshot, and putting a value back.
+- **Default apps** (Apps → ⋮): browser, home screen, phone, SMS,
+  assistant and keyboard.
+- **Contacts, calls and SMS to the computer** (Phone data → private view):
+  vCard and CSV files, without a Google account, and a checklist before
+  selling or resetting the phone.
+- **Root** (Advanced → Root): everything rooting a phone needs to know
+  (build, bootloader, OEM unlocking, `init_boot` or `boot`, A/B, GKI), how to
+  unlock the bootloader on each brand, and Magisk step by step: its official
+  APK downloaded and verified, the stock image sent to the phone, the patched
+  one brought back and prepared in the Flasher.
+- **Mobile signal and nearby Wi-Fi networks** (Network): 4G/5G, band and
+  strength; the networks around with their channel and the least crowded
+  one.
+- **Control profiles** (“Night”, “Battery”…) and **readability** for someone
+  who sees less: text size, bold, contrast, grayscale, touch and hold delay;
+  **Night Light** among the quick settings.
+- **Saved Wi-Fi networks** (Network) can be forgotten, and **Optimize apps
+  now** (Tools → Developer) after a system update.
 - **Your colours**: eight accent colours or any colour of your own, softer or
   more vivid, in Preferences.
 - **Watcher**: alerts for a maxed-out CPU (with the culprit process), low
   battery and high temperature.
 - **Battery usage per app**: what uses the most, what drains with the screen
-  off and which wakelocks keep the phone awake.
+  off, which wakelocks keep the phone awake, who wakes it up (alarms) and
+  which apps work the most in the background. **Memory per app**
+  (Performance): which apps stay in memory and how much they hold.
 - **Private mode** (Ctrl+Shift+P): hides serial numbers, IP and MAC
   addresses, Wi-Fi networks and nicknames on screen, for screenshots or
   screen sharing. Display only: it does not change data, queries or logs.
@@ -158,7 +196,7 @@ Download the `.deb` of the latest version from
 it (Linux Mint 22 / Ubuntu 24.04 or newer, amd64):
 
 ```bash
-sudo apt install ./adb-scan_1.3.0-1_amd64.deb
+sudo apt install ./adb-scan_1.4.0-1_amd64.deb
 ```
 
 To build the package yourself, use `cargo deb -p adb-scan` (see

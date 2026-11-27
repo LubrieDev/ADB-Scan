@@ -92,13 +92,19 @@ reboot.
   bootloader, fastbootd, sideload, EDL) and all properties with a search box.
 - **Performance**: total and per-core CPU, GPU, FPS of the foreground app,
   memory, temperatures and thermal sensors grouped by type. **Export CSV**
-  saves everything measured during the session.
+  saves everything measured during the session. **Memory per app** →
+  *Analyse* lists the apps that stayed in memory in the last hours, how long
+  and how much they held (average and peak): the ones always there with a
+  lot push the others out and make them reload.
 - **Battery**: status, health, capacity compared to the original, cycles,
   voltage, power and its history (24 h or more). **Analyse usage** (a few
   seconds, read-only) shows, since the last full charge: the apps that use
   the most with their percentage, what drains with the screen off (the apps
-  worth restricting) and what keeps the phone awake (app and system
-  wakelocks).
+  worth restricting), what keeps the phone awake (app and system
+  wakelocks), **who wakes the phone** (the alarms that took it out of sleep
+  since it started, by app, with the alarm that woke it most) and the
+  **work in the background** each app scheduled with Android (sync,
+  backups) since the last full charge.
 - **Connection**: everything about how the phone is connected, in three tabs.
   It also works without USB debugging (the PC's side).
   - **USB**: a summary with what was found, then:
@@ -136,7 +142,16 @@ reboot.
   - **Diagnosis**: the connection checks (ADB, USB, permissions,
     authorisation, telemetry), the phone's USB mode and the ADB server.
 - **Network**: live Wi-Fi, interfaces and routes, and traffic capture with
-  TShark (only on your own networks).
+  TShark (only on your own networks). **Saved Wi-Fi networks** lists the
+  networks the phone joins by itself; **Forget** removes an old one (a café,
+  a hotel) after confirming. Passwords cannot be read without root.
+  **Mobile signal**: technology (4G, 5G), band, bandwidth, strength (RSRP,
+  with a word: excellent to very weak) and quality (RSRQ, SNR) of the SIM in
+  use. **Nearby Wi-Fi networks** → *Scan* (about 5 s; read-only, it joins
+  nothing) lists the networks around with their band, channel, security and
+  signal, and says the least crowded 2.4 GHz channel (1, 6 or 11) and which
+  one your network uses. Network names follow private mode; access point
+  addresses are never shown.
 
 ### Manage
 
@@ -147,6 +162,30 @@ reboot.
   about once a day, so they show the date of that measurement.
   In the details: open, stop, clear cache, clear data, disable, extract the
   APK, uninstall, permissions and what the last audit said about that app.
+  **Limits**, each undone with the same switch and recorded in History:
+  - **Pause the app**: greyed out, it cannot be opened and its notifications
+    are hidden until you resume it; nothing is deleted.
+  - **Restrict background activity**: it only runs while you use it, as
+    Settings → Battery → Restricted.
+  - **Block background mobile data**: it uses mobile data only while open;
+    Wi-Fi is not affected.
+  - **Unrestricted battery use**: Android does not hold it back to save
+    battery, as Settings → Battery → Unrestricted: for apps whose
+    notifications or alarms arrive late. It excludes *Restrict background
+    activity*. Apps the system already exempts are shown as such.
+  **Tuning**, also undone by choosing the previous value:
+  - **Smoothness**: the share of slow frames and frame times of the app's
+    interface since it was opened (read-only; open the app and use it, then
+    *Measure again*). Games that draw with their own engine are measured in
+    Performance → FPS instead.
+  - **Language** (Android 13+): this app only, the rest of the phone keeps
+    its language, as Settings → Apps → Language. *System language* undoes it.
+  - **Game mode** (apps that declare themselves games): the modes the game
+    and the phone offer; *Custom* lowers the resolution (90 % to 50 %) and/or
+    caps the frame rate (30 to 90 FPS) to save battery and heat. *Standard*
+    undoes it and removes the custom values.
+  The apps the phone needs (launcher, phone, installer, Play services…) are
+  never paused or restricted.
   Select several apps to stop them, clear their cache, disable, enable,
   extract or uninstall them together. Drag an `.apk` to install it.
   The **⋮** button next to *Install APK* acts on all apps, always after
@@ -169,6 +208,11 @@ reboot.
     Google account…), because without root Android does not let ADB read it.
   - **Install from an export…**: choose an exported folder, check the apps
     (those the phone already has start unchecked) and install them.
+  - **Default apps…**: the browser, home screen, phone, SMS and assistant
+    apps, with the apps that can take each role, and the **keyboard** (among
+    the ones enabled on the phone). Choosing another one is the same as in
+    Settings; choosing the previous one undoes it. Android only accepts apps
+    that qualify.
 - **Files**: browser of the phone's storage with uploads and downloads with
   progress. The folder refreshes by itself if it changes. The **photos**
   button copies the new photos and videos from `DCIM`, `Pictures` and
@@ -180,9 +224,23 @@ reboot.
   home, back…).
 - **Control**, in three tabs:
   - **Quick settings**: the phone's quick settings (Wi-Fi, mobile data,
-    Bluetooth, airplane mode, brightness, volume, Do Not Disturb…) and
+    Bluetooth, airplane mode, brightness, volume, Do Not Disturb, Night
+    Light…) and
     **Power**: restart or power off (clean shutdown; it is turned back on with
     its button).
+    - **Profiles**: *Save as a profile…* keeps the current switches, Do Not
+      Disturb, brightness and screen timeout under a name (“Night”); *Apply*
+      changes only what differs. Airplane mode and the volumes are not part
+      of them, and over wireless ADB Wi-Fi is never turned off.
+    - **Private DNS (ad blocking)**: sends the phone's name lookups, encrypted,
+      to a server: AdGuard, Mullvad, Quad9, Cloudflare (with or without
+      filters) or your own (NextDNS…). A filtering server blocks ads and
+      trackers in every app without root or a VPN. If the server cannot be
+      reached the phone has no Internet until it is changed back (here or in
+      Settings → Network → Private DNS).
+    - **Readability**: text size, bold text, high contrast text, colour
+      inversion, grayscale and the touch and hold delay, the same options as
+      Settings → Accessibility: to set up the phone of someone who sees less.
   - **Remote**: control the phone from the laptop.
     - **Media**: what is playing, play/pause, previous, next and volume.
     - **Calls**: call a number (if Android does not allow calling over ADB, it
@@ -225,9 +283,11 @@ reboot.
   every 50 GB; it can be cancelled). Then: space by file type, *places that
   grow* (WhatsApp media, Telegram, downloads, camera, screenshots,
   recordings, app files, game data, thumbnail caches), a folder browser
-  sorted by size, the 100 largest files and possible duplicates (same name
+  sorted by size, the 500 largest files and possible duplicates (same name
   and size in different folders). Files are deleted one at a time, after
-  confirming; folders are never deleted from here.
+  confirming; folders are never deleted from here. The lists only draw the
+  rows in view and the totals are computed in the background, so a scan of
+  140 000 files does not freeze the window.
 
 ### Data
 
@@ -256,6 +316,15 @@ reboot.
     cleared from the clipboard after 30 s. Nothing is stored: when leaving the
     page it returns to the public view and the data is wiped from memory. The
     **public IP** is only queried when pressing “Query” (see Limitations).
+    - **Copy to this computer**: the contacts (a vCard file that opens in
+      any address book and imports on any phone), the call log and the SMS
+      (CSV files for a spreadsheet), without a Google account. Read-only;
+      the file is written only where you choose and only you can read it.
+      Contact photos and MMS are not included.
+    - **Before selling or resetting the phone**: a checklist that leads to
+      the photo copy, the app export and the copy above, and says how many
+      Google accounts must be removed first (otherwise the phone asks for
+      them after the reset). ADB Scan never erases the phone.
 - **Security**: read-only audit with a score. From the findings you can remove
   the “Install unknown apps” permission, open each app in Apps or turn off
   USB debugging. The report is exported as Markdown. **Delete reports**
@@ -266,9 +335,27 @@ reboot.
   The dates come from Android itself: installs and last updates from the
   package manager, uninstalls from the battery history (only since it was
   last reset, which the page tells), restarts from the last few kept by the
-  system. Android keeps no dated history of settings or permissions on a
-  normal phone. **Include preinstalled apps** adds the updates of the apps
-  that came with the phone.
+  system. **Include preinstalled apps** adds the updates of the apps that
+  came with the phone.
+  The **Settings** tab keeps snapshots of the phone's settings on the
+  computer (Android keeps no dated history of them): the first one is saved
+  the first time it is opened, and *Save a snapshot now* adds another (the
+  newest 12 are kept, without the Android ID or other identifiers). Choose
+  one to see every setting that changed since, and put a value back with the
+  arrow (after confirming). Settings that could cut ADB or undo the phone's
+  setup are never put back.
+- **Usage**: screen time of each app today or this week (time on screen,
+  launches, last use, and how many times the phone was unlocked and its
+  screen turned on), the data of each app in the last 30 days (mobile and
+  Wi-Fi), the **notifications** that interrupted in the last 24 hours by app
+  (only how many, never what they say) and the **unused apps**: the ones you
+  installed and did not open in the last 90 days. Read-only; each row opens
+  the app in Apps, where it can be limited or uninstalled.
+- **Stability**: apps that closed unexpectedly or stopped responding, native
+  crashes and failures of the system itself, by app or one by one, from the
+  records Android keeps for a few days, and the reason of the last start.
+  **Bug report…** saves Android's full report (a ZIP) to a folder, for
+  support; it contains personal data, and the page says so before saving.
 - **History**: connections, events and operations performed.
 
 ### Advanced
@@ -277,7 +364,28 @@ reboot.
   It always asks you to type the serial number and checks that the model
   matches the one ADB Scan saw in Android and the one the ROM requires. Also:
   A/B slots, booting an image without flashing, sideload, and unlocking and
-  locking the bootloader.
+  locking the bootloader. For Motorola, **Unlock data** shows the text to
+  paste on Motorola's unlock website, and **Unlock with a code** (Motorola,
+  Sony) uses the code the manufacturer sends; both unlock options erase the
+  phone and ask for the serial number.
+- **Root**: what rooting this phone needs, read without root: model and
+  codename, Android and security patch, the exact build and fingerprint
+  (the image to patch must come from that firmware), bootloader and verified
+  boot, whether “OEM unlocking” is allowed (when the phone says it), the
+  partition Magisk patches (`init_boot` on phones launched with Android 13
+  or later, otherwise `boot`), A/B slots, the kernel and whether it is GKI
+  5.10+ (KernelSU and APatch), the architecture and the chip, and whether
+  the phone is already rooted (Magisk, KernelSU, APatch). Then how to unlock
+  the bootloader on its brand (Pixel, nubia/REDMAGIC, OnePlus, Xiaomi,
+  Motorola, Sony, Samsung, Huawei…; with a warning for Unisoc chips) and the
+  steps with Magisk: back up, send the stock image to the phone, **Download
+  and install** Magisk (only from github.com/topjohnwu/Magisk, its latest
+  `Magisk-v*.apk`, checked against the SHA-256 sum GitHub publishes), patch
+  it in the Magisk app, bring the `magisk_patched-….img` back, and
+  **Prepare in Flasher**, which opens the Flasher with the partition and
+  the image chosen (nothing is flashed until you confirm there). Unlocking
+  erases the phone: do it only on phones that are yours or whose owner
+  agrees.
 - **Terminal**: a real terminal. **Phone** opens `adb shell`; **PC** opens your
   shell with `adb` and `fastboot`. The buttons at the top type common
   commands. The up arrow brings back commands, also from previous sessions.
@@ -295,6 +403,9 @@ reboot.
   - **Port forwarding**: *Phone → PC* (`adb reverse`) makes a server on the PC
     reachable on the phone as `localhost`; *PC → phone* (`adb forward`) the
     opposite. Rules last until ADB or the phone restarts.
+  - **Maintenance** → **Optimize apps now**: what Android does at night while
+    charging after a system update (`cmd package bg-dexopt-job`). It takes
+    several minutes; nothing is deleted.
 
 ## Private mode
 

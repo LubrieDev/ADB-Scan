@@ -1,3 +1,4 @@
+pub mod app_tuning;
 pub mod apps;
 pub mod automations;
 pub mod basic;
@@ -11,6 +12,7 @@ pub mod controls;
 pub mod dashboard;
 pub mod data;
 pub mod debloat;
+pub mod default_apps;
 pub mod developer;
 pub mod device;
 pub mod facts;
@@ -18,13 +20,19 @@ pub mod files;
 pub mod flasher;
 pub mod history;
 pub mod logcat;
+pub mod memory_view;
 pub mod migration;
 pub mod mirror;
 pub mod network;
 pub mod performance;
+pub mod personal_copy;
 pub mod permissions;
+pub mod radio_view;
 pub mod remote;
+pub mod root;
 pub mod security;
+pub mod settings_diff;
+pub mod stability;
 pub mod storage;
 // The embedded terminal is VTE (Unix PTYs). On Windows the section explains
 // it and opens adb in a console window instead.
@@ -34,6 +42,7 @@ pub mod terminal;
 #[path = "terminal_windows.rs"]
 pub mod terminal;
 pub mod tools;
+pub mod usage;
 
 /// A section that needs something this system does not have (Windows: the
 /// USB bus read directly). It says so clearly instead of showing an empty or

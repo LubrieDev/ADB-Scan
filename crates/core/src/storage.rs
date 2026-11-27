@@ -41,8 +41,16 @@ impl FileType {
     pub const ALL: [FileType; 6] = [FileType::Images, FileType::Videos, FileType::Audio, FileType::Documents, FileType::Archives, FileType::Other];
 
     pub fn of(name: &str) -> Self {
-        let ext = name.rsplit_once('.').map(|(_, e)| e.to_ascii_lowercase()).unwrap_or_default();
-        match ext.as_str() {
+        // Lowercased into a stack buffer: this runs once per file (100 000+).
+        let ext = name.rsplit_once('.').map(|(_, e)| e).unwrap_or("");
+        let mut buf = [0u8; 6];
+        if ext.len() > buf.len() {
+            return FileType::Other;
+        }
+        for (b, c) in buf.iter_mut().zip(ext.bytes()) {
+            *b = c.to_ascii_lowercase();
+        }
+        match std::str::from_utf8(&buf[..ext.len()]).unwrap_or("") {
             "jpg" | "jpeg" | "png" | "heic" | "heif" | "webp" | "gif" | "bmp" | "dng" | "raw" | "avif" => FileType::Images,
             "mp4" | "mkv" | "mov" | "webm" | "3gp" | "avi" | "m4v" | "ts" => FileType::Videos,
             "mp3" | "m4a" | "aac" | "opus" | "ogg" | "wav" | "flac" | "amr" | "mid" => FileType::Audio,
@@ -86,6 +94,32 @@ impl Duplicate {
     /// What deleting every copy but one would free.
     pub fn reclaimable(&self) -> u64 {
         self.kib * (self.paths.len() as u64 - 1)
+    }
+}
+
+/// Largest files listed by [`Scan::report`].
+pub const LARGEST: usize = 500;
+
+/// Smallest file considered for duplicates (1 MiB): smaller ones are not
+/// worth the time.
+pub const DUPLICATE_MIN_KIB: u64 = 1024;
+
+/// Everything the analyzer shows that needs a pass over every file,
+/// computed at once (off the interface thread) by [`Scan::report`].
+#[derive(Clone, Debug, Default)]
+pub struct Report {
+    pub total_kib: u64,
+    pub file_count: usize,
+    pub by_type: Vec<(FileType, u64, usize)>,
+    pub places: Vec<Place>,
+    pub largest: Vec<Node>,
+    pub duplicates: Vec<Duplicate>,
+}
+
+impl Report {
+    /// What deleting every duplicate copy but one would free.
+    pub fn freeable_kib(&self) -> u64 {
+        self.duplicates.iter().map(Duplicate::reclaimable).sum()
     }
 }
 
@@ -134,6 +168,13 @@ impl Scan {
 
     pub fn is_empty(&self) -> bool {
         self.size.is_empty()
+    }
+
+    /// Totals, types, places, largest files and duplicates. It walks every
+    /// file several times (tens of milliseconds with 100 000 files): call it
+    /// in the background.
+    pub fn report(&self) -> Report {
+        Report { total_kib: self.total_kib(), file_count: self.file_count(), by_type: self.by_type(), places: self.places(), largest: self.largest_files(LARGEST), duplicates: self.duplicates(DUPLICATE_MIN_KIB) }
     }
 
     pub fn total_kib(&self) -> u64 {
@@ -301,6 +342,25 @@ mod tests {
         assert_eq!(s.size_of("/sdcard/Download"), Some(8));
         assert_eq!(s.total_kib(), 2072);
         assert_eq!(s.children("/sdcard/Download").len(), 1);
+    }
+
+    #[test]
+    fn report_matches_the_parts() {
+        let s = Scan::parse(DU);
+        let r = s.report();
+        assert_eq!((r.total_kib, r.file_count), (4120, 4));
+        assert_eq!(r.by_type, s.by_type());
+        assert_eq!(r.largest, s.largest_files(LARGEST));
+        assert_eq!(r.freeable_kib(), 2048);
+    }
+
+    #[test]
+    fn file_type_ignores_case_and_long_extensions() {
+        assert_eq!(FileType::of("IMG_0001.JPG"), FileType::Images);
+        assert_eq!(FileType::of("disk.QCOW2"), FileType::Archives);
+        assert_eq!(FileType::of("notes"), FileType::Other);
+        assert_eq!(FileType::of("x.verylongext"), FileType::Other);
+        assert_eq!(FileType::of("canción.ñp3"), FileType::Other);
     }
 
     #[test]

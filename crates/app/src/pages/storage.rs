@@ -4,24 +4,21 @@
 
 use adbscan_core::{i18n::tr, t};
 use adw::prelude::*;
-use gtk::glib;
-use std::cell::RefCell;
-use std::rc::Rc;
+use gtk::{gio, glib};
+use std::cell::{Cell, RefCell};
+use std::rc::{Rc, Weak};
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 
 use adbscan_core::format;
-use adbscan_core::storage::{self, Node, Scan};
+use adbscan_core::storage::{self, Node, Report, Scan};
 
 use crate::ctx::{Ctx, Event};
 use crate::util;
 use crate::window::Page;
 
-/// Rows shown at most in a folder (the rest is summed up in one line).
-const MAX_ROWS: usize = 300;
-
 struct StoragePage {
-    me: std::rc::Weak<Self>,
+    me: Weak<Self>,
     ctx: Rc<Ctx>,
     root: gtk::Box,
     scan_btn: gtk::Button,
@@ -31,13 +28,19 @@ struct StoragePage {
     overview: gtk::Box,
     folder_path: gtk::Label,
     folder_up: gtk::Button,
-    folder_list: gtk::ListBox,
-    largest: gtk::ListBox,
-    dupes: gtk::Box,
+    folder_list: NodeList,
+    largest: NodeList,
+    dupes_intro: gtk::Label,
+    dupes: NodeList,
+    /// `None` while a deletion updates it in the background.
     scan: RefCell<Option<Scan>>,
+    report: RefCell<Option<Report>>,
     cwd: RefCell<String>,
     running: RefCell<Option<Arc<adbscan_core::exec::StreamHandle>>>,
     scanned_for: RefCell<Option<String>>,
+    /// Changes with every new scan or reset: late background results of an
+    /// older one are dropped.
+    generation: Cell<u64>,
 }
 
 pub fn build(ctx: &Rc<Ctx>) -> Rc<dyn Page> {
@@ -48,23 +51,9 @@ fn size(kib: u64) -> String {
     format::human_kib(Some(kib as i64))
 }
 
-fn boxed_list() -> gtk::ListBox {
-    let l = gtk::ListBox::new();
-    l.add_css_class("boxed-list");
-    l.set_selection_mode(gtk::SelectionMode::None);
-    l
-}
-
-fn clear(w: &impl IsA<gtk::Widget>) {
-    let w = w.as_ref();
-    if let Some(l) = w.downcast_ref::<gtk::ListBox>() {
-        l.remove_all();
-        return;
-    }
-    if let Some(b) = w.downcast_ref::<gtk::Box>() {
-        while let Some(c) = b.first_child() {
-            b.remove(&c);
-        }
+fn clear(b: &gtk::Box) {
+    while let Some(c) = b.first_child() {
+        b.remove(&c);
     }
 }
 
@@ -76,6 +65,214 @@ fn share_bar(kib: u64, total: u64) -> gtk::LevelBar {
     bar.remove_offset_value(Some(gtk::LEVEL_BAR_OFFSET_HIGH));
     bar.remove_offset_value(Some(gtk::LEVEL_BAR_OFFSET_FULL));
     bar
+}
+
+/// One row of a [`NodeList`].
+#[derive(Clone)]
+enum Item {
+    /// A file or folder. `total`: size the bar is relative to (0: no bar).
+    /// `with_path`: shows the folder it is in (lists that mix folders).
+    /// `nested`: indented under a [`Item::Group`].
+    Node { node: Node, total: u64, with_path: bool, nested: bool },
+    /// Heading of a group of rows (a set of duplicates).
+    Group { title: String, subtitle: String },
+    /// A line of text (empty list, nothing found).
+    Note(String),
+}
+
+fn item_of(o: &glib::Object) -> Option<Item> {
+    o.downcast_ref::<glib::BoxedAnyObject>().map(|b| b.borrow::<Item>().clone())
+}
+
+/// Virtualised list of files and folders: only the visible rows have
+/// widgets, so a folder with 20 000 photos opens as fast as one with ten
+/// (a `GtkListBox` creates and measures every row).
+struct NodeList {
+    root: gtk::ScrolledWindow,
+    store: gio::ListStore,
+    /// Rows received while the list had no size (hidden tab): a `GtkListView`
+    /// without a height would prepare all of them, so they wait until shown.
+    pending: Rc<RefCell<Option<Vec<glib::Object>>>>,
+}
+
+/// The widgets of a row, in order: icon, texts (title, subtitle), size,
+/// bar, "open" arrow and delete button.
+fn row_parts(row: &gtk::Widget) -> Option<(gtk::Image, gtk::Label, gtk::Label, gtk::Label, gtk::LevelBar, gtk::Image, gtk::Button)> {
+    let icon = row.first_child()?.downcast::<gtk::Image>().ok()?;
+    let texts = icon.next_sibling()?;
+    let title = texts.first_child()?.downcast::<gtk::Label>().ok()?;
+    let subtitle = texts.last_child()?.downcast::<gtk::Label>().ok()?;
+    let size = texts.next_sibling()?.downcast::<gtk::Label>().ok()?;
+    let bar = size.next_sibling()?.downcast::<gtk::LevelBar>().ok()?;
+    let next = bar.next_sibling()?.downcast::<gtk::Image>().ok()?;
+    let del = next.next_sibling()?.downcast::<gtk::Button>().ok()?;
+    Some((icon, title, subtitle, size, bar, next, del))
+}
+
+impl NodeList {
+    fn new(ctx: &Rc<Ctx>, page: Weak<StoragePage>) -> Self {
+        let store = gio::ListStore::new::<glib::BoxedAnyObject>();
+        let factory = gtk::SignalListItemFactory::new();
+        {
+            let page = page.clone();
+            factory.connect_setup(move |_, obj| {
+                let Some(item) = obj.downcast_ref::<gtk::ListItem>() else { return };
+                let row = util::hbox(10);
+                row.add_css_class("rowlist-row");
+                let icon = gtk::Image::new();
+                icon.set_valign(gtk::Align::Center);
+                let texts = util::vbox(2);
+                texts.set_hexpand(true);
+                texts.set_valign(gtk::Align::Center);
+                let title = gtk::Label::builder().xalign(0.0).ellipsize(gtk::pango::EllipsizeMode::Middle).build();
+                let subtitle = gtk::Label::builder().xalign(0.0).ellipsize(gtk::pango::EllipsizeMode::Start).build();
+                subtitle.add_css_class("dim");
+                subtitle.add_css_class("caption");
+                texts.append(&title);
+                texts.append(&subtitle);
+                let size = util::label("", &["numeric"]);
+                size.set_xalign(1.0);
+                let bar = share_bar(0, 0);
+                let next = util::icon("go-next-symbolic");
+                let del = util::icon_button("adb-edit-delete-symbolic", tr("Delete this file"));
+                del.add_css_class("flat");
+                del.set_valign(gtk::Align::Center);
+                let (weak_item, page) = (item.downgrade(), page.clone());
+                del.connect_clicked(move |b| {
+                    let (Some(item), Some(page)) = (weak_item.upgrade(), page.upgrade()) else { return };
+                    if let Some(Item::Node { node, .. }) = item.item().and_then(|o| item_of(&o)) {
+                        page.delete(b, &node);
+                    }
+                });
+                row.append(&icon);
+                row.append(&texts);
+                row.append(&size);
+                row.append(&bar);
+                row.append(&next);
+                row.append(&del);
+                item.set_child(Some(&row));
+            });
+        }
+        {
+            let ctx = ctx.clone();
+            factory.connect_bind(move |_, obj| {
+                let Some(item) = obj.downcast_ref::<gtk::ListItem>() else { return };
+                let (Some(data), Some(row)) = (item.item().and_then(|o| item_of(&o)), item.child()) else { return };
+                let Some((icon, title, subtitle, size_l, bar, next, del)) = row_parts(&row) else { return };
+                // Rows are reused for other items: every part is set again.
+                let (mut is_dir, mut heading) = (false, false);
+                match &data {
+                    Item::Node { node, total, with_path, nested } => {
+                        is_dir = node.is_dir;
+                        icon.set_visible(true);
+                        icon.set_icon_name(Some(if node.is_dir { "adb-folder-symbolic" } else { "adb-file-text-symbolic" }));
+                        icon.set_margin_start(if *nested { 22 } else { 0 });
+                        title.set_text(&ctx.shown(&node.name));
+                        let sub = if *with_path { ctx.shown(&adbscan_core::adb::remote_parent(&node.path)) } else { String::new() };
+                        subtitle.set_text(&sub);
+                        subtitle.set_visible(!sub.is_empty());
+                        size_l.set_text(&self::size(node.kib));
+                        size_l.set_visible(true);
+                        bar.set_visible(*total > 0);
+                        bar.set_value(if *total > 0 { node.kib as f64 / *total as f64 } else { 0.0 });
+                        del.set_visible(!node.is_dir && storage::deletable(&node.path));
+                    }
+                    Item::Group { title: t, subtitle: st } => {
+                        heading = true;
+                        icon.set_visible(true);
+                        icon.set_icon_name(Some("adb-copy-symbolic"));
+                        icon.set_margin_start(0);
+                        title.set_text(&ctx.shown(t));
+                        subtitle.set_text(st);
+                        subtitle.set_visible(true);
+                        size_l.set_visible(false);
+                        bar.set_visible(false);
+                        del.set_visible(false);
+                    }
+                    Item::Note(text) => {
+                        icon.set_visible(false);
+                        title.set_text(text);
+                        subtitle.set_visible(false);
+                        size_l.set_visible(false);
+                        bar.set_visible(false);
+                        del.set_visible(false);
+                    }
+                }
+                if heading {
+                    title.add_css_class("heading");
+                } else {
+                    title.remove_css_class("heading");
+                }
+                next.set_visible(is_dir);
+                item.set_activatable(is_dir);
+            });
+        }
+        let list = gtk::ListView::builder().model(&gtk::NoSelection::new(Some(store.clone()))).factory(&factory).single_click_activate(true).build();
+        list.add_css_class("rowlist");
+        list.add_css_class("rowlist-frame");
+        {
+            let store = store.clone();
+            list.connect_activate(move |_, pos| {
+                let (Some(page), Some(Item::Node { node, .. })) = (page.upgrade(), store.item(pos).and_then(|o| item_of(&o))) else { return };
+                if node.is_dir {
+                    page.open_folder(&node.path);
+                }
+            });
+        }
+        // Same width and tightening as the page's header.
+        let clamp = adw::ClampScrollable::builder().maximum_size(900).tightening_threshold(700).child(&list).build();
+        clamp.set_margin_top(6);
+        clamp.set_margin_bottom(24);
+        clamp.set_margin_start(18);
+        clamp.set_margin_end(18);
+        let root = gtk::ScrolledWindow::builder().child(&clamp).hscrollbar_policy(gtk::PolicyType::Never).vexpand(true).build();
+        let pending: Rc<RefCell<Option<Vec<glib::Object>>>> = Rc::new(RefCell::new(None));
+        {
+            // When shown: wait for the first frame in which it has a height.
+            let (pending, store) = (pending.clone(), store.clone());
+            root.connect_map(move |root| {
+                let (pending, store) = (pending.clone(), store.clone());
+                root.add_tick_callback(move |root, _| {
+                    if !root.is_mapped() {
+                        return glib::ControlFlow::Break;
+                    }
+                    if root.height() == 0 {
+                        return glib::ControlFlow::Continue;
+                    }
+                    if let Some(items) = pending.borrow_mut().take() {
+                        store.splice(0, store.n_items(), &items);
+                    }
+                    glib::ControlFlow::Break
+                });
+            });
+        }
+        Self { root, store, pending }
+    }
+
+    /// Replaces the rows (a single notification to the model). `scroll_top`:
+    /// back to the first row (another folder), instead of keeping the place
+    /// (the same list after a deletion).
+    fn set(&self, items: Vec<Item>, scroll_top: bool) {
+        let objs: Vec<glib::Object> = items.into_iter().map(|i| glib::BoxedAnyObject::new(i).upcast()).collect();
+        if scroll_top {
+            self.root.vadjustment().set_value(0.0);
+        }
+        if !self.root.is_mapped() || self.root.height() == 0 {
+            *self.pending.borrow_mut() = Some(objs);
+            return;
+        }
+        self.pending.borrow_mut().take();
+        self.store.splice(0, self.store.n_items(), &objs);
+    }
+}
+
+/// Area above a list, with the same width as the list.
+fn clamped(child: &impl IsA<gtk::Widget>) -> adw::Clamp {
+    let c = adw::Clamp::builder().maximum_size(900).tightening_threshold(700).child(child).build();
+    c.set_margin_top(12);
+    c.set_margin_start(18);
+    c.set_margin_end(18);
+    c
 }
 
 impl StoragePage {
@@ -109,7 +306,6 @@ impl StoragePage {
         let overview = util::vbox(18);
         tabs.add_titled_with_icon(&util::page_scroller(&overview, 900), Some("overview"), tr("Summary"), "adb-chart-line-symbolic");
 
-        let fbox = util::vbox(10);
         let nav = util::hbox(8);
         let folder_up = util::icon_button("adb-go-up-symbolic", tr("Parent folder"));
         let folder_path = util::label(storage::ROOT, &["dim"]);
@@ -117,16 +313,9 @@ impl StoragePage {
         folder_path.set_hexpand(true);
         nav.append(&folder_up);
         nav.append(&folder_path);
-        let folder_list = boxed_list();
-        fbox.append(&nav);
-        fbox.append(&folder_list);
-        tabs.add_titled_with_icon(&util::page_scroller(&fbox, 900), Some("folders"), tr("Folders"), "adb-folder-symbolic");
 
-        let largest = boxed_list();
-        tabs.add_titled_with_icon(&util::page_scroller(&largest, 900), Some("largest"), tr("Largest files"), "adb-file-text-symbolic");
-
-        let dupes = util::vbox(12);
-        tabs.add_titled_with_icon(&util::page_scroller(&dupes, 900), Some("dupes"), tr("Duplicates"), "adb-copy-symbolic");
+        let dupes_intro = util::label("", &["dim"]);
+        dupes_intro.set_wrap(true);
 
         // Same width and tightening as the tabs' content (`page_scroller`).
         let top = adw::Clamp::builder().maximum_size(900).tightening_threshold(700).child(&head).build();
@@ -140,24 +329,45 @@ impl StoragePage {
         tabs.set_vexpand(true);
         tabs.set_sensitive(false);
 
-        let this = Rc::new_cyclic(|me| Self {
-            me: me.clone(),
-            ctx: ctx.clone(),
-            root,
-            scan_btn: scan_btn.clone(),
-            cancel_btn: cancel_btn.clone(),
-            status,
-            tabs,
-            overview,
-            folder_path,
-            folder_up: folder_up.clone(),
-            folder_list,
-            largest,
-            dupes,
-            scan: RefCell::new(None),
-            cwd: RefCell::new(storage::ROOT.to_string()),
-            running: RefCell::new(None),
-            scanned_for: RefCell::new(None),
+        let this = Rc::new_cyclic(|me: &Weak<Self>| {
+            let folder_list = NodeList::new(ctx, me.clone());
+            let fbox = util::vbox(0);
+            fbox.append(&clamped(&nav));
+            fbox.append(&folder_list.root);
+            tabs.add_titled_with_icon(&fbox, Some("folders"), tr("Folders"), "adb-folder-symbolic");
+
+            let largest = NodeList::new(ctx, me.clone());
+            largest.root.set_margin_top(6);
+            tabs.add_titled_with_icon(&largest.root, Some("largest"), tr("Largest files"), "adb-file-text-symbolic");
+
+            let dupes = NodeList::new(ctx, me.clone());
+            let dbox = util::vbox(0);
+            dbox.append(&clamped(&dupes_intro));
+            dbox.append(&dupes.root);
+            tabs.add_titled_with_icon(&dbox, Some("dupes"), tr("Duplicates"), "adb-copy-symbolic");
+
+            Self {
+                me: me.clone(),
+                ctx: ctx.clone(),
+                root,
+                scan_btn: scan_btn.clone(),
+                cancel_btn: cancel_btn.clone(),
+                status,
+                tabs,
+                overview,
+                folder_path,
+                folder_up: folder_up.clone(),
+                folder_list,
+                largest,
+                dupes_intro,
+                dupes,
+                scan: RefCell::new(None),
+                report: RefCell::new(None),
+                cwd: RefCell::new(storage::ROOT.to_string()),
+                running: RefCell::new(None),
+                scanned_for: RefCell::new(None),
+                generation: Cell::new(0),
+            }
         });
         let w = this.me.clone();
         scan_btn.connect_clicked(move |_| {
@@ -220,6 +430,8 @@ impl StoragePage {
         };
         *self.running.borrow_mut() = Some(handle);
         *self.scanned_for.borrow_mut() = Some(serial);
+        self.generation.set(self.generation.get() + 1);
+        let generation = self.generation.get();
         self.scan_btn.set_sensitive(false);
         self.cancel_btn.set_visible(true);
         let started = std::time::Instant::now();
@@ -242,51 +454,64 @@ impl StoragePage {
             let text = std::mem::take(&mut *out.lock().unwrap());
             let secs = started.elapsed().as_secs();
             let w2 = t.me.clone();
+            // Parsing and every total in the background: with 100 000+ files
+            // they would freeze the window for a moment.
             util::run_bg(
-                move || Scan::parse(&text),
-                move |scan| {
+                move || {
+                    let scan = Scan::parse(&text);
+                    let report = scan.report();
+                    (scan, report)
+                },
+                move |(scan, report)| {
                     let Some(t) = w2.upgrade() else { return };
+                    if t.generation.get() != generation {
+                        return;
+                    }
                     if scan.is_empty() {
                         t.status.set_text(tr("The scan returned nothing: the shared storage may not be readable."));
                         return;
                     }
-                    t.status.set_text(&t!("{} in {} files, scanned in {} s.", size(scan.total_kib()), scan.file_count(), secs));
+                    t.status.set_text(&t!("{} in {} files, scanned in {} s.", size(report.total_kib), report.file_count, secs));
                     *t.scan.borrow_mut() = Some(scan);
+                    *t.report.borrow_mut() = Some(report);
                     t.tabs.set_sensitive(true);
-                    t.render_all();
+                    t.render_all(true);
                 },
             );
             glib::ControlFlow::Break
         });
     }
 
-    fn render_all(&self) {
+    /// `fresh`: a new scan (lists back to the top); otherwise the same one
+    /// after a change, keeping each list's place.
+    fn render_all(&self, fresh: bool) {
+        let started = std::time::Instant::now();
         self.render_overview();
         let cwd = self.cwd.borrow().clone();
-        self.open_folder(&cwd);
-        self.render_largest();
-        self.render_dupes();
+        self.show_folder(&cwd, fresh);
+        self.render_largest(fresh);
+        self.render_dupes(fresh);
+        util::log_slow("storage render", started);
     }
 
     fn render_overview(&self) {
         clear(&self.overview);
-        let scan = self.scan.borrow();
-        let Some(scan) = scan.as_ref() else { return };
-        let total = scan.total_kib();
+        let report = self.report.borrow();
+        let Some(report) = report.as_ref() else { return };
+        let total = report.total_kib;
         let types = adw::PreferencesGroup::builder().title(tr("By type")).build();
-        for (ft, kib, n) in scan.by_type() {
+        for (ft, kib, n) in &report.by_type {
             let row = adw::ActionRow::builder().title(ft.label()).subtitle(t!("{} files", n)).build();
-            row.add_suffix(&util::label(&size(kib), &["numeric"]));
-            row.add_suffix(&share_bar(kib, total));
+            row.add_suffix(&util::label(&size(*kib), &["numeric"]));
+            row.add_suffix(&share_bar(*kib, total));
             types.add(&row);
         }
         self.overview.append(&types);
         let places = adw::PreferencesGroup::builder().title(tr("Places that grow")).description(tr("Folders that fill up without anyone noticing. Open one to see what is inside.")).build();
-        let found = scan.places();
-        if found.is_empty() {
+        if report.places.is_empty() {
             places.add(&adw::ActionRow::builder().title(tr("None of these places takes up space")).build());
         }
-        for p in found {
+        for p in &report.places {
             let row = adw::ActionRow::builder().title(p.title).subtitle(glib::markup_escape_text(&format!("{} · {}", p.hint, p.path))).activatable(true).build();
             row.set_subtitle_lines(3);
             row.add_suffix(&util::label(&size(p.kib), &["numeric"]));
@@ -304,99 +529,53 @@ impl StoragePage {
     }
 
     fn open_folder(&self, path: &str) {
+        self.show_folder(path, true);
+    }
+
+    fn show_folder(&self, path: &str, scroll_top: bool) {
+        let scan = self.scan.borrow();
+        // Being updated after a deletion: the view stays as it is.
+        let Some(scan) = scan.as_ref() else { return };
         *self.cwd.borrow_mut() = path.to_string();
         self.folder_path.set_text(&self.ctx.shown(path));
         self.folder_up.set_sensitive(path != storage::ROOT);
-        self.folder_list.remove_all();
-        let scan = self.scan.borrow();
-        let Some(scan) = scan.as_ref() else { return };
         let total = scan.size_of(path).unwrap_or(0);
         let nodes = scan.children(path);
-        if nodes.is_empty() {
-            self.folder_list.append(&adw::ActionRow::builder().title(tr("Empty folder")).build());
-        }
-        for n in nodes.iter().take(MAX_ROWS) {
-            self.folder_list.append(&self.node_row(n, total, false));
-        }
-        if nodes.len() > MAX_ROWS {
-            let rest: u64 = nodes[MAX_ROWS..].iter().map(|n| n.kib).sum();
-            self.folder_list.append(&adw::ActionRow::builder().title(t!("{} more items", nodes.len() - MAX_ROWS)).subtitle(size(rest)).build());
-        }
+        let items: Vec<Item> = if nodes.is_empty() { vec![Item::Note(tr("Empty folder").to_string())] } else { nodes.into_iter().map(|node| Item::Node { node, total, with_path: false, nested: false }).collect() };
+        self.folder_list.set(items, scroll_top);
     }
 
-    /// A file or folder. `with_path`: shows the folder it is in (lists that
-    /// mix folders).
-    fn node_row(&self, n: &Node, total: u64, with_path: bool) -> adw::ActionRow {
-        let sub = if with_path { self.ctx.shown(&adbscan_core::adb::remote_parent(&n.path)) } else { String::new() };
-        let row = adw::ActionRow::builder().title(glib::markup_escape_text(&self.ctx.shown(&n.name))).build();
-        if !sub.is_empty() {
-            row.set_subtitle(&glib::markup_escape_text(&sub));
-        }
-        row.add_prefix(&util::icon(if n.is_dir { "adb-folder-symbolic" } else { "adb-file-text-symbolic" }));
-        row.add_suffix(&util::label(&size(n.kib), &["numeric"]));
-        if total > 0 {
-            row.add_suffix(&share_bar(n.kib, total));
-        }
-        if n.is_dir {
-            row.set_activatable(true);
-            row.add_suffix(&util::icon("go-next-symbolic"));
-            let (w, path) = (self.me.clone(), n.path.clone());
-            row.connect_activated(move |_| {
-                if let Some(t) = w.upgrade() {
-                    t.open_folder(&path);
-                }
-            });
-        } else if storage::deletable(&n.path) {
-            let del = util::icon_button("adb-edit-delete-symbolic", tr("Delete this file"));
-            del.add_css_class("flat");
-            del.set_valign(gtk::Align::Center);
-            let (w, node) = (self.me.clone(), n.clone());
-            del.connect_clicked(move |b| {
-                if let Some(t) = w.upgrade() {
-                    t.delete(b, &node);
-                }
-            });
-            row.add_suffix(&del);
-        }
-        row
+    fn render_largest(&self, scroll_top: bool) {
+        let report = self.report.borrow();
+        let Some(report) = report.as_ref() else {
+            self.largest.set(Vec::new(), true);
+            return;
+        };
+        let total = report.total_kib;
+        let items = report.largest.iter().map(|n| Item::Node { node: n.clone(), total, with_path: true, nested: false }).collect();
+        self.largest.set(items, scroll_top);
     }
 
-    fn render_largest(&self) {
-        self.largest.remove_all();
-        let scan = self.scan.borrow();
-        let Some(scan) = scan.as_ref() else { return };
-        let total = scan.total_kib();
-        for n in scan.largest_files(100) {
-            self.largest.append(&self.node_row(&n, total, true));
+    fn render_dupes(&self, scroll_top: bool) {
+        let report = self.report.borrow();
+        let Some(report) = report.as_ref() else {
+            self.dupes_intro.set_text("");
+            self.dupes.set(Vec::new(), true);
+            return;
+        };
+        self.dupes_intro.set_text(&t!("Files of 1 MB or more with the same name and size in different folders: {} could be freed. Check them before deleting: they are probably, not certainly, the same file.", size(report.freeable_kib())));
+        let mut items = Vec::new();
+        if report.duplicates.is_empty() {
+            items.push(Item::Note(tr("No duplicates found").to_string()));
         }
-    }
-
-    fn render_dupes(&self) {
-        clear(&self.dupes);
-        let scan = self.scan.borrow();
-        let Some(scan) = scan.as_ref() else { return };
-        // From 1 MiB: smaller ones are not worth the time.
-        let dupes = scan.duplicates(1024);
-        let freeable: u64 = dupes.iter().map(|d| d.reclaimable()).sum();
-        let group = adw::PreferencesGroup::builder()
-            .title(tr("Possible duplicates"))
-            .description(t!("Files of 1 MB or more with the same name and size in different folders: {} could be freed. Check them before deleting: they are probably, not certainly, the same file.", size(freeable)))
-            .build();
-        if dupes.is_empty() {
-            group.add(&adw::ActionRow::builder().title(tr("No duplicates found")).build());
-        }
-        for d in dupes.iter().take(200) {
-            let exp = adw::ExpanderRow::builder()
-                .title(glib::markup_escape_text(&self.ctx.shown(&d.name)))
-                .subtitle(t!("{} copies of {} · {} could be freed", d.paths.len(), size(d.kib), size(d.reclaimable())))
-                .build();
+        for d in &report.duplicates {
+            items.push(Item::Group { title: d.name.clone(), subtitle: t!("{} copies of {} · {} could be freed", d.paths.len(), size(d.kib), size(d.reclaimable())) });
             for p in &d.paths {
                 let node = Node { path: p.clone(), name: p.rsplit('/').next().unwrap_or(p).to_string(), kib: d.kib, is_dir: false };
-                exp.add_row(&self.node_row(&node, 0, true));
+                items.push(Item::Node { node, total: 0, with_path: true, nested: true });
             }
-            group.add(&exp);
         }
-        self.dupes.append(&group);
+        self.dupes.set(items, scroll_top);
     }
 
     fn delete(&self, button: &gtk::Button, n: &Node) {
@@ -406,12 +585,30 @@ impl StoragePage {
             let (p2, w2, target) = (path.clone(), w.clone(), path.clone());
             t.ctx.device_op("storage_delete", &target, tr("File deleted"), move |adb, s| adb.delete_shared_file(&s, &p2).map(|r| r.summary()), move |ok| {
                 let Some(t) = w2.upgrade() else { return };
-                if ok {
-                    if let Some(scan) = t.scan.borrow_mut().as_mut() {
-                        scan.remove_file(&path);
-                    }
-                    t.render_all();
+                if !ok {
+                    return;
                 }
+                // The scan travels to the background, loses the file and comes
+                // back with new totals; meanwhile the lists stay as they are.
+                let Some(mut scan) = t.scan.borrow_mut().take() else { return };
+                let generation = t.generation.get();
+                let w3 = t.me.clone();
+                util::run_bg(
+                    move || {
+                        scan.remove_file(&path);
+                        let report = scan.report();
+                        (scan, report)
+                    },
+                    move |(scan, report)| {
+                        let Some(t) = w3.upgrade() else { return };
+                        if t.generation.get() != generation {
+                            return;
+                        }
+                        *t.scan.borrow_mut() = Some(scan);
+                        *t.report.borrow_mut() = Some(report);
+                        t.render_all(false);
+                    },
+                );
             });
         });
     }
@@ -423,15 +620,20 @@ impl Page for StoragePage {
     }
     fn on_event(&self, ev: &Event) {
         // Another phone: the scan belongs to the previous one.
-        if matches!(ev, Event::Devices) && self.scan.borrow().is_some() && *self.scanned_for.borrow() != self.ctx.ready_serial() {
+        if matches!(ev, Event::Devices) && self.report.borrow().is_some() && *self.scanned_for.borrow() != self.ctx.ready_serial() {
             *self.scan.borrow_mut() = None;
+            *self.report.borrow_mut() = None;
+            self.generation.set(self.generation.get() + 1);
             *self.cwd.borrow_mut() = storage::ROOT.to_string();
             self.tabs.set_sensitive(false);
             self.status.set_text(tr("Not scanned yet."));
-            self.render_all();
+            clear(&self.overview);
+            self.folder_list.set(Vec::new(), true);
+            self.render_largest(true);
+            self.render_dupes(true);
         }
-        if matches!(ev, Event::Privacy) && self.scan.borrow().is_some() {
-            self.render_all();
+        if matches!(ev, Event::Privacy) && self.report.borrow().is_some() {
+            self.render_all(false);
         }
     }
 }

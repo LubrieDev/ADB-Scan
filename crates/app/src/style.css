@@ -315,6 +315,11 @@ levelbar.usage.critical block.filled { background-color: @error_color; }
   min-height: 40px;
   border-bottom: 1px solid alpha(currentColor, 0.06);
 }
+.rowlist-row.rowlist-heading {
+  padding-top: 16px;
+  min-height: 0;
+  background-color: alpha(currentColor, 0.03);
+}
 
 /* Embedded terminal (VTE) */
 .term-frame {

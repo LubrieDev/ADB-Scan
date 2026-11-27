@@ -325,6 +325,9 @@ pub enum CapacitySource {
     Sysfs,
     /// `dumpsys batterystats` (capacity learned by Android).
     BatteryStats,
+    /// The manufacturer's own battery service (Samsung's `mSavedBatteryAsoc`
+    /// in `dumpsys battery`, what Samsung Members shows).
+    Manufacturer,
 }
 
 /// Storage wear reading.
@@ -351,6 +354,13 @@ pub struct ComponentHealth {
     pub battery_design_mah: Option<i64>,
     pub battery_source: CapacitySource,
     pub storage: StorageWear,
+    /// Capacity in % as the manufacturer's battery service reports it
+    /// (Samsung), when there are no mAh to compare.
+    #[serde(default)]
+    pub battery_asoc: Option<u8>,
+    /// First day the battery was used (`2024-08-13`), if the phone says.
+    #[serde(default)]
+    pub battery_first_use: Option<String>,
 }
 
 impl ComponentHealth {
@@ -358,6 +368,15 @@ impl ComponentHealth {
     /// readings (uncalibrated sensors return 0, huge values or the design
     /// capacity).
     pub fn battery_percent(&self) -> Option<f64> {
+        self.capacity_ratio().or_else(|| self.battery_asoc.map(f64::from))
+    }
+
+    /// Neither the charging chip nor Android gave mAh to compare.
+    pub fn capacity_source_missing(&self) -> bool {
+        self.capacity_ratio().is_none()
+    }
+
+    fn capacity_ratio(&self) -> Option<f64> {
         let full = self.battery_full_mah? as f64;
         let design = self.battery_design_mah? as f64;
         if !(500.0..=30_000.0).contains(&design) || full <= 0.0 {
@@ -540,7 +559,7 @@ impl Temperature {
             Some(2) => (40.0, 45.0),
             Some(3 | 4) => (40.0, 45.0),
             _ => match self.kind() {
-                "CPU" | "GPU" => (85.0, 100.0),
+                "CPU" | "GPU" | "SoC" => (85.0, 100.0),
                 k if k == tr("Battery") || k == tr("Skin") => (40.0, 45.0),
                 _ => (55.0, 70.0),
             },
@@ -552,8 +571,14 @@ impl Temperature {
             return label;
         }
         let lowered = self.name.to_lowercase();
-        if lowered.contains("cpu") {
+        // Without a type (`mType=-1`, Unisoc and others) only the name tells.
+        // Besides “cpu”: clusters and ARM core code names (Ananke = Cortex-A55,
+        // Prometheus = Cortex-A75…), as Unisoc names its zones.
+        const CPU_NAMES: [&str; 7] = ["cpu", "cluster", "ank", "prometheus", "enyo", "deimos", "hercules"];
+        if CPU_NAMES.iter().any(|n| lowered.starts_with(n)) || lowered.contains("cpu") {
             "CPU"
+        } else if lowered.starts_with("soc") {
+            "SoC"
         } else if lowered.contains("gpu") {
             "GPU"
         } else if lowered.contains("batt") {
@@ -837,7 +862,7 @@ impl Snapshot {
     }
 
     pub fn cpu_temperature(&self) -> Option<f64> {
-        self.temperatures.iter().filter(|t| t.type_code == Some(0) || t.name.to_lowercase().contains("cpu")).map(|t| t.value_c).fold(None, |acc: Option<f64>, v| Some(acc.map_or(v, |a| a.max(v))))
+        self.temperatures.iter().filter(|t| t.kind() == "CPU").map(|t| t.value_c).fold(None, |acc: Option<f64>, v| Some(acc.map_or(v, |a| a.max(v))))
     }
 
     pub fn thermal_status_label(&self) -> String {

@@ -48,8 +48,9 @@ while true; do
   cat /proc/meminfo
   echo '@@@DF@@@'
   df -k /data /storage/emulated/0
+  df -k 2>/dev/null | grep ' /data$'
   echo '@@@THERMAL@@@'
-  dumpsys thermalservice | grep -E "Thermal Status:|temperatures from HAL:|Cached temperatures:|Temperature"
+  dumpsys thermalservice | grep -E "Thermal Status:|temperatures from HAL:|Cached temperatures:|HAL Ready:|Temperature|^, mStatus="
   echo '@@@STAT@@@'
   head -n 1 /proc/stat
   echo '@@@LOAD@@@'
@@ -229,6 +230,16 @@ pub fn build_snapshot(serial: &str, sections: &std::collections::HashMap<String,
         acc.health = parsers::parse_wear(get("WEAR"));
     }
     snap.health = acc.health.clone();
+    // Samsung adds its own battery health to `dumpsys battery`.
+    let samsung = parsers::parse_samsung_battery(get("BATTERY"));
+    if samsung.battery_asoc.is_some() && snap.health.capacity_source_missing() {
+        snap.health.battery_asoc = samsung.battery_asoc;
+        snap.health.battery_source = CapacitySource::Manufacturer;
+    }
+    if snap.health.battery_cycles.is_none() {
+        snap.health.battery_cycles = samsung.battery_cycles;
+    }
+    snap.health.battery_first_use = samsung.battery_first_use;
     if sections.contains_key("REFRESH") {
         acc.refresh_live = parsers::parse_refresh_live(get("REFRESH"));
     }
@@ -251,6 +262,10 @@ pub fn build_snapshot(serial: &str, sections: &std::collections::HashMap<String,
     }
     snap.cpu.loadavg = parsers::parse_loadavg(get("LOAD"));
     snap.network = NetworkInfo { interfaces: parsers::parse_ip_addr(get("IPADDR")), routes: parsers::parse_ip_route(get("IPROUTE")), timestamp: snap.timestamp };
+    // Android 11 leaves the IP out of `WifiInfo`: the wlan address.
+    if let Some(w) = snap.wifi.as_mut().filter(|w| w.ip.is_empty() && !w.ssid.is_empty()) {
+        w.ip = snap.network.wifi_ipv4().unwrap_or_default();
+    }
     if let Some(first) = get("TICK").trim().lines().next() {
         if let Ok(ms) = first.trim().parse::<i64>() {
             acc.last_tick = ms as f64 / 1000.0;

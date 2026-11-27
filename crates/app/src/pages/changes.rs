@@ -3,7 +3,6 @@
 
 use adbscan_core::{format, i18n::tr, t};
 use adw::prelude::*;
-use gtk::glib;
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 
@@ -11,16 +10,20 @@ use adbscan_core::changes::{Change, Entry, Timeline};
 
 use crate::ctx::{Ctx, Event};
 use crate::util;
+use crate::widgets::{RowItem, RowList};
 use crate::window::Page;
 
-/// Rows shown at most (the newest).
-const MAX_ROWS: usize = 400;
+/// Rows shown at most (the newest). The list is virtualised, so this only
+/// bounds the memory, not the drawing.
+const MAX_ROWS: usize = 2000;
 
 struct ChangesPage {
     me: std::rc::Weak<Self>,
     ctx: Rc<Ctx>,
-    root: gtk::ScrolledWindow,
-    body: gtk::Box,
+    root: gtk::Box,
+    tabs: adw::ViewStack,
+    settings: Rc<super::settings_diff::SettingsDiff>,
+    list: RowList,
     status: gtk::Label,
     system: gtk::CheckButton,
     data: RefCell<Option<Timeline>>,
@@ -30,10 +33,6 @@ struct ChangesPage {
 
 pub fn build(ctx: &Rc<Ctx>) -> Rc<dyn Page> {
     ChangesPage::new(ctx)
-}
-
-fn esc(s: &str) -> String {
-    glib::markup_escape_text(s).to_string()
 }
 
 /// `HH:MM` in the computer's time zone.
@@ -61,7 +60,7 @@ impl ChangesPage {
         let content = util::vbox(18);
         let intro = adw::PreferencesGroup::builder()
             .title(tr("What changed on the phone"))
-            .description(tr("Apps installed, updated and removed, and restarts, from what Android itself keeps. Android does not keep a dated history of settings or permissions; what ADB Scan changed is in History → Operations."))
+            .description(tr("Apps installed, updated and removed, and restarts, from what Android itself keeps. Android keeps no dated history of its settings: the Settings tab compares snapshots kept by ADB Scan. What ADB Scan changed is in History → Operations."))
             .build();
         let refresh = util::icon_button("adb-refresh-cw-symbolic", tr("Read again"));
         refresh.add_css_class("flat");
@@ -78,14 +77,35 @@ impl ChangesPage {
         bar.append(&system);
         content.append(&intro);
         content.append(&bar);
-        let body = util::vbox(18);
-        content.append(&body);
-        let root = util::page_scroller(&content, 900);
+        // Header with the same width as the list; the list scrolls on its own
+        // and only creates the visible rows (hundreds of `AdwActionRow`s took
+        // seconds to lay out).
+        let top = adw::Clamp::builder().maximum_size(1000).tightening_threshold(800).child(&content).build();
+        top.set_margin_top(18);
+        top.set_margin_start(18);
+        top.set_margin_end(18);
+        let list = RowList::filling(None);
+        let apps_tab = util::vbox(0);
+        apps_tab.append(&top);
+        apps_tab.append(&list.root);
+        let settings = super::settings_diff::SettingsDiff::new(ctx);
+        let tabs = adw::ViewStack::new();
+        tabs.add_titled_with_icon(&apps_tab, Some("apps"), tr("Apps and restarts"), "adb-package-symbolic");
+        tabs.add_titled_with_icon(&settings.root, Some("settings"), tr("Settings"), "adb-settings-symbolic");
+        tabs.set_vexpand(true);
+        let switcher = adw::ViewSwitcher::builder().stack(&tabs).policy(adw::ViewSwitcherPolicy::Wide).build();
+        switcher.set_halign(gtk::Align::Center);
+        switcher.set_margin_top(10);
+        let root = util::vbox(0);
+        root.append(&switcher);
+        root.append(&tabs);
         let this = Rc::new_cyclic(|me| Self {
             me: me.clone(),
             ctx: ctx.clone(),
             root,
-            body,
+            tabs: tabs.clone(),
+            settings,
+            list,
             status,
             system: system.clone(),
             data: RefCell::new(None),
@@ -96,6 +116,12 @@ impl ChangesPage {
         refresh.connect_clicked(move |_| {
             if let Some(t) = w.upgrade() {
                 t.load();
+            }
+        });
+        let w = this.me.clone();
+        tabs.connect_visible_child_name_notify(move |_| {
+            if let Some(t) = w.upgrade() {
+                t.shown();
             }
         });
         let w = this.me.clone();
@@ -133,7 +159,7 @@ impl ChangesPage {
         );
     }
 
-    fn row(&self, e: &Entry, labels: &std::collections::HashMap<String, String>) -> adw::ActionRow {
+    fn row(&self, e: &Entry, labels: &std::collections::HashMap<String, String>) -> RowItem {
         let name = |p: &str| labels.get(p).cloned().unwrap_or_else(|| p.to_string());
         // The package goes under the name only when the name is known (the
         // Apps section learns the names).
@@ -152,17 +178,15 @@ impl ChangesPage {
                 ("adb-system-shutdown-symbolic", tr("Turned off").to_string(), if why.is_empty() { clock(e.time) } else { format!("{} · {}", clock(e.time), why) })
             }
         };
-        let row = adw::ActionRow::builder().title(esc(&title)).subtitle(esc(&subtitle)).build();
-        row.add_prefix(&util::icon(icon));
-        row
+        RowItem::new(self.ctx.shown(&title), self.ctx.shown(&subtitle)).with_icon(icon, "")
     }
 
     fn render(&self) {
-        while let Some(c) = self.body.first_child() {
-            self.body.remove(&c);
-        }
         let data = self.data.borrow();
-        let Some(data) = data.as_ref() else { return };
+        let Some(data) = data.as_ref() else {
+            self.list.set_items(Vec::new());
+            return;
+        };
         let with_system = self.system.is_active();
         let shown: Vec<&Entry> = data.entries.iter().filter(|e| with_system || !e.system).take(MAX_ROWS).collect();
         let mut status = match shown.len() {
@@ -176,20 +200,17 @@ impl ChangesPage {
         }
         self.status.set_text(&status);
         let labels = crate::pages::apps::cached_labels();
-        let mut day = String::new();
-        let mut group: Option<adw::PreferencesGroup> = None;
+        let mut day: Option<String> = None;
+        let mut items = Vec::with_capacity(shown.len() + 32);
         for e in shown {
             let d = format::date(Some(e.time as f64));
-            if d != day || group.is_none() {
-                let g = adw::PreferencesGroup::builder().title(esc(&d)).build();
-                self.body.append(&g);
-                group = Some(g);
-                day = d;
+            if day.as_ref() != Some(&d) {
+                items.push(RowItem::heading(d.clone()));
+                day = Some(d);
             }
-            if let Some(g) = &group {
-                g.add(&self.row(e, &labels));
-            }
+            items.push(self.row(e, &labels));
         }
+        self.list.set_items(items);
     }
 }
 
@@ -198,6 +219,10 @@ impl Page for ChangesPage {
         self.root.clone().upcast()
     }
     fn shown(&self) {
+        if self.tabs.visible_child_name().as_deref() == Some("settings") {
+            self.settings.shown();
+            return;
+        }
         if self.data.borrow().is_none() || *self.read_for.borrow() != self.ctx.ready_serial() {
             self.load();
         }
@@ -205,7 +230,10 @@ impl Page for ChangesPage {
     fn on_event(&self, ev: &Event) {
         match ev {
             Event::Devices if self.root.is_mapped() && *self.read_for.borrow() != self.ctx.ready_serial() => self.load(),
-            Event::Privacy => self.render(),
+            Event::Privacy => {
+                self.render();
+                self.settings.render();
+            }
             _ => {}
         }
     }

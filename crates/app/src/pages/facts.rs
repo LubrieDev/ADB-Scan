@@ -24,7 +24,11 @@ pub fn probe_row<T>(ctx: &Ctx, title: &str, value: &Probe<T>, source: &str, fmt:
     match value {
         Probe::Ok(v) => {
             let text = fmt(v);
-            label.set_text(&if text.is_empty() { "—".to_string() } else { ctx.shown(&text) });
+            if text.is_empty() {
+                label.set_text("—");
+            } else {
+                ctx.set_shown_text(&label, &text);
+            }
         }
         other => {
             label.set_text(&other.status_text().unwrap_or_default());
@@ -56,7 +60,7 @@ fn ago(secs: f64) -> String {
 /// Groups of the platform sheet. `report` is `None` while it is being read.
 pub fn platform_groups(ctx: &Ctx, props: &std::collections::BTreeMap<String, String>, report: Option<&PlatformReport>) -> Vec<adw::PreferencesGroup> {
     let mut out = Vec::new();
-    let pending = Probe::Failed("leyendo…".to_string());
+    let pending = Probe::Failed(tr("reading…").to_string());
     let get = |f: fn(&PlatformReport) -> Probe<String>| report.map(f).unwrap_or_else(|| pending.clone());
 
     // System and boot
@@ -65,7 +69,7 @@ pub fn platform_groups(ctx: &Ctx, props: &std::collections::BTreeMap<String, Str
     for f in platform::boot_facts(props).iter().chain(platform::platform_facts(props).iter()) {
         g.add(&probe_row(ctx, f.label, &f.value, f.source, |v| v.clone()));
     }
-    g.add(&probe_row(ctx, tr("Kernel build"), &report.map(|r| r.kernel.clone()).unwrap_or_else(|| Probe::Failed("leyendo…".into())), "/proc/version", |k| {
+    g.add(&probe_row(ctx, tr("Kernel build"), &report.map(|r| r.kernel.clone()).unwrap_or_else(|| Probe::Failed(tr("reading…").into())), "/proc/version", |k| {
         let mut parts = vec![k.compiler.clone(), k.built.clone()];
         if let Some(g) = &k.gki {
             parts.push(t!("GKI generic kernel {}", g));
@@ -73,7 +77,7 @@ pub fn platform_groups(ctx: &Ctx, props: &std::collections::BTreeMap<String, Str
         parts.retain(|p| !p.is_empty());
         parts.join(" · ")
     }));
-    g.add(&probe_row(ctx, tr("Memory page size"), &report.map(|r| r.page_size.clone()).unwrap_or_else(|| Probe::Failed("leyendo…".into())), "getconf PAGESIZE", |v| {
+    g.add(&probe_row(ctx, tr("Memory page size"), &report.map(|r| r.page_size.clone()).unwrap_or_else(|| Probe::Failed(tr("reading…").into())), "getconf PAGESIZE", |v| {
         format!("{} KB", v / 1024)
     }));
     g.add(&probe_row(ctx, tr("Google Play system"), &get(|r| r.mainline.clone()), "dumpsys package com.google.android.modulemetadata", |v| v.clone()));
@@ -81,14 +85,14 @@ pub fn platform_groups(ctx: &Ctx, props: &std::collections::BTreeMap<String, Str
 
     // Graphics
     let g = adw::PreferencesGroup::builder().title(tr("Graphics")).build();
-    let gles = report.map(|r| r.gles.clone()).unwrap_or_else(|| Probe::Failed("leyendo…".into()));
+    let gles = report.map(|r| r.gles.clone()).unwrap_or_else(|| Probe::Failed(tr("reading…").into()));
     g.add(&probe_row(ctx, "GPU", &gles, "dumpsys SurfaceFlinger (GLES)", |v| format!("{} · {}", v.renderer, v.vendor)));
     match (&gles, platform::opengles_from_prop(props)) {
         (Probe::Ok(v), _) => g.add(&text_row(ctx, "OpenGL ES", &v.version, "dumpsys SurfaceFlinger (GLES)")),
         (_, Some(v)) => g.add(&text_row(ctx, "OpenGL ES", &v, "ro.opengles.version")),
         _ => {}
     }
-    let vk = report.map(|r| r.vulkan.clone()).unwrap_or_else(|| Probe::Failed("leyendo…".into()));
+    let vk = report.map(|r| r.vulkan.clone()).unwrap_or_else(|| Probe::Failed(tr("reading…").into()));
     g.add(&probe_row(ctx, "Vulkan", &vk, "cmd gpu vkjson (Android 10+)", |v| t!("{} · driver {}", v.api, v.driver_version)));
     if let Probe::Ok(v) = &vk {
         if !v.driver_name.is_empty() {

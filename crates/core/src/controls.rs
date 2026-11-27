@@ -38,8 +38,9 @@ echo @@@AIRPLANE@@@; cmd connectivity airplane-mode 2>&1
 echo @@@LOCATION@@@; cmd location is-location-enabled 2>&1
 echo @@@NIGHT@@@; cmd uimode night 2>&1
 echo @@@DATASAVER@@@; cmd netpolicy get restrict-background 2>&1
-echo @@@MEDIAVOL@@@; cmd media_session volume --stream 3 --get 2>&1
-echo @@@RINGVOL@@@; cmd media_session volume --stream 2 --get 2>&1
+a=
+echo @@@MEDIAVOL@@@; v=$(cmd media_session volume --stream 3 --get 2>&1); if [ -n "$v" ]; then echo "$v"; else a=$(dumpsys audio 2>&1 | grep -A6 -E '^- STREAM_(MUSIC|RING):'); echo "$a" | grep -A6 '^- STREAM_MUSIC:'; fi
+echo @@@RINGVOL@@@; v=$(cmd media_session volume --stream 2 --get 2>&1); if [ -n "$v" ]; then echo "$v"; else [ -z "$a" ] && a=$(dumpsys audio 2>&1 | grep -A6 -E '^- STREAM_(MUSIC|RING):'); echo "$a" | grep -A6 '^- STREAM_RING:'; fi
 echo @@@NFC@@@; dumpsys nfc 2>&1 | grep -m1 'mState='
 echo @@@TETHER@@@; dumpsys tethering 2>&1 | sed -n '/Tether state:/,/^  [A-Z]/p'
 echo @@@BATTERY@@@; dumpsys battery 2>&1 | grep -E 'powered:'
@@ -107,6 +108,7 @@ pub enum Toggle {
     AutoBrightness,
     BatterySaver,
     DataSaver,
+    NightLight,
 }
 
 impl Toggle {
@@ -122,6 +124,7 @@ impl Toggle {
             Toggle::AutoBrightness => tr("Auto brightness"),
             Toggle::BatterySaver => tr("Battery saver"),
             Toggle::DataSaver => tr("Data saver"),
+            Toggle::NightLight => tr("Night Light"),
         }
     }
 
@@ -152,6 +155,9 @@ impl Toggle {
             Toggle::BatterySaver if sdk >= 30 => format!("cmd power set-mode {one}"),
             Toggle::BatterySaver => format!("settings put global low_power {one}"),
             Toggle::DataSaver => format!("cmd netpolicy set restrict-background {tf}"),
+            // Android's Night Light (warmer colours); its schedule, if any, is
+            // kept.
+            Toggle::NightLight => format!("settings put secure night_display_activated {one}"),
         })
     }
 
@@ -168,6 +174,7 @@ impl Toggle {
             Toggle::AutoBrightness => &s.auto_brightness,
             Toggle::BatterySaver => &s.battery_saver,
             Toggle::DataSaver => &s.data_saver,
+            Toggle::NightLight => &s.night_light,
         }
     }
 
@@ -221,11 +228,13 @@ impl Level {
 /// instead of computing how many are needed. It only carries numbers.
 pub fn volume_keys_script(stream: u8, from: i64, target: i64) -> String {
     let (key, cmp) = if target > from { ("KEYCODE_VOLUME_UP", "-ge") } else { ("KEYCODE_VOLUME_DOWN", "-le") };
+    let name = if stream == 2 { "RING" } else { "MUSIC" };
     format!(
         "last={from}; same=0; i=0
 while [ $i -lt 40 ]; do
   input keyevent {key}; sleep 0.35
   v=$(cmd media_session volume --stream {stream} --get 2>/dev/null | grep -o 'volume is [0-9]*' | grep -o '[0-9]*$')
+  [ -z \"$v\" ] && v=$(dumpsys audio 2>/dev/null | grep -A6 '^- STREAM_{name}:' | grep -o 'streamVolume:[0-9]*' | grep -o '[0-9]*$')
   [ -z \"$v\" ] && break
   if [ \"$v\" = \"$last\" ]; then same=$((same + 1)); [ $same -ge 3 ] && break; else same=0; fi
   last=$v
@@ -287,6 +296,157 @@ pub const SETTINGS_SCREENS: [(&str, &str); 18] = [
     ("About phone", "android.settings.DEVICE_INFO_SETTINGS"),
 ];
 
+/// Private DNS (DNS over TLS, Android 9+): where the phone sends its name
+/// lookups. A filtering server blocks ads and trackers in every app, without
+/// root and without a VPN. Stored in `private_dns_mode` (`off`,
+/// `opportunistic` or `hostname`) and `private_dns_specifier`.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PrivateDns {
+    Off,
+    /// Android's default: encrypted when the network's DNS supports it.
+    Automatic,
+    /// A specific server.
+    Host(String),
+}
+
+/// A well-known private DNS server.
+pub struct DnsPreset {
+    pub name: &'static str,
+    pub host: &'static str,
+    /// What it blocks.
+    pub blurb: &'static str,
+}
+
+/// Servers offered (their DNS-over-TLS host names).
+pub fn dns_presets() -> [DnsPreset; 6] {
+    [
+        DnsPreset { name: "AdGuard DNS", host: "dns.adguard-dns.com", blurb: tr("Blocks ads and trackers") },
+        DnsPreset { name: "AdGuard Family", host: "family.adguard-dns.com", blurb: tr("Blocks ads, trackers and adult content") },
+        DnsPreset { name: "Mullvad", host: "adblock.dns.mullvad.net", blurb: tr("Blocks ads and trackers") },
+        DnsPreset { name: "Quad9", host: "dns.quad9.net", blurb: tr("Blocks dangerous sites, not ads") },
+        DnsPreset { name: "Cloudflare", host: "one.one.one.one", blurb: tr("Fast, blocks nothing") },
+        DnsPreset { name: "Cloudflare for Families", host: "family.cloudflare-dns.com", blurb: tr("Blocks dangerous sites and adult content") },
+    ]
+}
+
+/// A host name Android accepts as private DNS: letters, digits, hyphens and
+/// dots, at least one dot, no empty labels (also keeps anything else out of
+/// the command).
+pub fn is_valid_dns_host(host: &str) -> bool {
+    let host = host.trim_end_matches('.');
+    host.len() <= 253
+        && host.contains('.')
+        && host.split('.').all(|label| !label.is_empty() && label.len() <= 63 && !label.starts_with('-') && !label.ends_with('-') && label.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-'))
+}
+
+impl PrivateDns {
+    /// From the two settings. Without a mode Android uses `opportunistic`.
+    fn from_settings(mode: Option<&str>, host: Option<&str>) -> Self {
+        match mode.map(str::trim) {
+            Some("off") => PrivateDns::Off,
+            Some("hostname") => match host.map(str::trim).filter(|h| !h.is_empty() && *h != "null") {
+                Some(h) => PrivateDns::Host(h.to_string()),
+                None => PrivateDns::Automatic,
+            },
+            _ => PrivateDns::Automatic,
+        }
+    }
+
+    /// Commands (arguments for `adb shell`) that set it. The host goes first
+    /// so the mode never points at an old one. `None` for an invalid host.
+    pub fn commands(&self) -> Option<Vec<Vec<String>>> {
+        let put = |key: &str, value: &str| vec!["settings".to_string(), "put".into(), "global".into(), key.into(), value.into()];
+        Some(match self {
+            PrivateDns::Off => vec![put("private_dns_mode", "off")],
+            PrivateDns::Automatic => vec![put("private_dns_mode", "opportunistic")],
+            PrivateDns::Host(h) if is_valid_dns_host(h) => vec![put("private_dns_specifier", h.trim_end_matches('.')), put("private_dns_mode", "hostname")],
+            PrivateDns::Host(_) => return None,
+        })
+    }
+
+    pub fn label(&self) -> String {
+        match self {
+            PrivateDns::Off => tr("Off").into(),
+            PrivateDns::Automatic => tr("Automatic").into(),
+            PrivateDns::Host(h) => dns_presets().iter().find(|p| p.host == h).map(|p| p.name.to_string()).unwrap_or_else(|| h.clone()),
+        }
+    }
+}
+
+/// A saved set of controls applied with one click (“Night”: Do Not Disturb,
+/// dark theme, low brightness…). Taken from the phone's state when saved.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub struct ControlProfile {
+    pub name: String,
+    pub toggles: Vec<(Toggle, bool)>,
+    pub levels: Vec<Level>,
+}
+
+/// Switches a profile keeps. Airplane mode is left out: it would cut wireless
+/// ADB with no way back.
+pub const PROFILE_TOGGLES: [Toggle; 8] = [Toggle::Wifi, Toggle::MobileData, Toggle::Bluetooth, Toggle::Location, Toggle::DarkMode, Toggle::AutoRotate, Toggle::BatterySaver, Toggle::DataSaver];
+
+impl ControlProfile {
+    /// The phone's current switches, Do Not Disturb, brightness and screen
+    /// timeout (what could be read).
+    pub fn from_state(name: &str, s: &ControlState) -> Self {
+        let mut toggles: Vec<(Toggle, bool)> = PROFILE_TOGGLES.iter().filter_map(|t| t.state(s).ok().map(|on| (*t, *on))).collect();
+        let mut levels = Vec::new();
+        if let Some(d) = s.dnd.ok() {
+            levels.push(Level::Dnd(*d));
+        }
+        // Manual brightness only means something with automatic brightness off.
+        match s.auto_brightness.ok() {
+            Some(true) => toggles.push((Toggle::AutoBrightness, true)),
+            Some(false) => {
+                toggles.push((Toggle::AutoBrightness, false));
+                if let Some(b) = s.brightness.ok() {
+                    levels.push(Level::Brightness(*b));
+                }
+            }
+            None => {}
+        }
+        if let Some(ms) = s.screen_timeout_ms.ok() {
+            levels.push(Level::ScreenTimeout(*ms));
+        }
+        Self { name: name.trim().chars().take(40).collect(), toggles, levels }
+    }
+
+    /// One line: “Wi-Fi on · Bluetooth off · Do Not Disturb: priority only…”.
+    pub fn summary(&self) -> String {
+        let mut parts: Vec<String> = self.toggles.iter().map(|(t, on)| format!("{} {}", t.label(), if *on { tr("on") } else { tr("off") })).collect();
+        for l in &self.levels {
+            parts.push(match l {
+                Level::Dnd(d) => t!("Do Not Disturb: {}", d.label().to_lowercase()),
+                Level::Brightness(b) => t!("Brightness: {}", b),
+                Level::ScreenTimeout(ms) => t!("screen off after {}", crate::format::human_duration(Some(*ms as f64 / 1000.0))),
+                Level::MediaVolume(v) => t!("Media volume: {}", v),
+                Level::RingVolume(v) => t!("Ring volume: {}", v),
+            });
+        }
+        parts.join(" · ")
+    }
+
+    /// What differs from the phone's state: the switches to change and the
+    /// values to set.
+    pub fn pending(&self, s: &ControlState) -> (Vec<(Toggle, bool)>, Vec<Level>) {
+        let toggles = self.toggles.iter().filter(|(t, on)| t.state(s).ok() != Some(on)).copied().collect();
+        let levels = self
+            .levels
+            .iter()
+            .filter(|l| match l {
+                Level::Dnd(d) => s.dnd.ok() != Some(d),
+                Level::Brightness(b) => s.brightness.ok() != Some(b),
+                Level::ScreenTimeout(ms) => s.screen_timeout_ms.ok() != Some(ms),
+                Level::MediaVolume(v) => s.media_volume.ok().map(|x| x.value) != Some(*v),
+                Level::RingVolume(v) => s.ring_volume.ok().map(|x| x.value) != Some(*v),
+            })
+            .copied()
+            .collect();
+        (toggles, levels)
+    }
+}
+
 /// State of the controls. Each item with its availability.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct ControlState {
@@ -302,6 +462,9 @@ pub struct ControlState {
     pub auto_brightness: Probe<bool>,
     pub battery_saver: Probe<bool>,
     pub data_saver: Probe<bool>,
+    /// Night Light (warmer colours at night).
+    #[serde(default)]
+    pub night_light: Probe<bool>,
     pub dnd: Probe<Dnd>,
     pub brightness: Probe<i64>,
     pub screen_timeout_ms: Probe<i64>,
@@ -313,6 +476,100 @@ pub struct ControlState {
     pub hotspot: Probe<bool>,
     /// Plugged in (battery saver does not turn on like this).
     pub charging: Option<bool>,
+    /// Private DNS (Android 9+).
+    pub private_dns: Probe<PrivateDns>,
+    /// Readability and accessibility settings.
+    pub access: Accessibility,
+}
+
+/// Settings that make the phone easier to read and use (for an older relative,
+/// for low vision): all of them are in Settings → Accessibility and are
+/// changed with `settings put`, so they can always be undone.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub struct Accessibility {
+    /// Text size (`font_scale`, 1.0 = normal).
+    pub font_scale: Probe<f64>,
+    /// Bold text (`font_weight_adjustment`, 300 = bold, Android 12+).
+    pub bold_text: Probe<bool>,
+    pub high_contrast_text: Probe<bool>,
+    pub color_inversion: Probe<bool>,
+    /// Grayscale (colour correction set to monochromacy).
+    pub grayscale: Probe<bool>,
+    /// Touch and hold delay (`long_press_timeout`, ms; 400 by default).
+    pub long_press_ms: Probe<i64>,
+    /// Remove animations (`accessibility_disable_animations`, Android 13+
+    /// setting read by the system UI).
+    pub remove_animations: Probe<bool>,
+}
+
+/// An accessibility switch.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum AccessToggle {
+    BoldText,
+    HighContrastText,
+    ColorInversion,
+    Grayscale,
+}
+
+impl AccessToggle {
+    pub const ALL: [AccessToggle; 4] = [AccessToggle::BoldText, AccessToggle::HighContrastText, AccessToggle::ColorInversion, AccessToggle::Grayscale];
+
+    pub fn label(self) -> &'static str {
+        match self {
+            AccessToggle::BoldText => tr("Bold text"),
+            AccessToggle::HighContrastText => tr("High contrast text"),
+            AccessToggle::ColorInversion => tr("Colour inversion"),
+            AccessToggle::Grayscale => tr("Grayscale"),
+        }
+    }
+
+    pub fn hint(self) -> &'static str {
+        match self {
+            AccessToggle::BoldText => tr("Thicker letters everywhere"),
+            AccessToggle::HighContrastText => tr("Black or white text with an outline"),
+            AccessToggle::ColorInversion => tr("Light backgrounds become dark"),
+            AccessToggle::Grayscale => tr("No colours: fewer distractions, easier on the eyes at night"),
+        }
+    }
+
+    /// `settings put` arguments that turn it on or off.
+    pub fn commands(self, on: bool) -> Vec<Vec<String>> {
+        let put = |ns: &str, key: &str, value: &str| vec!["settings".to_string(), "put".into(), ns.into(), key.into(), value.into()];
+        let one = if on { "1" } else { "0" };
+        match self {
+            AccessToggle::BoldText => vec![put("secure", "font_weight_adjustment", if on { "300" } else { "0" })],
+            AccessToggle::HighContrastText => vec![put("secure", "high_text_contrast_enabled", one)],
+            AccessToggle::ColorInversion => vec![put("secure", "accessibility_display_inversion_enabled", one)],
+            // Monochromacy is daltonizer mode 0.
+            AccessToggle::Grayscale if on => vec![put("secure", "accessibility_display_daltonizer", "0"), put("secure", "accessibility_display_daltonizer_enabled", "1")],
+            AccessToggle::Grayscale => vec![put("secure", "accessibility_display_daltonizer_enabled", "0")],
+        }
+    }
+
+    pub fn state(self, a: &Accessibility) -> &Probe<bool> {
+        match self {
+            AccessToggle::BoldText => &a.bold_text,
+            AccessToggle::HighContrastText => &a.high_contrast_text,
+            AccessToggle::ColorInversion => &a.color_inversion,
+            AccessToggle::Grayscale => &a.grayscale,
+        }
+    }
+}
+
+/// Text sizes offered (as in Settings: small to largest).
+pub const FONT_SCALES: [(f64, &str); 6] = [(0.85, "Small"), (1.0, "Default"), (1.15, "Large"), (1.3, "Larger"), (1.5, "Largest"), (1.8, "Huge")];
+
+/// Touch and hold delays offered (Settings: short, medium, long).
+pub const LONG_PRESS: [(i64, &str); 3] = [(400, "Short"), (1000, "Medium"), (1500, "Long")];
+
+/// `settings put` for the text size, clamped to what Android allows.
+pub fn font_scale_command(scale: f64) -> Vec<String> {
+    let v = scale.clamp(0.5, 2.0);
+    vec!["settings".into(), "put".into(), "system".into(), "font_scale".into(), format!("{v:.2}")]
+}
+
+pub fn long_press_command(ms: i64) -> Vec<String> {
+    vec!["settings".into(), "put".into(), "secure".into(), "long_press_timeout".into(), ms.clamp(300, 3000).to_string()]
 }
 
 /// `settings list …`: `key=value` per line. Some values span several lines
@@ -329,13 +586,22 @@ pub fn parse_settings_list(text: &str) -> HashMap<String, String> {
 
 /// `[V] volume is 40 in range [0..150]`
 pub fn parse_volume(text: &str) -> Option<Volume> {
-    let line = text.lines().find(|l| l.contains("volume is "))?;
+    let Some(line) = text.lines().find(|l| l.contains("volume is ")) else {
+        return parse_audio_stream(text);
+    };
     let rest = line.split("volume is ").nth(1)?;
     let mut it = rest.split_whitespace();
     let value = it.next()?.parse().ok()?;
     let range = rest.split('[').nth(1)?.trim_end_matches(']');
     let (lo, hi) = range.split_once("..")?;
     Some(Volume { value, min: lo.trim().parse().ok()?, max: hi.trim().trim_end_matches(']').parse().ok()? })
+}
+
+/// Android 11 answers nothing to `volume --get`: the stream's block of
+/// `dumpsys audio` (`Min: 0`, `Max: 15`, `streamVolume:5`).
+fn parse_audio_stream(text: &str) -> Option<Volume> {
+    let field = |key: &str| text.lines().find_map(|l| l.trim().strip_prefix(key)).and_then(|v| v.trim().parse::<i64>().ok());
+    Some(Volume { value: field("streamVolume:")?, min: field("Min:")?, max: field("Max:")? })
 }
 
 pub fn parse_state(text: &str) -> ControlState {
@@ -402,6 +668,11 @@ pub fn parse_state(text: &str) -> ControlState {
             }
         }),
         auto_rotate: flag(setting(&system, "accelerometer_rotation")),
+        // Not written until it is first used: off.
+        night_light: match setting(&secure, "night_display_activated") {
+            Probe::Missing => Probe::Ok(false),
+            other => flag(other),
+        },
         auto_brightness: flag(setting(&system, "screen_brightness_mode")),
         battery_saver: flag(setting(&global, "low_power")),
         data_saver: probe::from_section(s.get("DATASAVER"), |t| {
@@ -439,6 +710,35 @@ pub fn parse_state(text: &str) -> ControlState {
             })
         }),
         charging: s.get("BATTERY").map(|t| t.lines().any(|l| l.contains("powered: true"))),
+        private_dns: if global.is_empty() {
+            Probe::Failed(tr("could not read the settings").into())
+        } else if s.get("SDK").and_then(|v| v.trim().parse::<i64>().ok()).is_some_and(|sdk| sdk < 28) {
+            Probe::Unsupported(tr("Android 9 or later").into())
+        } else {
+            Probe::Ok(PrivateDns::from_settings(global.get("private_dns_mode").map(String::as_str), global.get("private_dns_specifier").map(String::as_str)))
+        },
+        access: parse_accessibility(&system, &secure),
+    }
+}
+
+/// Readability settings. A missing key is the default (off, normal size).
+fn parse_accessibility(system: &HashMap<String, String>, secure: &HashMap<String, String>) -> Accessibility {
+    if system.is_empty() || secure.is_empty() {
+        fn failed<T>() -> Probe<T> {
+            Probe::Failed(tr("could not read the settings").into())
+        }
+        return Accessibility { font_scale: failed(), bold_text: failed(), high_contrast_text: failed(), color_inversion: failed(), grayscale: failed(), long_press_ms: failed(), remove_animations: failed() };
+    }
+    let get = |map: &HashMap<String, String>, key: &str| map.get(key).map(|v| v.trim().to_string()).filter(|v| !v.is_empty() && v != "null");
+    let on = |map: &HashMap<String, String>, key: &str| Probe::Ok(get(map, key).is_some_and(|v| v == "1"));
+    Accessibility {
+        font_scale: Probe::Ok(get(system, "font_scale").and_then(|v| v.parse().ok()).unwrap_or(1.0)),
+        bold_text: Probe::Ok(get(secure, "font_weight_adjustment").and_then(|v| v.parse::<i64>().ok()).is_some_and(|w| w > 0)),
+        high_contrast_text: on(secure, "high_text_contrast_enabled"),
+        color_inversion: on(secure, "accessibility_display_inversion_enabled"),
+        grayscale: Probe::Ok(get(secure, "accessibility_display_daltonizer_enabled").is_some_and(|v| v == "1") && get(secure, "accessibility_display_daltonizer").map_or(true, |m| m == "0")),
+        long_press_ms: Probe::Ok(get(secure, "long_press_timeout").and_then(|v| v.parse().ok()).unwrap_or(400)),
+        remove_animations: on(secure, "accessibility_disable_animations"),
     }
 }
 

@@ -502,6 +502,14 @@ fn run_monitor<F: Fn(Vec<UsbDevice>)>(stop: Arc<AtomicBool>, on_change: F) {
     }
 }
 
+/// A USB product name that says nothing about the model (Samsung calls every
+/// phone and tablet “SAMSUNG_Android”): not used as the device's name.
+pub fn is_generic_product(name: &str) -> bool {
+    let n = name.trim().to_lowercase().replace(['_', '-'], " ");
+    let n = n.split_whitespace().filter(|w| !matches!(*w, "samsung" | "android" | "phone" | "device" | "mtp" | "adb" | "interface" | "composite" | "usb")).count();
+    n == 0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -597,5 +605,15 @@ mod tests {
         assert_eq!(d.functions(), vec![UsbFunction::Mtp, UsbFunction::Adb, UsbFunction::Tethering, UsbFunction::Midi]);
         let acc = UsbDevice { vendor_id: "18d1".into(), product_id: "2d01".into(), interfaces: vec![iface("ff", "ff", "00", "")], ..Default::default() };
         assert_eq!(acc.functions(), vec![UsbFunction::Accessory]);
+    }
+
+    #[test]
+    fn generic_products() {
+        for g in ["SAMSUNG_Android", "Android", "MTP", "Android Phone", "ADB Interface", "", "  "] {
+            assert!(is_generic_product(g), "{g}");
+        }
+        for real in ["REDMAGIC 11S Pro", "moto e20", "Pixel 8", "Galaxy Tab A9+"] {
+            assert!(!is_generic_product(real), "{real}");
+        }
     }
 }

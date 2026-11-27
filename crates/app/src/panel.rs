@@ -226,7 +226,7 @@ impl QuickPanel {
         self.gauge.set(pct, &format::percent(pct), if s.battery.is_charging() { tr("Charging") } else { tr("Battery") }, level);
 
         // USB speed (or the connection type if it is not USB).
-        let host = self.ctx.usb_devices().first().map(|u| u.speed_label()).unwrap_or_default();
+        let host = self.ctx.selected_usb().map(|u| u.speed_label()).unwrap_or_default();
         let link = if host.is_empty() { s.usb.label() } else { host };
         // “USB 3.2 Gen 2 · 10 Gb/s” → “USB 3.2 Gen 2”; the full text in the
         // tooltip.

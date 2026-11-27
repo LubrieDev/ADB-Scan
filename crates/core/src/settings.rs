@@ -98,6 +98,8 @@ pub struct Settings {
     pub scheduled: Vec<crate::schedule::Scheduled>,
     /// Actions run when a phone connects (see `automation`).
     pub automations: Vec<crate::automation::Automation>,
+    /// Saved sets of phone controls (Control → Quick settings → Profiles).
+    pub control_profiles: Vec<crate::controls::ControlProfile>,
     // Background
     pub start_hidden: bool,
     pub close_to_tray: bool,
@@ -202,6 +204,7 @@ impl Default for Settings {
             notify_usb_slow: true,
             scheduled: Vec::new(),
             automations: Vec::new(),
+            control_profiles: Vec::new(),
             photos_dir: String::new(),
             mirror_notifications: false,
             start_hidden: false,

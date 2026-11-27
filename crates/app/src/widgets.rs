@@ -600,6 +600,8 @@ pub struct RowItem {
     pub action: String,
     pub icon: String,
     pub icon_class: String,
+    /// Group heading (a day, a category): bold title, no button.
+    pub heading: bool,
 }
 
 const SEP: char = '\u{1f}';
@@ -614,9 +616,13 @@ impl RowItem {
         self.icon_class = class.into();
         self
     }
+    /// Heading of the rows that follow it.
+    pub fn heading(title: impl Into<String>) -> Self {
+        Self { title: title.into(), heading: true, ..Default::default() }
+    }
     fn encode(&self) -> String {
         let clean = |s: &str| s.replace(SEP, " ");
-        format!("{}{SEP}{}{SEP}{}{SEP}{}{SEP}{}{SEP}{}", clean(&self.title), clean(&self.subtitle), clean(&self.tooltip), clean(&self.action), clean(&self.icon), clean(&self.icon_class))
+        format!("{}{SEP}{}{SEP}{}{SEP}{}{SEP}{}{SEP}{}{SEP}{}", clean(&self.title), clean(&self.subtitle), clean(&self.tooltip), clean(&self.action), clean(&self.icon), clean(&self.icon_class), if self.heading { "h" } else { "" })
     }
     fn decode(s: &str) -> Self {
         let mut it = s.split(SEP).map(String::from);
@@ -627,6 +633,7 @@ impl RowItem {
             action: it.next().unwrap_or_default(),
             icon: it.next().unwrap_or_default(),
             icon_class: it.next().unwrap_or_default(),
+            heading: it.next().is_some_and(|h| h == "h"),
         }
     }
 }
@@ -733,6 +740,16 @@ impl RowList {
             };
             if let Some(t) = texts.first_child().and_downcast::<gtk::Label>() {
                 t.set_text(&data.title);
+                if data.heading {
+                    t.add_css_class("heading");
+                } else {
+                    t.remove_css_class("heading");
+                }
+            }
+            if data.heading {
+                row.add_css_class("rowlist-heading");
+            } else {
+                row.remove_css_class("rowlist-heading");
             }
             if let Some(st) = texts.last_child().and_downcast::<gtk::Label>() {
                 st.set_text(&data.subtitle);

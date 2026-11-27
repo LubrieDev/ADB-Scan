@@ -31,10 +31,10 @@ screen: the tests use real outputs captured from a REDMAGIC 11S Pro
 | `identity.rs` | Phone data: public sheet and on-demand reading of private identifiers (`service call iphonesubinfo`, `settings`, `dumpsys account`). Each value is accepted by its shape (Luhn, carrier prefix, length), not by the code that returned it, because the numbering changes between Android versions. |
 | `privacy.rs` | Private mode: `Redactor` hides, in text already prepared for display, the learned serial numbers and networks (literals of 4+ characters) and the IPs/MACs recognised by their shape (without confusing times, dates or versions). Display only. |
 | `security.rs` | Audit script (read-only) and its evaluation: findings, severity, packages involved and score. |
-| `battery_usage.rs` | Per-app usage (`dumpsys batterystats --usage`, only the periods on battery) and wakelocks (summary of `--charged` filtered on the phone). Two read-only queries in parallel; UID → package with `pm list packages -U`. |
+| `battery_usage.rs` | Per-app usage (`dumpsys batterystats --usage`, only the periods on battery), wakelocks and background tasks (the `Job …` lines; summary of `--charged` filtered on the phone) and the alarms that wake the phone per app (`dumpsys alarm`, its `Alarm Stats` since Android started). Three read-only queries in parallel; UID → package with `pm list packages -U`. |
 | `apk.rs` | APK reader: binary manifest and `resources.arsc` for the display name (in the interface language when available), version, SDK and ABIs. `manifest_summary` reads the components (activities, services, receivers, providers) with their effective export and permission. |
 | `link.rs` | **The physical link** (read-only). PC side from sysfs: speed, lanes, the port and its USB 3 companion (`peer`), hubs, controller (PCI name from `pci.ids`), ACPI location, over-current, LPM and, when Linux has a `typec` class for the port, the cable's e-marker (USB PD cable VDOs: passive/active, copper/optical, rated speed, current, length). Phone side from `dumpsys usb`/`dumpsys battery`/properties: roles, modes, moisture detection, compliance warnings, current offered and the USB event log (`stability`). `assess` turns both into deductions marked as read or probable and a list of findings; `LinkWatch` counts drops off the bus and compares each phone's speed with the best it reached. The speed test (`Adb::speed_test`) sends 128 MB of incompressible data to `/data/local/tmp` and back; `SpeedRecord` keeps the latest ones in the settings. `charge_now` reads the battery's live current and voltage and the charge limit (`charge_control_end_threshold`) to tell charging, paused at the limit, full and on battery apart. |
-| `controls.rs` | **Controls that change the phone** (Wi-Fi, mobile data, Bluetooth, airplane mode, location, brightness, volume, Do Not Disturb…), kept apart from everything else. Read-only state reading (~0.2 s); fixed commands chosen by Android version, without user text; after each change the state is read again to confirm Android applied it. |
+| `controls.rs` | **Controls that change the phone** (also the private DNS, the readability settings of Settings → Accessibility and the control profiles, see below) (Wi-Fi, mobile data, Bluetooth, airplane mode, location, brightness, volume, Do Not Disturb…), kept apart from everything else. Read-only state reading (~0.2 s); fixed commands chosen by Android version, without user text; after each change the state is read again to confirm Android applied it. |
 | `cleanup.rs` | **Actions on all apps** (they change the phone). *Close open apps*: removes each app window with `am stack remove`, as swiping it away in Recents. *Stop all*: closes the user's running apps with `am force-stop` and frees the expendable ones with `am kill-all`; it never closes system apps or those the phone needs (home screen, active keyboard, calls, SMS, accessibility, live wallpaper). *Caches*: `pm trim-caches` for every app and `pm clear --cache-only` for one, only after checking that `pm` knows the option (an older `pm` ignores it and would clear all the data). |
 | `remote.rs` | **Remote** (changes the phone): media keys, call/answer/hang up, open links, prepare SMS and find the phone (clock timer). What the user types (numbers, links, messages) is validated and quoted. Read-only reading of the call state (`telephony.registry`) and of what is playing (`media_session`). |
 | `schedule.rs` | Scheduled actions: time, days and action; when each one is due (once per day, with a 5-minute window). Local time with `localtime_r` (respects daylight saving time). The app runs them (`ctx.rs`). |
@@ -51,6 +51,18 @@ screen: the tests use real outputs captured from a REDMAGIC 11S Pro
 | `probe.rs` | Availability of each item (`Probe`): available, not published, restricted by Android, not supported or an error. Classifies the error messages of `toybox`, `cmd` and `dumpsys`. |
 | `platform.rs` | Platform sheet: a read-only script (~0.4 s) with SELinux, kernel, memory page size, GPU (GLES and Vulkan), CPU clusters, the manufacturer's thermal limits and hardware features; plus what is derived from `getprop` (Treble, A/B, verified boot, encryption…). |
 | `app_inspect.rs` | Technical details of an app: a read-only script (~0.3 s) with `dumpsys package`, `pm get-app-links`, standby bucket, App Ops, battery exemption, `exit-info` and `activity lru`. `parse_lru` also gives the Android state to the process list. |
+| `app_limits.rs` | **Limits on one app** (they change the phone, each undone the same way): pause (`pm suspend/unsuspend --user 0`), background activity (`RUN_ANY_IN_BACKGROUND` `ignore` plus the `restricted` standby bucket, as Settings → Battery → Restricted) and background mobile data (the UID in `cmd netpolicy … restrict-background-blacklist`) and unrestricted battery (Doze's user allowlist, `dumpsys deviceidle whitelist +/-pkg`, apps the system exempts are left alone). A read-only state script per app; changes are checked by reading back. Never for the apps in `debloat::is_protected`. |
+| `usage.rs` | **Screen time and data per app** (read-only): the daily, weekly and yearly blocks of `dumpsys usagestats -c` (filtered on the phone with `sed`; the full dump carries every event of 24 hours), the notifications per app, unlocks and screen-ons (the same dump filtered with `grep -F`, which takes 0.7 s where `awk` took 5–10 s; only the package of each notification), `dumpsys netstats --checkin --uid --duration=…` (30 days, already added up by the phone per UID and network), and for the unused apps the user apps, their launcher icons (`cmd package query-activities`) and install dates. Names from `pm list packages -U`. |
+| `stability.rs` | **Crashes, freezes and restarts** (read-only): `dumpsys dropbox` (list) and, for the crash and ANR tags only, the identifying lines of each report (`--print` filtered with `grep`: date, `Process:`, `Subject:`, the exception, the signal). The reason of the last start (`sys.boot.reason.last`). `adb bugreport` saves the full report on request. |
+| `roles.rs` | **Default apps** (Android 10+ roles): holders (`cmd role get-role-holders`) and candidates (`cmd package query-activities/query-services --components`), read-only; `cmd role add-role-holder` changes one and is checked. |
+| `settings_snapshot.rs` | **Settings snapshots**: `settings list global/system/secure` kept on the computer (`settings-snapshots/<serial>.json` in the data folder, the newest 12, without `android_id` and other identifiers), the difference between two, and restoring one key (`settings put/delete`), never those that would cut ADB or undo the setup. |
+| `root.rs` | **Root**: a read-only report (every property, `/dev/block/by-name`, `su`, root managers, `uname -r`) with the bootloader state, OEM unlocking (`sys.oem_unlock_allowed`; the `oem_lock` service is never called), the partition Magisk patches, A/B, GKI, Unisoc and 32-bit; the unlock guide per brand; Magisk's latest release from `api.github.com/repos/topjohnwu/Magisk` (only `Magisk-v*.apk` from that repository with GitHub's SHA-256, downloaded with `updater::download_into`); finding `magisk_patched-*.img` in Download. |
+| `saved_networks.rs` | Saved Wi-Fi networks (`cmd wifi list-networks`, read-only; Android 16 prints one line per security type, joined by id) and forgetting one (`cmd wifi forget-network`). |
+| `app_tuning.rs` | **Per-app tuning**: smoothness (`dumpsys gfxinfo`, read-only), the app's language (`cmd locale get/set-app-locales`, Android 13+) and the game mode of games (`cmd game list-modes/list-configs`, `mode`, `set --downscale --fps`, `reset`). Changes are checked by reading back. |
+| `keyboards.rs` | Enabled keyboards and the one in use (`ime list -s`, `default_input_method`); `ime set` changes it. |
+| `radio.rs` | Nearby Wi-Fi networks (`cmd wifi start-scan` + `list-scan-results`; band, channel, security, signal; the load of channels 1/6/11 and the least crowded) and the mobile signal of the SIM in service (`dumpsys telephony.registry`: technology, band, RSRP/RSRQ/SNR, bandwidth). Read-only. |
+| `procstats.rs` | Memory per app over the last hours (`dumpsys procstats --hours 24`, the `TOTAL` line of each process: time in memory and resident memory), added up per package. Read-only. |
+| `personal_export.rs` | Contacts (vCard 3.0), call log and SMS (CSV with a BOM) from `content query` (read-only; values may hold commas and line breaks, so each row is split by the known column names). |
 | `db.rs` | SQLite: sessions, events, audit log, battery samples, security reports. |
 | `settings.rs` | Settings in JSON. Keeps unknown keys. Interface language. History of the phone terminal. |
 | `tools_setup.rs` | Tools assistant: downloads platform-tools and scrcpy from their official sources on request, with a pinned SHA-256 sum (see “Managed tools”). |
@@ -105,21 +117,27 @@ adds it to the following snapshots.
 | `main.rs`, `app.rs` | Startup (the language is fixed first), single instance (`com.adbscan.AdbScan`), command-line options, capture mode for tests. |
 | `ctx.rs` | Shared state (`Rc<Ctx>`) on the GTK thread: devices, snapshot, metrics, session log, alerts (including the USB link ones from `LinkWatch`), settings. Receives `Msg` from the worker threads and emits `Event` to the pages. |
 | `window.rs` | Main window, sidebar, lazy page construction, event dispatch. |
-| `pages/*.rs` | One page per section (21). Renamed or merged ids keep working through `window::page_alias` (`controls`, `remote` → `control`). |
+| `pages/*.rs` | One page per section (24). Renamed or merged ids keep working through `window::page_alias` (`controls`, `remote` → `control`). |
 | `pages/connection.rs` | Connection page: tabs USB (summary, cable, PC port, phone's port, power, stability, speed test), Wi-Fi (wireless ADB) and Diagnosis (`diagnosis_rows`, also summed up on the Overview; USB mode; ADB server). Reads both sides in the background when shown, on device changes and every 10 s while in view. |
 | `pages/control.rs` | Control page: the Controls, Remote and Automations pages as three tabs; telemetry, their clock, only reaches the tab in view. |
-| `pages/bulk.rs` | Actions on all apps (the ⋮ menu in Apps, `win.bulk::close|stop|caches|export|import`, the search). |
+| `pages/bulk.rs` | Actions on all apps (the ⋮ menu in Apps, `win.bulk::close|stop|caches|export|import|default-apps`, the search). |
 | `pages/migration.rs` | Export and install apps (from `bulk.rs`): folder choice, a progress dialog that can be cancelled, and the list of apps to install with those the phone already has unchecked. |
 | `pages/debloat.rs`, `pages/permissions.rs`, `pages/storage.rs` | Preinstalled apps, Permissions and Storage pages. They read when shown and again when the phone changes; the storage scan only runs from its button (it streams `du` and shows the count while it reads). |
 | `pages/dashboard.rs` | Overview. `save_health_report` makes the health report (`win.health-report`: the button in Component health, the ⋮ menu and the search), saves it where the user chooses and opens it. |
 | `pages/developer.rs` | Developer tab in Tools. A new resolution or density opens a dialog that undoes it by itself after 15 s without an answer. |
 | `pages/automations.rs` | Automations tab in Control (stored in `Settings::automations`). |
 | `sidebar.rs` | Sidebar list: sections fold from their title, pages go to the favorites at the top with the star on each row (shown on hover, filled on a favorite) or a right click / long press, the search box filters; folded sections and favorites (`sidebar_pinned`) are saved. Rows are found by their page id, never by position. |
-| `pages/changes.rs` | Phone changes: the timeline by day, read when shown and again when the phone changes. |
+| `pages/changes.rs` | Phone changes: tabs “Apps and restarts” (the timeline by day, a `RowList` with a heading per day) and “Settings” (`pages/settings_diff.rs`: snapshots, the difference with now and restoring a key). |
+| `pages/usage.rs`, `pages/stability.rs` | Usage (screen time today or this week with unlocks, data in 30 days, notifications in 24 h, unused apps) and Stability (by app, every incident, bug report). Virtualised lists; each row opens the app in Apps. |
+| `pages/app_tuning.rs` | “Tuning” group of an app's details: smoothness, language, game mode. The group owns its state (kept alive by a handler on the group, so the rows only hold weak references). |
+| `pages/radio_view.rs`, `pages/memory_view.rs` | Mobile signal and nearby Wi-Fi networks (in Network) and memory per app (in Performance). |
+| `pages/personal_copy.rs` | Phone data → private view: copy contacts, calls and SMS to a file (written with mode 0600) and the “before selling or resetting” checklist. |
+| `pages/root.rs` | Root page: the report, the unlock guide and the Magisk steps. Its last step emits `Event::PrepareFlash(partition, image)`: the window opens the Flasher, which fills in the partition and the image (it flashes only after its own confirmation). |
+| `pages/default_apps.rs` | Default apps dialog (Apps → ⋮, `win.bulk::default-apps`, the search), with the keyboard. |
 | `search.rs` | Search everywhere (Ctrl+K, `win.search`): pages and common actions, matched by title and keywords without accents. |
 | `widgets.rs` | Circular gauge, charts, cards, animated bars and `RowList` (virtualised list). |
 | `anim.rs` | Icons with meaningful motion: an app box that opens (Cairo), the terminal cursor (two SVG layers) and arrows that spin during a reload. |
-| `pages/controls.rs` | Quick settings tab: switches, sliders, shortcuts to Settings screens and Power (restart; power off with `svc power shutdown`, a clean shutdown). Every change is an explicit action, locks its control until it is confirmed and is recorded in History. |
+| `pages/controls.rs` | Quick settings tab: profiles (`Settings::control_profiles`, applied with `Adb::apply_profile`: only what differs), switches, private DNS, readability, sliders, shortcuts to Settings screens and Power (restart; power off with `svc power shutdown`, a clean shutdown). Every change is an explicit action, locks its control until it is confirmed and is recorded in History. |
 | `pages/remote.rs` | Remote tab: media, calls, send to the phone, find the phone, phone notifications and scheduled actions. The state is read again every 3 s only while the page is in view. |
 | `pages/basic.rs` | Basic analysis: MTP reads in the background (only while the page is in view, 4 s after the phone appears, or with Refresh) and the optional invitation to the advanced analysis (`invite_card`, also on the Overview). |
 | `pages/facts.rs` | Presentation of the platform and app sheets (`probe_row`, expanders that create their rows when opened). |
@@ -128,7 +146,8 @@ adds it to the following snapshots.
 | `prefs.rs`, `help.rs` | Preferences (including the language and the restart), “About” and screenshots. |
 | `update.rs` | **Update now** (from the update banner): download dialog with the percentage, then the install. On Linux it offers to restart; on Windows ADB Scan quits and the installer opens it again. |
 | `theme.rs`, `style.css` | Light/dark theme, accent colours, styles. The accent is a palette colour or `accent_custom`, its saturation scaled by `accent_intensity` (HSL, 40–160 %); the text on it is white or near-black, whichever contrasts more. |
-| `util.rs` | Background work (`run_bg`), confirmation dialogs, file choosers, stall diagnosis. |
+| `util.rs` | Background work (`run_bg`), confirmation dialogs, file choosers, stall diagnosis (and, with `ADB_SCAN_LOG=debug`, the widget count of each page). |
+| `layout_fix.rs` | Cheap answer of `GtkLabel` to “width for this height” (see *Interface performance*). |
 
 ### Threads and events
 
@@ -161,6 +180,23 @@ worker threads ──Msg──▶ async_channel ──▶ Ctx (GTK thread) ─�
   dozens of times on every layout: in an app's details (a hundred libadwaita
   rows with subtitles) that was about 5,000 Pango measurements per selection
   and frames of up to 1.2 s. With a cap, about ten times less.
+- The cause of those repeated measurements is `GtkBox` in GTK 4.14: a
+  horizontal row with a wrapping label (an `AdwActionRow` with a long
+  subtitle, a group header with a button) looks for its height doubling and
+  halving a test size, and at every step asks each label its width for that
+  height, which the label answers with a binary search of its own. About 240
+  text layouts per label and measure; opening a page cost 100–470 ms of
+  layout, most of it shaping text with HarfBuzz. `layout_fix.rs` replaces
+  `GtkLabel`'s measure at startup: a label asked its width *for a height*
+  answers with its ordinary width (once per frame). The interface is
+  height-for-width throughout, so nothing needs that answer, and the height
+  for a given width stays exact. Pages open with ~50–100 ms of layout.
+- Long lists of the same kind of row are `RowList` (or a page's own
+  `GtkListView`, like Storage's), never one `AdwActionRow` per item: Phone
+  changes with a hundred rows in a `GtkListBox` took seconds to lay out.
+  `RowItem::heading` separates groups (days) inside the same list.
+- Heavy work on the result of a read (Storage's totals, types, largest files
+  and duplicates over 140 000 files) runs with `run_bg`, never in a render.
 - An app's details are built in parts (`group_stages`): each group goes in
   with its rows hidden and four are shown per frame. The expensive part is the
   first layout of each row; GTK does not lay out what is hidden and does not
@@ -191,8 +227,11 @@ loads Mint's default theme (Mint-Y), not theirs.
 `device_label(device)` (the marketing name instead of the nickname). Pages use
 them **only when painting**: data, ADB queries, the history and file names
 keep using the real values (`device_title`, `serial`). When the mode changes,
-`Event::Privacy` is emitted and each page repaints what it already had,
-without querying again. The `Redactor` learns serial numbers when a device
+`Event::Privacy` is emitted and the visible page repaints what it already had,
+without querying again; hidden pages receive it when they are shown, so
+Ctrl+Shift+P only redraws one page. Labels written with
+`Ctx::set_shown_text` (the platform sheet's values) are rewritten in place,
+without rebuilding their page. The `Redactor` learns serial numbers when a device
 connects, at startup (settings and history) and when painting the history,
 and Wi-Fi networks from the telemetry.
 

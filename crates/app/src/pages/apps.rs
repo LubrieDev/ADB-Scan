@@ -136,15 +136,52 @@ fn labels_cache_file() -> PathBuf {
 }
 
 /// Display names already read (cache shared with other pages).
+///
+/// Kept in memory while the file does not change: Performance asks for it
+/// with every FPS reading and other pages on every redraw, and reading and
+/// parsing the JSON each time did disk work on the interface thread.
 pub fn cached_labels() -> HashMap<String, String> {
-    std::fs::read_to_string(labels_cache_file()).ok().and_then(|t| serde_json::from_str(&t).ok()).unwrap_or_default()
+    use std::sync::Mutex;
+    static MEMO: Mutex<Option<(std::time::SystemTime, HashMap<String, String>)>> = Mutex::new(None);
+    let file = labels_cache_file();
+    let Some(mtime) = std::fs::metadata(&file).and_then(|m| m.modified()).ok() else {
+        return HashMap::new();
+    };
+    if let Ok(memo) = MEMO.lock() {
+        if let Some((t, map)) = memo.as_ref() {
+            if *t == mtime {
+                return map.clone();
+            }
+        }
+    }
+    let map = read_labels_file();
+    if let Ok(mut memo) = MEMO.lock() {
+        *memo = Some((mtime, map.clone()));
+    }
+    map
+}
+
+/// The names file. Names read from a test pseudo-locale (“[Çåļéñðåŕ Šţöŕåĝé
+/// one two three]”, saved before the reader skipped them) are dropped so
+/// they are read again.
+fn read_labels_file() -> HashMap<String, String> {
+    let mut map: HashMap<String, String> = std::fs::read_to_string(labels_cache_file()).ok().and_then(|t| serde_json::from_str(&t).ok()).unwrap_or_default();
+    map.retain(|_, v| !(v.starts_with('[') && v.ends_with(']') && v.contains(" one")));
+    map
 }
 
 /// Reads the display name of packages not yet in the cache and updates it.
 /// Blocking (call from a worker thread). Returns how many new names it found.
+///
+/// A package whose name could not be read is not asked for again in this
+/// session (each try reads its resource table, up to tens of MB).
 pub fn fetch_missing_labels(adb: &adbscan_core::adb::Adb, serial: &str, packages: &[String]) -> usize {
+    use std::collections::HashSet;
+    use std::sync::Mutex;
+    static FAILED: Mutex<Option<HashSet<(String, String)>>> = Mutex::new(None);
     let known = cached_labels();
-    let missing: Vec<&String> = packages.iter().filter(|p| !known.contains_key(p.as_str())).collect();
+    let failed = FAILED.lock().ok().and_then(|f| f.clone()).unwrap_or_default();
+    let missing: Vec<&String> = packages.iter().filter(|p| !known.contains_key(p.as_str()) && !failed.contains(&(serial.to_string(), p.to_string()))).collect();
     if missing.is_empty() || adb.shell_text(serial, &["command", "-v", "unzip"]).trim().is_empty() {
         return 0;
     }
@@ -169,6 +206,12 @@ pub fn fetch_missing_labels(adb: &adbscan_core::adb::Adb, serial: &str, packages
         }
     });
     let found = found.into_inner().unwrap_or_default();
+    if let Ok(mut f) = FAILED.lock() {
+        let set = f.get_or_insert_with(HashSet::new);
+        for pkg in packages.iter().filter(|p| !known.contains_key(p.as_str()) && !found.iter().any(|(k, _)| k == *p)) {
+            set.insert((serial.to_string(), pkg.clone()));
+        }
+    }
     if !found.is_empty() {
         // Read again: another page may have saved names in the meantime.
         let mut all = cached_labels();
@@ -189,7 +232,7 @@ impl AppsPage {
         let sort_mode = Rc::new(Cell::new(0u32));
         // 0 any · 1 Play Store · 2 other stores · 3 no store (ADB/APK)
         let origin = Rc::new(Cell::new(0u32));
-        let labels: Rc<RefCell<HashMap<String, String>>> = Rc::new(RefCell::new(std::fs::read_to_string(labels_cache_file()).ok().and_then(|t| serde_json::from_str(&t).ok()).unwrap_or_default()));
+        let labels: Rc<RefCell<HashMap<String, String>>> = Rc::new(RefCell::new(read_labels_file()));
         let search = gtk::SearchEntry::builder().placeholder_text(tr("Search apps…")).tooltip_text(tr("Search by name or package")).hexpand(true).build();
 
         let custom_filter = {
@@ -871,6 +914,8 @@ impl AppsPage {
             add("adb-edit-delete-symbolic", tr("Uninstall"), "uninstall", true);
         }
         self.details_box.append(&actions);
+        self.details_box.append(&self.limits_group(&info, &name, gen));
+        self.details_box.append(&crate::pages::app_tuning::group(&self.ctx, &info.package, &name, gen, self.details_gen.clone()));
 
         let group = adw::PreferencesGroup::builder().title(tr("Information")).build();
         let rows: Vec<(&str, String)> = vec![
@@ -932,6 +977,131 @@ impl AppsPage {
         }));
         group_stages(&mut stages, &self.details_box, security);
         self.run_stages(gen, stages);
+    }
+
+    /// Pause, background activity and background mobile data (see
+    /// `adbscan_core::app_limits`): read when the app is opened; each switch
+    /// changes the phone, checks it and is recorded in History.
+    fn limits_group(&self, info: &PackageInfo, name: &str, gen: u64) -> adw::PreferencesGroup {
+        use adbscan_core::app_limits::{AppLimits, Limit};
+        let group = adw::PreferencesGroup::builder()
+            .title(tr("Limits"))
+            .description(tr("Undone with the same switch. Nothing is deleted."))
+            .build();
+        let rows: Vec<(Limit, adw::SwitchRow)> = [
+            (Limit::Pause, tr("Pause the app"), tr("Greyed out: it cannot be opened and its notifications are hidden until you resume it")),
+            (Limit::Background, tr("Restrict background activity"), tr("It only runs while you use it, as Settings → Battery → Restricted")),
+            (Limit::BackgroundData, tr("Block background mobile data"), tr("It uses mobile data only while open; Wi-Fi is not affected")),
+            (Limit::Unrestricted, tr("Unrestricted battery use"), tr("Android does not hold it back to save battery: for apps whose notifications or alarms arrive late")),
+        ]
+        .into_iter()
+        .map(|(limit, title, subtitle)| {
+            let row = adw::SwitchRow::builder().title(title).subtitle(subtitle).sensitive(false).build();
+            group.add(&row);
+            (limit, row)
+        })
+        .collect();
+        let protected = adbscan_core::app_limits::is_protected(&info.package);
+        if protected {
+            group.set_description(Some(tr("The phone needs this app: it cannot be paused or restricted.")));
+        }
+        let rows = Rc::new(rows);
+        // Painting what was read must not trigger changes.
+        let painting = Rc::new(Cell::new(false));
+        let paint = {
+            let (rows, painting) = (rows.clone(), painting.clone());
+            Rc::new(move |l: &AppLimits| {
+                painting.set(true);
+                for (limit, row) in rows.iter() {
+                    match limit.is_on(l) {
+                        Some(on) if *limit == Limit::Unrestricted => {
+                            row.set_active(on);
+                            // What the system exempts is not changed here.
+                            row.set_sensitive(!l.system_exempt);
+                            if l.system_exempt {
+                                row.set_subtitle(tr("The system itself exempts it from battery optimisation"));
+                            }
+                        }
+                        Some(on) => {
+                            row.set_active(on);
+                            // A protected app can still have a limit taken off.
+                            row.set_sensitive(!protected || on);
+                        }
+                        None => row.set_sensitive(false),
+                    }
+                    if *limit == Limit::Background {
+                        if let Some(b) = l.bucket.ok() {
+                            let (bucket, _) = adbscan_core::app_inspect::standby_bucket_label(*b);
+                            row.set_subtitle(&t!("It only runs while you use it, as Settings → Battery → Restricted · now: {}", bucket));
+                        }
+                    }
+                }
+                painting.set(false);
+            })
+        };
+        let uid: Option<u32> = info.uid.trim().parse().ok();
+        let package = info.package.clone();
+        if let (Some(adb), Some(serial)) = (self.ctx.adb(), self.ctx.ready_serial()) {
+            let (pkg, paint, live) = (package.clone(), paint.clone(), self.details_gen.clone());
+            let read_pkg = pkg.clone();
+            util::run_bg(
+                move || adb.app_limits(&serial, &read_pkg, uid),
+                move |r| {
+                    if live.load(Ordering::Relaxed) != gen {
+                        return;
+                    }
+                    match r {
+                        Ok(l) => paint(&l),
+                        Err(e) => log::debug!("limits of {}: {e}", pkg),
+                    }
+                },
+            );
+        }
+        for (limit, row) in rows.iter() {
+            let (limit, ctx, paint, painting, live) = (*limit, self.ctx.clone(), paint.clone(), painting.clone(), self.details_gen.clone());
+            let (pkg, name) = (package.clone(), name.to_string());
+            row.connect_active_notify(move |r| {
+                if painting.get() {
+                    return;
+                }
+                let on = r.is_active();
+                let (Some(adb), Some(serial)) = (ctx.adb(), ctx.ready_serial()) else { return };
+                r.set_sensitive(false);
+                let msg = format!("{} · {}", name, if on { limit.label().to_string() } else { t!("{} undone", limit.label()) });
+                let (ctx, pkg, paint, live, r) = (ctx.clone(), pkg.clone(), paint.clone(), live.clone(), r.clone());
+                util::run_bg(
+                    {
+                        let pkg = pkg.clone();
+                        move || {
+                            let res = adb.set_app_limit(&serial, &pkg, uid, limit, on);
+                            // After a failure, the real state.
+                            let now = adb.app_limits(&serial, &pkg, uid).ok();
+                            (res, now)
+                        }
+                    },
+                    move |(res, now)| {
+                        match &res {
+                            Ok(_) => {
+                                ctx.audit("app_limit", Some(&format!("{pkg} · {msg}")), true, None);
+                                ctx.toast(&msg);
+                            }
+                            Err(e) => {
+                                ctx.audit("app_limit", Some(&format!("{pkg} · {msg}")), false, Some(&e.to_string()));
+                                ctx.toast(&t!("Could not change it: {}", e));
+                            }
+                        }
+                        if live.load(Ordering::Relaxed) != gen {
+                            return;
+                        }
+                        match res.ok().or(now) {
+                            Some(l) => paint(&l),
+                            None => r.set_sensitive(true),
+                        }
+                    },
+                );
+            });
+        }
+        group
     }
 
     /// Puts the real icon into `slot` (from the cache or reading it from the

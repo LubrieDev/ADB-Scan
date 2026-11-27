@@ -141,6 +141,33 @@ impl DeveloperPage {
         content.append(&add_group);
         content.append(&add);
 
+        // Maintenance
+        let upkeep = adw::PreferencesGroup::builder()
+            .title(tr("Maintenance"))
+            .description(tr("After a system update apps can feel slow for a few days while Android optimizes them at night, while charging. This does it now: it takes several minutes and the phone may get warm. Nothing is deleted."))
+            .build();
+        let optimize = util::pill_button("adb-power-profile-performance-symbolic", tr("Optimize apps now"));
+        optimize.add_css_class("pill");
+        optimize.set_halign(gtk::Align::Start);
+        upkeep.add(&optimize);
+        content.append(&upkeep);
+        {
+            let ctx = ctx.clone();
+            optimize.connect_clicked(move |b| {
+                let (ctx, b) = (ctx.clone(), b.clone());
+                util::confirm(&b.clone(), tr("Optimize the apps now?"), tr("Android compiles the apps that need it, as it does at night. It takes several minutes; you can keep using ADB Scan in the meantime."), tr("Optimize"), false, move || {
+                    b.set_sensitive(false);
+                    crate::anim::set_busy(&b, true);
+                    ctx.toast(tr("Optimizing the apps (several minutes)…"));
+                    let b2 = b.clone();
+                    ctx.device_op("optimize_apps", "bg-dexopt-job", tr("Apps optimized"), |adb, s| adb.optimize_apps(&s).map(|r| r.summary()), move |_| {
+                        b2.set_sensitive(true);
+                        crate::anim::set_busy(&b2, false);
+                    });
+                });
+            });
+        }
+
         let root = util::page_scroller(&content, 900);
         let this = Rc::new_cyclic(|me| Self {
             me: me.clone(),

@@ -196,7 +196,17 @@ impl FlasherPage {
         let unlock = adw::ActionRow::builder().title(tr("Unlock the bootloader")).subtitle(tr("fastboot flashing unlock · erases everything and disables verified boot")).activatable(true).build();
         let lock = adw::ActionRow::builder().title(tr("Lock the bootloader")).subtitle(tr("fastboot flashing lock · erases everything; only with factory firmware")).activatable(true).build();
         let devinfo = adw::ActionRow::builder().title(tr("OEM information")).subtitle(tr("fastboot oem device-info (read-only)")).activatable(true).build();
-        for r in [&devinfo, &wipe, &unlock, &lock] {
+        let unlock_data = adw::ActionRow::builder()
+            .title(tr("Unlock data (Motorola)"))
+            .subtitle(tr("fastboot oem get_unlock_data (read-only): the text to paste on Motorola's unlock website"))
+            .activatable(true)
+            .build();
+        let unlock_code = adw::ActionRow::builder()
+            .title(tr("Unlock with a code (Motorola, Sony)"))
+            .subtitle(tr("fastboot oem unlock <code> · erases everything; with the code the manufacturer sent you"))
+            .activatable(true)
+            .build();
+        for r in [&devinfo, &unlock_data, &wipe, &unlock, &unlock_code, &lock] {
             danger.add(r);
         }
         content.append(&danger);
@@ -290,6 +300,8 @@ impl FlasherPage {
         });
         on!(devinfo, connect_activated, |t, _a| t.simple_fb("oem device-info"));
         on!(wipe, connect_activated, |t, _a| t.guarded("wipe"));
+        on!(unlock_data, connect_activated, |t, _a| t.simple_fb("oem get_unlock_data"));
+        on!(unlock_code, connect_activated, |t, _a| t.unlock_with_code());
         on!(unlock, connect_activated, |t, _a| t.guarded("unlock"));
         on!(lock, connect_activated, |t, _a| t.guarded("lock"));
         for (b, target) in reboot_buttons {
@@ -874,6 +886,58 @@ impl FlasherPage {
         );
     }
 
+    /// Asks for the manufacturer's code, then for the serial number.
+    fn unlock_with_code(&self) {
+        let Some((fb, serial)) = self.fb_device() else {
+            return;
+        };
+        let dialog = adw::AlertDialog::new(Some(tr("Unlock code")), Some(tr("The code the manufacturer sent you (Motorola by email after pasting the unlock data on its website; Sony on its website).")));
+        let entry = gtk::Entry::builder().placeholder_text(tr("Code")).activates_default(true).build();
+        dialog.set_extra_child(Some(&entry));
+        dialog.add_response("cancel", tr("Cancel"));
+        dialog.add_response("next", tr("Continue"));
+        dialog.set_default_response(Some("next"));
+        dialog.set_response_enabled("next", false);
+        entry.connect_changed(glib::clone!(
+            #[weak]
+            dialog,
+            move |e| dialog.set_response_enabled("next", fastboot::Fastboot::is_valid_unlock_code(e.text().trim()))
+        ));
+        let w = self.me.clone();
+        dialog.connect_response(None, move |_, r| {
+            if r != "next" {
+                return;
+            }
+            let Some(t) = w.upgrade() else { return };
+            let code = entry.text().trim().to_string();
+            let body = t!(
+                "{}\n\nType the serial number ({}) to confirm.",
+                tr("ALL DATA WILL BE ERASED. The phone will show a warning on every boot, some apps (banking, payments) may stop working and the warranty may be affected."),
+                serial
+            );
+            let masked = t.masked(&body);
+            let (fb, serial2, w2) = (fb.clone(), serial.clone(), t.me.clone());
+            util::confirm_typed(&t.root, tr("Unlock the bootloader?"), &body, &serial, tr("Continue"), masked, move || {
+                let Some(t) = w2.upgrade() else { return };
+                t.log("▶ oem unlock");
+                let w3 = t.me.clone();
+                let (fb, serial) = (fb.clone(), serial2.clone());
+                util::run_bg(
+                    move || fb.oem_unlock(&serial, &code, Confirm::Destructive),
+                    move |r| {
+                        let Some(t) = w3.upgrade() else { return };
+                        t.ctx.audit("oem_unlock", None, r.is_ok(), None);
+                        t.log(&match r {
+                            Ok(r) => t!("{}\n✔ Command sent. Follow the instructions on the phone's screen.", r.combined()),
+                            Err(e) => format!("✖ {e}"),
+                        });
+                    },
+                );
+            });
+        });
+        dialog.present(Some(&self.root));
+    }
+
     fn guarded(&self, what: &'static str) {
         let Some((fb, serial)) = self.fb_device() else {
             return;
@@ -922,6 +986,12 @@ impl Page for FlasherPage {
         self.root.clone().upcast()
     }
     fn on_event(&self, ev: &Event) {
+        if let Event::PrepareFlash(partition, image) = ev {
+            self.part_entry.set_text(partition);
+            self.image_row.set_subtitle(&format!("{} · {}", image.display(), format::human_bytes(std::fs::metadata(image).ok().map(|m| m.len() as f64))));
+            *self.image.borrow_mut() = Some(image.clone());
+            self.validate_part();
+        }
         if matches!(ev, Event::Devices | Event::Tools | Event::Privacy) {
             self.refresh_state();
         }

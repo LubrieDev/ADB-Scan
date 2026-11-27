@@ -339,6 +339,35 @@ pub fn watch_frames(window: &impl IsA<gtk::Widget>) {
     });
 }
 
+/// Logs how many widgets a page has, and how many of them are wrapping
+/// labels (the costliest to lay out), once the page has been drawn (with
+/// ADB_SCAN_LOG=debug). A page's first layout grows with this number.
+pub fn log_widget_count(id: &str, root: &gtk::Widget) {
+    if !log::log_enabled!(log::Level::Debug) {
+        return;
+    }
+    fn walk(w: &gtk::Widget, n: &mut [usize; 3]) {
+        n[0] += 1;
+        if let Some(l) = w.downcast_ref::<gtk::Label>() {
+            n[1] += 1;
+            if l.wraps() {
+                n[2] += 1;
+            }
+        }
+        let mut c = w.first_child();
+        while let Some(x) = c {
+            walk(&x, n);
+            c = x.next_sibling();
+        }
+    }
+    let (id, root) = (id.to_string(), root.clone());
+    glib::timeout_add_local_once(std::time::Duration::from_millis(1200), move || {
+        let mut n = [0usize; 3];
+        walk(&root, &mut n);
+        log::debug!("widgets in {id}: {} ({} labels, {} wrapping)", n[0], n[1], n[2]);
+    });
+}
+
 /// Calls [`log_slow`] when leaving the scope.
 pub struct SlowGuard(pub &'static str, pub std::time::Instant);
 

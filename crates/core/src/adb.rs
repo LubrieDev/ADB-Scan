@@ -17,6 +17,9 @@ use crate::parsers;
 
 const SHORT: Duration = Duration::from_secs(10);
 const NORMAL: Duration = Duration::from_secs(20);
+/// Largest `resources.arsc` read over wireless ADB to find an app's name
+/// (about 10 s on a slow Wi-Fi).
+pub const WIRELESS_MAX_TABLE: u64 = 16 << 20;
 
 /// Clean shutdown (see [`Adb::power_off`]). `svc power shutdown` has existed
 /// for many versions; if this Android does not list it in its help, `reboot -p`
@@ -433,19 +436,25 @@ impl Adb {
         }
     }
 
-    /// Per-app usage and wakelocks since the last full charge. Two read-only
-    /// queries in parallel (~4 s in total).
+    /// Per-app usage, wakelocks, background tasks and alarms. Three
+    /// read-only queries in parallel (~4 s in total).
     pub fn battery_usage(&self, serial: &str) -> Result<crate::battery_usage::BatteryUsage> {
-        use crate::battery_usage::{build, USAGE_SCRIPT, WAKELOCK_SCRIPT};
-        let (usage, wakelocks) = std::thread::scope(|scope| {
+        use crate::battery_usage::{build, parse_alarms, ALARM_SCRIPT, USAGE_SCRIPT, WAKELOCK_SCRIPT};
+        let (usage, wakelocks, alarms) = std::thread::scope(|scope| {
             let w = scope.spawn(|| self.shell_script(serial, WAKELOCK_SCRIPT, Duration::from_secs(60)));
+            let a = scope.spawn(|| self.shell_script(serial, ALARM_SCRIPT, Duration::from_secs(60)));
             let u = self.shell_script(serial, USAGE_SCRIPT, Duration::from_secs(60));
-            (u, w.join().unwrap_or_else(|_| Err(crate::Error::Invalid("wakelocks thread".into()))))
+            let failed = || Err(crate::Error::Invalid("battery thread".into()));
+            (u, w.join().unwrap_or_else(|_| failed()), a.join().unwrap_or_else(|_| failed()))
         });
         let usage = usage?;
-        // Without wakelocks the usage is still shown.
+        // Without wakelocks or alarms the usage is still shown.
         let wakelocks = wakelocks.map(|r| r.stdout).unwrap_or_default();
-        Ok(build(&usage.stdout, &wakelocks))
+        let mut u = build(&usage.stdout, &wakelocks);
+        if let Ok(a) = alarms {
+            (u.alarms_since, u.alarms) = parse_alarms(&a.stdout);
+        }
+        Ok(u)
     }
 
     pub fn processes(&self, serial: &str) -> Result<Vec<ProcessInfo>> {
@@ -521,7 +530,12 @@ impl Adb {
         // several MB on Android 16 and its format changes between versions.
         let text = self.shell_text(serial, &["cmd", "wifi", "status"]);
         if text.contains("Wifi is") || text.contains("Wi-Fi is") {
-            return parsers::parse_wifi_status(&text);
+            let mut status = parsers::parse_wifi_status(&text);
+            // Android 11 leaves the IP out of `WifiInfo`.
+            if status.ip.is_empty() && status.enabled == Some(true) && !status.ssid.is_empty() {
+                status.ip = parsers::interface_ipv4(&self.shell_text(serial, &["ip", "-o", "-4", "addr", "show", "wlan0"])).unwrap_or_default();
+            }
+            return status;
         }
         parsers::parse_wifi_status(&self.shell_text(serial, &["dumpsys", "wifi"]))
     }
@@ -530,10 +544,12 @@ impl Adb {
         self.shell_text(serial, &["uname", "-a"]).trim().to_string()
     }
 
+    /// `mResumedActivity:` (Android 10 and older, 12+) or `ResumedActivity:`
+    /// (Android 11) or `topResumedActivity=` (some Android 12+ builds).
     pub fn foreground_activity(&self, serial: &str) -> String {
         let text = self.shell_text(serial, &["dumpsys", "activity", "activities"]);
         static RES: std::sync::LazyLock<[regex::Regex; 2]> =
-            std::sync::LazyLock::new(|| [regex::Regex::new(r"mResumedActivity:\s+\S+\s+\S+\s+([^\s/]+/[\w.$]+)").unwrap(), regex::Regex::new(r"topResumedActivity=.*?\s([\w.]+/[\w.$]+)").unwrap()]);
+            std::sync::LazyLock::new(|| [regex::Regex::new(r"(?m)^\s*m?ResumedActivity:\s+\S+\s+\S+\s+([^\s/]+/[\w.$]+)").unwrap(), regex::Regex::new(r"topResumedActivity=.*?\s([\w.]+/[\w.$]+)").unwrap()]);
         RES.iter().find_map(|re| re.captures(&text).map(|c| c[1].to_string())).unwrap_or_default()
     }
 
@@ -721,10 +737,25 @@ impl Adb {
     /// Display name of an installed app, reading only the manifest and
     /// `resources.arsc` with `unzip -p` on the phone. `None` if there is no
     /// unzip.
+    ///
+    /// Over Wi-Fi a resource table above [`WIRELESS_MAX_TABLE`] is not read
+    /// (system apps carry tables of 70 MB that do not arrive in time): only a
+    /// name written in the manifest itself is found then.
     pub fn package_label(&self, serial: &str, apk_path: &str) -> Option<String> {
         let manifest = self.apk_entry(serial, apk_path, "AndroidManifest.xml").ok()?;
-        let arsc = self.apk_entry(serial, apk_path, "resources.arsc").ok();
+        let wireless = serial.contains(':') || serial.contains("._adb-tls-connect.");
+        let too_big = wireless && self.apk_entry_size(serial, apk_path, "resources.arsc").is_some_and(|n| n > WIRELESS_MAX_TABLE);
+        let arsc = if too_big { None } else { self.apk_entry(serial, apk_path, "resources.arsc").ok() };
         crate::apk::label_from_parts(&manifest, arsc.as_deref())
+    }
+
+    /// Uncompressed size of a file inside an installed APK (`unzip -l`).
+    fn apk_entry_size(&self, serial: &str, apk_path: &str, entry: &str) -> Option<u64> {
+        if validate_remote_path(apk_path).is_err() || !apk_path.ends_with(".apk") {
+            return None;
+        }
+        let out = self.shell_text(serial, &["sh", "-c", &format!("unzip -l {} {} 2>/dev/null", shell_quote(apk_path), shell_quote(entry))]);
+        crate::apk::listed_size(&out, entry)
     }
 
     /// A file from an installed APK, read on the phone itself with `unzip -p`
@@ -943,6 +974,84 @@ impl Adb {
             return Err(Error::Command { summary: tr("Android does not allow changing the media volume over ADB right now").into(), code: None });
         }
         self.control_state(serial)
+    }
+
+    /// Applies a profile: only what differs from the phone, switches first.
+    /// With wireless ADB, turning Wi-Fi off is skipped (it would cut the
+    /// connection). Returns the final state and what was not applied.
+    pub fn apply_profile(&self, serial: &str, profile: &crate::controls::ControlProfile, wireless: bool) -> Result<(crate::controls::ControlState, Vec<String>)> {
+        use crate::controls::Toggle;
+        let mut state = self.control_state(serial)?;
+        let (toggles, levels) = profile.pending(&state);
+        let mut failed = Vec::new();
+        for (t, on) in toggles {
+            if wireless && t == Toggle::Wifi && !on {
+                failed.push(tr("Wi-Fi was left on: the phone is connected over Wi-Fi").to_string());
+                continue;
+            }
+            match self.set_toggle(serial, t, on, state.sdk) {
+                Ok((true, s)) => state = s,
+                Ok((false, s)) => {
+                    failed.push(crate::controls::not_applied_hint(t, on, &s));
+                    state = s;
+                }
+                Err(e) => failed.push(format!("{}: {e}", t.label())),
+            }
+        }
+        for l in levels {
+            match self.set_level(serial, l, &state) {
+                Ok(s) => state = s,
+                Err(e) => failed.push(e.to_string()),
+            }
+        }
+        Ok((state, failed))
+    }
+
+    /// Runs `settings put` commands (already validated argument lists) and
+    /// reads the state back.
+    fn put_settings(&self, serial: &str, commands: &[Vec<String>]) -> Result<crate::controls::ControlState> {
+        for c in commands {
+            let args: Vec<&str> = c.iter().map(String::as_str).collect();
+            let r = self.shell(serial, &args, SHORT)?;
+            let out = r.combined();
+            if let Some(p) = crate::probe::classify_failure(&out) {
+                return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+            }
+            if out.to_lowercase().contains("exception") {
+                return Err(Error::Command { summary: out.lines().next().unwrap_or("").chars().take(140).collect(), code: r.code });
+            }
+        }
+        thread::sleep(Duration::from_millis(300));
+        self.control_state(serial)
+    }
+
+    /// Sets the private DNS and checks it was applied.
+    pub fn set_private_dns(&self, serial: &str, dns: &crate::controls::PrivateDns) -> Result<crate::controls::ControlState> {
+        let commands = dns.commands().ok_or_else(|| Error::Invalid(tr("That is not a valid server name").into()))?;
+        let state = self.put_settings(serial, &commands)?;
+        if state.private_dns.ok() != Some(dns) {
+            return Err(Error::Command { summary: tr("The phone did not apply the private DNS").into(), code: None });
+        }
+        Ok(state)
+    }
+
+    /// Turns an accessibility setting on or off and checks it.
+    pub fn set_access_toggle(&self, serial: &str, toggle: crate::controls::AccessToggle, on: bool) -> Result<crate::controls::ControlState> {
+        let state = self.put_settings(serial, &toggle.commands(on))?;
+        if toggle.state(&state.access).ok() != Some(&on) {
+            return Err(Error::Command { summary: t!("The phone did not apply the change to “{}”", toggle.label()), code: None });
+        }
+        Ok(state)
+    }
+
+    /// Text size (`font_scale`).
+    pub fn set_font_scale(&self, serial: &str, scale: f64) -> Result<crate::controls::ControlState> {
+        self.put_settings(serial, &[crate::controls::font_scale_command(scale)])
+    }
+
+    /// Touch and hold delay.
+    pub fn set_long_press(&self, serial: &str, ms: i64) -> Result<crate::controls::ControlState> {
+        self.put_settings(serial, &[crate::controls::long_press_command(ms)])
     }
 
     /// Stateless action (open quick settings, a Settings screen…).
@@ -1347,6 +1456,296 @@ impl Adb {
             return Err(Error::Invalid(op.into()));
         }
         self.shell(serial, &["appops", "set", "--user", "0", package, op, if allow { "allow" } else { "deny" }], SHORT)?.into_result()
+    }
+
+    /// Runs the background app optimization now (`cmd package
+    /// bg-dexopt-job`, what Android does at night while charging). Minutes.
+    pub fn optimize_apps(&self, serial: &str) -> Result<CommandResult> {
+        let r = self.shell(serial, &["cmd", "package", "bg-dexopt-job"], Duration::from_secs(30 * 60))?;
+        if let Some(p) = crate::probe::classify_failure(&r.combined()) {
+            return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+        }
+        r.into_result()
+    }
+
+    /// Wi-Fi networks saved on the phone (Android 11+). Read-only.
+    pub fn saved_networks(&self, serial: &str) -> Result<Vec<crate::saved_networks::SavedNetwork>> {
+        let r = self.shell(serial, &["cmd", "wifi", "list-networks"], SHORT)?;
+        let out = r.combined();
+        if let Some(p) = crate::probe::classify_failure(&out) {
+            return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+        }
+        crate::saved_networks::parse(&out).ok_or_else(|| Error::Command { summary: tr("This Android version does not list saved networks over ADB").into(), code: r.code })
+    }
+
+    /// Forgets a saved Wi-Fi network and checks it is gone.
+    pub fn forget_network(&self, serial: &str, id: u32) -> Result<CommandResult> {
+        let cmd = crate::saved_networks::forget_command(id);
+        let args: Vec<&str> = cmd.iter().map(String::as_str).collect();
+        let r = self.shell(serial, &args, SHORT)?;
+        if r.combined().contains("Forget failed") {
+            return Err(Error::Command { summary: tr("Android did not forget the network").into(), code: r.code });
+        }
+        if self.saved_networks(serial)?.iter().any(|n| n.id == id) {
+            return Err(Error::Command { summary: tr("Android did not forget the network").into(), code: r.code });
+        }
+        Ok(r)
+    }
+
+    /// The phone's settings now (see [`crate::settings_snapshot`]). Read-only.
+    pub fn settings_snapshot(&self, serial: &str) -> Result<crate::settings_snapshot::Snapshot> {
+        let r = self.shell_script(serial, crate::settings_snapshot::SCRIPT, NORMAL)?;
+        let s = crate::settings_snapshot::parse(&r.stdout);
+        if s.values.is_empty() {
+            return Err(Error::Command { summary: tr("could not read the settings").into(), code: r.code });
+        }
+        Ok(s)
+    }
+
+    /// Puts back the value a setting had in a snapshot (or deletes it if it
+    /// did not exist) and checks it.
+    pub fn restore_setting(&self, serial: &str, change: &crate::settings_snapshot::Change) -> Result<CommandResult> {
+        let cmd = change.restore_command().ok_or_else(|| Error::Invalid(tr("This setting is not restored: it could cut the connection or undo the phone's setup").into()))?;
+        let args: Vec<&str> = cmd.iter().map(String::as_str).collect();
+        let r = self.shell(serial, &args, SHORT)?;
+        if let Some(p) = crate::probe::classify_failure(&r.combined()) {
+            return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+        }
+        let now = self.shell(serial, &["settings", "get", &change.namespace, &change.key], SHORT)?;
+        let value = now.stdout.trim();
+        let ok = match &change.before {
+            Some(v) => value == v.trim(),
+            None => value.is_empty() || value == "null",
+        };
+        if !ok {
+            return Err(Error::Command { summary: tr("The phone did not keep the old value").into(), code: None });
+        }
+        Ok(r)
+    }
+
+    /// Default apps and the apps that can take each role (see
+    /// [`crate::roles`]). Read-only.
+    pub fn roles(&self, serial: &str) -> Result<Vec<crate::roles::RoleState>> {
+        let r = self.shell_script(serial, &crate::roles::script(), NORMAL)?;
+        Ok(crate::roles::parse(&r.stdout))
+    }
+
+    /// Makes `package` the default app for `role` and checks it.
+    pub fn set_role(&self, serial: &str, role: crate::roles::Role, package: &str) -> Result<Vec<crate::roles::RoleState>> {
+        check_package(package)?;
+        let cmd = crate::roles::set_command(role, package);
+        let args: Vec<&str> = cmd.iter().map(String::as_str).collect();
+        let r = self.shell(serial, &args, NORMAL)?;
+        let out = r.combined();
+        if let Some(p) = crate::probe::classify_failure(&out) {
+            return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+        }
+        let roles = self.roles(serial)?;
+        if !roles.iter().any(|s| s.role == role && s.holders.iter().any(|h| h == package)) {
+            let why = out.lines().find(|l| !l.trim().is_empty()).map(|l| l.trim().chars().take(160).collect::<String>());
+            return Err(Error::Command { summary: why.unwrap_or_else(|| tr("Android did not accept this app for that role").into()), code: r.code });
+        }
+        Ok(roles)
+    }
+
+    /// What rooting this phone needs (see [`crate::root`]). Read-only.
+    pub fn root_report(&self, serial: &str) -> Result<crate::root::RootReport> {
+        let r = self.shell_script(serial, crate::root::SCRIPT, NORMAL)?;
+        let report = crate::root::parse(&r.stdout);
+        if report.props.is_empty() {
+            return Err(Error::Command { summary: tr("Android did not answer").into(), code: r.code });
+        }
+        Ok(report)
+    }
+
+    /// The newest image patched by Magisk in the phone's Download folder:
+    /// (full path, size). Read-only.
+    pub fn find_patched_image(&self, serial: &str) -> Result<Option<(String, u64)>> {
+        let dir = crate::root::PHONE_DOWNLOADS;
+        let ls = self.shell(serial, &["ls", "-t", dir], SHORT)?;
+        let Some(name) = crate::root::newest_patched(&ls.stdout) else { return Ok(None) };
+        let path = format!("{dir}/{name}");
+        let size = self.shell(serial, &["stat", "-c", "%s", &path], SHORT)?.stdout.trim().parse().unwrap_or(0);
+        Ok(Some((path, size)))
+    }
+
+    /// Memory per app over the last hours (see [`crate::procstats`]).
+    /// Read-only.
+    pub fn memory_report(&self, serial: &str) -> Result<crate::procstats::MemoryReport> {
+        let r = self.shell_script(serial, crate::procstats::SCRIPT, NORMAL)?;
+        if let Some(p) = crate::probe::classify_failure(&r.combined()) {
+            return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+        }
+        Ok(crate::procstats::parse(&r.stdout))
+    }
+
+    /// Nearby Wi-Fi networks (see [`crate::radio`]): starts a scan and reads
+    /// the results (~5 s). Read-only.
+    pub fn wifi_scan(&self, serial: &str) -> Result<Vec<crate::radio::Network>> {
+        let r = self.shell_script(serial, crate::radio::WIFI_SCRIPT, NORMAL)?;
+        let out = r.combined();
+        if let Some(p) = crate::probe::classify_failure(&out) {
+            return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+        }
+        crate::radio::parse_scan(&out).ok_or_else(|| Error::Command { summary: tr("This Android version does not list nearby networks over ADB").into(), code: r.code })
+    }
+
+    /// Mobile signal of the SIM in service (`None`: no SIM in service).
+    /// Read-only.
+    pub fn mobile_signal(&self, serial: &str) -> Result<Option<crate::radio::MobileSignal>> {
+        let r = self.shell_script(serial, crate::radio::MOBILE_SCRIPT, SHORT)?;
+        Ok(crate::radio::parse_mobile(&r.stdout))
+    }
+
+    /// Enabled keyboards and the one in use (see [`crate::keyboards`]).
+    /// Read-only.
+    pub fn keyboards(&self, serial: &str) -> Result<crate::keyboards::Keyboards> {
+        let r = self.shell_script(serial, crate::keyboards::SCRIPT, SHORT)?;
+        Ok(crate::keyboards::parse(&r.stdout))
+    }
+
+    /// Makes `id` the keyboard in use and checks it.
+    pub fn set_keyboard(&self, serial: &str, id: &str) -> Result<crate::keyboards::Keyboards> {
+        let cmd = crate::keyboards::set_command(id).ok_or_else(|| Error::Invalid(id.into()))?;
+        let args: Vec<&str> = cmd.iter().map(String::as_str).collect();
+        let r = self.shell(serial, &args, SHORT)?;
+        if let Some(p) = crate::probe::classify_failure(&r.combined()) {
+            return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+        }
+        let now = self.keyboards(serial)?;
+        if now.current.as_deref() != Some(id) {
+            let why = r.combined().lines().find(|l| !l.trim().is_empty()).map(|l| l.trim().chars().take(160).collect::<String>());
+            return Err(Error::Command { summary: why.unwrap_or_else(|| tr("Android did not change the keyboard").into()), code: r.code });
+        }
+        Ok(now)
+    }
+
+    /// Crashes, freezes and restarts (see [`crate::stability`]). Read-only.
+    pub fn stability(&self, serial: &str) -> Result<crate::stability::Stability> {
+        let r = self.shell_script(serial, &crate::stability::script(), LONG)?;
+        Ok(crate::stability::parse(&r.stdout))
+    }
+
+    /// Full bug report (`adb bugreport`, a ZIP Android builds in one to three
+    /// minutes) saved into `dir`. Returns the file.
+    pub fn bugreport(&self, serial: &str, dir: &std::path::Path) -> Result<std::path::PathBuf> {
+        let dir_text = dir.to_string_lossy().to_string();
+        let before: std::collections::HashSet<std::path::PathBuf> = std::fs::read_dir(dir).map(|d| d.flatten().map(|e| e.path()).collect()).unwrap_or_default();
+        let r = self.run(Some(serial), &["bugreport", &dir_text], Duration::from_secs(15 * 60))?;
+        let out = r.combined();
+        // “Bug report copied to /dir/bugreport-….zip”
+        if let Some(p) = out.lines().find_map(|l| l.trim().strip_prefix("Bug report copied to ")) {
+            return Ok(std::path::PathBuf::from(p.trim()));
+        }
+        let new = std::fs::read_dir(dir).map(|d| d.flatten().map(|e| e.path()).filter(|p| !before.contains(p) && p.extension().is_some_and(|e| e == "zip")).collect::<Vec<_>>()).unwrap_or_default();
+        new.into_iter().next().ok_or_else(|| Error::Command { summary: out.lines().rev().find(|l| !l.trim().is_empty()).unwrap_or("").trim().chars().take(160).collect(), code: r.code })
+    }
+
+    /// Screen time and data per app (see [`crate::usage`]). Read-only.
+    pub fn usage(&self, serial: &str) -> Result<crate::usage::Usage> {
+        let r = self.shell_script(serial, &crate::usage::script(), LONG)?;
+        Ok(crate::usage::parse(&r.stdout))
+    }
+
+    /// Limits of one app (pause, background activity and data). Read-only.
+    pub fn app_limits(&self, serial: &str, package: &str, uid: Option<u32>) -> Result<crate::app_limits::AppLimits> {
+        check_package(package)?;
+        let r = self.shell_script(serial, &crate::app_limits::state_script(package), NORMAL)?;
+        Ok(crate::app_limits::parse(&r.stdout, uid))
+    }
+
+    /// Contacts, call log or SMS as a file's text (see
+    /// [`crate::personal_export`]): (text, how many). Read-only.
+    pub fn personal_export(&self, serial: &str, kind: crate::personal_export::Kind) -> Result<(String, usize)> {
+        let args = kind.query();
+        let args: Vec<&str> = args.iter().map(String::as_str).collect();
+        let r = self.shell(serial, &args, LONG)?;
+        let out = r.combined();
+        if let Some(p) = crate::probe::classify_failure(&out) {
+            return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+        }
+        if !out.contains("Row: ") && !out.contains("No result found") {
+            let why = out.lines().find(|l| !l.trim().is_empty()).unwrap_or("").trim().chars().take(160).collect::<String>();
+            return Err(Error::Command { summary: if why.is_empty() { tr("Android did not answer").into() } else { why }, code: r.code });
+        }
+        Ok(crate::personal_export::build(kind, &r.stdout))
+    }
+
+    /// Game mode, language and smoothness of one app (see
+    /// [`crate::app_tuning`]). Read-only.
+    pub fn app_tuning(&self, serial: &str, package: &str) -> Result<crate::app_tuning::AppTuning> {
+        check_package(package)?;
+        let r = self.shell_script(serial, &crate::app_tuning::script(package), NORMAL)?;
+        Ok(crate::app_tuning::parse(&r.stdout))
+    }
+
+    /// Runs already validated commands, stopping at the first that fails.
+    fn run_checked(&self, serial: &str, commands: &[Vec<String>]) -> Result<()> {
+        for c in commands {
+            let args: Vec<&str> = c.iter().map(String::as_str).collect();
+            let r = self.shell(serial, &args, NORMAL)?;
+            let out = r.combined();
+            if let Some(p) = crate::probe::classify_failure(&out) {
+                return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+            }
+            let lower = out.to_lowercase();
+            if r.code.is_some_and(|c| c != 0) || lower.contains("exception") || lower.contains("error") || lower.contains("not of game type") {
+                return Err(Error::Command { summary: out.lines().find(|l| !l.trim().is_empty()).unwrap_or("").trim().chars().take(160).collect(), code: r.code });
+            }
+        }
+        Ok(())
+    }
+
+    /// Puts a game in a mode (custom: `scale` and `fps`) and checks it.
+    pub fn set_game_mode(&self, serial: &str, package: &str, mode: &str, scale: f64, fps: u32) -> Result<crate::app_tuning::AppTuning> {
+        check_package(package)?;
+        let commands = crate::app_tuning::game_commands(package, mode, scale, fps).ok_or_else(|| Error::Invalid(mode.into()))?;
+        self.run_checked(serial, &commands)?;
+        let now = self.app_tuning(serial, package)?;
+        if now.game.ok().map(|g| g.current.as_str()) != Some(mode) {
+            return Err(Error::Command { summary: tr("Android did not apply the game mode").into(), code: None });
+        }
+        Ok(now)
+    }
+
+    /// Sets the app's language (`None`: the system's) and checks it.
+    pub fn set_app_locale(&self, serial: &str, package: &str, tag: Option<&str>) -> Result<crate::app_tuning::AppTuning> {
+        check_package(package)?;
+        let command = crate::app_tuning::locale_command(package, tag).ok_or_else(|| Error::Invalid(tag.unwrap_or("").into()))?;
+        self.run_checked(serial, &[command])?;
+        let now = self.app_tuning(serial, package)?;
+        let want: Vec<String> = tag.map(|t| vec![t.to_string()]).unwrap_or_default();
+        if now.locales.ok() != Some(&want) {
+            return Err(Error::Command { summary: tr("Android did not change the app's language").into(), code: None });
+        }
+        Ok(now)
+    }
+
+    /// Puts a limit on an app or takes it off, and checks it by reading the
+    /// limits back. Refused for the apps the phone needs.
+    pub fn set_app_limit(&self, serial: &str, package: &str, uid: Option<u32>, limit: crate::app_limits::Limit, on: bool) -> Result<crate::app_limits::AppLimits> {
+        check_package(package)?;
+        if on && limit.restricts() && crate::app_limits::is_protected(package) {
+            return Err(Error::Invalid(tr("The phone needs this app: it is not limited").into()));
+        }
+        let commands = limit.commands(package, uid, on).ok_or_else(|| Error::Invalid(tr("The app's UID is not known").into()))?;
+        for c in &commands {
+            let args: Vec<&str> = c.iter().map(String::as_str).collect();
+            let r = self.shell(serial, &args, NORMAL)?;
+            let out = r.combined();
+            if let Some(p) = crate::probe::classify_failure(&out) {
+                return Err(Error::Command { summary: p.status_text().unwrap_or_default(), code: r.code });
+            }
+            let lower = out.to_lowercase();
+            if lower.contains("exception") || lower.contains("error") {
+                return Err(Error::Command { summary: out.lines().find(|l| !l.trim().is_empty()).unwrap_or("").trim().chars().take(160).collect(), code: r.code });
+            }
+        }
+        let limits = self.app_limits(serial, package, uid)?;
+        if limit.is_on(&limits) != Some(on) {
+            return Err(Error::Command { summary: t!("Android did not apply “{}” to this app", limit.label()), code: None });
+        }
+        Ok(limits)
     }
 
     /// Turns off one accessibility service: rewrites the list of enabled

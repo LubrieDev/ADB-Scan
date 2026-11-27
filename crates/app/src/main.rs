@@ -8,6 +8,7 @@ mod anim;
 mod app;
 mod ctx;
 mod help;
+mod layout_fix;
 mod pages;
 mod panel;
 mod prefs;

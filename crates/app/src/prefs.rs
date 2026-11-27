@@ -289,11 +289,11 @@ pub fn show(ctx: &Rc<Ctx>, parent: &gtk::Widget) {
     let remembered = adw::PreferencesGroup::builder().title(tr("Remembered")).build();
     let wifi_known = adw::ActionRow::builder()
         .title(tr("Wireless addresses"))
-        .subtitle(&t!("{} addresses used with wireless ADB, offered when connecting again", s.wireless_history.len()))
+        .subtitle(t!("{} addresses used with wireless ADB, offered when connecting again", s.wireless_history.len()))
         .build();
     let usb_known = adw::ActionRow::builder()
         .title(tr("USB speed of each phone"))
-        .subtitle(&t!("{} phones. The fastest link each one reached tells a slow cable from a slow phone", s.usb_best_speed.len()))
+        .subtitle(t!("{} phones. The fastest link each one reached tells a slow cable from a slow phone", s.usb_best_speed.len()))
         .build();
     for (row, which) in [(&wifi_known, 0), (&usb_known, 1)] {
         let forget = gtk::Button::with_label(tr("Forget"));

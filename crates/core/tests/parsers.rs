@@ -139,6 +139,42 @@ fn real_thermal() {
     assert!(temps.iter().all(|t| t.value_c < 200.0));
 }
 
+/// Android 11, Unisoc (moto e20): no type (`mType=-1`), and each name ends
+/// in a line break, so `, mStatus=0}` comes on the next line. The live script
+/// keeps those lines.
+#[test]
+fn unisoc_thermal() {
+    let text = "Thermal Status: 0\nCached temperatures:\n\tTemperature{mValue=24.9, mType=-1, mName=soc-thmzone\n, mStatus=0}\nHAL Ready: true\n\
+Current temperatures from HAL:\n\tTemperature{mValue=37.4, mType=-1, mName=cputop1-thmzone\n, mStatus=0}\n\tTemperature{mValue=38.1, mType=-1, mName=ank2-thmzone\n, mStatus=0}\n\
+\tTemperature{mValue=36.3, mType=-1, mName=prometheus6-thmzone\n, mStatus=0}\n\tTemperature{mValue=37.7, mType=-1, mName=soc-thmzone\n, mStatus=0}\n\
+\tTemperature{mValue=35.5, mType=-1, mName=gpu-thmzone\n, mStatus=0}\n\tTemperature{mValue=29.8, mType=-1, mName=board-thmzone\n, mStatus=0}\n";
+    let (temps, status) = parsers::parse_thermalservice(text);
+    assert_eq!(status, Some(0));
+    // The current block wins over the cached one.
+    assert_eq!(temps.len(), 6);
+    let kind = |n: &str| temps.iter().find(|t| t.name == n).map(|t| t.kind()).unwrap();
+    assert_eq!(kind("ank2-thmzone"), "CPU");
+    assert_eq!(kind("prometheus6-thmzone"), "CPU");
+    assert_eq!(kind("cputop1-thmzone"), "CPU");
+    assert_eq!(kind("soc-thmzone"), "SoC");
+    assert_eq!(kind("gpu-thmzone"), "GPU");
+    let snap = adbscan_core::models::Snapshot { temperatures: temps, ..Default::default() };
+    assert_eq!(snap.cpu_temperature(), Some(38.1));
+}
+
+/// Android 11 (moto e20): `df -k /data` answers with the obb bind mount of the
+/// same partition; the plain `df -k` line for `/data` is added by the script.
+#[test]
+fn android_11_data_partition() {
+    let text = "Filesystem       1K-blocks     Used Available Use% Mounted on\n/dev/block/dm-14  25077760 14801524  10071436  60% /storage/emulated/0/Android/obb\n\
+/dev/fuse         25077760 14801524  10071436  60% /storage/emulated\n/dev/block/dm-14       25077760 14801552  10071408  60% /data\n";
+    let entries = parsers::parse_df(text);
+    let data = parsers::select_storage(&entries, StorageKind::Data);
+    assert_eq!(data.mount, "/data");
+    assert_eq!(data.total_kib, Some(25077760));
+    assert!(parsers::select_storage(&entries, StorageKind::Shared).total_kib.is_some());
+}
+
 #[test]
 fn real_cpuinfo() {
     let cpu = parsers::parse_cpuinfo(&fixture("cpuinfo.txt"));
@@ -527,4 +563,34 @@ fn top_last_sample() {
     let text = "Tasks: 992 total,   5 running\n  Mem:    11232M total\n800%cpu 223%user\n[%CPU] NAME\n  0.0 system_server\n  0.0 adbd\n\
 Tasks: 992 total,   6 running\n  Mem:    11232M total\n800%cpu 190%user\n[%CPU] NAME\n 13.6 system_server\n 11.6 adbd\n  3.3 top\n  1.0 sh\n";
     assert_eq!(parsers::parse_top_last(text), vec![("system_server".to_string(), 13.6), ("adbd".to_string(), 11.6), ("sh".to_string(), 1.0)]);
+}
+
+/// Android 11 (moto e20): the standard is a number and there is no IP.
+#[test]
+fn android_11_wifi_status() {
+    let text = "Wifi is enabled\nWifi is connected to \"home\"\nWifiInfo: SSID: home, BSSID: 02:00:00:00:00:01, MAC: 02:00:00:00:00:02, Supplicant state: COMPLETED, Wi-Fi standard: 4, RSSI: -49, Link speed: 65Mbps, Frequency: 2462MHz, Net ID: 2\n";
+    let s = parsers::parse_wifi_status(text);
+    assert_eq!(s.standard, "Wi-Fi 4 (802.11n)");
+    assert_eq!(s.ip, "");
+    assert_eq!(parsers::interface_ipv4("23: wlan0    inet 192.168.1.35/24 brd 192.168.1.255 scope global wlan0\\       valid_lft forever"), Some("192.168.1.35".into()));
+    assert_eq!(parsers::interface_ipv4("Device \"wlan0\" does not exist."), None);
+}
+
+/// Samsung (Galaxy Tab A9+, One UI, Android 16): its own battery health in
+/// `dumpsys battery`. Android's learned capacity there is a placeholder
+/// (5000 mAh, min = max), so Samsung's figure is the one used.
+#[test]
+fn samsung_battery_health() {
+    let text = "Current Battery Service state:\n  level: 35\n  FEATURE_SAVE_BATTERY_CYCLE: true\n  battery FirstUseDate: [20240813]\n  mSavedBatteryAsoc: [89]\n  mSavedBatteryUsage: [20179]\n  mSavedFullStatusDuration: unsupported\n";
+    let h = parsers::parse_samsung_battery(text);
+    assert_eq!(h.battery_asoc, Some(89));
+    assert_eq!(h.battery_cycles, Some(202));
+    assert_eq!(h.battery_first_use.as_deref(), Some("2024-08-13"));
+    assert_eq!(h.battery_percent(), Some(89.0));
+    // Measured mAh win over the manufacturer's figure.
+    let measured = ComponentHealth { battery_full_mah: Some(4500), battery_design_mah: Some(5000), battery_asoc: Some(89), ..Default::default() };
+    assert_eq!(measured.battery_percent(), Some(90.0));
+    // Other phones: nothing.
+    let none = parsers::parse_samsung_battery("  level: 80\n  mSavedBatteryAsoc: [0]\n");
+    assert_eq!((none.battery_asoc, none.battery_cycles, none.battery_first_use), (None, None, None));
 }

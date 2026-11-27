@@ -210,6 +210,7 @@ struct DataPage {
     sim_group: adw::PreferencesGroup,
     sim_rows: RefCell<Vec<adw::ActionRow>>,
     accounts_group: adw::PreferencesGroup,
+    before_reset: crate::pages::personal_copy::BeforeReset,
     account_rows: RefCell<Vec<Rc<SecretRow>>>,
     /// Increases when wiping: discards reads that finish afterwards.
     generation: Cell<u64>,
@@ -340,6 +341,9 @@ impl DataPage {
 
         let accounts_group = adw::PreferencesGroup::builder().title(tr("Accounts on the phone")).build();
         private_view.append(&accounts_group);
+        private_view.append(&crate::pages::personal_copy::group(ctx));
+        let before_reset = crate::pages::personal_copy::BeforeReset::new(ctx);
+        private_view.append(&before_reset.group);
         views.add_named(&private_view, Some("private"));
         content.append(&views);
 
@@ -374,6 +378,7 @@ impl DataPage {
             sim_group,
             sim_rows: RefCell::new(Vec::new()),
             accounts_group,
+            before_reset,
             account_rows: RefCell::new(Vec::new()),
             generation: Cell::new(0),
             loaded_for: RefCell::new(None),
@@ -577,6 +582,7 @@ impl DataPage {
             n => t!("{} accounts", n),
         }));
         *self.account_rows.borrow_mut() = rows;
+        self.before_reset.set_accounts(&info.accounts);
         for r in &self.secrets {
             r.set_revealed(revealed);
         }

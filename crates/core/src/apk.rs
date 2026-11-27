@@ -310,6 +310,11 @@ fn parse_type_chunk(b: &[u8], p: usize, hsize: usize, package_id: u8, table: &mu
     // +10.
     let cfg = p + 20;
     let lang = b.get(cfg + 8..cfg + 10).map(|l| if l[0] == 0 { String::new() } else { String::from_utf8_lossy(l).into_owned() }).unwrap_or_default();
+    // Pseudo-locales (en-XA “[Çåļéñðåŕ…]”, ar-XB) exist only to test
+    // translations: never a name to show.
+    if matches!(b.get(cfg + 10..cfg + 12), Some(b"XA" | b"XB")) {
+        return Some(());
+    }
     // Density at +14 (after orientation and touchscreen).
     let density = u16_at(b, cfg + 14).unwrap_or(0);
     let sparse = flags & 0x01 != 0;
@@ -1021,6 +1026,15 @@ pub fn inspect(path: &Path) -> Result<ApkInfo> {
     Ok(info)
 }
 
+/// `unzip -l` output: the size of `entry` (“ 72079304  2009-01-01 00:00   resources.arsc”).
+pub fn listed_size(text: &str, entry: &str) -> Option<u64> {
+    text.lines().find_map(|l| {
+        let mut parts = l.split_whitespace();
+        let size = parts.next()?.parse().ok()?;
+        (parts.last()? == entry).then_some(size)
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1228,5 +1242,13 @@ mod tests {
         assert!(!info.package.is_empty());
         assert!(!info.label.is_empty(), "must resolve the display name");
         assert!(info.target_sdk.is_some());
+    }
+
+    #[test]
+    fn listed_entry_size() {
+        let out = "Archive:  /system_ext/priv-app/Settings/Settings.apk\n  Length      Date    Time    Name\n---------  ---------- -----   ----\n 72079304  2009-01-01 00:00   resources.arsc\n---------                     -------\n 72079304                     1 file\n";
+        assert_eq!(listed_size(out, "resources.arsc"), Some(72079304));
+        assert_eq!(listed_size(out, "AndroidManifest.xml"), None);
+        assert_eq!(listed_size("", "resources.arsc"), None);
     }
 }

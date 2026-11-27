@@ -33,12 +33,13 @@ pub fn build(ctx: &Rc<Ctx>) -> Rc<dyn Page> {
     BatteryPage::new(ctx)
 }
 
-const FIELDS: [(&str, &str); 15] = [
+const FIELDS: [(&str, &str); 16] = [
     ("status", "Status"),
     ("health", "Health"),
     ("wear", "Capacity compared to the original"),
     ("cycles", "Charge cycles"),
     ("capacity_mah", "Current / design capacity"),
+    ("first_use", "Battery in use since"),
     ("source", "Power source"),
     ("voltage", "Voltage"),
     ("temp", "Temperature"),
@@ -200,6 +201,7 @@ impl BatteryPage {
             },
         );
         self.set("cycles", h.battery_cycles.map(|c| c.to_string()).unwrap_or_default());
+        self.set("first_use", h.battery_first_use.clone().unwrap_or_default());
         self.set(
             "capacity_mah",
             match (h.battery_full_mah, h.battery_design_mah, h.battery_percent()) {

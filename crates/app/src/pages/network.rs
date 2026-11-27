@@ -1,5 +1,6 @@
-//! Network: Wi-Fi, interfaces, routes and capture with TShark. (Wireless ADB
-//! is in Connection.)
+//! Network: Wi-Fi, mobile signal, nearby networks, saved networks,
+//! interfaces, routes and capture with TShark. (Wireless ADB is in
+//! Connection.)
 
 use adbscan_core::{i18n::tr, t};
 use adw::prelude::*;
@@ -35,6 +36,10 @@ struct NetworkPage {
     filter_hidden: adw::ActionRow,
     capture_file: RefCell<Option<std::path::PathBuf>>,
     capture_group: adw::PreferencesGroup,
+    saved: gtk::ListBox,
+    saved_for: RefCell<Option<String>>,
+    saved_list: RefCell<Vec<adbscan_core::saved_networks::SavedNetwork>>,
+    radio: Rc<crate::pages::radio_view::RadioView>,
 }
 
 pub fn build(ctx: &Rc<Ctx>) -> Rc<dyn Page> {
@@ -66,6 +71,22 @@ impl NetworkPage {
         refresh.add_css_class("flat");
         wifi.set_header_suffix(Some(&refresh));
         content.append(&wifi);
+
+        let radio = crate::pages::radio_view::RadioView::new(ctx);
+        content.append(&radio.root);
+
+        let saved_group = adw::PreferencesGroup::builder()
+            .title(tr("Saved Wi-Fi networks"))
+            .description(tr("Networks the phone joins by itself. Forgetting old ones (a café, a hotel) stops the phone from joining them, or from announcing their names while it looks for them. Passwords cannot be read without root."))
+            .build();
+        let saved = gtk::ListBox::new();
+        saved.add_css_class("boxed-list");
+        saved.set_selection_mode(gtk::SelectionMode::None);
+        saved_group.add(&saved);
+        let saved_refresh = util::icon_button("adb-refresh-cw-symbolic", tr("Read again"));
+        saved_refresh.add_css_class("flat");
+        saved_group.set_header_suffix(Some(&saved_refresh));
+        content.append(&saved_group);
 
         let ig = adw::PreferencesGroup::builder().title("Interfaces").build();
         let ifaces = gtk::ListBox::new();
@@ -122,7 +143,19 @@ impl NetworkPage {
             filter_hidden,
             capture_file: RefCell::new(None),
             capture_group,
+            saved,
+            saved_for: RefCell::new(None),
+            saved_list: RefCell::new(Vec::new()),
+            radio,
         });
+        {
+            let w = this.me.clone();
+            saved_refresh.connect_clicked(move |_| {
+                if let Some(t) = w.upgrade() {
+                    t.load_saved();
+                }
+            });
+        }
         {
             let w = this.me.clone();
             refresh.connect_clicked(move |_| {
@@ -184,7 +217,7 @@ impl NetworkPage {
                     let q = match r {
                         r if r >= -55 => tr("excellent"),
                         r if r >= -67 => tr("good"),
-                        r if r >= -75 => "regular",
+                        r if r >= -75 => tr("fair"),
                         _ => tr("weak"),
                     };
                     format!("{r} dBm ({q})")
@@ -203,7 +236,7 @@ impl NetworkPage {
                         } else if f >= 4900 {
                             "5 GHz"
                         } else {
-                            "2,4 GHz"
+                            "2.4 GHz"
                         }
                     )
                 })
@@ -212,6 +245,7 @@ impl NetworkPage {
         self.set("standard", w.standard.clone());
         self.set("security", w.security.clone());
         self.set("bssid", w.bssid.clone());
+        self.radio.connected_freq.set(w.frequency_mhz.map(|f| f as u32));
     }
 
     fn load_wifi(&self) {
@@ -407,6 +441,66 @@ impl NetworkPage {
     }
 }
 
+impl NetworkPage {
+    fn load_saved(&self) {
+        let (Some(adb), Some(serial)) = (self.ctx.adb(), self.ctx.ready_serial()) else {
+            return;
+        };
+        *self.saved_for.borrow_mut() = Some(serial.clone());
+        let w = self.me.clone();
+        util::run_bg(
+            move || adb.saved_networks(&serial),
+            move |r| {
+                let Some(t) = w.upgrade() else { return };
+                match r {
+                    Ok(list) => {
+                        *t.saved_list.borrow_mut() = list;
+                        t.render_saved();
+                    }
+                    Err(e) => {
+                        t.saved_list.borrow_mut().clear();
+                        t.saved.remove_all();
+                        t.saved.append(&adw::ActionRow::builder().title(glib::markup_escape_text(&e.to_string())).build());
+                    }
+                }
+            },
+        );
+    }
+
+    fn render_saved(&self) {
+        self.saved.remove_all();
+        let list = self.saved_list.borrow();
+        if list.is_empty() {
+            self.saved.append(&adw::ActionRow::builder().title(tr("No saved networks")).build());
+            return;
+        }
+        for n in list.iter() {
+            let row = adw::ActionRow::builder().title(glib::markup_escape_text(&self.ctx.shown_value(&n.ssid))).subtitle(glib::markup_escape_text(&n.security_label())).build();
+            row.add_prefix(&util::icon("adb-wifi-symbolic"));
+            let forget = gtk::Button::with_label(tr("Forget"));
+            forget.add_css_class("flat");
+            forget.set_valign(gtk::Align::Center);
+            let (w, id, ssid) = (self.me.clone(), n.id, n.ssid.clone());
+            forget.connect_clicked(move |b| {
+                let Some(t) = w.upgrade() else { return };
+                let shown = t.ctx.shown_value(&ssid);
+                let w = w.clone();
+                util::confirm(b, &t!("Forget “{}”?", shown), tr("The phone will not join it again until you enter its password on the phone. If the phone is connected to ADB Scan over this network, the connection is lost."), tr("Forget"), true, move || {
+                    let Some(t) = w.upgrade() else { return };
+                    let w2 = t.me.clone();
+                    t.ctx.device_op("forget_network", &shown, &t!("“{}” forgotten", shown), move |adb, s| adb.forget_network(&s, id).map(|r| r.summary()), move |_| {
+                        if let Some(t) = w2.upgrade() {
+                            t.load_saved();
+                        }
+                    });
+                });
+            });
+            row.add_suffix(&forget);
+            self.saved.append(&row);
+        }
+    }
+}
+
 impl Page for NetworkPage {
     fn widget(&self) -> gtk::Widget {
         self.root.clone().upcast()
@@ -417,8 +511,13 @@ impl Page for NetworkPage {
             Event::Devices => {
                 self.key.borrow_mut().clear();
                 self.load_wifi();
+                if self.root.is_mapped() {
+                    self.radio.load_mobile();
+                }
             }
             Event::Privacy => {
+                self.radio.on_privacy();
+                self.render_saved();
                 self.apply_privacy();
                 self.key.borrow_mut().clear();
                 self.update();
@@ -429,6 +528,10 @@ impl Page for NetworkPage {
     fn shown(&self) {
         self.update();
         self.load_wifi();
+        self.radio.load_mobile();
+        if *self.saved_for.borrow() != self.ctx.ready_serial() {
+            self.load_saved();
+        }
         let _ = &self.capture_group;
     }
 }

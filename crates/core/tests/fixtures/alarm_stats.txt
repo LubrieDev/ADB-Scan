@@ -1,0 +1,108 @@
+  RuntimeStarted=2026-11-26 14:30:59.304
+  Alarm Stats:
+  1000:com.android.aftersaleservice +23ms running, 1 wakeups:
+    +23ms 1 wakes 1 alarms, last -40m54s49ms:
+      *walarm*:zte.intent.action.ALARM_PER_HOUR
+  1000:com.zte.powersavemode +963ms running, 2 wakeups:
+    +963ms 0 wakes 53 alarms, last -5m24s740ms:
+      *alarm*:com.zte.powersavemode.intent.action.START_MONITOR_SERVICE
+    +64ms 2 wakes 2 alarms, last -22m57s843ms:
+      *walarm*:power_save_mode.action.start_battery_usage_dump
+  1000:android +1s145ms running, 37 wakeups:
+    +552ms 0 wakes 49 alarms, last -5m24s740ms:
+      *alarm*:TIME_TICK
+    +478ms 0 wakes 23 alarms, last -7m44s216ms:
+      *alarm*:com.zte.action.check_vmpressure
+    +222ms 0 wakes 4 alarms, last -21m49s962ms:
+      *alarm*:com.android.server.action.NETWORK_STATS_POLL
+    +177ms 0 wakes 20 alarms, last -11m17s127ms:
+      *alarm*:*job.delay*
+    +158ms 0 wakes 11 alarms, last -5m24s740ms:
+      *alarm*:*usage.launchTime*
+    +111ms 0 wakes 1 alarms, last -1h51m43s265ms:
+      *alarm*:android.intent.action.UPDATE_CT_LOGS
+    +94ms 12 wakes 12 alarms, last -36m32s42ms:
+      *walarm*:*job.deadline*
+    +89ms 2 wakes 2 alarms, last -25m35s2ms:
+      *walarm*:WriteBufferAlarm
+    +66ms 4 wakes 4 alarms, last -35m27s64ms:
+      *walarm*:DeviceIdleController.deep
+    +59ms 13 wakes 13 alarms, last -37m49s154ms:
+      *walarm*:com.android.server.audio.action.CHECK_MUSIC_ACTIVE
+    +35ms 0 wakes 1 alarms, last -49m39s63ms:
+      *alarm*:*job.flexibility_check*
+    +33ms 0 wakes 1 alarms, last -48m58s59ms:
+      *alarm*:ScanDetailCacheAgeOutAlarm
+    +31ms 0 wakes 6 alarms, last -35m27s64ms:
+      *alarm*:*CountQuotaTracker.cleanup*
+    +27ms 0 wakes 1 alarms, last -1h48m41s32ms:
+      *alarm*:*job.quota_check*
+    +23ms 1 wakes 1 alarms, last -40m54s49ms:
+      *walarm*:android.appwidget.action.APPWIDGET_UPDATE
+    +23ms 1 wakes 1 alarms, last -1h18m58s48ms:
+      *walarm*:update_cloud_apps_flag
+    +23ms 1 wakes 1 alarms, last -1h2m58s47ms:
+      *walarm*:JS idleness
+    +10ms 0 wakes 1 alarms, last -1h50m40s852ms:
+      *alarm*:handleExpiredDocumentsAlarm_user0
+    +5ms 1 wakes 1 alarms, last -1h51m34s980ms:
+      *walarm*:$android.alarm.generated:1000:28134
+    +1ms 1 wakes 1 alarms, last -1h51m44s977ms:
+      *walarm*:$android.alarm.generated:1000:18137
+    +1ms 0 wakes 1 alarms, last -1h51m21s155ms:
+      *alarm*:WifiHealthMonitor Schedule Post-Boot Detection Timer
+    0 1 wakes 1 alarms, last -1h51m24s976ms:
+      *walarm*:$android.alarm.generated:1000:38138
+  1000:com.zte.floatassist +2ms running, 1 wakeups:
+    +2ms 1 wakes 1 alarms, last -1h51m36s911ms:
+      *walarm*:com.zte.floatassist.dadian
+  1000:com.android.settings +24ms running, 1 wakeups:
+    +24ms 1 wakes 1 alarms, last -22m57s843ms:
+      *walarm*:com.android.settings.battery.action.PERIODIC_JOB_UPDATE
+  1073:com.google.android.networkstack +15ms running, 10 wakeups:
+    +7ms 6 wakes 6 alarms, last -1h51m40s495ms:
+      *walarm*:Dhcp6AddrRegTracker.wlan0.KICK
+    +3ms 1 wakes 1 alarms, last -1h51m43s690ms:
+      *walarm*:DhcpClient.wlan0.TIMEOUT
+    +3ms 1 wakes 1 alarms, last -1h51m42s743ms:
+      *walarm*:IpClient.wlan0.EVENT_IPV6_AUTOCONF_TIMEOUT
+    +1ms 1 wakes 1 alarms, last -1h51m47s705ms:
+      *walarm*:DhcpClient.wlan0.KICK
+    +1ms 1 wakes 1 alarms, last -1h51m32s737ms:
+      *walarm*:Dhcp6AddrRegTracker.wlan0.SUPPORT_TIMEOUT
+  u0a282:com.android.providers.calendar +7ms running, 1 wakeups:
+    +7ms 1 wakes 1 alarms, last -1h51m35s177ms:
+      *walarm*:com.android.providers.calendar.intent.CalendarProvider2
+  u0a327:com.zte.zdm +2ms running, 1 wakeups:
+    +2ms 1 wakes 1 alarms, last -1h49m58s546ms:
+      *walarm*:android.action.alarm.kill.zdmApp
+  u0a349:cn.nubia.gameassist +28ms running, 2 wakeups:
+    +28ms 2 wakes 2 alarms, last -35m46s72ms:
+      *walarm*:com.zte.gameassist.nacc.action.UNBIND_DELAYED
+  u0a405:com.google.android.gms +810ms running, 34 wakeups:
+    +565ms 26 wakes 26 alarms, last -24m58s8ms:
+      *walarm*:com.google.android.chimera.IntentOperation.TARGETED_INTENT
+    +95ms 7 wakes 7 alarms, last -5m24s740ms:
+      *walarm*:FusedLocation:expire
+    +78ms 0 wakes 5 alarms, last -25m35s2ms:
+      *alarm*:com.google.android.gms.gcm.ACTION_CHECK_QUEUE
+    +68ms 0 wakes 10 alarms, last -16m52s465ms:
+      *alarm*:com.google.android.gms.auth.authzen.cryptauth.DEVICE_STATE_CHECK_DELAY_COMPLETE
+    +23ms 0 wakes 1 alarms, last -40m54s49ms:
+      *alarm*:com.google.android.gms.common.operation.LOG_CORE_ANALYTICS
+    +7ms 0 wakes 1 alarms, last -1h46m52s465ms:
+      *alarm*:com.google.android.gms.platformconfigurator.POST_BOOT
+    +2ms 1 wakes 1 alarms, last -1h51m28s758ms:
+      *walarm*:GCM_CONN_ALARM
+  u0a446:com.qti.ltebc +38ms running, 1 wakeups:
+    +38ms 1 wakes 1 alarms, last -1h51m32s87ms:
+      *walarm*:wake_up_from_boot
+  u0a468:com.android.systemui +168ms running, 15 wakeups:
+    +162ms 14 wakes 14 alarms, last -16m18s711ms:
+      *walarm*:onShowTimeOut
+    +6ms 1 wakes 1 alarms, last -30m57s843ms:
+      *walarm*:doze_time_tick
+  
+  Alarm manager stats:
+    REORDER_ALARMS_FOR_STANDBY: count=198, total=13.9ms, avg=0.070ms, max calls/s=13 max dur/s=0.7ms max time=0.6ms
+    HAS_SCHEDULE_EXACT_ALARM: count=712, total=1.9ms, avg=0.003ms, max calls/s=226 max dur/s=0.8ms max time=0.7ms

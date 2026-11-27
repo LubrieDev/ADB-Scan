@@ -1,5 +1,6 @@
 //! “Usage” section of the Battery page: which apps use the most, what drains
-//! with the screen off and what keeps the phone awake.
+//! with the screen off, what keeps the phone awake, who wakes it up (alarms)
+//! and which apps work the most in the background (scheduled tasks).
 //!
 //! It is analysed when the button is pressed (about 6 s of `dumpsys` on the
 //! phone), not in the background. The result is kept while the same phone stays
@@ -22,6 +23,8 @@ const TOP_APPS: usize = 12;
 const TOP_SCREEN_OFF: usize = 6;
 const TOP_WAKELOCKS: usize = 8;
 const TOP_KERNEL: usize = 10;
+const TOP_ALARMS: usize = 8;
+const TOP_JOBS: usize = 8;
 
 pub struct UsageView {
     me: Weak<Self>,
@@ -273,6 +276,55 @@ impl UsageView {
             self.body.append(&g);
         }
 
+        // Package → name; “android” is the system itself.
+        let pkg_name = |p: &str| -> String {
+            if p == "android" {
+                adbscan_core::battery_usage::system_uid_name(1000)
+            } else {
+                labels.get(p).cloned().unwrap_or_else(|| p.to_string())
+            }
+        };
+
+        // -- alarms that wake the phone ------------------------------------------------
+        let waking: Vec<_> = u.alarms.iter().filter(|a| a.wakeups > 0).take(TOP_ALARMS).collect();
+        if !waking.is_empty() {
+            let since = u.alarms_since.as_deref().map(|s| t!("since the phone started ({})", s)).unwrap_or_else(|| tr("since the phone started").into());
+            let g = adw::PreferencesGroup::builder()
+                .title(tr("Who wakes the phone"))
+                .description(t!("Alarms that took the phone out of sleep, {}. Many wakeups with the screen off drain the battery.", since))
+                .build();
+            for a in waking {
+                let mut sub = vec![t!("{} alarms", a.alarms)];
+                if !a.top_tag.is_empty() {
+                    sub.push(t!("mostly {}", short_alarm_tag(&a.top_tag)));
+                }
+                let row = adw::ActionRow::builder().title(esc(&ctx.shown(&pkg_name(&a.package)))).subtitle(esc(&ctx.shown(&sub.join(" · ")))).build();
+                row.set_tooltip_text(Some(&ctx.shown(&format!("{}\n{}", a.package, a.top_tag))));
+                row.add_prefix(&util::icon("adb-alarm-symbolic"));
+                row.add_suffix(&util::label(&wakeups_text(a.wakeups), &["dim", "numeric"]));
+                g.add(&row);
+            }
+            self.body.append(&g);
+        }
+
+        // -- background tasks -------------------------------------------------------------
+        if !u.jobs.is_empty() {
+            let g = adw::PreferencesGroup::builder()
+                .title(tr("Work in the background"))
+                .description(tr("Tasks apps scheduled with Android (sync, backups, updates) since the last full charge"))
+                .build();
+            for j in u.jobs.iter().take(TOP_JOBS) {
+                let row = adw::ActionRow::builder().title(esc(&ctx.shown(&pkg_name(&j.package)))).build();
+                row.set_tooltip_text(Some(&ctx.shown(&j.package)));
+                row.add_suffix(&util::label(&wakelock_time(j.ms, j.count), &["dim", "numeric"]));
+                g.add(&row);
+            }
+            if u.jobs.len() > TOP_JOBS {
+                g.set_header_suffix(Some(&util::label(&t!("{} of {}", TOP_JOBS, u.jobs.len()), &["dim", "caption"])));
+            }
+            self.body.append(&g);
+        }
+
         let note = util::label(
             tr("Android's estimate (BatteryUsageStats), only while the phone runs on battery. “ADB shell” includes ADB Scan's telemetry while it is connected."),
             &["dim", "caption"],
@@ -295,7 +347,31 @@ fn names_to_resolve(u: &BatteryUsage) -> Vec<String> {
             }
         }
     }
+    let alarms = u.alarms.iter().filter(|a| a.wakeups > 0).take(TOP_ALARMS).map(|a| &a.package);
+    for p in alarms.chain(u.jobs.iter().take(TOP_JOBS).map(|j| &j.package)) {
+        if p != "android" && !out.contains(p) {
+            out.push(p.clone());
+        }
+    }
     out
+}
+
+/// The readable end of an alarm's tag: `com.google….TARGETED_INTENT` →
+/// `TARGETED_INTENT`.
+fn short_alarm_tag(tag: &str) -> String {
+    let t = tag.trim_matches('*');
+    match t.rsplit_once('.') {
+        Some((_, last)) if last.len() >= 4 && !t.contains(' ') => last.to_string(),
+        _ => t.to_string(),
+    }
+}
+
+fn wakeups_text(n: u64) -> String {
+    if n == 1 {
+        tr("1 wakeup").into()
+    } else {
+        t!("{} wakeups", n)
+    }
 }
 
 /// “1 h 1 min · 15 times” (Android reports 0 times if it has been active since

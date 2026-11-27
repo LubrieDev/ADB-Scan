@@ -170,13 +170,19 @@ pub fn check(current: &str) -> Option<Update> {
 }
 
 fn fetch_latest() -> std::result::Result<String, ureq::Error> {
+    fetch_json(LATEST_RELEASE_URL)
+}
+
+/// A GitHub API answer (a few KiB), with the same short timeout. Also used
+/// for Magisk's releases (see [`crate::root`]).
+pub(crate) fn fetch_json(url: &str) -> std::result::Result<String, ureq::Error> {
     let agent: ureq::Agent = ureq::Agent::config_builder()
         .timeout_global(Some(TIMEOUT))
         .user_agent(concat!("ADB-Scan/", env!("CARGO_PKG_VERSION"), " (+https://github.com/LubrieDev/ADB-Scan)"))
         .build()
         .into();
     // A 404 (no release yet) or any other error status is an `Err`.
-    let mut response = agent.get(LATEST_RELEASE_URL).header("Accept", "application/vnd.github+json").header("X-GitHub-Api-Version", "2022-11-28").call()?;
+    let mut response = agent.get(url).header("Accept", "application/vnd.github+json").header("X-GitHub-Api-Version", "2022-11-28").call()?;
     response.body_mut().with_config().limit(MAX_BODY_BYTES).read_to_string()
 }
 
@@ -202,8 +208,12 @@ pub fn clean_downloads() {
 /// checks its size and SHA-256 sum. Returns the file only if both match;
 /// otherwise nothing is left behind. `cancel` stops it between blocks.
 pub fn download(pkg: &Package, progress: &dyn Fn(u64, u64), cancel: &AtomicBool) -> Result<PathBuf> {
-    let dir = download_dir();
-    std::fs::create_dir_all(&dir)?;
+    download_into(pkg, &download_dir(), progress, cancel)
+}
+
+/// [`download`] into another folder (Magisk's APK goes to its own).
+pub fn download_into(pkg: &Package, dir: &Path, progress: &dyn Fn(u64, u64), cancel: &AtomicBool) -> Result<PathBuf> {
+    std::fs::create_dir_all(dir)?;
     let target = dir.join(&pkg.name);
     let part = dir.join(format!("{}.part", pkg.name));
     let r = fetch_to(pkg, &part, progress, cancel);

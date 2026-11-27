@@ -32,16 +32,25 @@ from the Actions tab; the other's file stays.
 3. Optional: add a `<release>` entry to
    `packaging/com.adbscan.AdbScan.metainfo.xml`.
 
-4. Commit, tag and push the tag:
+4. Commit and push to `main`, and wait for the **Windows** workflow of that
+   push to finish green in the Actions tab (it builds and tests the installer
+   on every push to `main`). Linux has no workflow on `main`: build and test
+   it locally first (`cargo test --workspace`, `scripts/build-deb.sh`).
 
    ```sh
    git commit -am "Release 1.1.0"
-   git tag v1.1.0
    git push
+   ```
+
+5. Only then tag and push the tag, which publishes the release. Tagging
+   before Windows is green can publish a release with the `.deb` alone.
+
+   ```sh
+   git tag v1.1.0
    git push origin v1.1.0
    ```
 
-5. Follow the run in the repository's **Actions** tab. When it finishes, the
+6. Follow the run in the repository's **Actions** tab. When it finishes, the
    release is under **Releases**, with notes generated from the commits
    (they can be edited there).
 

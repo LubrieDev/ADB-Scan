@@ -285,6 +285,7 @@ fn shoot_pages(ui: Rc<Ui>, dir: String, pages: Vec<String>, i: usize, delay: u64
 
 fn build_ui(app: &adw::Application) {
     crate::util::install_stall_detector();
+    crate::layout_fix::install();
     let t0 = std::time::Instant::now();
     let ctx = Ctx::new(app);
     crate::util::log_slow("create context", t0);

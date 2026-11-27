@@ -39,21 +39,26 @@ pub fn run(ctx: &Rc<Ctx>, parent: &gtk::Widget, which: &str) {
         "caches" => clear_all_caches(ctx, parent, &busy),
         "export" => super::migration::export(ctx, parent, &busy),
         "import" => super::migration::import(ctx, parent, &busy),
+        "default-apps" => super::default_apps::show(ctx, parent),
         _ => {}
     }
 }
 
 /// Menu button with the actions on all apps.
+/// An entry of the menu: icon, title, subtitle and what it runs.
+type MenuAction = (&'static str, &'static str, &'static str, fn(&Rc<Ctx>, &gtk::Widget, &Rc<Cell<bool>>));
+
 pub fn menu_button(ctx: &Rc<Ctx>) -> gtk::MenuButton {
     let list = gtk::ListBox::new();
     list.add_css_class("boxed-list");
     list.set_selection_mode(gtk::SelectionMode::None);
-    let actions: [(&str, &str, &str, fn(&Rc<Ctx>, &gtk::Widget, &Rc<Cell<bool>>)); 5] = [
+    let actions: [MenuAction; 6] = [
         ("adb-circle-x-symbolic", tr("Close open apps"), tr("Like “Clear all” in Recents"), close_open_apps),
         ("adb-media-playback-stop-symbolic", tr("Stop all apps"), tr("Also those running in the background, except the ones the phone needs"), stop_all),
         ("adb-edit-clear-symbolic", tr("Clear all caches"), tr("Frees space. No data, accounts or settings are deleted"), clear_all_caches),
         ("adb-save-symbolic", tr("Export apps…"), tr("Copies your apps (APKs) to a folder, to install them on another phone"), super::migration::export),
         ("adb-system-software-install-symbolic", tr("Install from an export…"), tr("Installs the apps of a folder exported by ADB Scan"), super::migration::import),
+        ("adb-star-symbolic", tr("Default apps…"), tr("Browser, home screen, phone, SMS and assistant"), |ctx, parent, _| super::default_apps::show(ctx, parent)),
     ];
     let busy = busy_flag();
     let popover = gtk::Popover::builder().child(&list).build();

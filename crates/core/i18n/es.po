@@ -7996,6 +7996,10 @@ msgstr "diciembre"
 msgid "Reading…"
 msgstr "Leyendo…"
 
+#: crates/app/src/pages/facts.rs crates/app/src/pages/controls.rs
+msgid "reading…"
+msgstr "leyendo…"
+
 #: crates/app/src/help.rs
 msgid "Refresh devices"
 msgstr "Actualizar dispositivos"
@@ -8338,8 +8342,8 @@ msgid "centre"
 msgstr "central"
 
 #: crates/app/src/search.rs
-msgid "charge health cycles drain wakelocks"
-msgstr "carga salud ciclos consumo gasto wakelocks"
+msgid "charge health cycles drain wakelocks alarms wakeups who wakes background tasks jobs"
+msgstr "carga salud ciclos consumo gasto wakelocks alarmas despertares quién despierta tareas en segundo plano"
 
 #: crates/core/src/link.rs
 msgid "Charging is limited"
@@ -8394,8 +8398,8 @@ msgid "Could not read the phone"
 msgstr "No se pudo leer el teléfono"
 
 #: crates/app/src/search.rs
-msgid "cpu memory ram gpu fps temperature sensors"
-msgstr "cpu memoria ram gpu fps temperatura sensores procesador"
+msgid "cpu memory ram gpu fps temperature sensors memory per app procstats"
+msgstr "cpu memoria ram gpu fps temperatura sensores procesador memoria por app procstats"
 
 #: crates/app/src/pages/connection.rs
 msgid "Current connection"
@@ -8506,8 +8510,8 @@ msgid "Hubs and docks show up; a simple adapter (USB-A to USB-C) leaves no trace
 msgstr "Los hubs y las bases se detectan; un adaptador simple (de USB-A a USB-C) no deja rastro."
 
 #: crates/app/src/search.rs
-msgid "imei sim accounts mac public ip"
-msgstr "imei sim cuentas mac ip pública"
+msgid "imei sim accounts mac public ip contacts vcard call log sms messages export backup sell reset"
+msgstr "imei sim cuentas mac ip pública contactos vcard registro de llamadas sms mensajes exportar copia de seguridad vender restablecer formatear"
 
 #: crates/app/src/pages/connection.rs
 msgid "Includes unplugging it and changing the USB mode"
@@ -10903,3 +10907,1799 @@ msgstr "cronología instalada actualizada desinstalada eliminada reinicios apaga
 #: crates/app/src/help.rs
 msgid "<p>1.3.0 — favorites, colours and phone changes</p><ul><li>Favorites: the star next to each section adds it to the top of the sidebar.</li><li>Any accent colour of your own, and its intensity, in Preferences.</li><li>Phone changes: apps installed, updated and uninstalled, and restarts, by day.</li></ul>"
 msgstr "<p>1.3.0 — favoritos, colores y cambios en el teléfono</p><ul><li>Favoritos: la estrella junto a cada sección la añade arriba del panel lateral.</li><li>Cualquier color de acento propio, y su intensidad, en Ajustes.</li><li>Cambios en el teléfono: apps instaladas, actualizadas y desinstaladas, y reinicios, por día.</li></ul>"
+
+#: crates/core/src/controls.rs
+msgid "Blocks ads and trackers"
+msgstr "Bloquea anuncios y rastreadores"
+
+#: crates/core/src/controls.rs
+msgid "Blocks ads, trackers and adult content"
+msgstr "Bloquea anuncios, rastreadores y contenido para adultos"
+
+#: crates/core/src/controls.rs
+msgid "Blocks dangerous sites, not ads"
+msgstr "Bloquea sitios peligrosos, no los anuncios"
+
+#: crates/core/src/controls.rs
+msgid "Fast, blocks nothing"
+msgstr "Rápido, no bloquea nada"
+
+#: crates/core/src/controls.rs
+msgid "Blocks dangerous sites and adult content"
+msgstr "Bloquea sitios peligrosos y contenido para adultos"
+
+#: crates/core/src/controls.rs
+msgid "Bold text"
+msgstr "Texto en negrita"
+
+#: crates/core/src/controls.rs
+msgid "High contrast text"
+msgstr "Texto de alto contraste"
+
+#: crates/core/src/controls.rs
+msgid "Colour inversion"
+msgstr "Inversión de colores"
+
+#: crates/core/src/controls.rs
+msgid "Grayscale"
+msgstr "Escala de grises"
+
+#: crates/core/src/controls.rs
+msgid "Thicker letters everywhere"
+msgstr "Letras más gruesas en todo el teléfono"
+
+#: crates/core/src/controls.rs
+msgid "Black or white text with an outline"
+msgstr "Texto negro o blanco con contorno"
+
+#: crates/core/src/controls.rs
+msgid "Light backgrounds become dark"
+msgstr "Los fondos claros pasan a oscuros"
+
+#: crates/core/src/controls.rs
+msgid "No colours: fewer distractions, easier on the eyes at night"
+msgstr "Sin colores: menos distracciones y más descanso para la vista de noche"
+
+#: crates/core/src/controls.rs
+msgid "Android 9 or later"
+msgstr "Android 9 o posterior"
+
+#: crates/core/src/controls.rs
+msgid "screen off after {}"
+msgstr "pantalla apagada tras {}"
+
+#: crates/core/src/usage.rs
+msgid "Uninstalled apps"
+msgstr "Apps desinstaladas"
+
+#: crates/core/src/usage.rs
+msgid "Other (UID {})"
+msgstr "Otro (UID {})"
+
+#: crates/core/src/usage.rs
+msgid "Uninstalled app or another user's app (UID {})"
+msgstr "App desinstalada o de otro usuario (UID {})"
+
+#: crates/core/src/stability.rs
+msgid "Closed unexpectedly"
+msgstr "Se cerró inesperadamente"
+
+#: crates/core/src/stability.rs
+msgid "Stopped responding"
+msgstr "Dejó de responder"
+
+#: crates/core/src/stability.rs
+msgid "System failure"
+msgstr "Fallo del sistema"
+
+#: crates/core/src/stability.rs
+msgid "Not given"
+msgstr "No indicado"
+
+#: crates/core/src/stability.rs
+msgid "To install a system update"
+msgstr "Para instalar una actualización del sistema"
+
+#: crates/core/src/stability.rs
+msgid "Restarted by the user"
+msgstr "Reiniciado por el usuario"
+
+#: crates/core/src/stability.rs
+msgid "After an error ({})"
+msgstr "Tras un error ({})"
+
+#: crates/core/src/stability.rs
+msgid "For safety ({})"
+msgstr "Por seguridad ({})"
+
+#: crates/core/src/stability.rs
+msgid "Unexpected restart ({})"
+msgstr "Reinicio inesperado ({})"
+
+#: crates/core/src/settings_snapshot.rs
+msgid "Global (whole phone)"
+msgstr "Global (todo el teléfono)"
+
+#: crates/core/src/settings_snapshot.rs
+msgid "System (screen and sound)"
+msgstr "Sistema (pantalla y sonido)"
+
+#: crates/core/src/settings_snapshot.rs
+msgid "Secure (privacy and security)"
+msgstr "Seguros (privacidad y seguridad)"
+
+#: crates/core/src/roles.rs
+msgid "Browser"
+msgstr "Navegador"
+
+#: crates/core/src/roles.rs
+msgid "Home screen (launcher)"
+msgstr "Pantalla de inicio (launcher)"
+
+#: crates/core/src/roles.rs
+msgid "Digital assistant"
+msgstr "Asistente digital"
+
+#: crates/core/src/adb.rs
+msgid "Wi-Fi was left on: the phone is connected over Wi-Fi"
+msgstr "El Wi-Fi se dejó encendido: el teléfono está conectado por Wi-Fi"
+
+#: crates/core/src/adb.rs crates/app/src/pages/controls.rs
+msgid "That is not a valid server name"
+msgstr "Ese no es un nombre de servidor válido"
+
+#: crates/core/src/adb.rs
+msgid "The phone did not apply the private DNS"
+msgstr "El teléfono no aplicó el DNS privado"
+
+#: crates/core/src/adb.rs
+msgid "This Android version does not list saved networks over ADB"
+msgstr "Esta versión de Android no muestra las redes guardadas por ADB"
+
+#: crates/core/src/adb.rs
+msgid "Android did not forget the network"
+msgstr "Android no olvidó la red"
+
+#: crates/core/src/adb.rs
+msgid "This setting is not restored: it could cut the connection or undo the phone's setup"
+msgstr "Este ajuste no se restaura: podría cortar la conexión o deshacer la configuración del teléfono"
+
+#: crates/core/src/adb.rs
+msgid "The phone did not keep the old value"
+msgstr "El teléfono no mantuvo el valor anterior"
+
+#: crates/core/src/adb.rs
+msgid "Android did not accept this app for that role"
+msgstr "Android no aceptó esta app para esa función"
+
+#: crates/core/src/adb.rs
+msgid "The phone needs this app: it is not limited"
+msgstr "El teléfono necesita esta app: no se limita"
+
+#: crates/core/src/adb.rs
+msgid "The app's UID is not known"
+msgstr "No se conoce el UID de la app"
+
+#: crates/core/src/adb.rs
+msgid "Android did not apply “{}” to this app"
+msgstr "Android no aplicó «{}» a esta app"
+
+#: crates/core/src/app_limits.rs
+msgid "Paused"
+msgstr "En pausa"
+
+#: crates/core/src/app_limits.rs
+msgid "Background activity restricted"
+msgstr "Actividad en segundo plano restringida"
+
+#: crates/core/src/app_limits.rs
+msgid "Background mobile data blocked"
+msgstr "Datos móviles en segundo plano bloqueados"
+
+#: crates/app/src/window.rs crates/app/src/pages/usage.rs
+msgid "Usage"
+msgstr "Uso"
+
+#: crates/app/src/pages/controls.rs
+msgid "Profiles"
+msgstr "Perfiles"
+
+#: crates/app/src/pages/controls.rs
+msgid "Save the phone's current switches, Do Not Disturb, brightness and screen timeout under a name, and apply them later with one click. Only what differs is changed."
+msgstr "Guarda con un nombre los interruptores, No molestar, el brillo y el tiempo de pantalla actuales del teléfono, y aplícalos después con un clic. Solo se cambia lo que sea distinto."
+
+#: crates/app/src/pages/controls.rs
+msgid "Save as a profile…"
+msgstr "Guardar como perfil…"
+
+#: crates/app/src/pages/controls.rs
+msgid "Private DNS (ad blocking)"
+msgstr "DNS privado (bloqueo de anuncios)"
+
+#: crates/app/src/pages/controls.rs
+msgid "Sends the phone's name lookups, encrypted, to the server you choose. A filtering server blocks ads and trackers in every app, without root or a VPN. If the server cannot be reached, the phone has no Internet until you change it back here or in Settings → Network → Private DNS."
+msgstr "Envía cifradas las consultas de nombres del teléfono al servidor que elijas. Un servidor con filtro bloquea anuncios y rastreadores en todas las apps, sin root ni VPN. Si no se puede llegar al servidor, el teléfono se queda sin Internet hasta que lo cambies aquí o en Ajustes → Red → DNS privado."
+
+#: crates/app/src/pages/controls.rs
+msgid "Automatic (Android's default)"
+msgstr "Automático (el de Android)"
+
+#: crates/app/src/pages/controls.rs
+msgid "Custom server…"
+msgstr "Servidor personalizado…"
+
+#: crates/app/src/pages/controls.rs
+msgid "Server"
+msgstr "Servidor"
+
+#: crates/app/src/pages/controls.rs
+msgid "Server name (for example, abc123.dns.nextdns.io)"
+msgstr "Nombre del servidor (por ejemplo, abc123.dns.nextdns.io)"
+
+#: crates/app/src/pages/controls.rs
+msgid "Readability"
+msgstr "Legibilidad"
+
+#: crates/app/src/pages/controls.rs
+msgid "To set up the phone of someone who sees less or finds it hard to use: the same options as in Settings → Accessibility, so they can be undone there too."
+msgstr "Para preparar el teléfono de alguien que ve menos o al que le cuesta usarlo: las mismas opciones que en Ajustes → Accesibilidad, así que también se pueden deshacer allí."
+
+#: crates/app/src/pages/controls.rs
+msgid "Text size"
+msgstr "Tamaño del texto"
+
+#: crates/app/src/pages/controls.rs
+msgid "Touch and hold delay"
+msgstr "Retraso al mantener pulsado"
+
+#: crates/app/src/pages/controls.rs
+msgid "Longer: fewer accidental long presses"
+msgstr "Más largo: menos pulsaciones largas sin querer"
+
+#: crates/app/src/pages/controls.rs
+msgid "No profiles yet"
+msgstr "Aún no hay perfiles"
+
+#: crates/app/src/pages/controls.rs
+msgid "Set the phone as you like it (for example, for the night) and press “Save as a profile”."
+msgstr "Deja el teléfono como te guste (por ejemplo, para la noche) y pulsa «Guardar como perfil»."
+
+#: crates/app/src/pages/controls.rs
+msgid "Delete this profile"
+msgstr "Eliminar este perfil"
+
+#: crates/app/src/pages/controls.rs
+msgid "Only the profile is deleted: the phone does not change."
+msgstr "Solo se elimina el perfil: el teléfono no cambia."
+
+#: crates/app/src/pages/controls.rs
+msgid "Save as a profile"
+msgstr "Guardar como perfil"
+
+#: crates/app/src/pages/controls.rs
+msgid "The phone's current switches, Do Not Disturb, brightness and screen timeout are saved. Airplane mode and the volumes are not."
+msgstr "Se guardan los interruptores, No molestar, el brillo y el tiempo de pantalla actuales del teléfono. El modo avión y los volúmenes no."
+
+#: crates/app/src/pages/controls.rs
+msgid "Name (for example, Night)"
+msgstr "Nombre (por ejemplo, Noche)"
+
+#: crates/app/src/pages/controls.rs
+msgid "Text size: {}"
+msgstr "Tamaño del texto: {}"
+
+#: crates/app/src/pages/controls.rs
+msgid "Touch and hold delay: {}"
+msgstr "Retraso al mantener pulsado: {}"
+
+#: crates/app/src/pages/controls.rs
+msgid "Delete the profile “{}”?"
+msgstr "¿Eliminar el perfil «{}»?"
+
+#: crates/app/src/pages/controls.rs
+msgid "Profile “{}”"
+msgstr "Perfil «{}»"
+
+#: crates/app/src/pages/controls.rs
+msgid "Profile “{}” applied"
+msgstr "Perfil «{}» aplicado"
+
+#: crates/app/src/pages/controls.rs
+msgid "Profile “{}” applied, except: {}"
+msgstr "Perfil «{}» aplicado, salvo: {}"
+
+#: crates/app/src/pages/controls.rs
+msgid "Could not apply the profile: {}"
+msgstr "No se pudo aplicar el perfil: {}"
+
+#: crates/app/src/pages/controls.rs
+msgid "Private DNS: {}"
+msgstr "DNS privado: {}"
+
+#: crates/app/src/pages/usage.rs
+msgid "Screen time and data of each app, as Android counts them. Nothing is changed: to limit an app, open it in Apps."
+msgstr "El tiempo de pantalla y los datos de cada app, tal como los cuenta Android. No se cambia nada: para limitar una app, ábrela en Apps."
+
+#: crates/app/src/pages/usage.rs
+msgid "Today"
+msgstr "Hoy"
+
+#: crates/app/src/pages/usage.rs
+msgid "This week"
+msgstr "Esta semana"
+
+#: crates/app/src/pages/usage.rs crates/app/src/pages/stability.rs
+msgid "Open in Apps"
+msgstr "Abrir en Apps"
+
+#: crates/app/src/pages/usage.rs
+msgid "Screen time"
+msgstr "Tiempo de pantalla"
+
+#: crates/app/src/pages/usage.rs
+msgid "Reading the usage (a few seconds)…"
+msgstr "Leyendo el uso (unos segundos)…"
+
+#: crates/app/src/pages/usage.rs
+msgid "This phone did not give its screen time."
+msgstr "Este teléfono no dio su tiempo de pantalla."
+
+#: crates/app/src/pages/usage.rs
+msgid "This phone did not give its data usage."
+msgstr "Este teléfono no dio su consumo de datos."
+
+#: crates/app/src/pages/usage.rs
+msgid "No screen time for this period."
+msgstr "No hay tiempo de pantalla en este periodo."
+
+#: crates/app/src/pages/usage.rs
+msgid "No data usage."
+msgstr "No hay consumo de datos."
+
+#: crates/app/src/pages/usage.rs
+msgid "Data ({} days)"
+msgstr "Datos ({} días)"
+
+#: crates/app/src/pages/usage.rs
+msgid "Could not read the usage: {}"
+msgstr "No se pudo leer el uso: {}"
+
+#: crates/app/src/pages/usage.rs
+msgid "{} on screen since {} · {} apps"
+msgstr "{} en pantalla desde el {} · {} apps"
+
+#: crates/app/src/pages/usage.rs
+msgid "{} launches"
+msgstr "{} aperturas"
+
+#: crates/app/src/pages/usage.rs
+msgid "last used {}"
+msgstr "último uso el {}"
+
+#: crates/app/src/pages/usage.rs
+msgid "Since {}: {} of mobile data and {} over Wi-Fi."
+msgstr "Desde el {}: {} de datos móviles y {} por Wi-Fi."
+
+#: crates/app/src/pages/usage.rs
+msgid "Mobile {}"
+msgstr "Móvil {}"
+
+#: crates/app/src/pages/usage.rs
+msgid "Wi-Fi {}"
+msgstr "Wi-Fi {}"
+
+#: crates/app/src/pages/usage.rs
+msgid "other {}"
+msgstr "otras {}"
+
+#: crates/app/src/pages/stability.rs
+msgid "Apps that closed unexpectedly or stopped responding, and failures of the system itself, from the records Android keeps for a few days. Nothing is changed on the phone."
+msgstr "Apps que se cerraron inesperadamente o dejaron de responder, y fallos del propio sistema, según los registros que Android guarda unos días. No se cambia nada en el teléfono."
+
+#: crates/app/src/pages/stability.rs
+msgid "Bug report…"
+msgstr "Informe de errores…"
+
+#: crates/app/src/pages/stability.rs
+msgid "Saves Android's full report (a ZIP) to the computer, for the manufacturer's or an app's support"
+msgstr "Guarda en el ordenador el informe completo de Android (un ZIP), para el soporte del fabricante o de una app"
+
+#: crates/app/src/pages/stability.rs
+msgid "By app"
+msgstr "Por app"
+
+#: crates/app/src/pages/stability.rs
+msgid "Every incident"
+msgstr "Todos los incidentes"
+
+#: crates/app/src/pages/stability.rs
+msgid "Reading the records…"
+msgstr "Leyendo los registros…"
+
+#: crates/app/src/pages/stability.rs
+msgid "Android did not allow reading its records on this phone."
+msgstr "Android no permitió leer sus registros en este teléfono."
+
+#: crates/app/src/pages/stability.rs
+msgid "No app closed or froze in this period"
+msgstr "Ninguna app se cerró ni se bloqueó en este periodo"
+
+#: crates/app/src/pages/stability.rs
+msgid "No records"
+msgstr "No hay registros"
+
+#: crates/app/src/pages/stability.rs
+msgid "No incidents"
+msgstr "No hay incidentes"
+
+#: crates/app/src/pages/stability.rs
+msgid "Save a bug report?"
+msgstr "¿Guardar un informe de errores?"
+
+#: crates/app/src/pages/stability.rs
+msgid "Android gathers its full report in one to three minutes: logs, system state and the list of apps. It contains personal data (accounts, networks, app names): share it only with someone you trust, such as the phone's or an app's support."
+msgstr "Android reúne su informe completo en uno a tres minutos: registros, estado del sistema y la lista de apps. Contiene datos personales (cuentas, redes, nombres de apps): compártelo solo con alguien de confianza, como el soporte del teléfono o de una app."
+
+#: crates/app/src/pages/stability.rs
+msgid "Choose a folder"
+msgstr "Elegir una carpeta"
+
+#: crates/app/src/pages/stability.rs
+msgid "Folder for the bug report"
+msgstr "Carpeta para el informe de errores"
+
+#: crates/app/src/pages/stability.rs
+msgid "Creating the bug report (one to three minutes)…"
+msgstr "Creando el informe de errores (de uno a tres minutos)…"
+
+#: crates/app/src/pages/stability.rs
+msgid "Could not read the records: {}"
+msgstr "No se pudieron leer los registros: {}"
+
+#: crates/app/src/pages/stability.rs
+msgid "Last start: {}"
+msgstr "Último arranque: {}"
+
+#: crates/app/src/pages/stability.rs
+msgid "Records since {}"
+msgstr "Registros desde el {}"
+
+#: crates/app/src/pages/stability.rs
+msgid "The system interface restarted {} times"
+msgstr "La interfaz del sistema se reinició {} veces"
+
+#: crates/app/src/pages/stability.rs
+msgid "closed {} times"
+msgstr "se cerró {} veces"
+
+#: crates/app/src/pages/stability.rs
+msgid "stopped responding {} times"
+msgstr "dejó de responder {} veces"
+
+#: crates/app/src/pages/stability.rs
+msgid "last {}"
+msgstr "última vez {}"
+
+#: crates/app/src/pages/stability.rs
+msgid "Bug report saved: {}"
+msgstr "Informe de errores guardado: {}"
+
+#: crates/app/src/pages/stability.rs
+msgid "Could not create the bug report: {}"
+msgstr "No se pudo crear el informe de errores: {}"
+
+#: crates/app/src/pages/changes.rs
+msgid "Apps installed, updated and removed, and restarts, from what Android itself keeps. Android keeps no dated history of its settings: the Settings tab compares snapshots kept by ADB Scan. What ADB Scan changed is in History → Operations."
+msgstr "Apps instaladas, actualizadas y eliminadas, y reinicios, según lo que guarda el propio Android. Android no guarda un historial con fechas de sus ajustes: la pestaña Ajustes compara instantáneas que guarda ADB Scan. Lo que cambió ADB Scan está en Historial → Operaciones."
+
+#: crates/app/src/pages/changes.rs
+msgid "Apps and restarts"
+msgstr "Apps y reinicios"
+
+#: crates/app/src/pages/changes.rs
+msgid "Settings"
+msgstr "Ajustes"
+
+#: crates/app/src/pages/bulk.rs
+msgid "Default apps…"
+msgstr "Apps predeterminadas…"
+
+#: crates/app/src/pages/bulk.rs
+msgid "Browser, home screen, phone, SMS and assistant"
+msgstr "Navegador, pantalla de inicio, teléfono, SMS y asistente"
+
+#: crates/app/src/pages/default_apps.rs crates/app/src/search.rs
+msgid "Default apps"
+msgstr "Apps predeterminadas"
+
+#: crates/app/src/pages/default_apps.rs
+msgid "The app Android opens for links, the home button, calls, SMS and the assistant. The same as Settings → Apps → Default apps: choosing the previous app undoes it."
+msgstr "La app que Android abre para los enlaces, el botón de inicio, las llamadas, los SMS y el asistente. Lo mismo que Ajustes → Aplicaciones → Aplicaciones predeterminadas: elegir la app anterior lo deshace."
+
+#: crates/app/src/pages/default_apps.rs
+msgid "Reading the phone…"
+msgstr "Leyendo el teléfono…"
+
+#: crates/app/src/pages/default_apps.rs
+msgid "This Android version does not allow it over ADB"
+msgstr "Esta versión de Android no lo permite por ADB"
+
+#: crates/app/src/pages/default_apps.rs
+msgid "No other app on the phone can do this"
+msgstr "Ninguna otra app del teléfono puede hacerlo"
+
+#: crates/app/src/pages/default_apps.rs
+msgid "Could not read the default apps: {}"
+msgstr "No se pudieron leer las apps predeterminadas: {}"
+
+#: crates/app/src/pages/default_apps.rs
+msgid "{}: {}"
+msgstr "{}: {}"
+
+#: crates/app/src/pages/network.rs
+msgid "Saved Wi-Fi networks"
+msgstr "Redes Wi-Fi guardadas"
+
+#: crates/app/src/pages/network.rs
+msgid "Networks the phone joins by itself. Forgetting old ones (a café, a hotel) stops the phone from joining them, or from announcing their names while it looks for them. Passwords cannot be read without root."
+msgstr "Redes a las que el teléfono se conecta solo. Olvidar las antiguas (una cafetería, un hotel) evita que se conecte a ellas o que anuncie sus nombres mientras las busca. Las contraseñas no se pueden leer sin root."
+
+#: crates/app/src/pages/network.rs
+msgid "No saved networks"
+msgstr "No hay redes guardadas"
+
+#: crates/app/src/pages/network.rs
+msgid "The phone will not join it again until you enter its password on the phone. If the phone is connected to ADB Scan over this network, the connection is lost."
+msgstr "El teléfono no volverá a conectarse hasta que escribas su contraseña en el teléfono. Si el teléfono está conectado a ADB Scan por esta red, se pierde la conexión."
+
+#: crates/app/src/pages/network.rs
+msgid "Forget “{}”?"
+msgstr "¿Olvidar «{}»?"
+
+#: crates/app/src/pages/network.rs
+msgid "“{}” forgotten"
+msgstr "«{}» olvidada"
+
+#: crates/app/src/pages/developer.rs
+msgid "Maintenance"
+msgstr "Mantenimiento"
+
+#: crates/app/src/pages/developer.rs
+msgid "After a system update apps can feel slow for a few days while Android optimizes them at night, while charging. This does it now: it takes several minutes and the phone may get warm. Nothing is deleted."
+msgstr "Tras una actualización del sistema las apps pueden ir lentas unos días mientras Android las optimiza de noche, al cargar. Esto lo hace ahora: tarda varios minutos y el teléfono puede calentarse. No se elimina nada."
+
+#: crates/app/src/pages/developer.rs
+msgid "Optimize apps now"
+msgstr "Optimizar las apps ahora"
+
+#: crates/app/src/pages/developer.rs
+msgid "Optimize the apps now?"
+msgstr "¿Optimizar las apps ahora?"
+
+#: crates/app/src/pages/developer.rs
+msgid "Android compiles the apps that need it, as it does at night. It takes several minutes; you can keep using ADB Scan in the meantime."
+msgstr "Android compila las apps que lo necesitan, como hace de noche. Tarda varios minutos; mientras tanto puedes seguir usando ADB Scan."
+
+#: crates/app/src/pages/developer.rs
+msgid "Optimize"
+msgstr "Optimizar"
+
+#: crates/app/src/pages/developer.rs
+msgid "Optimizing the apps (several minutes)…"
+msgstr "Optimizando las apps (varios minutos)…"
+
+#: crates/app/src/pages/developer.rs
+msgid "Apps optimized"
+msgstr "Apps optimizadas"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Android keeps no dated history of its settings, so ADB Scan keeps snapshots of them on this computer (without identifiers such as the Android ID). Compare one with now to see what an update, an app or another person changed, and put a value back if you want."
+msgstr "Android no guarda un historial con fechas de sus ajustes, así que ADB Scan guarda instantáneas en este ordenador (sin identificadores como el Android ID). Compara una con el estado actual para ver qué cambió una actualización, una app u otra persona, y recupera un valor si quieres."
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Save a snapshot now"
+msgstr "Guardar una instantánea ahora"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Compare with"
+msgstr "Comparar con"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Put back the value of the snapshot"
+msgstr "Recuperar el valor de la instantánea"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Reading the settings…"
+msgstr "Leyendo los ajustes…"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "First snapshot saved now: from here on you will see what changes."
+msgstr "Primera instantánea guardada ahora: a partir de aquí verás lo que cambie."
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Snapshot of the settings saved"
+msgstr "Instantánea de los ajustes guardada"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "(did not exist)"
+msgstr "(no existía)"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Not restored here: it could cut the connection or undo the phone's setup"
+msgstr "No se restaura aquí: podría cortar la conexión o deshacer la configuración del teléfono"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Nothing changed since that snapshot"
+msgstr "Nada cambió desde esa instantánea"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Put back"
+msgstr "Recuperar"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Could not read the settings: {}"
+msgstr "No se pudieron leer los ajustes: {}"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "{} · {} settings"
+msgstr "{} · {} ajustes"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "{} changes since {}."
+msgstr "{} cambios desde el {}."
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "Put back “{}”?"
+msgstr "¿Recuperar «{}»?"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "“{}” put back"
+msgstr "«{}» recuperado"
+
+#: crates/app/src/pages/apps.rs
+msgid "Limits"
+msgstr "Límites"
+
+#: crates/app/src/pages/apps.rs
+msgid "Undone with the same switch. Nothing is deleted."
+msgstr "Se deshace con el mismo interruptor. No se elimina nada."
+
+#: crates/app/src/pages/apps.rs
+msgid "Pause the app"
+msgstr "Pausar la app"
+
+#: crates/app/src/pages/apps.rs
+msgid "Greyed out: it cannot be opened and its notifications are hidden until you resume it"
+msgstr "Aparece en gris: no se puede abrir y sus notificaciones se ocultan hasta que la reanudes"
+
+#: crates/app/src/pages/apps.rs
+msgid "Restrict background activity"
+msgstr "Restringir la actividad en segundo plano"
+
+#: crates/app/src/pages/apps.rs
+msgid "It only runs while you use it, as Settings → Battery → Restricted"
+msgstr "Solo funciona mientras la usas, como Ajustes → Batería → Restringida"
+
+#: crates/app/src/pages/apps.rs
+msgid "Block background mobile data"
+msgstr "Bloquear los datos móviles en segundo plano"
+
+#: crates/app/src/pages/apps.rs
+msgid "It uses mobile data only while open; Wi-Fi is not affected"
+msgstr "Usa datos móviles solo mientras está abierta; el Wi-Fi no se ve afectado"
+
+#: crates/app/src/pages/apps.rs
+msgid "The phone needs this app: it cannot be paused or restricted."
+msgstr "El teléfono necesita esta app: no se puede pausar ni restringir."
+
+#: crates/app/src/pages/apps.rs
+msgid "It only runs while you use it, as Settings → Battery → Restricted · now: {}"
+msgstr "Solo funciona mientras la usas, como Ajustes → Batería → Restringida · ahora: {}"
+
+#: crates/app/src/pages/apps.rs
+msgid "{} undone"
+msgstr "{} deshecho"
+
+#: crates/app/src/search.rs
+msgid "wifi ip interfaces routes capture tshark saved networks forget nearby networks channel analyzer scan mobile signal 4g 5g lte band dbm coverage"
+msgstr "wifi ip interfaces rutas captura tshark red redes guardadas olvidar redes cercanas canal analizador buscar señal móvil cobertura 4g 5g lte banda dbm"
+
+#: crates/app/src/search.rs
+msgid "install uninstall cache permissions apk packages pause suspend background restrict data unrestricted battery optimization notifications late game mode fps resolution language smoothness jank"
+msgstr "instalar desinstalar caché permisos apk paquetes aplicaciones apps pausar suspender segundo plano restringir datos sin restricciones optimización de batería notificaciones tarde modo de juego fps resolución idioma fluidez tirones"
+
+#: crates/app/src/search.rs
+msgid "brightness volume do not disturb airplane remote media calls find quick settings automations on connect private dns ad blocking adguard text size accessibility grayscale bold night light"
+msgstr "brillo volumen no molestar avión remoto multimedia llamadas buscar ajustes rápidos automatizaciones al conectar dns privado bloquear anuncios adguard tamaño del texto letra accesibilidad escala de grises negrita perfiles luz nocturna"
+
+#: crates/app/src/search.rs
+msgid "screen time digital wellbeing hours data mobile wifi consumption megabytes apps used notifications unlocks pickups unused apps forgotten"
+msgstr "tiempo de pantalla bienestar digital horas datos móviles wifi consumo megas apps usadas uso notificaciones desbloqueos apps sin usar olvidadas"
+
+#: crates/app/src/search.rs
+msgid "crash closed unexpectedly anr not responding freeze restart reboot reason bug report bugreport errors"
+msgstr "cierre se cerró inesperadamente anr no responde bloqueo congelado reinicio motivo informe de errores bugreport fallos estabilidad"
+
+#: crates/app/src/search.rs
+msgid "processes sensors services developer options port forwarding reverse demo mode resolution density animations show taps layout bounds optimize apps slow after update dexopt"
+msgstr "procesos sensores servicios opciones de desarrollador redirección de puertos reverse modo demo resolución densidad animaciones mostrar toques límites de diseño optimizar apps lentas tras actualizar dexopt"
+
+#: crates/app/src/search.rs
+msgid "default browser launcher home screen dialer phone sms messages assistant role keyboard"
+msgstr "predeterminada navegador launcher pantalla de inicio marcador teléfono sms mensajes asistente teclado"
+
+#: crates/core/src/controls.rs (FONT_SCALES)
+msgid "Small"
+msgstr "Pequeño"
+
+#: crates/core/src/controls.rs (FONT_SCALES)
+msgid "Large"
+msgstr "Grande"
+
+#: crates/core/src/controls.rs (FONT_SCALES)
+msgid "Larger"
+msgstr "Más grande"
+
+#: crates/core/src/controls.rs (FONT_SCALES)
+msgid "Largest"
+msgstr "El más grande"
+
+#: crates/core/src/controls.rs (FONT_SCALES)
+msgid "Huge"
+msgstr "Enorme"
+
+#: crates/core/src/controls.rs (LONG_PRESS)
+msgid "Short"
+msgstr "Corto"
+
+#: crates/core/src/controls.rs (LONG_PRESS)
+msgid "Long"
+msgstr "Largo"
+
+#: crates/app/src/pages/settings_diff.rs
+msgid "{} → {}\n\nThe phone takes the value it had in the snapshot. Some settings only take effect after a restart."
+msgstr "{} → {}\n\nEl teléfono recupera el valor que tenía en la instantánea. Algunos ajustes solo surten efecto tras reiniciar."
+
+#: crates/core/src/battery_usage.rs:59
+msgid "Local network discovery (mDNS)"
+msgstr "Descubrimiento en la red local (mDNS)"
+
+#: crates/core/src/battery_usage.rs:59
+msgid "DNS resolver"
+msgstr "Resolución de DNS"
+
+#: crates/core/src/battery_usage.rs:59
+msgid "System updates"
+msgstr "Actualizaciones del sistema"
+
+#: crates/app/src/pages/battery_usage.rs:290
+msgid "since the phone started ({})"
+msgstr "desde que se encendió el teléfono ({})"
+
+#: crates/app/src/pages/battery_usage.rs:290
+msgid "since the phone started"
+msgstr "desde que se encendió el teléfono"
+
+#: crates/app/src/pages/battery_usage.rs:292
+msgid "Who wakes the phone"
+msgstr "Quién despierta el teléfono"
+
+#: crates/app/src/pages/battery_usage.rs:293
+msgid "Alarms that took the phone out of sleep, {}. Many wakeups with the screen off drain the battery."
+msgstr "Alarmas que sacaron al teléfono del reposo, {}. Muchos despertares con la pantalla apagada gastan batería."
+
+#: crates/app/src/pages/battery_usage.rs:296
+msgid "{} alarms"
+msgstr "{} alarmas"
+
+#: crates/app/src/pages/battery_usage.rs:298
+msgid "mostly {}"
+msgstr "sobre todo {}"
+
+#: crates/app/src/pages/battery_usage.rs:312
+msgid "Work in the background"
+msgstr "Trabajo en segundo plano"
+
+#: crates/app/src/pages/battery_usage.rs:313
+msgid "Tasks apps scheduled with Android (sync, backups, updates) since the last full charge"
+msgstr "Tareas que las apps programaron con Android (sincronizar, copias, actualizaciones) desde la última carga completa"
+
+#: crates/app/src/pages/battery_usage.rs:360
+msgid "1 wakeup"
+msgstr "1 despertar"
+
+#: crates/app/src/pages/battery_usage.rs:362
+msgid "{} wakeups"
+msgstr "{} despertares"
+
+#: crates/core/src/app_tuning.rs:65
+msgid "Very smooth"
+msgstr "Muy fluida"
+
+#: crates/core/src/app_tuning.rs:66
+msgid "Smooth"
+msgstr "Fluida"
+
+#: crates/core/src/app_tuning.rs:67
+msgid "Some stutter"
+msgstr "Con algunos tirones"
+
+#: crates/core/src/app_tuning.rs:68
+msgid "Stutters a lot"
+msgstr "Con muchos tirones"
+
+#: crates/core/src/app_tuning.rs:164
+msgid "Battery saving"
+msgstr "Ahorro de batería"
+
+#: crates/core/src/app_tuning.rs:165
+msgid "Custom"
+msgstr "Personalizado"
+
+#: crates/core/src/adb.rs:1592
+msgid "Android did not apply the game mode"
+msgstr "Android no aplicó el modo de juego"
+
+#: crates/core/src/adb.rs:1605
+msgid "Android did not change the app's language"
+msgstr "Android no cambió el idioma de la app"
+
+#: crates/app/src/pages/apps.rs:973
+msgid "Unrestricted battery use"
+msgstr "Uso de batería sin restricciones"
+
+#: crates/app/src/pages/app_tuning.rs:38
+msgid "Tuning"
+msgstr "Ajustes finos"
+
+#: crates/app/src/pages/app_tuning.rs:44
+msgid "Measure again"
+msgstr "Medir de nuevo"
+
+#: crates/app/src/pages/app_tuning.rs:48
+msgid "Only this app; the rest of the phone keeps its language"
+msgstr "Solo esta app; el resto del teléfono conserva su idioma"
+
+#: crates/app/src/pages/app_tuning.rs:51
+msgid "Game mode"
+msgstr "Modo de juego"
+
+#: crates/app/src/pages/app_tuning.rs:55
+msgid "Lower: less heat and battery, a less sharp image"
+msgstr "Más baja: menos calor y batería, imagen menos nítida"
+
+#: crates/app/src/pages/app_tuning.rs:59
+msgid "No cap"
+msgstr "Sin límite"
+
+#: crates/app/src/pages/app_tuning.rs:61
+msgid "Frame rate cap"
+msgstr "Límite de FPS"
+
+#: crates/app/src/pages/app_tuning.rs:166
+msgid "Open the app on the phone and use it for a while, then measure again"
+msgstr "Abre la app en el teléfono, úsala un rato y vuelve a medir"
+
+#: crates/app/src/pages/app_tuning.rs:167
+msgid "Games that draw with their own engine are not measured here: see Performance → FPS."
+msgstr "Los juegos que dibujan con su propio motor no se miden aquí: mira Rendimiento → FPS."
+
+#: crates/app/src/pages/app_tuning.rs:175
+msgid "System language"
+msgstr "Idioma del sistema"
+
+#: crates/app/src/pages/app_tuning.rs:206
+msgid "This game offers no modes of its own: “Custom” lowers its resolution or caps its frame rate"
+msgstr "Este juego no ofrece modos propios: «Personalizado» baja su resolución o limita sus FPS"
+
+#: crates/app/src/pages/app_tuning.rs:208
+msgid "The modes this game and the phone offer"
+msgstr "Los modos que ofrecen este juego y el teléfono"
+
+#: crates/app/src/pages/app_tuning.rs:245
+msgid "full resolution"
+msgstr "resolución completa"
+
+#: crates/app/src/pages/app_tuning.rs:246
+msgid "no frame rate cap"
+msgstr "sin límite de FPS"
+
+#: crates/app/src/pages/app_tuning.rs:102
+msgid "{} · language: {}"
+msgstr "{} · idioma: {}"
+
+#: crates/app/src/pages/app_tuning.rs:145
+msgid "Could not read it: {}"
+msgstr "No se pudo leer: {}"
+
+#: crates/app/src/pages/app_tuning.rs:157
+msgid "{} · {} % slow frames of {} · 9 of 10 frames in {} ms or less"
+msgstr "{} · {} % de fotogramas lentos de {} · 9 de cada 10 en {} ms o menos"
+
+#: crates/app/src/pages/app_tuning.rs:163
+msgid "Frame times: half under {} ms, 95 % under {} ms, 99 % under {} ms. Since the app was opened."
+msgstr "Tiempos por fotograma: la mitad bajo {} ms, el 95 % bajo {} ms, el 99 % bajo {} ms. Desde que se abrió la app."
+
+#: crates/app/src/pages/app_tuning.rs:245
+msgid "{} % resolution"
+msgstr "resolución al {} %"
+
+#: crates/app/src/pages/app_tuning.rs:246
+msgid "up to {} FPS"
+msgstr "hasta {} FPS"
+
+#: crates/app/src/pages/app_tuning.rs:247
+msgid "{} · game mode: {}, {}"
+msgstr "{} · modo de juego: {}, {}"
+
+#: crates/app/src/pages/app_tuning.rs:249
+msgid "{} · game mode: {}"
+msgstr "{} · modo de juego: {}"
+
+#: crates/app/src/pages/apps.rs:973
+msgid "Android does not hold it back to save battery: for apps whose notifications or alarms arrive late"
+msgstr "Android no la frena para ahorrar batería: para apps cuyas notificaciones o alarmas llegan tarde"
+
+#: crates/app/src/pages/apps.rs:1000
+msgid "The system itself exempts it from battery optimisation"
+msgstr "El propio sistema la exime de la optimización de batería"
+
+#: crates/core/src/personal_export.rs:36
+msgid "Text messages (SMS)"
+msgstr "Mensajes de texto (SMS)"
+
+#: crates/core/src/personal_export.rs:151
+msgid "Incoming"
+msgstr "Entrante"
+
+#: crates/core/src/personal_export.rs:152
+msgid "Outgoing"
+msgstr "Saliente"
+
+#: crates/core/src/personal_export.rs:153
+msgid "Missed"
+msgstr "Perdida"
+
+#: crates/core/src/personal_export.rs:154
+msgid "Voicemail"
+msgstr "Buzón de voz"
+
+#: crates/core/src/personal_export.rs:155
+msgid "Rejected"
+msgstr "Rechazada"
+
+#: crates/core/src/personal_export.rs:156
+msgid "Blocked"
+msgstr "Bloqueada"
+
+#: crates/core/src/personal_export.rs:157
+msgid "Answered elsewhere"
+msgstr "Respondida en otro dispositivo"
+
+#: crates/core/src/personal_export.rs:165
+msgid "Received"
+msgstr "Recibido"
+
+#: crates/core/src/personal_export.rs:166
+msgid "Sent"
+msgstr "Enviado"
+
+#: crates/core/src/personal_export.rs:167
+msgid "Draft"
+msgstr "Borrador"
+
+#: crates/core/src/personal_export.rs:168
+msgid "Outbox"
+msgstr "En bandeja de salida"
+
+#: crates/core/src/personal_export.rs:169
+msgid "Failed"
+msgstr "Fallido"
+
+#: crates/core/src/personal_export.rs:170
+msgid "Queued"
+msgstr "En cola"
+
+#: crates/core/src/personal_export.rs:176
+msgid "Date"
+msgstr "Fecha"
+
+#: crates/core/src/personal_export.rs:176
+msgid "Duration (s)"
+msgstr "Duración (s)"
+
+#: crates/core/src/personal_export.rs:181
+msgid "Read"
+msgstr "Leído"
+
+#: crates/core/src/personal_export.rs:181
+msgid "Message"
+msgstr "Mensaje"
+
+#: crates/core/src/adb.rs:1572
+msgid "Android did not answer"
+msgstr "Android no respondió"
+
+#: crates/app/src/pages/personal_copy.rs:17
+msgid "Copy to this computer"
+msgstr "Copiar a este ordenador"
+
+#: crates/app/src/pages/personal_copy.rs:18
+msgid "Read from the phone and saved only in the file you choose: nothing is uploaded and nothing changes on the phone. Contact photos and MMS are not included."
+msgstr "Se leen del teléfono y se guardan solo en el archivo que elijas: no se sube nada ni cambia nada en el teléfono. No incluye las fotos de los contactos ni los MMS."
+
+#: crates/app/src/pages/personal_copy.rs:22
+msgid "vCard file: opens in any address book and imports on any phone"
+msgstr "Archivo vCard: se abre en cualquier libreta de direcciones y se importa en cualquier teléfono"
+
+#: crates/app/src/pages/personal_copy.rs:23
+msgid "CSV file for a spreadsheet: date, type, duration and number"
+msgstr "Archivo CSV para hoja de cálculo: fecha, tipo, duración y número"
+
+#: crates/app/src/pages/personal_copy.rs:24
+msgid "CSV file for a spreadsheet: date, number and text of each message"
+msgstr "Archivo CSV para hoja de cálculo: fecha, número y texto de cada mensaje"
+
+#: crates/app/src/pages/personal_copy.rs:33
+msgid "Save…"
+msgstr "Guardar…"
+
+#: crates/app/src/pages/personal_copy.rs:68
+msgid "{} contacts saved"
+msgstr "{} contactos guardados"
+
+#: crates/app/src/pages/personal_copy.rs:69
+msgid "{} calls saved"
+msgstr "{} llamadas guardadas"
+
+#: crates/app/src/pages/personal_copy.rs:70
+msgid "{} messages saved"
+msgstr "{} mensajes guardados"
+
+#: crates/app/src/pages/personal_copy.rs:77
+msgid "Could not copy them: {}"
+msgstr "No se pudieron copiar: {}"
+
+#: crates/app/src/pages/usage.rs:126
+msgid "Unused apps"
+msgstr "Apps sin usar"
+
+#: crates/app/src/pages/usage.rs:248
+msgid "unlocked {} times, screen turned on {} times"
+msgstr "desbloqueado {} veces, pantalla encendida {} veces"
+
+#: crates/app/src/pages/usage.rs:337
+msgid "This phone did not give its notifications."
+msgstr "Este teléfono no dio sus notificaciones."
+
+#: crates/app/src/pages/usage.rs:343
+msgid "{} notifications in the last 24 hours from {} apps: the ones that interrupted (sound, vibration or on screen). Only how many is read, never what they say."
+msgstr "{} notificaciones en las últimas 24 horas de {} apps: las que interrumpieron (sonido, vibración o en pantalla). Solo se lee cuántas, nunca lo que dicen."
+
+#: crates/app/src/pages/usage.rs:352
+msgid "{} notifications · {} % of all"
+msgstr "{} notificaciones · {} % del total"
+
+#: crates/app/src/pages/usage.rs:355
+msgid "App not recorded by Android"
+msgstr "App no registrada por Android"
+
+#: crates/app/src/pages/usage.rs:369
+msgid "This phone did not give how long ago each app was used."
+msgstr "Este teléfono no dio cuándo se usó cada app por última vez."
+
+#: crates/app/src/pages/usage.rs:377
+msgid "Every app you installed was opened in the last {} days."
+msgstr "Todas las apps que instalaste se abrieron en los últimos {} días."
+
+#: crates/app/src/pages/usage.rs:379
+msgid "1 app you installed was not opened in the last {} days. Uninstalling or disabling it frees space and stops it working in the background."
+msgstr "1 app que instalaste no se abrió en los últimos {} días. Desinstalarla o desactivarla libera espacio y evita que trabaje en segundo plano."
+
+#: crates/app/src/pages/usage.rs:381
+msgid "{} apps you installed were not opened in the last {} days. Uninstalling or disabling them frees space and stops them working in the background."
+msgstr "{} apps que instalaste no se abrieron en los últimos {} días. Desinstalarlas o desactivarlas libera espacio y evita que trabajen en segundo plano."
+
+#: crates/app/src/pages/usage.rs:387
+msgid "last opened {}"
+msgstr "abierta por última vez el {}"
+
+#: crates/app/src/pages/usage.rs:387
+msgid "not opened since at least {}"
+msgstr "sin abrir al menos desde el {}"
+
+#: crates/app/src/pages/usage.rs:389
+msgid "installed {}"
+msgstr "instalada el {}"
+
+#: crates/app/src/pages/usage.rs:389
+msgid "came with the phone"
+msgstr "venía con el teléfono"
+
+#: crates/app/src/pages/radio_view.rs:203
+msgid "{} heard more than 15 minutes ago (Android limits how often it scans)"
+msgstr "{} oídas hace más de 15 minutos (Android limita cada cuánto busca)"
+
+#: crates/app/src/pages/radio_view.rs:200
+msgid "{} networks · 2.4 GHz: {} · 5 GHz: {} · 6 GHz: {}"
+msgstr "{} redes · 2,4 GHz: {} · 5 GHz: {} · 6 GHz: {}"
+
+#: crates/app/src/pages/default_apps.rs:76
+msgid "Among the keyboards enabled on the phone"
+msgstr "Entre los teclados activados en el teléfono"
+
+#: crates/core/src/adb.rs:1562
+msgid "Android did not change the keyboard"
+msgstr "Android no cambió el teclado"
+
+#: crates/core/src/radio.rs:316
+msgid "band {}"
+msgstr "banda {}"
+
+#: crates/core/src/radio.rs:322
+msgid "carrier aggregation"
+msgstr "agregación de portadoras"
+
+#: crates/app/src/pages/radio_view.rs:232
+msgid "channel {} · {}"
+msgstr "canal {} · {}"
+
+#: crates/app/src/pages/radio_view.rs:186
+msgid "Could not scan: {}"
+msgstr "No se pudo buscar: {}"
+
+#: crates/app/src/pages/radio_view.rs:239
+msgid "fair"
+msgstr "regular"
+
+#: crates/core/src/radio.rs:296
+msgid "Fair"
+msgstr "Regular"
+
+#: crates/app/src/pages/radio_view.rs:229
+msgid "Hidden network"
+msgstr "Red oculta"
+
+#: crates/app/src/pages/radio_view.rs:74
+msgid "Least crowded 2.4 GHz channel"
+msgstr "Canal de 2,4 GHz menos saturado"
+
+#: crates/app/src/pages/radio_view.rs:212
+msgid "Least crowded 2.4 GHz channel: {}"
+msgstr "Canal de 2,4 GHz menos saturado: {}"
+
+#: crates/app/src/pages/radio_view.rs:48
+msgid "Mobile signal"
+msgstr "Señal móvil"
+
+#: crates/app/src/pages/radio_view.rs:63
+msgid "Nearby Wi-Fi networks"
+msgstr "Redes Wi-Fi cercanas"
+
+#: crates/app/src/pages/radio_view.rs:218
+msgid "networks per channel: {}"
+msgstr "redes por canal: {}"
+
+#: crates/core/src/controls.rs:126
+msgid "Night Light"
+msgstr "Luz nocturna"
+
+#: crates/app/src/pages/radio_view.rs:145
+msgid "No SIM in service"
+msgstr "Ninguna SIM con servicio"
+
+#: crates/app/src/pages/radio_view.rs:48
+msgid "Of the SIM in use, as the phone receives it now"
+msgstr "De la SIM en uso, tal como la recibe el teléfono ahora"
+
+#: crates/app/src/pages/default_apps.rs:74
+msgid "Only one keyboard is enabled: others are enabled on the phone, in Settings → System → Keyboard"
+msgstr "Solo hay un teclado activado: los demás se activan en el teléfono, en Ajustes → Sistema → Teclado"
+
+#: crates/app/src/pages/radio_view.rs:55
+msgid "RSRP: above −90 dBm is good; below −110 dBm calls and data suffer"
+msgstr "RSRP: por encima de −90 dBm es buena; por debajo de −110 dBm sufren las llamadas y los datos"
+
+#: crates/app/src/pages/radio_view.rs:56
+msgid "RSRQ and SNR: interference and noise; higher is better"
+msgstr "RSRQ y SNR: interferencia y ruido; cuanto más alto, mejor"
+
+#: crates/app/src/pages/radio_view.rs:172
+msgid "Scanning (about 5 seconds)…"
+msgstr "Buscando (unos 5 segundos)…"
+
+#: crates/app/src/pages/radio_view.rs:53
+msgid "Strength"
+msgstr "Intensidad"
+
+#: crates/app/src/pages/default_apps.rs:26
+msgid "The app Android opens for links, the home button, calls, SMS and the assistant, and the keyboard you type with. The same as in Settings: choosing the previous app undoes it."
+msgstr "La app que Android abre para enlaces, el botón de inicio, llamadas, SMS y el asistente, y el teclado con el que escribes. Lo mismo que en Ajustes: elegir la app anterior lo deshace."
+
+#: crates/core/src/adb.rs:1534
+msgid "This Android version does not list nearby networks over ADB"
+msgstr "Esta versión de Android no lista las redes cercanas por ADB"
+
+#: crates/core/src/radio.rs:298
+msgid "Very weak"
+msgstr "Muy débil"
+
+#: crates/app/src/pages/controls.rs:185
+msgid "Warmer colours, easier on the eyes at night"
+msgstr "Colores más cálidos, más descanso para la vista de noche"
+
+#: crates/core/src/radio.rs:297
+msgid "Weak"
+msgstr "Débil"
+
+#: crates/app/src/pages/radio_view.rs:64
+msgid "What the phone hears around it: to choose your router's least crowded channel or find where the signal is weak. Only names and channels; nothing is joined."
+msgstr "Lo que el teléfono oye a su alrededor: para elegir el canal menos saturado de tu router o encontrar dónde la señal es débil. Solo nombres y canales; no se conecta a nada."
+
+#: crates/app/src/pages/radio_view.rs:217
+msgid "your network is on channel {}"
+msgstr "tu red está en el canal {}"
+
+#: crates/app/src/pages/memory_view.rs:126
+msgid "{} on average · up to {}"
+msgstr "{} de media · hasta {}"
+
+#: crates/app/src/pages/memory_view.rs:119
+msgid "{} processes"
+msgstr "{} procesos"
+
+#: crates/app/src/pages/memory_view.rs:40
+msgid "Analyse"
+msgstr "Analizar"
+
+#: crates/app/src/pages/memory_view.rs:36
+msgid "Apps that stay in memory"
+msgstr "Apps que se quedan en memoria"
+
+#: crates/app/src/pages/memory_view.rs:37
+msgid "How long each app stayed in memory in the last hours and how much it held. The ones always there with a lot push the others out and make them reload."
+msgstr "Cuánto tiempo estuvo cada app en memoria en las últimas horas y cuánta ocupó. Las que siempre están ahí con mucha sacan a las demás y las obligan a recargarse."
+
+#: crates/app/src/pages/memory_view.rs:117
+msgid "in memory {} % of the time"
+msgstr "en memoria el {} % del tiempo"
+
+#: crates/app/src/pages/memory_view.rs:108
+msgid "In the last {} · {} apps were in memory"
+msgstr "En las últimas {} · {} apps estuvieron en memoria"
+
+#: crates/app/src/pages/memory_view.rs:34
+msgid "Memory per app"
+msgstr "Memoria por app"
+
+#: crates/app/src/pages/personal_copy.rs:156
+msgid "{} accounts on the phone, none from Google: remove them in Settings → Accounts if you want."
+msgstr "{} cuentas en el teléfono, ninguna de Google: quítalas en Ajustes → Cuentas si quieres."
+
+#: crates/app/src
+msgid "{} Google accounts on the phone: remove them in Settings → Accounts before resetting, or after the reset the phone will ask for them again (Factory Reset Protection)."
+msgstr "{} cuentas de Google en el teléfono: quítalas en Ajustes → Cuentas antes de restablecer, o tras el restablecimiento el teléfono volverá a pedirlas (protección contra el restablecimiento de fábrica)."
+
+#: crates/app/src/pages/personal_copy.rs:132
+msgid "Accounts"
+msgstr "Cuentas"
+
+#: crates/app/src/pages/personal_copy.rs:110
+msgid "Before selling or resetting the phone"
+msgstr "Antes de vender o restablecer el teléfono"
+
+#: crates/app/src/pages/personal_copy.rs:131
+msgid "Contacts, calls and messages"
+msgstr "Contactos, llamadas y mensajes"
+
+#: crates/app/src/pages/personal_copy.rs:127
+msgid "Copy them to this computer: Files → Copy new photos and videos to the laptop"
+msgstr "Cópialos a este ordenador: Archivos → Copiar al portátil las fotos y vídeos nuevos"
+
+#: crates/app/src/pages/personal_copy.rs:131
+msgid "Copy them with the buttons above. WhatsApp and other chats keep their own backup inside the app."
+msgstr "Cópialos con los botones de arriba. WhatsApp y otros chats guardan su propia copia dentro de la app."
+
+#: crates/app/src/pages/personal_copy.rs:143
+msgid "Could not open it: {}"
+msgstr "No se pudo abrir: {}"
+
+#: crates/app/src/pages/personal_copy.rs:155
+msgid "No accounts on the phone: nothing to remove."
+msgstr "No hay cuentas en el teléfono: no hay nada que quitar."
+
+#: crates/app/src/pages/personal_copy.rs:148
+msgid "On the phone: Settings → System → Reset options → Erase all data."
+msgstr "En el teléfono: Ajustes → Sistema → Opciones de restablecimiento → Borrar todos los datos."
+
+#: crates/app/src/pages/personal_copy.rs:130
+msgid "Open Apps"
+msgstr "Abrir Apps"
+
+#: crates/app/src/pages/personal_copy.rs:128
+msgid "Open Files"
+msgstr "Abrir Archivos"
+
+#: crates/app/src/pages/personal_copy.rs:127
+msgid "Photos and videos"
+msgstr "Fotos y vídeos"
+
+#: crates/app/src/pages/personal_copy.rs:148
+msgid "Reset"
+msgstr "Restablecer"
+
+#: crates/app/src/pages/personal_copy.rs:129
+msgid "Save them to install them on the new phone: Apps → ⋮ → Export apps"
+msgstr "Guárdalas para instalarlas en el teléfono nuevo: Apps → ⋮ → Exportar apps"
+
+#: crates/app/src/pages/personal_copy.rs:111
+msgid "What to keep and what to remove first. ADB Scan never erases the phone: the reset is done on the phone."
+msgstr "Qué guardar y qué quitar antes. ADB Scan nunca borra el teléfono: el restablecimiento se hace en el teléfono."
+
+#: crates/app/src/pages/root.rs:400
+msgid "{} ({}) is downloaded from Magisk's official releases, checked against the SHA-256 sum GitHub publishes and installed on the phone. Installing the app does not root the phone by itself."
+msgstr "{} ({}) se descarga de las versiones oficiales de Magisk, se comprueba con la suma SHA-256 que publica GitHub y se instala en el teléfono. Instalar la app no rootea el teléfono por sí sola."
+
+#: crates/app/src/pages/root.rs:372
+msgid "{} is in the phone's Download folder"
+msgstr "{} está en la carpeta Download del teléfono"
+
+#: crates/app/src/pages/root.rs:284
+msgid "32-bit system (Android Go): Magisk supports it; KernelSU and APatch do not"
+msgstr "Sistema de 32 bits (Android Go): Magisk lo admite; KernelSU y APatch no"
+
+#: crates/app/src/pages/root.rs:112
+msgid "About Magisk"
+msgstr "Sobre Magisk"
+
+#: crates/app/src/pages/root.rs:132
+msgid "After restarting, open Magisk: it should show its version under “Magisk”. Read this page again to see the root."
+msgstr "Tras reiniciar, abre Magisk: debe mostrar su versión bajo «Magisk». Vuelve a leer esta página para ver el root."
+
+#: crates/app/src/pages/root.rs:258
+msgid "Allowed (the switch in Developer options is on)"
+msgstr "Permitido (el interruptor de Opciones de desarrollador está activado)"
+
+#: crates/app/src/pages/root.rs:384
+msgid "Asking GitHub for the latest Magisk…"
+msgstr "Preguntando a GitHub por el último Magisk…"
+
+#: crates/app/src/pages/root.rs:114
+msgid "Back up first"
+msgstr "Haz una copia primero"
+
+#: crates/app/src/pages/root.rs:126
+msgid "Bring the patched image here"
+msgstr "Trae aquí la imagen parcheada"
+
+#: crates/app/src/pages/root.rs:132
+msgid "Check"
+msgstr "Comprobar"
+
+#: crates/app/src/pages/root.rs:285
+msgid "Chip"
+msgstr "Chip"
+
+#: crates/app/src/pages/root.rs:189
+msgid "Connect a phone with USB debugging to read it."
+msgstr "Conecta un teléfono con la depuración USB para leerlo."
+
+#: crates/app/src/pages/root.rs:126
+msgid "Copies the newest magisk_patched-….img from the phone's Download folder to this computer."
+msgstr "Copia a este ordenador la magisk_patched-….img más reciente de la carpeta Download del teléfono."
+
+#: crates/core/src/root.rs:358
+msgid "could not ask GitHub for Magisk: {}"
+msgstr "no se pudo preguntar a GitHub por Magisk: {}"
+
+#: crates/app/src/pages/root.rs:496
+msgid "Could not copy it: {}"
+msgstr "No se pudo copiar: {}"
+
+#: crates/app/src/pages/root.rs:437
+msgid "Could not install it: {}"
+msgstr "No se pudo instalar: {}"
+
+#: crates/app/src/pages/root.rs:475
+msgid "Could not look for it: {}"
+msgstr "No se pudo buscar: {}"
+
+#: crates/app/src/pages/root.rs:350
+msgid "Could not restart it: {}"
+msgstr "No se pudo reiniciar: {}"
+
+#: crates/app/src/pages/root.rs:373
+msgid "Could not send it: {}"
+msgstr "No se pudo enviar: {}"
+
+#: crates/core/src/root.rs:141
+msgid "Developer options → OEM unlocking, then “fastboot flashing unlock” (Flasher → Unlock the bootloader). Fairphone asks for a code from its website first."
+msgstr "Opciones de desarrollador → Desbloqueo OEM y luego «fastboot flashing unlock» (Flasher → Desbloquear el bootloader). Fairphone pide antes un código de su web."
+
+#: crates/core/src/root.rs:127
+msgid "Developer options → OEM unlocking, then “fastboot flashing unlock” (Flasher → Unlock the bootloader). Some carrier and Chinese models need a token from OnePlus."
+msgstr "Opciones de desarrollador → Desbloqueo OEM y luego «fastboot flashing unlock» (Flasher → Desbloquear el bootloader). Algunos modelos de operadora y chinos necesitan un token de OnePlus."
+
+#: crates/core/src/root.rs:125
+msgid "Developer options → OEM unlocking, then in the bootloader “fastboot flashing unlock” (Flasher → Unlock the bootloader) and confirm on the phone with the volume keys."
+msgstr "Opciones de desarrollador → Desbloqueo OEM; luego, en el bootloader, «fastboot flashing unlock» (Flasher → Desbloquear el bootloader) y confirma en el teléfono con las teclas de volumen."
+
+#: crates/core/src/root.rs:123
+msgid "Developer options → OEM unlocking, then in the bootloader “fastboot flashing unlock” (Flasher → Unlock the bootloader). Pixels sold by some carriers (Verizon) cannot be unlocked."
+msgstr "Opciones de desarrollador → Desbloqueo OEM; luego, en el bootloader, «fastboot flashing unlock» (Flasher → Desbloquear el bootloader). Los Pixel vendidos por algunas operadoras (Verizon) no se pueden desbloquear."
+
+#: crates/app/src/pages/root.rs:121
+msgid "Download and install"
+msgstr "Descargar e instalar"
+
+#: crates/app/src/pages/root.rs:120
+msgid "Downloads the latest Magisk from its official repository (github.com/topjohnwu/Magisk), checks its SHA-256 sum and installs it on the phone."
+msgstr "Descarga el último Magisk de su repositorio oficial (github.com/topjohnwu/Magisk), comprueba su suma SHA-256 y lo instala en el teléfono."
+
+#: crates/core/src/root.rs:97
+msgid "Easy"
+msgstr "Fácil"
+
+#: crates/core/src/root.rs:136
+msgid "In the bootloader, Flasher → Unlock data (Motorola) gives the text to paste on Motorola's unlock website; with the code it sends by email, Flasher → Unlock with a code. Carrier models and many cheap models are usually excluded."
+msgstr "En el bootloader, Flasher → Datos de desbloqueo (Motorola) da el texto que se pega en la web de desbloqueo de Motorola; con el código que envía por correo, Flasher → Desbloquear con un código. Los modelos de operadora y muchos modelos económicos suelen quedar fuera."
+
+#: crates/core/src/root.rs:138
+msgid "Get the unlock code on Sony's website with the IMEI and use it in Flasher → Unlock with a code (with “0x” in front). The camera's DRM keys are lost for good."
+msgstr "Consigue el código de desbloqueo en la web de Sony con el IMEI y úsalo en Flasher → Desbloquear con un código (con «0x» delante). Las claves DRM de la cámara se pierden para siempre."
+
+#: crates/app/src/pages/root.rs:129
+msgid "Flash it"
+msgstr "Flashéala"
+
+#: crates/app/src/pages/root.rs:127
+msgid "Get it…"
+msgstr "Traer…"
+
+#: crates/app/src/pages/root.rs:282
+msgid "GKI 5.10 or newer: KernelSU and APatch are an option besides Magisk"
+msgstr "GKI 5.10 o posterior: KernelSU y APatch son una opción además de Magisk"
+
+#: crates/core/src/root.rs:99
+msgid "Hard: only some models or regions"
+msgstr "Difícil: solo algunos modelos o regiones"
+
+#: crates/core/src/root.rs:155
+msgid "Huawei and Honor stopped giving unlock codes in 2018: their bootloaders cannot be unlocked."
+msgstr "Huawei y Honor dejaron de dar códigos de desbloqueo en 2018: sus bootloaders no se pueden desbloquear."
+
+#: crates/app/src
+msgid "{}.img from the official firmware of build {}: in Pixel factory images it is inside the zip; in most others, inside payload.bin of the full OTA. Send it to the phone's Download folder."
+msgstr "{}.img del firmware oficial de la compilación {}: en las imágenes de fábrica de Pixel viene dentro del zip; en la mayoría de los demás, dentro del payload.bin de la OTA completa. Envíala a la carpeta Download del teléfono."
+
+#: crates/app/src/pages/root.rs:123
+msgid "In Magisk: Install → Select and patch a file → choose the image in Download. Magisk saves magisk_patched-….img next to it."
+msgstr "En Magisk: Instalar → Seleccionar y parchear un archivo → elige la imagen en Download. Magisk guarda magisk_patched-….img junto a ella."
+
+#: crates/app/src/pages/root.rs:120
+msgid "Install Magisk"
+msgstr "Instalar Magisk"
+
+#: crates/app/src/pages/root.rs:399
+msgid "Install Magisk {}?"
+msgstr "¿Instalar Magisk {}?"
+
+#: crates/app/src/pages/root.rs:280
+msgid "Kernel"
+msgstr "Kernel"
+
+#: crates/app/src/pages/root.rs:394
+msgid "Latest: Magisk {} ({}), from github.com/topjohnwu/Magisk"
+msgstr "Última: Magisk {} ({}), de github.com/topjohnwu/Magisk"
+
+#: crates/core/src/root.rs:132
+msgid "Link the phone to a Mi account in Developer options → Mi Unlock status, wait the period Xiaomi sets (days or weeks) and unlock with Xiaomi's Mi Unlock tool (Windows). With HyperOS Xiaomi limits it further, and Chinese ROMs need a level in its community app."
+msgstr "Vincula el teléfono a una cuenta Mi en Opciones de desarrollador → Estado de Mi Unlock, espera el plazo que fije Xiaomi (días o semanas) y desbloquea con su herramienta Mi Unlock (Windows). Con HyperOS Xiaomi lo limita más, y las ROM chinas piden un nivel en su app de comunidad."
+
+#: crates/app/src/pages/root.rs:246
+msgid "Look for the firmware of exactly this build"
+msgstr "Busca el firmware de exactamente esta compilación"
+
+#: crates/app/src/pages/root.rs:433
+msgid "Magisk {} installed"
+msgstr "Magisk {} instalado"
+
+#: crates/app/src/pages/root.rs:454
+msgid "Magisk is not installed on the phone (step 3)"
+msgstr "Magisk no está instalado en el teléfono (paso 3)"
+
+#: crates/app/src/pages/root.rs:267
+msgid "Magisk patches boot"
+msgstr "Magisk parchea boot"
+
+#: crates/app/src/pages/root.rs:110
+msgid "Magisk patches the boot image on the phone itself; the patched image is then flashed from the bootloader. The phone's data is not touched by these steps (only unlocking erases it)."
+msgstr "Magisk parchea la imagen de arranque en el propio teléfono; después la imagen parcheada se flashea desde el bootloader. Estos pasos no tocan los datos del teléfono (solo el desbloqueo los borra)."
+
+#: crates/core/src/root.rs:359
+msgid "Magisk's latest release has no APK with a published SHA-256 sum"
+msgstr "La última versión de Magisk no tiene una APK con suma SHA-256 publicada"
+
+#: crates/core/src/root.rs:151
+msgid "No fastboot: OEM unlocking in Developer options, then the unlock screen in download mode, and the patched AP file is flashed with Odin (Windows) or Heimdall, not from here. It trips Knox for good (Samsung Pay, Secure Folder). US models with Snapdragon cannot be unlocked."
+msgstr "Sin fastboot: Desbloqueo OEM en Opciones de desarrollador, luego la pantalla de desbloqueo en modo descarga, y el archivo AP parcheado se flashea con Odin (Windows) o Heimdall, no desde aquí. Dispara Knox para siempre (Samsung Pay, Carpeta segura). Los modelos de EE. UU. con Snapdragon no se pueden desbloquear."
+
+#: crates/app/src/pages/root.rs:282
+msgid "Not a GKI 5.10+ kernel: Magisk is the usual choice"
+msgstr "No es un kernel GKI 5.10+: Magisk es la opción habitual"
+
+#: crates/app/src/pages/root.rs:259
+msgid "Not allowed: turn it on in Developer options"
+msgstr "No permitido: actívalo en Opciones de desarrollador"
+
+#: crates/core/src/root.rs:100
+msgid "Not possible: the manufacturer does not allow it"
+msgstr "No es posible: el fabricante no lo permite"
+
+#: crates/app/src/pages/root.rs:224
+msgid "Not rooted"
+msgstr "Sin root"
+
+#: crates/app/src/pages/root.rs:223
+msgid "Not rooted yet · installed: {}"
+msgstr "Aún sin root · instalado: {}"
+
+#: crates/app/src/pages/root.rs:256
+msgid "OEM unlocking"
+msgstr "Desbloqueo OEM"
+
+#: crates/core/src/root.rs:143
+msgid "Only with ASUS's own unlock app, which it stopped offering for recent models."
+msgstr "Solo con la app de desbloqueo de ASUS, que dejó de ofrecer para los modelos recientes."
+
+#: crates/core/src/root.rs:145
+msgid "Only with the manufacturer's “Deep testing” app for some models and regions; it is often unavailable."
+msgstr "Solo con la app «Deep testing» del fabricante para algunos modelos y regiones; a menudo no está disponible."
+
+#: crates/app/src/pages/root.rs:98
+msgid "Open Flasher"
+msgstr "Abrir Flasher"
+
+#: crates/app/src/pages/root.rs:124
+msgid "Open Magisk"
+msgstr "Abrir Magisk"
+
+#: crates/app/src/pages/root.rs:115
+msgid "Open Phone data"
+msgstr "Abrir Datos del teléfono"
+
+#: crates/app/src/pages/root.rs:96
+msgid "Opens Developer options on the phone"
+msgstr "Abre las Opciones de desarrollador en el teléfono"
+
+#: crates/app/src/pages/root.rs:319
+msgid "Opens the Flasher with partition “{}” and the patched image chosen; there you restart to the bootloader and confirm. Keep the stock image: flashing it back undoes the root."
+msgstr "Abre el Flasher con la partición «{}» y la imagen parcheada ya elegidas; allí reinicias al bootloader y confirmas. Guarda la imagen original: volver a flashearla deshace el root."
+
+#: crates/app/src/pages/root.rs:265
+msgid "Partition to patch"
+msgstr "Partición a parchear"
+
+#: crates/app/src/pages/root.rs:123
+msgid "Patch it on the phone"
+msgstr "Parchéala en el teléfono"
+
+#: crates/app/src/pages/root.rs:481
+msgid "Patched image"
+msgstr "Imagen parcheada"
+
+#: crates/core/src/root.rs:98
+msgid "Possible, with the manufacturer's permission"
+msgstr "Posible, con permiso del fabricante"
+
+#: crates/app/src/pages/root.rs:130
+msgid "Prepare in Flasher"
+msgstr "Preparar en el Flasher"
+
+#: crates/app/src/pages/root.rs:363
+msgid "Rename the file with only letters, digits, “.”, “_” or “-”"
+msgstr "Cambia el nombre del archivo para que solo tenga letras, dígitos, «.», «_» o «-»"
+
+#: crates/app/src/pages/root.rs:302
+msgid "Required before any root. It erases the phone."
+msgstr "Necesario antes de cualquier root. Borra el teléfono."
+
+#: crates/app/src/pages/root.rs:97
+msgid "Restart to bootloader"
+msgstr "Reiniciar al bootloader"
+
+#: crates/app/src/pages/root.rs:340
+msgid "Restart to the bootloader?"
+msgstr "¿Reiniciar al bootloader?"
+
+#: crates/app/src/pages/root.rs:68
+msgid "Root"
+msgstr "Root"
+
+#: crates/app/src/pages/root.rs:69
+msgid "Root gives apps full control of the phone. Do it only on phones that are yours or whose owner agrees: unlocking the bootloader ERASES everything on the phone, the warranty may be lost, and banking, payment and some game apps may stop working."
+msgstr "El root da a las apps control total del teléfono. Hazlo solo en teléfonos tuyos o cuyo dueño esté de acuerdo: desbloquear el bootloader BORRA todo el teléfono, puede perderse la garantía, y las apps de bancos, pagos y algunos juegos pueden dejar de funcionar."
+
+#: crates/app/src/pages/root.rs:74
+msgid "Root on this phone"
+msgstr "Root en este teléfono"
+
+#: crates/app/src/pages/root.rs:109
+msgid "Root with Magisk"
+msgstr "Root con Magisk"
+
+#: crates/app/src/pages/root.rs:221
+msgid "Rooted · {}"
+msgstr "Con root · {}"
+
+#: crates/app/src/pages/root.rs:222
+msgid "Rooted (a “su” command is present)"
+msgstr "Con root (hay un comando «su»)"
+
+#: crates/app/src/pages/root.rs:494
+msgid "Saved {}"
+msgstr "Guardada {}"
+
+#: crates/app/src/pages/root.rs:118
+msgid "Send to the phone…"
+msgstr "Enviar al teléfono…"
+
+#: crates/app/src/pages/root.rs:367
+msgid "Sending {}…"
+msgstr "Enviando {}…"
+
+#: crates/app/src/pages/root.rs:91
+msgid "Steps from here"
+msgstr "Pasos desde aquí"
+
+#: crates/app/src/pages/root.rs:359
+msgid "Stock boot image"
+msgstr "Imagen de arranque original"
+
+#: crates/app/src/pages/root.rs:242
+msgid "The codename (in brackets) is what firmware and guides use"
+msgstr "El nombre en clave (entre paréntesis) es el que usan los firmwares y las guías"
+
+#: crates/app/src/pages/root.rs:81
+msgid "The exact build matters: the image to patch must come from the same firmware the phone runs now."
+msgstr "Importa la compilación exacta: la imagen a parchear debe venir del mismo firmware que tiene ahora el teléfono."
+
+#: crates/app/src/pages/root.rs:276
+msgid "The image is flashed to the active slot"
+msgstr "La imagen se flashea en la ranura activa"
+
+#: crates/app/src/pages/root.rs:307
+msgid "The phone is connected over Wi-Fi: the bootloader (fastboot) only works over a USB cable, so connect it before restarting."
+msgstr "El teléfono está conectado por Wi-Fi: el bootloader (fastboot) solo funciona por cable USB, así que conéctalo antes de reiniciar."
+
+#: crates/app/src/pages/root.rs:340
+msgid "The phone restarts into the bootloader (fastboot) and the connection over ADB ends. To leave it, choose Start on the phone or use the Flasher."
+msgstr "El teléfono se reinicia en el bootloader (fastboot) y la conexión por ADB termina. Para salir, elige Start en el teléfono o usa el Flasher."
+
+#: crates/app/src/pages/root.rs:117
+msgid "The stock boot image"
+msgstr "La imagen de arranque original"
+
+#: crates/app/src/pages/root.rs:471
+msgid "There is no magisk_patched-….img in the phone's Download folder yet (step 4)"
+msgstr "Aún no hay ninguna magisk_patched-….img en la carpeta Download del teléfono (paso 4)"
+
+#: crates/app/src/pages/root.rs:301
+msgid "This brand does not allow it: root is not possible without an exploit."
+msgstr "Esta marca no lo permite: el root no es posible sin un exploit."
+
+#: crates/app/src/pages/root.rs:321
+msgid "This brand has no fastboot: the patched image is flashed with the manufacturer's tool (Odin for Samsung), not from here."
+msgstr "Esta marca no tiene fastboot: la imagen parcheada se flashea con la herramienta del fabricante (Odin en Samsung), no desde aquí."
+
+#: crates/app/src/pages/root.rs:509
+msgid "This brand has no fastboot: use the manufacturer's tool"
+msgstr "Esta marca no tiene fastboot: usa la herramienta del fabricante"
+
+#: crates/app/src/pages/root.rs:260
+msgid "This phone does not say: look in Developer options"
+msgstr "Este teléfono no lo indica: míralo en Opciones de desarrollador"
+
+#: crates/app/src/pages/root.rs:296
+msgid "This phone has a Unisoc chip: the manufacturer's unlock programme usually leaves them out. Asking for the code (Flasher → Unlock data) is the safe way to know. Other methods exploit flaws of the chip and can leave the phone unusable."
+msgstr "Este teléfono tiene un chip Unisoc: el programa de desbloqueo del fabricante suele dejarlos fuera. Pedir el código (Flasher → Datos de desbloqueo) es la forma segura de saberlo. Otros métodos aprovechan fallos del chip y pueden dejar el teléfono inservible."
+
+#: crates/app/src/pages/root.rs:267
+msgid "This phone has init_boot (it launched with Android 13 or later): Magisk patches init_boot, not boot"
+msgstr "Este teléfono tiene init_boot (salió con Android 13 o posterior): Magisk parchea init_boot, no boot"
+
+#: crates/app/src/pages/root.rs:300
+msgid "This phone's bootloader is already unlocked: skip to the Magisk steps."
+msgstr "El bootloader de este teléfono ya está desbloqueado: pasa a los pasos de Magisk."
+
+#: crates/app/src/pages/root.rs:92
+msgid "Turn on “OEM unlocking” on the phone, restart it to the bootloader and unlock it in the Flasher (it asks you to type the serial number)."
+msgstr "Activa «Desbloqueo OEM» en el teléfono, reinícialo al bootloader y desbloquéalo en el Flasher (te pide escribir el número de serie)."
+
+#: crates/app/src/pages/root.rs:285
+msgid "Unisoc: manufacturers rarely give unlock codes for these chips"
+msgstr "Unisoc: los fabricantes rara vez dan códigos de desbloqueo para estos chips"
+
+#: crates/app/src/pages/root.rs:114
+msgid "Unlocking erases the phone: copy photos, contacts and apps (Phone data → private view)."
+msgstr "Desbloquear borra el teléfono: copia fotos, contactos y apps (Datos del teléfono → vista privada)."
+
+#: crates/app/src/pages/root.rs:85
+msgid "Unlocking the bootloader"
+msgstr "Desbloquear el bootloader"
+
+#: crates/core/src/root.rs:162
+msgid "Usually: Developer options → OEM unlocking, then “fastboot flashing unlock” (Flasher → Unlock the bootloader). Look up this model: some manufacturers ask for a code or do not allow it."
+msgstr "Normalmente: Opciones de desarrollador → Desbloqueo OEM y luego «fastboot flashing unlock» (Flasher → Desbloquear el bootloader). Busca este modelo: algunos fabricantes piden un código o no lo permiten."
+
+#: crates/app/src/pages/root.rs:254
+msgid "verified boot {}"
+msgstr "arranque verificado {}"
+
+#: crates/core/src/root.rs:157
+msgid "vivo and iQOO do not allow unlocking on current models."
+msgstr "vivo e iQOO no permiten desbloquear los modelos actuales."
+
+#: crates/app/src/pages/root.rs:80
+msgid "What rooting needs to know"
+msgstr "Lo que el root necesita saber"
+
+#: crates/app/src/pages/flasher.rs:200
+msgid "Unlock data (Motorola)"
+msgstr "Datos de desbloqueo (Motorola)"
+
+#: crates/app/src/pages/flasher.rs:201
+msgid "fastboot oem get_unlock_data (read-only): the text to paste on Motorola's unlock website"
+msgstr "fastboot oem get_unlock_data (solo lectura): el texto que se pega en la web de desbloqueo de Motorola"
+
+#: crates/app/src/pages/flasher.rs:205
+msgid "Unlock with a code (Motorola, Sony)"
+msgstr "Desbloquear con un código (Motorola, Sony)"
+
+#: crates/app/src/pages/flasher.rs:206
+msgid "fastboot oem unlock <code> · erases everything; with the code the manufacturer sent you"
+msgstr "fastboot oem unlock <código> · borra todo; con el código que te envió el fabricante"
+
+#: crates/app/src/pages/flasher.rs:894
+msgid "Unlock code"
+msgstr "Código de desbloqueo"
+
+#: crates/app/src/pages/flasher.rs:894
+msgid "The code the manufacturer sent you (Motorola by email after pasting the unlock data on its website; Sony on its website)."
+msgstr "El código que te envió el fabricante (Motorola por correo tras pegar los datos de desbloqueo en su web; Sony en su web)."
+
+#: crates/app/src/pages/flasher.rs:895
+msgid "Code"
+msgstr "Código"
+
+#: crates/core/src/fastboot.rs:322
+msgid "That is not an unlock code (only letters and digits)"
+msgstr "Eso no es un código de desbloqueo (solo letras y dígitos)"
+
+#: crates/app/src/pages/flasher.rs:915
+msgid "ALL DATA WILL BE ERASED. The phone will show a warning on every boot, some apps (banking, payments) may stop working and the warranty may be affected."
+msgstr "SE BORRARÁN TODOS LOS DATOS. El teléfono mostrará un aviso en cada arranque, algunas apps (bancos, pagos) pueden dejar de funcionar y la garantía puede verse afectada."
+
+#: crates/app/src/search.rs:50
+msgid "root magisk kernelsu apatch su unlock bootloader oem unlocking boot init_boot patch"
+msgstr "root rootear magisk kernelsu apatch su desbloquear bootloader desbloqueo oem arranque boot init_boot parchear"
+
+#: crates/app/src/pages/battery.rs:42
+msgid "Battery in use since"
+msgstr "Batería en uso desde"
+
+#: crates/app/src/pages/dashboard.rs:381
+msgid "Capacity left as the manufacturer's battery service reports it (on Samsung, the same as Samsung Members)"
+msgstr "Capacidad que queda según el servicio de batería del fabricante (en Samsung, la misma que muestra Samsung Members)"
+
+#: crates/core/src/root.rs:269
+msgid "This is a Samsung model for the US with a Snapdragon chip (model ending in U or U1): Samsung locks its bootloader for good and the OEM unlocking switch does not exist. Root is not possible on it."
+msgstr "Es un Samsung para EE. UU. con chip Snapdragon (modelo que termina en U o U1): Samsung bloquea su bootloader para siempre y el interruptor «Desbloqueo OEM» no existe. En él no es posible el root."
+
+#: crates/app/src/pages/root.rs:325
+msgid "Turn on “OEM unlocking” on the phone. The unlocking itself is done on the phone in download mode, not from here."
+msgstr "Activa «Desbloqueo OEM» en el teléfono. El desbloqueo en sí se hace en el teléfono, en modo Download, no desde aquí."
+
+#: crates/app/src/help.rs:20
+msgid "<p>1.4.0 — root, more control without root, and more phones</p><ul><li>Root: what rooting needs to know about the phone, how to unlock each brand, and Magisk from its official site, checked before installing.</li><li>Flasher: Motorola's unlock data and unlocking with a code (Motorola, Sony).</li><li>What wakes the phone and works in the background, unrestricted battery per app, and per-app tuning (smoothness, language, game mode).</li><li>Copy contacts, calls and messages to the computer, and a checklist before selling or resetting the phone.</li><li>Usage: notifications, unlocks and apps not used in months. Also the keyboard, night light, mobile signal, nearby Wi-Fi networks and memory per app.</li><li>Works with Android 11, Samsung and several devices connected at once.</li></ul>"
+msgstr "<p>1.4.0 — root, más control sin root y más teléfonos</p><ul><li>Root: lo que el root necesita saber del teléfono, cómo desbloquear cada marca y Magisk desde su sitio oficial, comprobado antes de instalarlo.</li><li>Flasher: datos de desbloqueo de Motorola y desbloqueo con código (Motorola, Sony).</li><li>Quién despierta el teléfono y qué trabaja en segundo plano, batería sin restricciones por app y ajustes finos por app (fluidez, idioma, modo de juego).</li><li>Copiar contactos, llamadas y mensajes al ordenador, y una lista antes de vender o restablecer el teléfono.</li><li>Uso: notificaciones, desbloqueos y apps sin usar en meses. Además el teclado, la luz nocturna, la señal móvil, las redes Wi-Fi cercanas y la memoria por app.</li><li>Funciona con Android 11, Samsung y varios dispositivos conectados a la vez.</li></ul>"

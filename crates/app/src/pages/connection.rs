@@ -82,7 +82,6 @@ fn level_icon(level: Level) -> (&'static str, &'static str) {
 /// Connection checks (ADB, USB, permissions, authorisation, telemetry): state
 /// 0 good, 1 warning, 2 bad, 3 pending. Also used by Overview.
 pub fn diagnosis_rows(ctx: &Rc<Ctx>) -> Vec<(u8, String, String)> {
-    let usb = ctx.usb_devices();
     let dev = ctx.selected_device();
     let mut rows: Vec<(u8, String, String)> = Vec::new();
     match ctx.adb() {
@@ -93,7 +92,8 @@ pub fn diagnosis_rows(ctx: &Rc<Ctx>) -> Vec<(u8, String, String)> {
     if let Some(p) = ctx.monitor_problem() {
         rows.push((1, tr("ADB server").into(), p));
     }
-    let phone = usb.iter().find(|u| u.mode != UsbMode::Other).or(usb.first());
+    let selected_usb = ctx.selected_usb();
+    let phone = selected_usb.as_ref();
     if !usb::HOST_USB {
         rows.push((3, tr("Phone over USB").into(), tr("Not available on Windows: the phone is seen only through adb").into()));
     }
@@ -136,16 +136,17 @@ pub fn diagnosis_rows(ctx: &Rc<Ctx>) -> Vec<(u8, String, String)> {
     rows
 }
 
-/// The phone on the PC's USB bus that matches the selected device, or the
-/// first phone there.
+/// The phone on the PC's USB bus that matches the selected device (see
+/// [`Ctx::selected_usb`]).
 fn usb_phone(ctx: &Rc<Ctx>) -> Option<UsbDevice> {
-    let usb = ctx.usb_devices();
-    let serial = ctx.selected_device().map(|d| d.serial);
-    usb.iter().find(|u| serial.as_deref() == Some(u.serial.as_str())).or_else(|| usb.iter().find(|u| u.mode != UsbMode::Other)).or(usb.first()).cloned()
+    ctx.selected_usb()
 }
 
 /// Seconds since the last read after which a visible page reads again.
 const REFRESH_SECS: f64 = 10.0;
+
+/// The last USB device, PC link and phone link read.
+type LastRead = (Option<UsbDevice>, Option<PcLink>, Option<Result<PhoneLink, String>>);
 
 struct ConnectionPage {
     me: std::rc::Weak<Self>,
@@ -170,7 +171,7 @@ struct ConnectionPage {
     busy: Cell<bool>,
     last_read: Cell<f64>,
     /// Last data read, to repaint on a privacy change without reading again.
-    last: RefCell<(Option<UsbDevice>, Option<PcLink>, Option<Result<PhoneLink, String>>)>,
+    last: RefCell<LastRead>,
 }
 
 pub fn build(ctx: &Rc<Ctx>) -> Rc<dyn Page> {

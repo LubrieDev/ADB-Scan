@@ -307,6 +307,23 @@ impl Fastboot {
         self.run(Some(serial), &["flashing", verb], Duration::from_secs(120))
     }
 
+    /// A manufacturer's unlock code: letters and digits (Sony's starts with
+    /// `0x`), 8 to 64 characters.
+    pub fn is_valid_unlock_code(code: &str) -> bool {
+        let body = code.strip_prefix("0x").unwrap_or(code);
+        (8..=64).contains(&body.len()) && body.bytes().all(|b| b.is_ascii_alphanumeric())
+    }
+
+    /// `fastboot oem unlock <code>` (Motorola, Sony): unlocks with the code
+    /// the manufacturer gave. It erases the phone.
+    pub fn oem_unlock(&self, serial: &str, code: &str, confirm: Confirm) -> Result<CommandResult> {
+        check_confirm(Confirm::Destructive, confirm)?;
+        if !Self::is_valid_unlock_code(code) {
+            return Err(Error::Invalid(tr("That is not an unlock code (only letters and digits)").into()));
+        }
+        self.run(Some(serial), &["oem", "unlock", code], Duration::from_secs(120))
+    }
+
     /// Read-only `oem <cmd>` (device-info, get_unlock_ability…).
     pub fn oem_info(&self, serial: &str, cmd: &str) -> Result<CommandResult> {
         const ALLOWED: [&str; 4] = ["device-info", "get_unlock_ability", "get_unlock_data", "lks"];
@@ -586,6 +603,10 @@ mod tests {
         assert!(Fastboot::validate_free_args("erase userdata").is_err());
         assert!(Fastboot::validate_free_args("-s X -w").is_err());
         assert!(Fastboot::validate_free_args("flashing unlock").is_err());
+        assert!(Fastboot::is_valid_unlock_code("ABCDEFGH12345678ABCD"));
+        assert!(Fastboot::is_valid_unlock_code("0x1234567890ABCDEF"));
+        assert!(!Fastboot::is_valid_unlock_code("abc"));
+        assert!(!Fastboot::is_valid_unlock_code("ABCDEFGH;reboot"));
     }
 
     #[test]

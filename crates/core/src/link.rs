@@ -761,7 +761,7 @@ Level::Warning,
     if findings.iter().all(|f| f.level <= Level::Ok) && (pc.is_some() || phone.is_some()) {
         find!(Level::Ok, tr("No problems found").into(), tr("The cable, the ports and the connection look fine.").into());
     }
-    findings.sort_by(|a, b| b.level.cmp(&a.level));
+    findings.sort_by_key(|f| std::cmp::Reverse(f.level));
     Assessment { cable: CableGuess { ends, ends_certainty, ends_reason, superspeed, superspeed_reason }, findings }
 }
 

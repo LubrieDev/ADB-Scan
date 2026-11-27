@@ -255,7 +255,7 @@ impl Dashboard {
                 self.chips.append(&chip("adb-wifi-symbolic", "Wi-Fi", "accent"));
             }
         }
-        if let Some(u) = ctx.usb_devices().first() {
+        if let Some(u) = ctx.selected_usb() {
             if u.speed_mbps.is_some() {
                 self.chips.append(&chip("adb-link-symbolic", &u.speed_label(), ""));
             }
@@ -348,7 +348,7 @@ impl Dashboard {
             }
         }
         self.uptime.set(&s.uptime_label(), &s.cpu.loadavg.map(|(a, b, c)| t!("Load {} {} {}", format!("{:.2}", a), format!("{:.2}", b), format!("{:.2}", c))).unwrap_or_default());
-        let host = self.ctx.usb_devices().first().map(|u| u.speed_label()).unwrap_or_default();
+        let host = self.ctx.selected_usb().map(|u| u.speed_label()).unwrap_or_default();
         self.usb_card.set(&s.usb.label(), &host);
         self.refresh_health(&s.health);
         self.refresh_chips();
@@ -378,6 +378,7 @@ impl Dashboard {
         self.batt_health.root.set_tooltip_text(match h.battery_source {
             CapacitySource::Sysfs => Some(tr("Real capacity measured by the charging chip compared to the design capacity")),
             CapacitySource::BatteryStats => Some(tr("Capacity learned by Android (batterystats) compared to the design capacity")),
+            CapacitySource::Manufacturer => Some(tr("Capacity left as the manufacturer's battery service reports it (on Samsung, the same as Samsung Members)")),
             CapacitySource::None => None,
         });
         widgets::set_health(&self.batt_health_bar, pct, h.battery_level());

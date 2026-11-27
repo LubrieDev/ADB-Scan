@@ -3,10 +3,16 @@
 //! - Usage: `dumpsys batterystats --usage` (BatteryUsageStats, the same as
 //!   Android's battery screen). Each app only adds up the periods **on
 //!   battery**: the total in each UID's header includes charging time and is no
-//!   use for knowing what drains the battery.
+//!   use for knowing what drains the battery. Android 11 and older have no
+//!   `--usage`: their `Estimated power use` block of `--charged` is read
+//!   instead (no split by screen state there).
 //! - Wakelocks: readable summary of `dumpsys batterystats --charged`, filtered
 //!   on the phone (lines with a two-space indent are the global summary; those
 //!   with more indentation, the per-UID detail).
+//! - Background tasks: the `Job …` lines of the same `--charged` summary
+//!   (JobScheduler work per app since the last full charge).
+//! - Alarms that wake the phone: `dumpsys alarm`, its per-app statistics since
+//!   Android started.
 //! - Names: `pm list packages -U` (UID → packages).
 //!
 //! The options that clear or write statistics (`--reset`, `--reset-all`,
@@ -16,10 +22,39 @@ use crate::{i18n::tr, t};
 use std::collections::HashMap;
 
 /// Per-app usage and package names (in a single call).
-pub const USAGE_SCRIPT: &str = "echo '@@@USAGE@@@'; dumpsys batterystats --usage; echo '@@@UIDS@@@'; pm list packages -U";
+/// Android 11 and older have no `--usage`: their estimate is the
+/// `Estimated power use` block of `--charged` (only that block is sent).
+pub const USAGE_SCRIPT: &str = "u=$(dumpsys batterystats --usage 2>&1); case \"$u\" in 'Unknown option'*) echo '@@@ESTIMATE@@@'; dumpsys batterystats --charged | sed -n '/^  Estimated power use/,/^ *$/p';; *) echo '@@@USAGE@@@'; echo \"$u\";; esac; echo '@@@UIDS@@@'; pm list packages -U";
 
 /// Time on battery and wakelocks since the last full charge.
-pub const WAKELOCK_SCRIPT: &str = "dumpsys batterystats --charged | grep -E '^  (Time on battery|All partial wake locks:|All kernel wake locks:|Wake lock |Kernel Wake lock )'";
+/// Also the background tasks (`Job …: … realtime`, per-UID detail).
+pub const WAKELOCK_SCRIPT: &str =
+    "dumpsys batterystats --charged | grep -E '^  (Time on battery|All partial wake locks:|All kernel wake locks:|Wake lock |Kernel Wake lock )|^    Job .* realtime'";
+
+/// Alarms per app since Android started (read-only).
+pub const ALARM_SCRIPT: &str = "dumpsys alarm 2>&1 | sed -n -e '/^  RuntimeStarted=/p' -e '/^  Alarm Stats:/,$p'";
+
+/// Alarms of one app since Android started.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct AlarmUse {
+    pub uid: Option<u32>,
+    pub package: String,
+    /// Times it woke the phone from sleep.
+    pub wakeups: u64,
+    /// Alarms delivered (waking or not).
+    pub alarms: u64,
+    pub running_ms: u64,
+    /// The alarm that woke the phone most (`TIME_TICK`, an intent action…).
+    pub top_tag: String,
+}
+
+/// Background tasks (JobScheduler) of one app since the last full charge.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct JobUse {
+    pub package: String,
+    pub ms: u64,
+    pub count: u64,
+}
 
 /// Usage of a UID on battery, in mAh.
 #[derive(Debug, Clone, Default, PartialEq)]
@@ -64,7 +99,10 @@ pub fn system_uid_name(uid: u32) -> String {
         1021 => "GPS".into(),
         1041 => tr("Audio server").into(),
         1046 => tr("Media codecs").into(),
+        1020 => tr("Local network discovery (mDNS)").into(),
         1047 => tr("Camera server").into(),
+        1051 => tr("DNS resolver").into(),
+        1061 => tr("System updates").into(),
         1073 => tr("Network stack").into(),
         2000 => tr("ADB shell (includes ADB Scan's telemetry)").into(),
         u => t!("System process (UID {})", u),
@@ -117,6 +155,12 @@ pub struct BatteryUsage {
     pub kernel_wakelocks: Vec<WakeLock>,
     /// UID → packages, to name the wakelock owners.
     pub uid_packages: HashMap<u32, Vec<String>>,
+    /// Most background work first.
+    pub jobs: Vec<JobUse>,
+    /// Most wakeups first.
+    pub alarms: Vec<AlarmUse>,
+    /// When the alarm counts start (Android's start), `YYYY-MM-DD HH:MM:SS`.
+    pub alarms_since: Option<String>,
 }
 
 impl BatteryUsage {
@@ -297,6 +341,39 @@ pub fn parse_usage(text: &str) -> (f64, Vec<AppUsage>) {
     (total, merged)
 }
 
+/// Android 11 and older: the `Estimated power use (mAh)` block of
+/// `--charged`, (computed drain, apps). Each app gets its own use plus its
+/// share of the screen (“Including smearing: … screen=…”), as Android 12+
+/// counts it; the proportional share of the system is left out.
+pub fn parse_estimated(text: &str) -> (f64, Vec<AppUsage>) {
+    let mut total = 0.0;
+    let mut apps: Vec<AppUsage> = Vec::new();
+    for line in text.lines() {
+        let s = line.trim();
+        if let Some(rest) = s.split_once("Computed drain: ").map(|(_, r)| r) {
+            total = rest.split(|c: char| c == ',' || c.is_whitespace()).next().and_then(|v| v.parse().ok()).unwrap_or(0.0);
+            continue;
+        }
+        let Some(rest) = s.strip_prefix("Uid ") else { continue };
+        let Some((uid, rest)) = rest.split_once(':') else { continue };
+        let Some(uid) = parse_uid(uid) else { continue };
+        let Some(own) = rest.split_whitespace().next().and_then(|v| v.parse::<f64>().ok()) else { continue };
+        let screen = rest
+            .split_once("Including smearing:")
+            .and_then(|(_, r)| r.split_whitespace().find_map(|t| t.strip_prefix("screen=")))
+            .and_then(|v| v.parse::<f64>().ok())
+            .unwrap_or(0.0);
+        let mah = own + screen;
+        match apps.iter_mut().find(|a| a.uid == uid) {
+            Some(a) => a.mah += mah,
+            None => apps.push(AppUsage { uid, mah, ..Default::default() }),
+        }
+    }
+    apps.retain(|a| a.mah >= 0.005);
+    apps.sort_by(|a, b| b.mah.total_cmp(&a.mah));
+    (total, apps)
+}
+
 /// Summary of `--charged`: (time on battery, with the screen off, app
 /// wakelocks, kernel wakelocks), sorted by time.
 pub fn parse_wakelocks(text: &str) -> (Option<u64>, Option<u64>, Vec<WakeLock>, Vec<WakeLock>) {
@@ -327,6 +404,127 @@ pub fn parse_wakelocks(text: &str) -> (Option<u64>, Option<u64>, Vec<WakeLock>, 
     (on_battery, screen_off, partial, kernel)
 }
 
+/// `+1s145ms`, `+810ms`, `+1h2m3s4ms` → milliseconds.
+pub fn parse_compact_duration_ms(text: &str) -> Option<u64> {
+    let t = text.trim().trim_start_matches(['+', '-']);
+    let (mut total, mut num, mut any) = (0u64, String::new(), false);
+    let mut chars = t.chars().peekable();
+    while let Some(c) = chars.next() {
+        if c.is_ascii_digit() {
+            num.push(c);
+            continue;
+        }
+        let unit = match c {
+            'm' if chars.peek() == Some(&'s') => {
+                chars.next();
+                1
+            }
+            'd' => 86_400_000,
+            'h' => 3_600_000,
+            'm' => 60_000,
+            's' => 1000,
+            _ => return None,
+        };
+        total += num.parse::<u64>().ok()? * unit;
+        num.clear();
+        any = true;
+    }
+    (any && num.is_empty()).then_some(total)
+}
+
+/// Package of a job name: `pkg/.Service`, `@namespace@pkg/.Service`,
+/// `DownloadManager:pkg`.
+fn job_package(name: &str) -> String {
+    let mut n = name;
+    if let Some(rest) = n.strip_prefix('@') {
+        n = rest.split_once('@').map(|(_, r)| r).unwrap_or(rest);
+    }
+    if let Some((pkg, _)) = n.split_once('/') {
+        return pkg.to_string();
+    }
+    n.rsplit(':').next().unwrap_or(n).to_string()
+}
+
+/// `Job pkg/.Service: 3s 375ms realtime (10 times), 3s 375ms background (10
+/// times)`, added up per package.
+pub fn parse_jobs(text: &str) -> Vec<JobUse> {
+    let mut out: Vec<JobUse> = Vec::new();
+    for line in text.lines() {
+        let Some(rest) = line.trim().strip_prefix("Job ") else { continue };
+        let Some(rt) = rest.find(" realtime (") else { continue };
+        let Some(colon) = rest[..rt].rfind(": ") else { continue };
+        let Some(ms) = parse_duration_ms(&rest[colon + 2..rt]) else { continue };
+        let after = &rest[rt + " realtime (".len()..];
+        let count: u64 = after.split_whitespace().next().and_then(|n| n.parse().ok()).unwrap_or(0);
+        let package = job_package(&rest[..colon]);
+        match out.iter_mut().find(|j| j.package == package) {
+            Some(j) => {
+                j.ms += ms;
+                j.count += count;
+            }
+            None => out.push(JobUse { package, ms, count }),
+        }
+    }
+    out.retain(|j| j.ms > 0 || j.count > 0);
+    out.sort_by_key(|j| std::cmp::Reverse((j.ms, j.count)));
+    out
+}
+
+/// `dumpsys alarm`, from `Alarm Stats:`:
+///
+/// ```text
+///   u0a405:com.google.android.gms +810ms running, 34 wakeups:
+///     +94ms 12 wakes 12 alarms, last -32m27s821ms:
+///       *walarm*:*job.deadline*
+/// ```
+pub fn parse_alarms(text: &str) -> (Option<String>, Vec<AlarmUse>) {
+    let mut since = None;
+    let mut out: Vec<AlarmUse> = Vec::new();
+    // Wakeups of the alarm being read, and the most of the current app.
+    let (mut wakes, mut best) = (0u64, 0u64);
+    let mut in_stats = false;
+    for line in text.lines() {
+        let t = line.trim();
+        if let Some(v) = t.strip_prefix("RuntimeStarted=") {
+            since = Some(v.split('.').next().unwrap_or(v).to_string());
+            continue;
+        }
+        if t == "Alarm Stats:" {
+            in_stats = true;
+            continue;
+        }
+        if !in_stats || t.is_empty() {
+            continue;
+        }
+        let indent = line.len() - line.trim_start().len();
+        if indent == 2 {
+            // `id:package +time running, N wakeups:`; anything else ends it.
+            let Some((id, rest)) = t.split_once(' ') else { break };
+            let Some((uid, package)) = id.split_once(':') else { break };
+            let Some((running, rest)) = rest.split_once(" running, ") else { break };
+            let wakeups = rest.split_whitespace().next().and_then(|n| n.parse().ok()).unwrap_or(0);
+            out.push(AlarmUse { uid: parse_uid(uid), package: package.to_string(), wakeups, running_ms: parse_compact_duration_ms(running).unwrap_or(0), ..Default::default() });
+            best = 0;
+        } else if indent == 4 {
+            // `+94ms 12 wakes 12 alarms, last …:`
+            let w: Vec<&str> = t.split_whitespace().collect();
+            wakes = w.get(1).and_then(|n| n.parse().ok()).unwrap_or(0);
+            if let (Some(a), Some(n)) = (out.last_mut(), w.get(3).and_then(|n| n.parse::<u64>().ok())) {
+                a.alarms += n;
+            }
+        } else if let Some(a) = out.last_mut() {
+            if wakes > best || a.top_tag.is_empty() {
+                best = best.max(wakes);
+                let tag = t.split_once("*:").map(|(_, r)| r).unwrap_or(t);
+                a.top_tag = tag.to_string();
+            }
+        }
+    }
+    out.retain(|a| a.wakeups > 0 || a.alarms > 0);
+    out.sort_by_key(|a| std::cmp::Reverse((a.wakeups, a.alarms)));
+    (since, out)
+}
+
 /// “u0a543 TAG: 1h 1m 51s 609ms (15 times) max=1807241 actual=… realtime”.
 /// The tag may contain “: ”, so the time is searched from the right: it is what
 /// follows the last “: ” before “(N times)”.
@@ -352,7 +550,10 @@ pub fn build(usage_text: &str, wakelock_text: &str) -> BatteryUsage {
     let sections = crate::parsers::split_sections(usage_text);
     let get = |k: &str| sections.get(k).map(String::as_str).unwrap_or("");
     let packages = parse_uid_packages(get("UIDS"));
-    let (total, mut apps) = parse_usage(get("USAGE"));
+    let (total, mut apps) = match sections.get("ESTIMATE") {
+        Some(t) => parse_estimated(t),
+        None => parse_usage(get("USAGE")),
+    };
     for a in &mut apps {
         if a.is_app() {
             a.packages = packages.get(&a.uid).cloned().unwrap_or_default();
@@ -370,5 +571,8 @@ pub fn build(usage_text: &str, wakelock_text: &str) -> BatteryUsage {
         wakelocks,
         kernel_wakelocks,
         uid_packages: packages,
+        jobs: parse_jobs(wakelock_text),
+        alarms: Vec::new(),
+        alarms_since: None,
     }
 }

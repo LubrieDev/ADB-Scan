@@ -61,11 +61,14 @@ pub fn page_defs() -> Vec<PageDef> {
         PageDef { id: "data", title: tr("Phone data"), icon: "adb-smartphone-lock-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::data::build },
         PageDef { id: "security", title: tr("Security"), icon: "adb-shield-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::security::build },
         PageDef { id: "changes", title: tr("Phone changes"), icon: "adb-document-open-recent-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::changes::build },
+        PageDef { id: "usage", title: tr("Usage"), icon: "adb-chart-line-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::usage::build },
+        PageDef { id: "stability", title: tr("Stability"), icon: "adb-heart-pulse-symbolic", section: tr("DATA"), need: Need::Adb, build: pages::stability::build },
         PageDef { id: "history", title: tr("History"), icon: "adb-history-symbolic", section: tr("DATA"), need: Need::Any, build: pages::history::build },
         PageDef { id: "terminal", title: "Terminal", icon: "adb-square-terminal-symbolic", section: tr("ADVANCED"), need: Need::Any, build: pages::terminal::build },
         PageDef { id: "logcat", title: "Logcat", icon: "adb-scroll-symbolic", section: tr("ADVANCED"), need: Need::Adb, build: pages::logcat::build },
         PageDef { id: "tools", title: tr("Tools"), icon: "adb-wrench-symbolic", section: tr("ADVANCED"), need: Need::Adb, build: pages::tools::build },
         PageDef { id: "flasher", title: "Flasher", icon: "adb-usb-symbolic", section: tr("ADVANCED"), need: Need::Any, build: pages::flasher::build },
+        PageDef { id: "root", title: "Root", icon: "adb-key-round-symbolic", section: tr("ADVANCED"), need: Need::Adb, build: pages::root::build },
     ]
 }
 
@@ -102,6 +105,10 @@ pub struct MainWindow {
     device_menu: gtk::MenuButton,
     device_list: gtk::ListBox,
     current: RefCell<&'static str>,
+    /// Pages that were hidden when private mode changed: they redraw their
+    /// texts when shown, so toggling it (Ctrl+Shift+P) only redraws the
+    /// visible page and does not freeze the window.
+    privacy_stale: RefCell<std::collections::HashSet<&'static str>>,
     split: adw::OverlaySplitView,
     quick_buttons: Vec<gtk::Button>,
     /// Sidebar icons that reflect the open section.
@@ -360,6 +367,7 @@ impl MainWindow {
             device_menu,
             device_list,
             current: RefCell::new("dashboard"),
+            privacy_stale: RefCell::new(std::collections::HashSet::new()),
             split,
             quick_buttons: vec![shot, mirror],
             live_icons,
@@ -375,7 +383,13 @@ impl MainWindow {
                 let Some(id) = this.side.id_of(row) else {
                     return;
                 };
-                this.show_page(id);
+                // `show_page` selects the row itself when the page was opened
+                // another way (shortcut, Ctrl+K, a link): showing it again
+                // would call the page's `shown()` twice.
+                let already = *this.current.borrow() == id;
+                if !already {
+                    this.show_page(id);
+                }
                 if this.split.is_collapsed() {
                     this.split.set_show_sidebar(false);
                 }
@@ -498,9 +512,15 @@ impl MainWindow {
         self.side.refresh();
         let page = self.slots.borrow().get(id).and_then(|s| s.page.clone());
         if let Some(p) = page {
+            if self.privacy_stale.borrow_mut().remove(id) {
+                let t0 = std::time::Instant::now();
+                p.on_event(&Event::Privacy);
+                crate::util::log_slow(&format!("event Privacy (deferred) in {id}"), t0);
+            }
             let t0 = std::time::Instant::now();
             p.shown();
             crate::util::log_slow(&format!("show {id}"), t0);
+            crate::util::log_widget_count(id, &p.widget());
         }
     }
 
@@ -616,14 +636,30 @@ impl MainWindow {
         if let Event::ShowPage(id) = ev {
             self.show_page(id);
         }
+        if matches!(ev, Event::PrepareFlash(..)) {
+            self.show_page("flasher");
+        }
         // Telemetry (every 500 ms) is only processed by the visible page and
         // only if the window is visible; the others catch up in `shown()`.
         // Previously every page already opened processed it, and the cost grew
         // with each section visited.
         let current = *self.current.borrow();
         let visible = self.window.is_visible() && !self.window.is_suspended();
-        let pages: Vec<(&'static str, Rc<dyn Page>)> =
-            self.slots.borrow().iter().filter(|(id, _)| !matches!(ev, Event::Snapshot) || (visible && **id == current)).filter_map(|(id, s)| Some((*id, s.page.clone()?))).collect();
+        if matches!(ev, Event::Privacy) {
+            let mut stale = self.privacy_stale.borrow_mut();
+            stale.extend(self.slots.borrow().iter().filter(|(id, s)| **id != current && s.page.is_some()).map(|(id, _)| *id));
+        }
+        let pages: Vec<(&'static str, Rc<dyn Page>)> = self
+            .slots
+            .borrow()
+            .iter()
+            .filter(|(id, _)| match ev {
+                Event::Snapshot => visible && **id == current,
+                Event::Privacy => **id == current,
+                _ => true,
+            })
+            .filter_map(|(id, s)| Some((*id, s.page.clone()?)))
+            .collect();
         for (id, p) in pages {
             let t0 = std::time::Instant::now();
             p.on_event(ev);

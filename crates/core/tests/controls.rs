@@ -105,6 +105,15 @@ fn hints() {
     assert_eq!(parse_volume("[V] volume is 7 in range [1..15]"), Some(Volume { value: 7, min: 1, max: 15 }));
 }
 
+/// Android 11 (moto e20): `volume --get` prints nothing; `dumpsys audio`.
+#[test]
+fn volume_from_dumpsys_audio() {
+    let music = "- STREAM_MUSIC:\n   Muted: false\n   Muted Internally: false\n   Min: 0\n   Max: 15\n   streamVolume:4\n   Current: 2 (speaker): 4, 40000000 (default): 5\n";
+    assert_eq!(parse_volume(music), Some(Volume { value: 4, min: 0, max: 15 }));
+    assert_eq!(parse_volume(""), None);
+    assert_eq!(parse_volume("Error: unknown stream"), None);
+}
+
 #[test]
 fn volume_keys() {
     let up = volume_keys_script(3, 40, 80);
@@ -114,4 +123,81 @@ fn volume_keys() {
     // Never more than 40 presses, and it only reads the volume (it does not set
     // it).
     assert!(up.contains("-lt 40") && !up.contains("--set"));
+}
+
+#[test]
+fn private_dns_from_settings() {
+    // The real fixture has no `private_dns_mode`: Android's default.
+    assert_eq!(parse_state(&fixture()).private_dns, Probe::Ok(PrivateDns::Automatic));
+    let with = |global: &str, sdk: u32| parse_state(&format!("@@@SDK@@@\n{sdk}\n@@@GLOBAL@@@\n{global}\n@@@SYSTEM@@@\nfont_scale=1.0\n@@@SECURE@@@\nx=1\n@@@END@@@\n")).private_dns;
+    assert_eq!(with("private_dns_mode=hostname\nprivate_dns_specifier=dns.adguard-dns.com", 36), Probe::Ok(PrivateDns::Host("dns.adguard-dns.com".into())));
+    assert_eq!(with("private_dns_mode=off\nprivate_dns_specifier=dns.adguard-dns.com", 36), Probe::Ok(PrivateDns::Off));
+    assert_eq!(with("private_dns_mode=opportunistic", 36), Probe::Ok(PrivateDns::Automatic));
+    // A host mode without a host behaves as automatic.
+    assert_eq!(with("private_dns_mode=hostname\nprivate_dns_specifier=null", 36), Probe::Ok(PrivateDns::Automatic));
+    assert!(matches!(with("wifi_on=1", 27), Probe::Unsupported(_)));
+}
+
+#[test]
+fn private_dns_commands_and_hosts() {
+    let cmds = PrivateDns::Host("dns.quad9.net".into()).commands().unwrap();
+    assert_eq!(cmds[0].join(" "), "settings put global private_dns_specifier dns.quad9.net");
+    assert_eq!(cmds[1].join(" "), "settings put global private_dns_mode hostname");
+    assert_eq!(PrivateDns::Off.commands().unwrap()[0].join(" "), "settings put global private_dns_mode off");
+    for ok in ["dns.adguard-dns.com", "abc123.dns.nextdns.io", "one.one.one.one."] {
+        assert!(is_valid_dns_host(ok), "{ok}");
+    }
+    for bad in ["localhost", "dns..com", "-dns.com", "dns.com;reboot", "dns com.net", "", "a.b/c"] {
+        assert!(!is_valid_dns_host(bad), "{bad}");
+        assert!(PrivateDns::Host(bad.into()).commands().is_none());
+    }
+    assert!(dns_presets().iter().all(|p| is_valid_dns_host(p.host)));
+    assert_eq!(PrivateDns::Host("dns.quad9.net".into()).label(), "Quad9");
+}
+
+#[test]
+fn accessibility_settings() {
+    // Real phone: nothing changed, defaults.
+    let a = parse_state(&fixture()).access;
+    assert_eq!(a.font_scale, Probe::Ok(1.0));
+    assert_eq!(a.grayscale, Probe::Ok(false));
+    assert_eq!(a.long_press_ms, Probe::Ok(400));
+    let text = "@@@SDK@@@\n36\n@@@GLOBAL@@@\nx=1\n@@@SYSTEM@@@\nfont_scale=1.3\n@@@SECURE@@@\nfont_weight_adjustment=300\nhigh_text_contrast_enabled=1\n\
+                accessibility_display_daltonizer_enabled=1\naccessibility_display_daltonizer=0\nlong_press_timeout=1000\n@@@END@@@\n";
+    let a = parse_state(text).access;
+    assert_eq!(a.font_scale, Probe::Ok(1.3));
+    assert_eq!(a.bold_text, Probe::Ok(true));
+    assert_eq!(a.high_contrast_text, Probe::Ok(true));
+    assert_eq!(a.color_inversion, Probe::Ok(false));
+    assert_eq!(a.grayscale, Probe::Ok(true));
+    assert_eq!(a.long_press_ms, Probe::Ok(1000));
+    // Colour correction for another type (deuteranomaly = 12) is not grayscale.
+    let a = parse_state(&text.replace("daltonizer=0", "daltonizer=12")).access;
+    assert_eq!(a.grayscale, Probe::Ok(false));
+    assert_eq!(AccessToggle::Grayscale.commands(true).len(), 2);
+    assert_eq!(font_scale_command(9.0).join(" "), "settings put system font_scale 2.00");
+    assert_eq!(long_press_command(1000).join(" "), "settings put secure long_press_timeout 1000");
+}
+
+#[test]
+fn profiles_capture_and_compare() {
+    let s = parse_state(&fixture());
+    let p = ControlProfile::from_state("  Night  ", &s);
+    assert_eq!(p.name, "Night");
+    // The real phone: manual brightness, so brightness is kept.
+    assert!(p.toggles.contains(&(Toggle::AutoBrightness, false)));
+    assert!(p.levels.contains(&Level::Brightness(26)));
+    assert!(p.levels.contains(&Level::Dnd(Dnd::Priority)));
+    assert!(!p.toggles.iter().any(|(t, _)| *t == Toggle::Airplane));
+    // Same state: nothing to do.
+    let (t, l) = p.pending(&s);
+    assert!(t.is_empty() && l.is_empty());
+    let mut other = p.clone();
+    other.toggles.retain(|(t, _)| *t != Toggle::Wifi);
+    other.toggles.push((Toggle::Wifi, false));
+    other.levels = vec![Level::Dnd(Dnd::Off)];
+    let (t, l) = other.pending(&s);
+    assert_eq!(t, [(Toggle::Wifi, false)]);
+    assert_eq!(l, [Level::Dnd(Dnd::Off)]);
+    assert!(p.summary().contains("Wi-Fi on"));
 }

@@ -52,6 +52,10 @@ pub enum Event {
     ShowApp(String),
     /// Show a page by its identifier.
     ShowPage(&'static str),
+    /// Open the Flasher with a partition and an image already chosen (the
+    /// Root page's last step). Nothing is flashed until the user confirms
+    /// there.
+    PrepareFlash(String, std::path::PathBuf),
     /// Private mode was turned on or off: repaint the texts.
     Privacy,
 }
@@ -146,6 +150,9 @@ pub struct Ctx {
     /// Private mode (display only). Learns serial numbers and networks as it
     /// sees them.
     privacy: RefCell<Redactor>,
+    /// Labels that show data private mode hides, with their real text:
+    /// toggling it rewrites them in place instead of rebuilding their page.
+    masked_labels: RefCell<Vec<(glib::WeakRef<gtk::Label>, String)>>,
 }
 
 impl Ctx {
@@ -207,6 +214,7 @@ impl Ctx {
             fastboot_polling: Cell::new(false),
             battery_capacity: RefCell::new(HashMap::new()),
             privacy: RefCell::new(Redactor::new(false)),
+            masked_labels: RefCell::new(Vec::new()),
         });
         {
             // Private mode: saved state and already known serial numbers
@@ -397,6 +405,31 @@ impl Ctx {
         self.usb.borrow().clone()
     }
 
+    /// The selected phone on this PC's USB bus: the one whose USB serial is
+    /// its ADB serial (over Wi-Fi, its `ro.serialno`). With several phones,
+    /// never another one: a phone connected only over Wi-Fi has none. With
+    /// no ADB device selected, the first phone there (basic analysis).
+    pub fn selected_usb(&self) -> Option<UsbDevice> {
+        let dev = self.selected_device();
+        let usb = self.usb.borrow();
+        let Some(dev) = dev else {
+            return usb.iter().find(|u| u.mode != UsbMode::Other).or(usb.first()).cloned();
+        };
+        if let Some(u) = usb.iter().find(|u| !u.serial.is_empty() && u.serial == dev.serial) {
+            return Some(u.clone());
+        }
+        if dev.is_wireless() {
+            let serialno = self.snapshot().filter(|s| s.serial == dev.serial).map(|s| s.prop("ro.serialno").to_string()).filter(|s| !s.is_empty())?;
+            return usb.iter().find(|u| u.serial == serialno).cloned();
+        }
+        // The USB serial is not the ADB one (rare): only if there is no doubt.
+        let mut adb = usb.iter().filter(|u| u.has_adb_interface());
+        match (adb.next(), adb.next()) {
+            (Some(u), None) => Some(u.clone()),
+            _ => None,
+        }
+    }
+
     /// There is a phone on USB with debugging turned off (no ADB interface) and
     /// no ADB device ready: this is the basic analysis case.
     pub fn basic_only_phone(&self) -> Option<UsbDevice> {
@@ -448,6 +481,7 @@ impl Ctx {
             return;
         }
         self.privacy.borrow_mut().set_enabled(on);
+        self.remask_labels();
         self.settings.borrow_mut().privacy_mode = on;
         self.save_settings();
         self.update_tray();
@@ -464,6 +498,29 @@ impl Ctx {
     /// MACs.
     pub fn shown(&self, text: &str) -> String {
         self.privacy.borrow().text(text).into_owned()
+    }
+
+    /// Shows `text` in a label as [`Ctx::shown`] does, and keeps it right when
+    /// private mode changes (without the page having to redraw it).
+    pub fn set_shown_text(&self, label: &gtk::Label, text: &str) {
+        label.set_text(&self.shown(text));
+        let mut labels = self.masked_labels.borrow_mut();
+        // Labels of rebuilt pages die: forget them now and then.
+        if labels.len() >= 1024 && labels.len().is_power_of_two() {
+            labels.retain(|(l, _)| l.upgrade().is_some());
+        }
+        labels.push((label.downgrade(), text.to_string()));
+    }
+
+    fn remask_labels(&self) {
+        let mut labels = self.masked_labels.borrow_mut();
+        labels.retain(|(l, text)| match l.upgrade() {
+            Some(l) => {
+                l.set_text(&self.privacy.borrow().text(text));
+                true
+            }
+            None => false,
+        });
     }
 
     /// Value that is entirely sensitive data (serial number, Wi-Fi network).
@@ -722,7 +779,7 @@ impl Ctx {
                 let Some(ctx) = weak.upgrade() else { return };
                 // Without `marketname`, the phone's USB product name (“REDMAGIC
                 // 11S Pro”) is better than the model (“NX809J”).
-                let usb = || ctx.usb_devices().into_iter().find(|u| u.serial == serial).map(|u| u.product).filter(|p| !p.trim().is_empty());
+                let usb = || ctx.usb_devices().into_iter().find(|u| u.serial == serial).map(|u| u.product).filter(|p| !adbscan_core::usb::is_generic_product(p));
                 let name = if !market.is_empty() { market } else { usb().unwrap_or(model) };
                 if !name.is_empty() {
                     ctx.market_names.borrow_mut().insert(serial, name);

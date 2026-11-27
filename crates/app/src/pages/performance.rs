@@ -50,6 +50,7 @@ struct Performance {
     thermal_groups: RefCell<Vec<(String, gtk::Label, adw::ExpanderRow)>>,
     thermal_top: adw::ActionRow,
     thermal_top_value: gtk::Label,
+    memory: Rc<crate::pages::memory_view::MemoryView>,
 }
 
 pub fn build(ctx: &Rc<Ctx>) -> Rc<dyn Page> {
@@ -103,6 +104,8 @@ impl Performance {
         let swap_label = util::label("—", &["dim", "numeric"]);
         mem_card.append(&swap_label);
         content.append(&mem_card);
+        let memory = crate::pages::memory_view::MemoryView::new(ctx);
+        content.append(&memory.root);
 
         let temp_chart = Chart::new(110, 120, 20.0, 60.0, " °C");
         temp_chart.set_auto_max(true);
@@ -172,6 +175,7 @@ impl Performance {
             thermal_groups: RefCell::new(Vec::new()),
             thermal_top,
             thermal_top_value,
+            memory,
         });
         for m in ctx.metrics() {
             this.cpu_chart.push(0, m.cpu_load);
@@ -413,6 +417,7 @@ impl Page for Performance {
         self.root.clone().upcast()
     }
     fn on_event(&self, ev: &Event) {
+        self.memory.on_event(ev);
         match ev {
             Event::Snapshot => {
                 if let Some(s) = self.ctx.snapshot() {

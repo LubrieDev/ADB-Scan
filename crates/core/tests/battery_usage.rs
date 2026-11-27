@@ -16,7 +16,7 @@ fn close(a: f64, b: f64) -> bool {
 #[test]
 fn scripts_only_read() {
     // No option that clears or writes statistics.
-    for script in [USAGE_SCRIPT, WAKELOCK_SCRIPT] {
+    for script in [USAGE_SCRIPT, WAKELOCK_SCRIPT, ALARM_SCRIPT] {
         for forbidden in ["--reset", "--write", "--new-daily", " enable", " disable", "--history-create"] {
             assert!(!script.contains(forbidden), "{forbidden} in {script}");
         }
@@ -117,4 +117,55 @@ fn build_names_owners_and_unattributed() {
     let empty = build("", "");
     assert!(empty.apps.is_empty());
     assert_eq!(empty.percent_of(10.0), None);
+}
+
+#[test]
+fn real_alarms_who_wakes_the_phone() {
+    let (since, alarms) = parse_alarms(&fixture("alarm_stats.txt"));
+    assert_eq!(since.as_deref(), Some("2026-11-26 14:30:59"));
+    assert_eq!((alarms[0].package.as_str(), alarms[0].uid, alarms[0].wakeups), ("android", Some(1000), 37));
+    let gms = &alarms[1];
+    assert_eq!((gms.package.as_str(), gms.uid, gms.wakeups, gms.running_ms), ("com.google.android.gms", Some(10405), 34, 810));
+    assert_eq!(gms.top_tag, "com.google.android.chimera.IntentOperation.TARGETED_INTENT");
+    assert_eq!(gms.alarms, 26 + 7 + 5 + 10 + 1 + 1 + 1);
+    // Sorted by wakeups; the statistics block after them is not an app.
+    assert!(alarms.windows(2).all(|w| w[0].wakeups >= w[1].wakeups));
+    assert!(alarms.iter().all(|a| !a.package.contains(' ')));
+    assert_eq!(parse_compact_duration_ms("+1h2m3s4ms"), Some(3_723_004));
+    assert_eq!(parse_compact_duration_ms("+1s145ms"), Some(1145));
+    assert_eq!(parse_compact_duration_ms("12x"), None);
+}
+
+#[test]
+fn real_background_tasks_per_app() {
+    let jobs = parse_jobs(&fixture("batterystats_jobs.txt"));
+    assert_eq!(jobs.len(), 80);
+    assert_eq!((jobs[0].package.as_str(), jobs[0].ms, jobs[0].count), ("com.example.app17", 30_897_364, 719));
+    assert_eq!(jobs[1].package, "com.android.vending");
+    // `@namespace@android/…` belongs to Android.
+    assert!(jobs.iter().any(|j| j.package == "android"));
+    assert!(jobs.iter().all(|j| !j.package.starts_with('@') && !j.package.contains('/')));
+}
+
+/// Android 11 (moto e20): no `--usage`; the `Estimated power use` block of
+/// `--charged` (real lines; UIDs only).
+#[test]
+fn android_11_estimate() {
+    let text = "  Estimated power use (mAh):\n    Capacity: 4000, Computed drain: 7888, actual drain: 9680-10120\n    Cell standby: 2386 ( radio=2386 ) Excluded from smearing\n\
+    Screen: 1328 Excluded from smearing\n    Uid 0: 455 ( cpu=455 ) Excluded from smearing\n\
+    Uid u0a160: 299 ( cpu=65.5 wake=3.56 ) Including smearing: 2201 ( screen=1041 proportional=860 )\n\
+    Uid u0a189: 285 ( cpu=246 wake=38.7 ) Excluded from smearing\n\
+    Uid u0a112: 0.00000450 ( wake=0.00000450 ) Including smearing: 0.00000738 ( proportional=0.00000288 )\n\n";
+    let (total, apps) = parse_estimated(text);
+    assert!(close(total, 7888.0));
+    assert_eq!(apps.len(), 3);
+    // Its own use plus its share of the screen.
+    assert_eq!(apps[0].uid, 10160);
+    assert!(close(apps[0].mah, 1340.0));
+    assert_eq!(apps[1].uid, 0);
+    assert_eq!(apps[2].uid, 10189);
+    let usage = format!("@@@ESTIMATE@@@\n{text}@@@UIDS@@@\npackage:com.example.app1 uid:10160\n");
+    let u = build(&usage, "");
+    assert!(close(u.total_mah, 7888.0));
+    assert_eq!(u.apps[0].packages, ["com.example.app1"]);
 }

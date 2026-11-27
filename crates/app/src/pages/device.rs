@@ -236,7 +236,7 @@ impl DevicePage {
         // phone's own USB product name is usually the marketing name.
         let mut name = s.commercial_name();
         if name.is_empty() {
-            name = self.ctx.usb_devices().into_iter().find(|u| u.serial == s.serial).map(|u| u.product).unwrap_or_default();
+            name = self.ctx.usb_devices().into_iter().find(|u| u.serial == s.serial).map(|u| u.product).filter(|p| !adbscan_core::usb::is_generic_product(p)).unwrap_or_default();
         }
         self.set("name", &name);
         self.set("manufacturer", &s.manufacturer());
@@ -311,13 +311,14 @@ impl DevicePage {
 
     fn render_platform(&self, props: &std::collections::BTreeMap<String, String>) {
         use adbscan_core::platform;
+        // Private mode is not part of it: its values update in place
+        // (`Ctx::set_shown_text`), without rebuilding the sheet.
         let sig = format!(
-            "{:?}|{:?}|{:?}|{:?}|{}",
+            "{:?}|{:?}|{:?}|{:?}",
             platform::boot_facts(props),
             platform::platform_facts(props),
             platform::opengles_from_prop(props),
-            self.platform.borrow().as_ref().map(|r| r.read_at),
-            self.ctx.private_mode()
+            self.platform.borrow().as_ref().map(|r| r.read_at)
         );
         if *self.platform_sig.borrow() == sig {
             return;
