@@ -17,14 +17,15 @@ pub fn about(parent: &gtk::Widget) {
             tr("Monitors battery, performance, network and temperature live; manages apps and files; opens a real adb shell terminal; mirrors the screen with scrcpy and flashes with fastboot behind safeguards. Everything is processed on your computer: no telemetry, no accounts and no root."),
         )
         .release_notes(
-            tr("<p>1.4.0 — root, more control without root, and more phones</p><ul>\
+            tr("<p>1.4.1</p><ul><li>Overview no longer opens blank when it was the last section used.</li></ul>")
+                .to_string()
+                + tr("<p>1.4.0 — root, more control without root, and more phones</p><ul>\
              <li>Root: what rooting needs to know about the phone, how to unlock each brand, and Magisk from its official site, checked before installing.</li>\
              <li>Flasher: Motorola's unlock data and unlocking with a code (Motorola, Sony).</li>\
              <li>What wakes the phone and works in the background, unrestricted battery per app, and per-app tuning (smoothness, language, game mode).</li>\
              <li>Copy contacts, calls and messages to the computer, and a checklist before selling or resetting the phone.</li>\
              <li>Usage: notifications, unlocks and apps not used in months. Also the keyboard, night light, mobile signal, nearby Wi-Fi networks and memory per app.</li>\
              <li>Works with Android 11, Samsung and several devices connected at once.</li></ul>")
-                .to_string()
                 + tr("<p>1.3.0 — favorites, colours and phone changes</p><ul>\
              <li>Favorites: the star next to each section adds it to the top of the sidebar.</li>\
              <li>Any accent colour of your own, and its intensity, in Preferences.</li>\

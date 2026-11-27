@@ -31,6 +31,11 @@
   <url type="bugtracker">https://github.com/LubrieDev/ADB-Scan/issues</url>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.4.1" date="2026-11-26">
+      <description>
+        <p>Overview no longer opens blank when it was the last section used.</p>
+      </description>
+    </release>
     <release version="1.4.0" date="2026-11-26">
       <description>
         <ul>

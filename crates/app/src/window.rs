@@ -366,7 +366,10 @@ impl MainWindow {
             pill,
             device_menu,
             device_list,
-            current: RefCell::new("dashboard"),
+            // Nothing is open yet: with “dashboard” here, selecting its row at
+            // startup looked like “already open” and the page was never built
+            // (a blank Overview when it was the last section used).
+            current: RefCell::new(""),
             privacy_stale: RefCell::new(std::collections::HashSet::new()),
             split,
             quick_buttons: vec![shot, mirror],
@@ -430,6 +433,10 @@ impl MainWindow {
         let start = this.defs.iter().find(|d| d.id == page_alias(&start)).map_or("dashboard", |d| d.id);
         if let Some(row) = this.side.row(start) {
             this.sidebar.select_row(Some(&row));
+        }
+        // The row may already have been selected (no signal): open it anyway.
+        if this.current.borrow().is_empty() {
+            this.show_page(start);
         }
         this.refresh_device_ui();
         this

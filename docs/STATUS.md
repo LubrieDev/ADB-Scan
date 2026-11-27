@@ -1,6 +1,7 @@
 # Status
 
-Version 1.4.0 · 26 November 2026 · the Root page (with Magisk from its
+Version 1.4.1 · 26 November 2026 · Overview no longer opens blank when it
+was the last section used. Version 1.4.0 added the Root page (with Magisk from its
 official site), about twenty new features without root, and support for
 Android 11, Samsung and several devices at once. Version 1.3.0 added favorites
 in the sidebar, custom accent colour and intensity, and the Phone changes
